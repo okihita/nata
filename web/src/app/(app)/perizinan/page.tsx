@@ -256,7 +256,7 @@ export default function PerizinanPage() {
             <CardContent className="space-y-4">
               {verdict ? (
                 <>
-                  <div className="rounded-xl border bg-card p-4">
+                  <div id="kode-kbli-anda" className="rounded-xl border bg-card p-4">
                     <p className="text-xs text-muted-foreground">
                       {copy.perizinan.codeLabel}
                     </p>
