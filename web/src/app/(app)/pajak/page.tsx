@@ -13,6 +13,7 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useWorkspace } from "@/lib/store";
+import { entityHasExemption } from "@/lib/business";
 import { taxPosition } from "@/lib/ledger";
 import { PPH_FINAL_RATE, PPH_INDIVIDUAL_EXEMPTION } from "@/lib/sak-emkm";
 import type { TaxAssessment } from "@/lib/adk";
@@ -31,9 +32,10 @@ import { idrFull } from "@/lib/format";
 export default function PajakPage() {
   const { entries, ready, business } = useWorkspace();
 
-  // The taxpayer type chosen at onboarding decides whether the Rp 500 juta
-  // exemption applies (Pasal 60 ayat (2)): individuals get it, badan usaha do not.
-  const individual = business?.taxpayer !== "badan";
+  // The entity type chosen at onboarding decides whether the Rp 500 juta
+  // exemption applies (Pasal 60 ayat (2)): orang pribadi gets it, PT Perorangan
+  // and PT/CV do not.
+  const individual = entityHasExemption(business?.entity ?? "orang_pribadi");
   const tax = useMemo(
     () => taxPosition(entries, { individual }),
     [entries, individual],

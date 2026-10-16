@@ -36,6 +36,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useWorkspace } from "@/lib/store";
+import { entityHasExemption } from "@/lib/business";
 import { balanceSheet, incomeStatement, monthlyRevenue, taxPosition, trialBalance } from "@/lib/ledger";
 import { copy } from "@/lib/copy";
 import { idr, idrFull } from "@/lib/format";
@@ -46,7 +47,7 @@ export default function DashboardPage() {
   const bs = balanceSheet(entries);
   const series = monthlyRevenue(entries);
   const accounts = trialBalance(entries);
-  const tax = taxPosition(entries, { individual: business?.taxpayer !== "badan" });
+  const tax = taxPosition(entries, { individual: entityHasExemption(business?.entity ?? "orang_pribadi") });
 
   // "Perlu tindakan": plain-language items the owner should look at. This is
   // the panel the incumbents do worst — an empty state here says the books are

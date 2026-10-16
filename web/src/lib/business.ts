@@ -11,8 +11,14 @@
  * disimpan terpisah dari React.
  */
 
-/** Jenis wajib pajak menentukan apakah pembebasan Rp 500 juta berlaku. */
-export type Taxpayer = "orang_pribadi" | "badan";
+/**
+ * Bentuk badan usaha. Ini yang menentukan apakah pembebasan Rp 500 juta
+ * berlaku (Pasal 60 ayat (2) — hanya orang pribadi). Bedanya dengan versi lama:
+ * dulu hanya ada dua nilai (`orang_pribadi` / `badan`), sehingga **PT Perorangan**
+ * tidak bisa dibedakan — padahal PT Perorangan adalah badan usaha dan tidak
+ * mendapat pembebasan itu.
+ */
+export type EntityType = "orang_pribadi" | "pt_perorangan" | "pt_cv";
 
 /** Bentuk usaha — memengaruhi saran akun dan bahasa yang dipakai. */
 export type BusinessType = "warung" | "toko" | "kafe" | "jasa" | "lainnya";
@@ -24,8 +30,8 @@ export interface Business {
   /** Nama pemilik — dipakai untuk sapaan dan (nanti) dokumen resmi. */
   ownerName: string;
   type: BusinessType;
-  /** orang_pribadi mendapat pembebasan Rp 500 juta (Pasal 60 ayat (2)). */
-  taxpayer: Taxpayer;
+  /** Bentuk badan usaha — menentukan perlakuan pajak. */
+  entity: EntityType;
   createdAt: string;
 }
 
@@ -39,27 +45,50 @@ export const BUSINESS_TYPES: { id: BusinessType; label: string; hint: string }[]
   { id: "lainnya", label: "Lainnya", hint: "Usaha lain" },
 ];
 
-export const TAXPAYER_OPTIONS: {
-  id: Taxpayer;
+export const ENTITY_OPTIONS: {
+  id: EntityType;
   label: string;
   hint: string;
+  /** Apakah pembebasan Rp 500 juta berlaku (Pasal 60 ayat (2)). */
+  exemption: boolean;
 }[] = [
   {
     id: "orang_pribadi",
-    label: "Perorangan",
-    hint: "Milik pribadi. Omzet sampai Rp 500 juta bebas pajak.",
+    label: "Orang pribadi",
+    hint: "Usaha milik pribadi. Omzet sampai Rp 500 juta bebas pajak.",
+    exemption: true,
   },
   {
-    id: "badan",
-    label: "Badan usaha",
-    hint: "PT Perorangan, CV, koperasi. Tidak ada pembebasan Rp 500 juta.",
+    id: "pt_perorangan",
+    label: "PT Perorangan",
+    hint: "Perseroan terbatas milik satu orang. Tanpa pembebasan Rp 500 juta.",
+    exemption: false,
+  },
+  {
+    id: "pt_cv",
+    label: "PT / CV / koperasi",
+    hint: "Badan usaha bermitra atau berbadan hukum. Tanpa pembebasan.",
+    exemption: false,
   },
 ];
 
-export const TAXPAYER_LABEL: Record<Taxpayer, string> = {
-  orang_pribadi: "Wajib pajak perorangan",
-  badan: "Wajib pajak badan",
+export const ENTITY_LABEL: Record<EntityType, string> = {
+  orang_pribadi: "Orang pribadi",
+  pt_perorangan: "PT Perorangan",
+  pt_cv: "PT / CV / koperasi",
 };
+
+/** Ringkasan satu baris untuk ditampilkan di bilah atas. */
+export const ENTITY_TAX_LABEL: Record<EntityType, string> = {
+  orang_pribadi: "Bebas pajak s.d. Rp 500 jt",
+  pt_perorangan: "PPh Final 0,5% dari Rp 0",
+  pt_cv: "PPh Final 0,5% dari Rp 0",
+};
+
+/** Apakah pembebasan Rp 500 juta berlaku untuk bentuk usaha ini. */
+export function entityHasExemption(entity: EntityType): boolean {
+  return ENTITY_OPTIONS.find((o) => o.id === entity)?.exemption ?? false;
+}
 
 export const TYPE_LABEL: Record<BusinessType, string> = {
   warung: "Warung",
@@ -78,14 +107,19 @@ export function loadBusiness(): Business | null {
   try {
     const raw = window.localStorage.getItem(BUSINESS_STORAGE_KEY);
     if (!raw) return null;
-    const parsed = JSON.parse(raw) as Partial<Business>;
+    const parsed = JSON.parse(raw) as Partial<Business> & { taxpayer?: string };
     if (!parsed || typeof parsed.id !== "string" || !parsed.name) return null;
     return {
       id: parsed.id,
       name: parsed.name,
       ownerName: parsed.ownerName ?? "",
       type: (parsed.type as BusinessType) ?? "lainnya",
-      taxpayer: (parsed.taxpayer as Taxpayer) ?? "orang_pribadi",
+      // Migrasi dari model lama (dua nilai): `badan` tidak bisa dibedakan mana
+      // PT Perorangan atau PT/CV, jadi dipetakan ke pt_cv — perlakuan pajaknya
+      // sama (tanpa pembebasan), jadi angka pengguna tidak berubah.
+      entity:
+        (parsed.entity as EntityType) ??
+        (parsed.taxpayer === "badan" ? "pt_cv" : "orang_pribadi"),
       createdAt: parsed.createdAt ?? new Date().toISOString(),
     };
   } catch {

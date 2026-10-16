@@ -280,6 +280,13 @@ export const copy = {
     ownerPlaceholder: "Nama Anda",
     typeLabel: "Jenis usaha",
     taxpayerLabel: "Status pajak",
+    entityLabel: "Bentuk badan usaha",
+    entityHint:
+      "Ini menentukan apakah omzet Rp 500 juta pertama bebas pajak. Pilih yang paling sesuai dengan surat izin usaha Anda.",
+    entityExempt: "Bebas pajak s.d. Rp 500 jt",
+    entityTaxed: "Kena pajak dari Rp 0",
+    entityCitation:
+      "Dasar hukum: PP 55/2022 Pasal 60 ayat (2) — pembebasan Rp 500 juta hanya untuk Wajib Pajak orang pribadi.",
   },
 
   // ── Halaman muka (landing) ────────────────────────────────────────────────

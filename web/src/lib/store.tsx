@@ -56,7 +56,7 @@ interface WorkspaceContextValue {
     name: string;
     ownerName: string;
     type: Business["type"];
-    taxpayer: Business["taxpayer"];
+    entity: Business["entity"];
   }) => Business;
   /** Edit the business (Profil Usaha). */
   updateBusiness: (patch: Partial<Omit<Business, "id" | "createdAt">>) => void;
@@ -105,7 +105,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         name: input.name.trim(),
         ownerName: input.ownerName.trim(),
         type: input.type,
-        taxpayer: input.taxpayer,
+        entity: input.entity,
         createdAt: new Date().toISOString(),
       };
       saveBusiness(biz);

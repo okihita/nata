@@ -4,14 +4,18 @@
  * Profil Usaha — tempat pemilik mengisi identitas usahanya.
  *
  * Halaman ini juga dipakai sebagai langkah pertama (onboarding) saat pemilik
- * baru belum punya usaha. Satu formulir, tiga hal: nama usaha, nama pemilik,
- * dan jenis wajib pajak — yang terakhir menentukan apakah pembebasan Rp 500
- * juta berlaku (Pasal 60 ayat (2) PP 55/2022).
+ * baru belum punya usaha. Formulirnya mengisi tiga hal: nama usaha, nama
+ * pemilik, dan **bentuk badan usaha**.
+ *
+ * Bentuk badan usaha adalah pilihan yang paling berkonsekuensi di halaman ini:
+ * ia menentukan apakah pembebasan Rp 500 juta berlaku (Pasal 60 ayat (2)
+ * PP 55/2022 — hanya orang pribadi). Karena itu tiap pilihan menampilkan
+ * akibat pajaknya secara terbuka, bukan disembunyikan di balik istilah.
  */
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Store } from "lucide-react";
+import { Check, Store } from "lucide-react";
 
 import { PageHeader } from "@/components/app-sidebar";
 import { Button } from "@/components/ui/button";
@@ -29,9 +33,9 @@ import { useWorkspace } from "@/lib/store";
 import { copy } from "@/lib/copy";
 import {
   BUSINESS_TYPES,
-  TAXPAYER_OPTIONS,
+  ENTITY_OPTIONS,
   type BusinessType,
-  type Taxpayer,
+  type EntityType,
 } from "@/lib/business";
 
 export default function UsahaPage() {
@@ -41,7 +45,7 @@ export default function UsahaPage() {
   const [name, setName] = useState("");
   const [ownerName, setOwnerName] = useState("");
   const [type, setType] = useState<BusinessType>("warung");
-  const [taxpayer, setTaxpayer] = useState<Taxpayer>("orang_pribadi");
+  const [entity, setEntity] = useState<EntityType>("orang_pribadi");
 
   // Fill the form from the stored business once it has loaded.
   useEffect(() => {
@@ -49,7 +53,7 @@ export default function UsahaPage() {
     setName(business.name);
     setOwnerName(business.ownerName);
     setType(business.type);
-    setTaxpayer(business.taxpayer);
+    setEntity(business.entity);
   }, [business]);
 
   const isOnboarding = ready && business == null;
@@ -58,11 +62,11 @@ export default function UsahaPage() {
   function submit() {
     if (!canSubmit) return;
     if (isOnboarding) {
-      createBusiness({ name, ownerName, type, taxpayer });
+      createBusiness({ name, ownerName, type, entity });
       router.push("/catat");
       return;
     }
-    updateBusiness({ name, ownerName, type, taxpayer });
+    updateBusiness({ name, ownerName, type, entity });
     router.push("/dasbor");
   }
 
@@ -112,6 +116,7 @@ export default function UsahaPage() {
                     key={option.id}
                     type="button"
                     onClick={() => setType(option.id)}
+                    aria-pressed={type === option.id}
                     className={cn(
                       "rounded-lg border p-3 text-left transition",
                       type === option.id
@@ -128,28 +133,63 @@ export default function UsahaPage() {
               </div>
             </div>
 
+            {/* Bentuk badan usaha — pilihan paling berkonsekuensi, jadi tiap
+                kartu menyebut akibat pajaknya secara terbuka. */}
             <div className="grid gap-2">
-              <Label>{copy.usaha.taxpayerLabel}</Label>
-              <div className="grid gap-2">
-                {TAXPAYER_OPTIONS.map((option) => (
-                  <button
-                    key={option.id}
-                    type="button"
-                    onClick={() => setTaxpayer(option.id)}
-                    className={cn(
-                      "rounded-lg border p-3 text-left transition",
-                      taxpayer === option.id
-                        ? "border-primary bg-primary/5"
-                        : "hover:bg-muted/50",
-                    )}
-                  >
-                    <span className="block text-sm font-medium">{option.label}</span>
-                    <span className="block text-xs text-muted-foreground">
-                      {option.hint}
-                    </span>
-                  </button>
-                ))}
+              <Label htmlFor="entity-group">{copy.usaha.entityLabel}</Label>
+              <p className="-mt-1 text-xs text-muted-foreground">
+                {copy.usaha.entityHint}
+              </p>
+              <div id="entity-group" className="grid gap-2" role="radiogroup">
+                {ENTITY_OPTIONS.map((option) => {
+                  const active = entity === option.id;
+                  return (
+                    <button
+                      key={option.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={active}
+                      onClick={() => setEntity(option.id)}
+                      className={cn(
+                        "flex items-start gap-3 rounded-lg border p-3 text-left transition",
+                        active ? "border-primary bg-primary/5" : "hover:bg-muted/50",
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          "mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border",
+                          active ? "border-primary bg-primary" : "border-input",
+                        )}
+                      >
+                        {active && <Check className="size-3 text-primary-foreground" />}
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="flex flex-wrap items-center gap-2">
+                          <span className="text-sm font-medium">{option.label}</span>
+                          <span
+                            className={cn(
+                              "rounded-full px-2 py-0.5 text-[10px] font-medium",
+                              option.exemption
+                                ? "bg-tone-hijau-bg text-tone-hijau"
+                                : "bg-muted text-muted-foreground",
+                            )}
+                          >
+                            {option.exemption
+                              ? copy.usaha.entityExempt
+                              : copy.usaha.entityTaxed}
+                          </span>
+                        </span>
+                        <span className="mt-1 block text-xs text-muted-foreground">
+                          {option.hint}
+                        </span>
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
+              <p className="text-xs text-muted-foreground">
+                {copy.usaha.entityCitation}
+              </p>
             </div>
           </CardContent>
         </Card>

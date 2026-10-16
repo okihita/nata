@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useWorkspace } from "@/lib/store";
 import { copy } from "@/lib/copy";
-import { TYPE_LABEL, TAXPAYER_LABEL } from "@/lib/business";
+import { TYPE_LABEL, ENTITY_LABEL } from "@/lib/business";
 
 /**
  * Identitas usaha di bilah atas. Membaca usaha yang sedang dipakai dari store —
@@ -27,7 +27,7 @@ export function WorkspaceSwitcher() {
 
   const name = business?.name ?? copy.app.name;
   const subtitle = business
-    ? `${TYPE_LABEL[business.type]} · ${TAXPAYER_LABEL[business.taxpayer]}`
+    ? `${TYPE_LABEL[business.type]} · ${ENTITY_LABEL[business.entity]}`
     : copy.app.workspaceType;
 
   return (
