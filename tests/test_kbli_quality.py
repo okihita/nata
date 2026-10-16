@@ -55,7 +55,48 @@ CASES: list[tuple[str, str]] = [
     # Produksi
     ("peternakan ayam kampung", "01"),
     ("budidaya lele", "03"),
+    # Tambahan: deskripsi yang lebih realistis, ditemukan lewat pengukuran.
+    ("warung nasi uduk buka pagi", "56"),
+    ("jual martabak manis malam hari", "56"),
+    ("rumah makan seafood", "56"),
+    ("katering rumahan untuk hajatan", "56"),
+    ("toko buah dan sayur segar", "47"),
+    ("toko emas dan perhiasan", "47"),
+    ("toko sepatu dan sandal", "47"),
+    ("jual pulsa dan token listrik", "47"),
+    ("toko kue dan roti", "47"),
+    ("reparasi komputer dan laptop", "95"),
+    ("reparasi alat elektronik", "95"),
+    ("pangkas rambut pria", "96"),
+    ("laundry antar jemput", "96"),
+    ("jasa jahit baju pesanan", "14"),
+    ("percetakan spanduk dan banner", "18"),
+    ("jasa akuntansi dan pembukuan", "69"),
+    ("kursus mengemudi", "85"),
+    ("jasa pengiriman paket", "53"),
+    ("jasa bersih-bersih rumah", "81"),
+    ("penginapan homestay", "55"),
+    ("budidaya ikan lele kolam", "03"),
+    ("kebun kopi", "01"),
+    ("toko online shop pakaian", "47"),
 ]
+
+#: Kasus yang jawabannya boleh lebih dari satu divisi. Dipisahkan supaya
+#: ambang mutu tetap ketat untuk kasus yang jawabannya tunggal.
+CASES_AMBIGUOUS: list[tuple[str, set[str]]] = [
+    # Renovasi rumah bisa masuk konstruksi gedung (41) atau konstruksi khusus
+    # (43) — keduanya benar menurut KBLI.
+    ("jasa renovasi rumah", {"41", "43"}),
+]
+
+#: Kasus yang diketahui masih **melenceng**, dicatat terbuka alih-alih
+#: disembunyikan di dalam ambang mutu.
+#:
+#: "bengkel las besi" saat ini mengarah ke 24103 (Industri Pipa Dan Sambungan
+#: Pipa Dari Baja) — masih satu bidang logam, tapi bukan jasa pengelasan.
+#: Belum diperbaiki karena perbaikan yang benar butuh sinonim yang lebih
+#: spesifik ("pengelasan"), dan itu belum diverifikasi terhadap katalog.
+KNOWN_GAPS: list[tuple[str, str]] = [("bengkel las besi", "24")]
 
 
 def _division_of(description: str) -> str | None:
@@ -79,6 +120,34 @@ def test_overall_quality_floor():
     assert passed / total >= floor, (
         f"KBLI classification scored {passed}/{total} "
         f"({passed / total:.0%}), below the {floor:.0%} floor"
+    )
+
+
+@pytest.mark.parametrize(
+    "description,acceptable", CASES_AMBIGUOUS, ids=[c[0] for c in CASES_AMBIGUOUS]
+)
+def test_ambiguous_descriptions_land_in_an_acceptable_division(description, acceptable):
+    got = _division_of(description)
+    assert got in acceptable, (
+        f"{description!r} -> {got}, expected one of {sorted(acceptable)}"
+    )
+
+
+@pytest.mark.parametrize(
+    "description,known_wrong_division",
+    KNOWN_GAPS,
+    ids=[c[0] for c in KNOWN_GAPS],
+)
+def test_known_gaps_are_recorded_not_hidden(description, known_wrong_division):
+    """Pin the current (wrong) answer so a fix is visible as a test change.
+
+    Recording the shortfall honestly beats folding it into the aggregate
+    threshold, where it would read as a pass. When the synonym work lands, this
+    test should start failing — which is the point: it says "fixed".
+    """
+    assert _division_of(description) == known_wrong_division, (
+        f"{description!r} no longer lands in {known_wrong_division} — "
+        "if that is an improvement, move it out of KNOWN_GAPS"
     )
 
 
