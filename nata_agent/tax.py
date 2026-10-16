@@ -18,6 +18,8 @@ from typing import Any, Iterable, Mapping
 
 from google.adk.tools import ToolContext
 
+from . import entities
+
 # ── Statutory constants (PP 55/2022) ────────────────────────────────────────
 
 #: Pasal 56 ayat (2) — final rate on gross turnover.
@@ -319,6 +321,7 @@ def assess_pph_final(
     turnover: int,
     *,
     taxpayer: str = TAXPAYER_INDIVIDUAL,
+    entity: str | None = None,
     year: int | None = None,
     months: int = 1,
 ) -> TaxAssessment:
@@ -327,12 +330,25 @@ def assess_pph_final(
     Individual taxpayers get the cumulative Rp 500.000.000 zero-tax band
     (Pasal 60 ayat (2)–(3)); entity taxpayers are taxed on the full base
     (Pasal 60 ayat (5) huruf a).
+
+    ``entity`` (lihat :mod:`nata_agent.entities`) adalah bentuk usaha yang
+    tepat — orang pribadi, PT Perorangan, atau PT/CV. Bila diberi, ia yang
+    menentukan pembebasan, dan mengalahkan flag ``taxpayer`` yang kasar. Ini
+    penting karena PT Perorangan adalah *badan* (tidak dapat pembebasan),
+    sedangkan pemilik orang pribadi dapat — beda yang tidak bisa diungkapkan
+    oleh flag dua nilai yang lama.
     """
     turnover = int(turnover)
-    if taxpayer not in (TAXPAYER_INDIVIDUAL, TAXPAYER_ENTITY):
-        raise ValueError(f"unknown taxpayer type: {taxpayer!r}")
 
-    if taxpayer == TAXPAYER_INDIVIDUAL:
+    if entity is not None:
+        exemption_applies = entities.exemption_applies(entity)
+        taxpayer = TAXPAYER_INDIVIDUAL if exemption_applies else TAXPAYER_ENTITY
+    else:
+        if taxpayer not in (TAXPAYER_INDIVIDUAL, TAXPAYER_ENTITY):
+            raise ValueError(f"unknown taxpayer type: {taxpayer!r}")
+        exemption_applies = taxpayer == TAXPAYER_INDIVIDUAL
+
+    if exemption_applies:
         exemption_applied = min(max(turnover, 0), PPH_INDIVIDUAL_EXEMPTION)
     else:
         exemption_applied = 0
@@ -342,7 +358,7 @@ def assess_pph_final(
     months = max(1, int(months))
 
     keys = ["pasal_56_ayat_1", "pasal_56_ayat_2", "pasal_57_ayat_1_huruf_b"]
-    if taxpayer == TAXPAYER_INDIVIDUAL:
+    if exemption_applies:
         keys += ["pasal_60_ayat_2", "pasal_60_ayat_3", "pasal_60_ayat_5_huruf_b"]
     if turnover > PPH_TURNOVER_CEILING:
         keys.append("pasal_61_ayat_1")
@@ -356,7 +372,7 @@ def assess_pph_final(
         rate=PPH_FINAL_RATE,
         payable=payable,
         exemption_remaining=max(0, PPH_INDIVIDUAL_EXEMPTION - exemption_applied)
-        if taxpayer == TAXPAYER_INDIVIDUAL
+        if exemption_applies
         else 0,
         over_ceiling=turnover > PPH_TURNOVER_CEILING,
         year=year or 0,
