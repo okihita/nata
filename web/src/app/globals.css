@@ -233,4 +233,14 @@ body {
   input[type="radio"]:not([data-compact]) {
     min-height: 44px;
   }
+
+  /*
+   * Icon-only controls are also narrow: min-height alone left the sidebar
+   * toggle at 28x44. `:has(> svg)` catches buttons whose content is an icon,
+   * and `min-width` can only widen — a text button with an icon is already
+   * wider than 44px, so this cannot disturb any layout.
+   */
+  button:not([data-compact]):has(> svg) {
+    min-width: 44px;
+  }
 }
