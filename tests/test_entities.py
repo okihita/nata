@@ -106,6 +106,64 @@ def test_legacy_taxpayer_flag_still_works():
     assert b.payable == 3_000_000
 
 
+# ── Statutory boundaries ────────────────────────────────────────────────────
+#
+# The band edge and the ceiling are the two figures in PP 55/2022 that decide
+# real money, so the exact boundary behaviour is pinned rather than assumed:
+# Pasal 60 ayat (2) for the Rp 500 million band, Pasal 57 ayat (1) huruf b for
+# the Rp 4.8 billion ceiling.
+
+
+@pytest.mark.parametrize("turnover", [0, 1, 499_999_999, 500_000_000, 500_000_001])
+def test_turnover_within_the_band_owes_nothing_for_an_individual(turnover):
+    a = assess_pph_final(turnover, entity="orang_pribadi")
+    # At 500_000_001 the exemption is capped at 500_000_000 and the remaining
+    # rupiah rounds to zero tax — so "owes nothing" holds, but the exemption is
+    # the band, not the turnover.
+    assert a.payable == 0, f"{turnover} should produce no tax"
+    assert a.exemption_applied == min(turnover, 500_000_000)
+    assert a.over_ceiling is False
+
+
+def test_the_band_is_capped_at_500_million_not_the_turnover():
+    a = assess_pph_final(600_000_000, entity="orang_pribadi")
+    assert a.exemption_applied == 500_000_000
+    assert a.taxable_base == 100_000_000
+
+
+def test_the_ceiling_is_inclusive():
+    """Pasal 57 ayat (1) huruf b reads "tidak melebihi Rp4.800.000.000" — so
+    exactly at the ceiling is still within the scheme."""
+    at_ceiling = assess_pph_final(4_800_000_000, entity="orang_pribadi")
+    over = assess_pph_final(4_800_000_001, entity="orang_pribadi")
+    assert at_ceiling.over_ceiling is False
+    assert over.over_ceiling is True
+
+
+def test_pasal_61_is_cited_only_above_the_ceiling():
+    """Pasal 61 ayat (1) explains the rate continuing to year end once turnover
+    has passed the ceiling, so it must not be cited below it."""
+    def articles(turnover):
+        return {c["article"] for c in assess_pph_final(turnover, entity="orang_pribadi").citations}
+
+    assert "Pasal 61 ayat (1)" not in articles(4_800_000_000)
+    assert "Pasal 61 ayat (1)" in articles(4_800_000_001)
+
+
+def test_never_negative_even_for_a_nonsensical_turnover():
+    a = assess_pph_final(-1_000, entity="orang_pribadi")
+    assert a.payable == 0
+    assert a.taxable_base == 0
+    assert a.exemption_applied == 0
+
+
+def test_entity_turnover_never_gets_the_band():
+    for turnover in (100_000_000, 500_000_000, 4_800_000_000):
+        a = assess_pph_final(turnover, entity="pt_cv")
+        assert a.exemption_applied == 0, f"pt_cv at {turnover} must get no band"
+        assert a.taxable_base == turnover
+
+
 def test_entity_overrides_the_coarse_flag():
     """When both are given, the precise entity form wins."""
     a = assess_pph_final(600_000_000, taxpayer="orang_pribadi", entity="pt_perorangan")
