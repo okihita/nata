@@ -10,14 +10,18 @@ venv/
 # Env / secrets
 .env
 .env.*
+!.env.example
 *.key
 *.pem
 **/secrets*
 
-# Node (for later UI)
+# Node (web console)
 node_modules/
 .next/
 dist/
+
+# Local scratch (screenshots, throwaway scripts)
+.scratch/
 
 # OS
 .DS_Store
