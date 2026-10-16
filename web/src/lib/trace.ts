@@ -1,4 +1,4 @@
-import type { AdkEvent, JournalOutcome } from "./adk";
+import type { AdkEvent, JournalOutcome, TaxAssessment } from "./adk";
 import { copy } from "./copy";
 
 /**
@@ -10,7 +10,14 @@ import { copy } from "./copy";
  * protocol detail. All user-facing strings live in ./copy.
  */
 
-export type StepKind = "reading" | "matching" | "checking" | "posted" | "problem";
+export type StepKind =
+  | "reading"
+  | "matching"
+  | "checking"
+  | "posted"
+  | "handoff"
+  | "tax"
+  | "problem";
 
 export interface TraceStep {
   id: string;
@@ -37,6 +44,12 @@ export interface RunState {
   commit: JournalOutcome | null;
   /** The posting the assistant proposed, before the balance check replied. */
   proposed: DraftLine[] | null;
+  /** Set once Agent Keuangan hands the entry to Agent Fiskal. */
+  handoff: string | null;
+  /** Agent Fiskal's grounded tax assessment (with Pasal/Ayat citations). */
+  tax: TaxAssessment | null;
+  /** Agent Fiskal's plain-Indonesian narrative answer. */
+  taxAnswer: string;
   latencyMs: number | null;
   error: string | null;
 }
@@ -47,6 +60,9 @@ export const emptyRun: RunState = {
   answer: "",
   commit: null,
   proposed: null,
+  handoff: null,
+  tax: null,
+  taxAnswer: "",
   latencyMs: null,
   error: null,
 };
@@ -104,6 +120,34 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
       const call = part.functionCall;
       if (call.id && next.steps.some((s) => s.callId === call.id)) continue;
 
+      // The tax agent running its own tool.
+      if (call.name === "compute_pph_final") {
+        next.steps.push({
+          id: nextId(),
+          kind: "tax",
+          title: copy.steps.taxChecking.title,
+          detail: copy.steps.taxChecking.detail,
+          callId: call.id,
+          at,
+        });
+        continue;
+      }
+
+      // The bookkeeping agent handing the entry to the tax agent.
+      if (call.name === "transfer_to_agent") {
+        const target = (call.args as { agent_name?: string } | undefined)?.agent_name ?? null;
+        next.handoff = target;
+        next.steps.push({
+          id: nextId(),
+          kind: "handoff",
+          title: copy.steps.handoff.title,
+          detail: copy.steps.handoff.detail,
+          callId: call.id,
+          at,
+        });
+        continue;
+      }
+
       const args = call.args as { lines?: DraftLine[] } | undefined;
       const lines = args?.lines ?? null;
       if (lines) next.proposed = lines;
@@ -122,21 +166,47 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
       continue;
     }
 
-    // 2. The balance check replies: posted, or stopped. The check itself is
-    //    recorded first, so the story always reads match -> check -> outcome.
+    // 2. A tool replies. The tax tool carries the grounded assessment; the
+    //    ledger tool carries the balance outcome. The check itself is recorded
+    //    first, so the story reads match -> check -> outcome.
     if (part.functionResponse) {
-      const response = (part.functionResponse.response ?? {}) as unknown as JournalOutcome;
-      next.commit = response;
+      const toolName = part.functionResponse.name;
+      const response = (part.functionResponse.response ?? {}) as Record<string, unknown>;
+
+      if (toolName === "compute_pph_final") {
+        if (response.status === "success") {
+          next.tax = response as unknown as TaxAssessment;
+          next.steps.push({
+            id: nextId(),
+            kind: "tax",
+            title: copy.steps.taxDone.title,
+            detail: copy.steps.taxDone.detail,
+            at,
+          });
+        } else {
+          next.steps.push({
+            id: nextId(),
+            kind: "problem",
+            title: copy.pajak.agentTitle,
+            detail: String(response.error_message ?? copy.problems.fallback),
+            at,
+          });
+        }
+        continue;
+      }
+
+      const outcome = response as unknown as JournalOutcome;
+      next.commit = outcome;
 
       ensureChecking(next, at);
 
-      if (response.status === "success") {
+      if (outcome.status === "success") {
         next.steps.push({
           id: nextId(),
           kind: "posted",
           title: copy.steps.posted.title,
           detail: copy.steps.posted.detail,
-          outcome: response,
+          outcome,
           at,
         });
       } else {
@@ -144,18 +214,24 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
           id: nextId(),
           kind: "problem",
           title: copy.steps.problem.title,
-          detail: friendlyProblem(response.error_message ?? ""),
-          outcome: response,
+          detail: friendlyProblem(outcome.error_message ?? ""),
+          outcome,
           at,
         });
       }
       continue;
     }
 
-    // 3. Streamed narration from the assistant. The balance check is shown
-    //    once, before the outcome step.
-    if (typeof part.text === "string" && part.text.length > 0 && event.partial) {
-      next.answer = state.answer + part.text;
+    // 3. Streamed narration. Agent Fiskal's narration is kept separate so the
+    //    tax view can show the tax agent's own words; Keuangan's stays as the
+    //    receipt summary. The balance check is shown once, before the outcome.
+    if (typeof part.text === "string" && part.text.length > 0) {
+      if (event.author === "agent_fiskal") {
+        if (event.partial) next.taxAnswer = state.taxAnswer + part.text;
+        else next.taxAnswer = part.text;
+      } else if (event.partial) {
+        next.answer = state.answer + part.text;
+      }
       ensureChecking(next, at);
     }
   }

@@ -20,6 +20,8 @@ export interface AdkEvent {
   finishReason?: string;
   usageMetadata?: Record<string, number>;
   nodeInfo?: { path?: string };
+  /** Routing metadata; set on the frame that performs a sub-agent handoff. */
+  actions?: { transferToAgent?: string; transferReason?: string };
   errorCode?: string;
   errorMessage?: string;
   content?: {
@@ -66,6 +68,39 @@ export interface JournalRejection {
 }
 
 export type JournalOutcome = JournalCommit | JournalRejection;
+
+/** One grounded statutory reference returned by `compute_pph_final`. */
+export interface TaxCitation {
+  article: string;
+  label: string;
+  quote: string;
+  source: string;
+  file: string;
+}
+
+/**
+ * The result of Agent Fiskal's `compute_pph_final` tool (PP 55/2022). Every
+ * figure the agent reports is paired with the Pasal/Ayat that grounds it.
+ */
+export interface TaxAssessment {
+  status: "success";
+  taxpayer: "orang_pribadi" | "badan";
+  taxpayer_label: string;
+  scheme: string;
+  turnover: number;
+  exemption_applied: number;
+  taxable_base: number;
+  rate: number;
+  rate_percent: string;
+  payable: number;
+  exemption_remaining: number;
+  over_ceiling: boolean;
+  year: number;
+  months: number;
+  monthly_estimate: number;
+  citations: TaxCitation[];
+  summary: string;
+}
 
 async function json<T>(res: Response): Promise<T> {
   const text = await res.text();

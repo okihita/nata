@@ -3,7 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { CheckCircle2, Loader2, RotateCcw, Sparkles, Upload } from "lucide-react";
+import { CheckCircle2, Loader2, Landmark, ArrowRight, RotateCcw, Sparkles, Upload } from "lucide-react";
 
 import { PageHeader } from "@/components/app-sidebar";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 
 import { APP_NAME, ensureSession, streamRun, type AdkEvent, type RunRequest } from "@/lib/adk";
 import { emptyRun, readingStep, reduceEvent, type RunState } from "@/lib/trace";
+import { CitationList } from "@/components/citation-list";
 import { copy } from "@/lib/copy";
 import { useLedger } from "@/lib/store";
 import { idrFull } from "@/lib/format";
@@ -269,6 +270,7 @@ export default function CatatPage() {
             rejected={rejected}
             onViewAll={() => router.push("/transaksi")}
           />
+          {run.tax && <TaxCard run={run} onViewTax={() => router.push("/pajak")} />}
         </div>
       </div>
     </>
@@ -329,6 +331,8 @@ const STEP_TONE: Record<string, string> = {
   matching: "bg-violet-500",
   checking: "bg-amber-500",
   posted: "bg-emerald-500",
+  handoff: "bg-sky-500",
+  tax: "bg-teal-500",
   problem: "bg-rose-500",
 };
 
@@ -447,6 +451,65 @@ function ResultCard({
         )}
       </CardContent>
     </Card>
+  );
+}
+
+/** Agent Fiskal's grounded assessment, shown right after a receipt is posted. */
+function TaxCard({ run, onViewTax }: { run: RunState; onViewTax: () => void }) {
+  const tax = run.tax;
+  if (!tax) return null;
+
+  return (
+    <Card className="border-teal-500/20 bg-teal-500/[0.03]">
+      <CardHeader>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Landmark className="size-4 text-teal-600" />
+              {copy.pajak.agentTitle}
+            </CardTitle>
+            <CardDescription>
+              {run.handoff
+                ? copy.pajak.handoffFrom(copy.agents.keuangan, copy.agents.fiskal)
+                : copy.pajak.officialCalc}
+            </CardDescription>
+          </div>
+          <Badge className="bg-teal-600 text-white hover:bg-teal-600">{copy.pajak.scheme}</Badge>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Metric label={copy.pajak.turnoverLabel} value={idrFull(tax.turnover)} />
+          <Metric label={copy.pajak.exemptionLabel} value={idrFull(tax.exemption_applied)} />
+          <Metric label={copy.pajak.rateLabel} value={tax.rate_percent} />
+          <Metric label={copy.pajak.payableLabel} value={idrFull(tax.payable)} strong />
+        </div>
+
+        {run.taxAnswer && (
+          <div className="max-h-56 overflow-y-auto whitespace-pre-wrap rounded-lg border bg-background/60 p-3 text-xs leading-relaxed text-muted-foreground">
+            {run.taxAnswer}
+          </div>
+        )}
+
+        <CitationList citations={tax.citations} />
+
+        <Button variant="outline" size="sm" className="w-full" onClick={onViewTax}>
+          {copy.nav.pajak}
+          <ArrowRight />
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+
+function Metric({ label, value, strong }: { label: string; value: string; strong?: boolean }) {
+  return (
+    <div className="rounded-lg border bg-background/60 p-3">
+      <p className="text-[0.7rem] text-muted-foreground">{label}</p>
+      <p className={cn("tabular-nums", strong ? "text-base font-semibold" : "text-sm font-medium")}>
+        {value}
+      </p>
+    </div>
   );
 }
 
