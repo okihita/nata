@@ -139,11 +139,20 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
 
       // The licensing agent verifying a KBLI code against the catalogue.
       if (call.name === "classify_kbli") {
+        const args = (call.args ?? {}) as { code?: string };
+        // Two different acts share one tool: proposing candidates from a
+        // description, then verifying a chosen code. Naming them the same made
+        // the trace read as a duplicated step.
+        const isVerify = typeof args.code === "string" && args.code.length > 0;
         next.steps.push({
           id: nextId(),
           kind: "regulasi",
-          title: copy.steps.kbliChecking.title,
-          detail: copy.steps.kbliChecking.detail,
+          title: isVerify
+            ? copy.steps.kbliVerify.title
+            : copy.steps.kbliChecking.title,
+          detail: isVerify
+            ? copy.steps.kbliVerify.detail
+            : copy.steps.kbliChecking.detail,
           callId: call.id,
           at,
         });
@@ -235,6 +244,13 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
         }
         continue;
       }
+
+      // Only the journal tool carries a posting outcome. Everything else —
+      // transfer_to_agent, and any tool added later — is matched above or
+      // ignored, rather than being mistaken for a commitment result. Assuming
+      // "anything not matched is the journal tool" produced a spurious
+      // "posting rejected" step on every handoff.
+      if (toolName !== "commit_journal_entry") continue;
 
       const outcome = response as unknown as JournalOutcome;
       next.commit = outcome;

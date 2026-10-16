@@ -508,6 +508,10 @@ export const copy = {
       title: "Mencari kode KBLI 2020",
       detail: "Mencocokkan kegiatan usaha ke katalog resmi KBLI 2020.",
     },
+    kbliVerify: {
+      title: "Memeriksa kode ke katalog",
+      detail: "Memastikan kodenya benar-benar ada di katalog KBLI 2020.",
+    },
     kbliDone: {
       title: "Kode KBLI terverifikasi",
       detail: "Kode ditemukan di katalog resmi.",
