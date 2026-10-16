@@ -170,15 +170,39 @@ export default function UsahaPage() {
               <p className="-mt-1 text-xs text-muted-foreground">
                 {copy.usaha.entityHint}
               </p>
-              <div id="entity-group" className="grid gap-2" role="radiogroup">
+              <div
+                id="entity-group"
+                className="grid gap-2"
+                role="radiogroup"
+                aria-label={copy.usaha.entityLabel}
+                onKeyDown={(e) => {
+                  // ARIA radiogroups are expected to move with the arrow keys and
+                  // hold a single tab stop. Without this, the group is three
+                  // separate tab stops and arrows do nothing — it looks like a
+                  // radiogroup to a screen reader but does not behave like one.
+                  const keys = ["ArrowDown", "ArrowRight", "ArrowUp", "ArrowLeft"];
+                  if (!keys.includes(e.key)) return;
+                  e.preventDefault();
+                  const step = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : -1;
+                  const idx = ENTITY_OPTIONS.findIndex((o) => o.id === entity);
+                  const nextIdx =
+                    (idx + step + ENTITY_OPTIONS.length) % ENTITY_OPTIONS.length;
+                  const nextId = ENTITY_OPTIONS[nextIdx].id;
+                  setEntity(nextId);
+                  // Move focus with the selection, as a native radio group does.
+                  document.getElementById(`entity-${nextId}`)?.focus();
+                }}
+              >
                 {ENTITY_OPTIONS.map((option) => {
                   const active = entity === option.id;
                   return (
                     <button
                       key={option.id}
+                      id={`entity-${option.id}`}
                       type="button"
                       role="radio"
                       aria-checked={active}
+                      tabIndex={active ? 0 : -1}
                       onClick={() => setEntity(option.id)}
                       className={cn(
                         "flex items-start gap-3 rounded-lg border p-3 text-left transition",
