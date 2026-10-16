@@ -45,7 +45,7 @@ export const copy = {
   },
 
   common: {
-    backToDashboard: "Kembali ke dasbor",    save: "Simpan",
+    save: "Simpan",
     cancel: "Batal",
     close: "Tutup",
     loading: "Memuat…",
@@ -116,7 +116,6 @@ export const copy = {
     complianceKbliNone: "Belum ditentukan",
     complianceKbliCta: "Tentukan",
     complianceOpen: "Lihat perizinan",
-    letNataHandle: "Biarkan Nata yang mencatat",
     ownerHint: "Untuk pemilik usaha — cukup foto struk, sisanya otomatis.",
   },
 
@@ -281,7 +280,6 @@ export const copy = {
     entityTaxedBody:
       "Sebagai badan usaha, tidak ada pembebasan Rp 500 juta. Seluruh omzet dikenai tarif 0,5% sejak awal.",
     entityChangeHint: "Ubah bentuk usaha Anda di Profil Usaha.",
-    entityCitationLabel: "Dasar hukum",
     rateLabel: "Tarif",
     turnoverLabel: "Peredaran bruto (omzet)",
     baseLabel: "Dasar pengenaan pajak",
@@ -307,8 +305,6 @@ export const copy = {
     perMonth: (amount: string) => `≈ ${amount} per bulan`,
     basedOn: (months: number) => `dihitung dari ${months} bulan data`,
     agentTitle: "Pemeriksaan pajak oleh Agent Fiskal",
-    agentIdle:
-      "Agent Fiskal menghitung pajak dari omzet yang sudah tercatat. Catat penjualan lewat Catat Struk dulu untuk melihatnya bekerja.",
     agentRun: "Hitung pajak dengan Agent Fiskal",
     agentRerun: "Hitung ulang",
     agentRunning: "Agent Fiskal sedang menghitung…",
@@ -341,7 +337,6 @@ export const copy = {
     ownerLabel: "Nama pemilik",
     ownerPlaceholder: "Nama Anda",
     typeLabel: "Jenis usaha",
-    taxpayerLabel: "Status pajak",
     entityLabel: "Bentuk badan usaha",
     entityHint:
       "Ini menentukan apakah omzet Rp 500 juta pertama bebas pajak. Pilih yang paling sesuai dengan surat izin usaha Anda.",
