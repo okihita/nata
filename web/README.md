@@ -84,7 +84,8 @@ cd .. && uv run adk api_server --port 48700
 
 # terminal 2 — the console
 pnpm install
-pnpm build && pnpm start --port 48701      # http://localhost:48701
+pnpm dev                                    # http://localhost:48701
+pnpm build && pnpm start                    # production build, same port
 ```
 
 Ports are deliberately high/uncommon (`48700` backend, `48701` console, `48702`
@@ -118,7 +119,7 @@ The browser never calls the Python server directly, which removes CORS from the
 picture and gives one place to repoint at a deployed Cloud Run URL:
 
 ```bash
-ADK_SERVER_URL=https://nata-agent-xxxx.a.run.app pnpm start --port 48701
+ADK_SERVER_URL=https://nata-agent-xxxx.a.run.app pnpm start
 ```
 
 ### Endpoints used
