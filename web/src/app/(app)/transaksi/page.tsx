@@ -92,6 +92,8 @@ export default function TransaksiPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={copy.transaksi.searchPlaceholder}
+            aria-label={copy.transaksi.searchPlaceholder}
+            type="search"
             className="pl-9"
           />
         </div>

@@ -237,6 +237,7 @@ export default function CatatPage() {
               type="file"
               accept="image/*"
               className="hidden"
+              aria-label={copy.add.dropTitle}
               onChange={(e) => {
                 const chosen = e.target.files?.[0];
                 if (chosen) pick(chosen, URL.createObjectURL(chosen), chosen.name);
