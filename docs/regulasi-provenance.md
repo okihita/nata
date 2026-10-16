@@ -25,9 +25,12 @@ managed RAG.
 ## 2. KBLI 2020 (5 digit) ⚠️ terverifikasi isinya, **lisensi belum jelas**
 
 - **Berkas:** `nata_agent/statutes/kbli/kbli-2020-5digit.json` — 1.790 kode
-  tingkat *subclass* (5 digit), berisi `code`, `title`, `desc`.
+  tingkat *subclass* (5 digit), berisi `code`, `title`, `desc`, plus
+  `division` / `group` / `class` (judul tingkat induknya).
 - **Sumber yang dipakai:** dump publik
-  `https://github.com/UserGhost411/KBLI-2020-Dataset` (`kbli_kelompok.json`).
+  `https://github.com/UserGhost411/KBLI-2020-Dataset` (`kbli_kelompok.json`
+  untuk kode 5 digit, `kbli_golpok.json` / `kbli_gol.json` / `kbli_subgol.json`
+  untuk judul tingkat induk).
 - **Asal data sebenarnya:** KBLI 2020 adalah klasifikasi resmi
   **Badan Pusat Statistik (BPS)** Republik Indonesia
   (Peraturan BPS No. 2 Tahun 2020). Kode dan judulnya adalah data faktual
@@ -48,8 +51,18 @@ statusnya dicatat apa adanya — bukan diklaim bersih.
 
 - **Dipakai untuk:** mengusulkan + **memverifikasi** kode KBLI. Judul dikutip
   apa adanya dari katalog (`title_verbatim: true`).
+- **Hierarki:** tingkat induk (divisi 2 digit → golongan 3 → subgolongan 4)
+  disimpan bersama tiap kode, diambil dari tingkat resmi yang sama. Divisi dan
+  golongan terisi untuk seluruh 1.790 kode; subgolongan kosong untuk **9 kode**
+  (49421–49426, 49429, 74100, 77301) yang tingkat 4 digitnya tidak
+  dipublikasikan di sumber — tingkat itu dibiarkan kosong, tidak ditebak. Ada
+  tes yang memastikan empat tingkat 56102 terisi berurutan.
 - **Penjamin:** `catalog_size()` mengembalikan jumlah kode; kode yang tidak ada
   di katalog **ditolak** (`status: "error"`), dan ada tes untuk itu.
+- **Kualitas pemeringkatan:** `tests/test_kbli_quality.py` menjaga ambang mutu
+  pencocokan teks (25 deskripsi usaha nyata). Dua kata yang ternyata menyesatkan
+  sudah dibuang: `jasa` (muncul di ratusan judul katalog) dan `digital`
+  (kualifikasi, bukan kegiatan).
 
 ### Yang **tidak** ada di KBLI
 
