@@ -211,3 +211,26 @@ body {
     @apply font-sans;
   }
 }
+
+/*
+ * Touch targets.
+ *
+ * The audience is Android-first and one-handed, so interactive controls need a
+ * comfortable target even where the visual size is compact — the desktop button
+ * scale (28–32px) is below the 44px recommendation.
+ *
+ * Scoped to `pointer: coarse`, so it applies on touch devices whatever their
+ * width and leaves desktop layout completely untouched. `[data-compact]` is an
+ * escape hatch for controls that are deliberately small (e.g. a colour swatch
+ * in a dense list), where enlarging the box would break the layout.
+ */
+@media (pointer: coarse) {
+  button:not([data-compact]),
+  [role="button"]:not([data-compact]),
+  [role="radio"]:not([data-compact]),
+  [role="tab"]:not([data-compact]),
+  input[type="checkbox"]:not([data-compact]),
+  input[type="radio"]:not([data-compact]) {
+    min-height: 44px;
+  }
+}
