@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { Landmark, Info, ShieldCheck, Sparkles, Loader2 } from "lucide-react";
+import { Landmark, Info, ShieldCheck, Sparkles, Loader2, Building2 } from "lucide-react";
 
 import { PageHeader } from "@/components/app-sidebar";
 import { CitationList } from "@/components/citation-list";
@@ -14,13 +14,14 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useWorkspace } from "@/lib/store";
-import { entityHasExemption } from "@/lib/business";
+import { ENTITY_LABEL, entityHasExemption } from "@/lib/business";
 import { taxPosition } from "@/lib/ledger";
 import { PPH_FINAL_RATE, PPH_INDIVIDUAL_EXEMPTION } from "@/lib/sak-emkm";
 import type { TaxAssessment } from "@/lib/adk";
 import { cacheTax, getServerTaxSnapshot, getTaxSnapshot, primeTaxStore, readCachedTax, runFiskal, subscribeTax } from "@/lib/agent-tax";
 import { copy } from "@/lib/copy";
 import { idrFull } from "@/lib/format";
+import { cn } from "@/lib/utils";
 
 /**
  * Pajak — the tax screen.
@@ -112,10 +113,50 @@ export default function PajakPage() {
         <Badge variant="secondary">{copy.pajak.scheme}</Badge>
       </PageHeader>
 
+      {/* Kenapa pajaknya seperti ini: bentuk usaha menentukan pembebasan. */}
+      {business && (
+        <Card
+          className={cn(
+            "mb-6",
+            individual
+              ? "border-tone-hijau/30 bg-tone-hijau-bg/40"
+              : "border-tone-oranye/30 bg-tone-oranye-bg/40",
+          )}
+        >
+          <CardContent className="flex flex-wrap items-start gap-3 pt-6">
+            <span
+              className={cn(
+                "grid size-8 shrink-0 place-items-center rounded-lg",
+                individual
+                  ? "bg-tone-hijau-bg text-tone-hijau"
+                  : "bg-tone-oranye-bg text-tone-oranye",
+              )}
+            >
+              {individual ? (
+                <ShieldCheck className="size-4" />
+              ) : (
+                <Building2 className="size-4" />
+              )}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-semibold">
+                {individual ? copy.pajak.entityExemptTitle : copy.pajak.entityTaxedTitle}
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                {individual ? copy.pajak.entityExemptBody : copy.pajak.entityTaxedBody}
+              </p>
+              <p className="mt-2 text-[11px] text-muted-foreground">
+                {ENTITY_LABEL[business.entity]} · {copy.pajak.entityChangeHint}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {tax.payable === 0 && (
-        <Alert className="mb-6 border-emerald-500/30 bg-emerald-500/5">
-          <ShieldCheck className="size-4 text-emerald-600" />
-          <AlertDescription className="text-sm text-emerald-800">
+        <Alert className="mb-6 border-tone-hijau/30 bg-tone-hijau-bg/40">
+          <ShieldCheck className="size-4 text-tone-hijau" />
+          <AlertDescription className="text-sm text-tone-hijau">
             {copy.pajak.exemptBanner}
           </AlertDescription>
         </Alert>

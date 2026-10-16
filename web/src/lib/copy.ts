@@ -262,6 +262,15 @@ export const copy = {
     title: "Pajak",
     subtitle: "Perhitungan PPh Final UMKM Anda.",
     scheme: "PPh Final UMKM — PP 55/2022",
+    entityTitle: "Perlakuan pajak usaha Anda",
+    entityExemptTitle: "Bebas pajak sampai Rp 500 juta",
+    entityExemptBody:
+      "Sebagai Wajib Pajak orang pribadi, omzet sampai Rp 500 juta dalam satu tahun tidak dikenai PPh Final. Pajak baru dihitung dari kelebihannya.",
+    entityTaxedTitle: "Kena pajak sejak rupiah pertama",
+    entityTaxedBody:
+      "Sebagai badan usaha, tidak ada pembebasan Rp 500 juta. Seluruh omzet dikenai tarif 0,5% sejak awal.",
+    entityChangeHint: "Ubah bentuk usaha Anda di Profil Usaha.",
+    entityCitationLabel: "Dasar hukum",
     rateLabel: "Tarif",
     turnoverLabel: "Peredaran bruto (omzet)",
     baseLabel: "Dasar pengenaan pajak",
