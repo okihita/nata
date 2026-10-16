@@ -45,8 +45,7 @@ export const copy = {
   },
 
   common: {
-    backToDashboard: "Kembali ke dasbor",
-    save: "Simpan",
+    backToDashboard: "Kembali ke dasbor",    save: "Simpan",
     cancel: "Batal",
     close: "Tutup",
     loading: "Memuat…",
@@ -469,6 +468,14 @@ export const copy = {
     resetConfirmBody:
       "Profil usaha dan seluruh catatan akan dihapus permanen dari perangkat ini. Tindakan ini tidak bisa dibatalkan.",
     reset: "Semua data dihapus.",
+  },
+
+  errorScreen: {
+    title: "Layar ini gagal dimuat",
+    body:
+      "Ada gangguan teknis saat menampilkan halaman ini. Catatan Anda tidak berubah — tidak ada yang setengah tersimpan.",
+    retry: "Coba muat ulang",
+    reference: "Kode rujukan",
   },
 
   status: {
