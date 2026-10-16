@@ -290,15 +290,19 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
     // 3. Streamed narration. Agent Fiskal's narration is kept separate so the
     //    tax view can show the tax agent's own words; Keuangan's stays as the
     //    receipt summary. The balance check is shown once, before the outcome.
+    //
+    //    Each agent's final (non-partial) frame *replaces* what accumulated,
+    //    mirroring the tax path. Handling only the partial frames dropped
+    //    Keuangan's final wording, so the receipt summary could end up as a
+    //    half-sentence while the tax summary was complete.
     if (typeof part.text === "string" && part.text.length > 0) {
       if (event.author === "agent_fiskal") {
-        if (event.partial) next.taxAnswer = state.taxAnswer + part.text;
-        else next.taxAnswer = part.text;
+        next.taxAnswer = event.partial ? state.taxAnswer + part.text : part.text;
       } else if (typeof event.author === "string" && event.author.includes("regulasi")) {
         // Regulasi's narration is its own; it should not overwrite the receipt
         // summary the owner already read.
-      } else if (event.partial) {
-        next.answer = state.answer + part.text;
+      } else {
+        next.answer = event.partial ? state.answer + part.text : part.text;
       }
       ensureChecking(next, at);
     }
@@ -322,5 +326,9 @@ export function readingStep(): TraceStep {
 export function totals(lines: DraftLine[] | null | undefined) {
   const debit = lines?.reduce((sum, line) => sum + (line.debit || 0), 0) ?? 0;
   const credit = lines?.reduce((sum, line) => sum + (line.credit || 0), 0) ?? 0;
-  return { debit, credit, balanced: lines != null && Math.abs(debit - credit) < 0.005 };
+  // Must agree with `ledger.entryTotals`, which the guardrail enforces: a
+  // posting is only balanced when both sides match *and* carry an amount. An
+  // empty list has matching zeroes, and calling that "balanced" would let the
+  // trace show a green tick for a posting that was never made.
+  return { debit, credit, balanced: debit === credit && debit > 0 };
 }
