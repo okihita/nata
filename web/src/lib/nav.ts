@@ -73,8 +73,8 @@ export const NAV: NavGroup[] = [
     label: "Lainnya",
     tone: "oranye",
     items: [
-      { href: "/usaha", key: "usaha", icon: "Store", soon: true },
-      { href: "/pengaturan", key: "pengaturan", icon: "Settings", soon: true },
+      { href: "/usaha", key: "usaha", icon: "Store" },
+      { href: "/pengaturan", key: "pengaturan", icon: "Settings" },
     ],
   },
 ];
