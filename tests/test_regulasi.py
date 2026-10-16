@@ -128,8 +128,20 @@ def test_classify_search_mode_returns_candidates():
     assert r["catalog_size"] == 1790
     assert len(r["candidates"]) > 0
     for c in r["candidates"]:
-        assert set(c) == {"code", "title", "desc"}
+        assert {"code", "title", "desc"} <= set(c)
         assert regulasi.is_valid_code(c["code"])
+
+
+def test_verify_includes_the_hierarchy():
+    """A code is not a bare number: it sits at a known place in the taxonomy."""
+    r = regulasi.classify_kbli(code="56102")
+    assert r["status"] == "success"
+    levels = [h["level"] for h in r["hierarchy"]]
+    assert levels == ["Divisi", "Golongan", "Subgolongan", "Kelompok"]
+    assert r["hierarchy"][0]["code"] == "56"
+    assert r["hierarchy"][-1]["code"] == "56102"
+    # Every ancestor title is non-empty and quoted from the catalogue.
+    assert all(h["title"] for h in r["hierarchy"])
 
 
 def test_classify_search_mode_with_no_match_is_an_error():

@@ -39,14 +39,44 @@ DEFAULT_CANDIDATES = 5
 
 @dataclass(frozen=True)
 class KbliEntry:
-    """Satu kode KBLI beserta judul resminya (dikutip apa adanya)."""
+    """Satu kode KBLI beserta judul resminya (dikutip apa adanya).
+
+    KBLI bersifat hierarkis: divisi (2 digit) → golongan (3) → subgolongan (4)
+    → kelompok (5). Tingkat di atasnya disimpan juga supaya UI bisa menunjukkan
+    di mana kode itu berada, bukan sekadar angka lepas. Judul induk diambil dari
+    katalog resmi; kosong bila tingkat itu tidak punya judul untuk cabang ini.
+    """
 
     code: str
     title: str
     desc: str
+    division: str = ""
+    group: str = ""
+    klass: str = ""
+
+    @property
+    def hierarchy(self) -> list[dict[str, str]]:
+        """Tangga dari divisi sampai kelompok, hanya tingkat yang ada judulnya."""
+        out: list[dict[str, str]] = []
+        for level, name, label in (
+            (self.code[:2], self.division, "Divisi"),
+            (self.code[:3], self.group, "Golongan"),
+            (self.code[:4], self.klass, "Subgolongan"),
+            (self.code, self.title, "Kelompok"),
+        ):
+            if name:
+                out.append({"level": label, "code": level, "title": name})
+        return out
 
     def as_dict(self) -> dict[str, str]:
-        return {"code": self.code, "title": self.title, "desc": self.desc}
+        return {
+            "code": self.code,
+            "title": self.title,
+            "desc": self.desc,
+            "division": self.division,
+            "group": self.group,
+            "class": self.klass,
+        }
 
 
 class KbliError(ValueError):
@@ -60,7 +90,15 @@ class KbliError(ValueError):
 def _catalog() -> tuple[KbliEntry, ...]:
     raw = json.loads(KBLI_FILE.read_text(encoding="utf-8"))
     return tuple(
-        KbliEntry(code=e["code"], title=e["title"], desc=e.get("desc", "")) for e in raw
+        KbliEntry(
+            code=e["code"],
+            title=e["title"],
+            desc=e.get("desc", ""),
+            division=e.get("division", ""),
+            group=e.get("group", ""),
+            klass=e.get("class", ""),
+        )
+        for e in raw
     )
 
 
@@ -374,6 +412,7 @@ def verify(code: str, *, description: str = "") -> dict:
         "source": "KBLI 2020 (katalog 5 digit)",
         "file": "nata_agent/statutes/kbli/kbli-2020-5digit.json",
         "title_verbatim": True,
+        "hierarchy": e.hierarchy,
     }
     if e.desc:
         result["description"] = e.desc
