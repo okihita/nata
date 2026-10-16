@@ -18,11 +18,12 @@ accounting software colour-codes its menus:
 | **Ringkasan** | hijau | Dasbor |
 | **Operasional** | hijau | Catat Struk, Transaksi |
 | **Data Induk** | biru | Daftar Akun |
-| **Laporan** | ungu | Laporan Keuangan, Pajak |
-| **Lainnya** | oranye | Profil Usaha\*, Pengaturan\* |
+| **Laporan** | ungu | Laporan Keuangan, Pajak, Perizinan |
+| **Lainnya** | oranye | Profil Usaha, Pengaturan |
 
-\* mapped out, routed, and rendering a "segera hadir" state — the route is real
-so the product's intended scope is legible.
+Every route is implemented. Three screens carry the product's substance —
+Catat Struk (ingestion), Pajak (tax), Perizinan (licensing) — and each is driven
+by its agent rather than by local arithmetic.
 
 ### Screens
 
@@ -40,7 +41,18 @@ so the product's intended scope is legible.
   with a period selector, plus CALK. The balance sheet proves
   Aset = Liabilitas + Ekuitas on screen.
 - **Pajak** — PPh Final UMKM (0,5%) with the Rp 500 juta exemption quota shown
-  as a progress meter, so a Rp 0 result is informative rather than blank.
+  as a progress meter, so a Rp 0 result is informative rather than blank. A
+  treatment banner states which rule applies to *this* business form, because
+  the exemption is for orang pribadi only (Pasal 60 ayat (2)).
+- **Perizinan** — the KBLI 2020 classification. Describe the business in plain
+  words, Agent Regulasi searches the official 5-digit catalogue, and the chosen
+  code is **verified against the catalogue** before it is stored. The candidate
+  list is interactive — the owner can pick a different candidate and it is
+  verified the same way. Risk tier is shown as "Perlu dicek di OSS-RBA" rather
+  than guessed, because KBLI carries no risk data.
+- **Profil Usaha** — business identity: name, owner, business type, and the
+  business form (orang pribadi / PT Perorangan / PT-CV). It doubles as
+  onboarding, and it shows the verified KBLI code once one exists.
 
 ## Accounting model
 

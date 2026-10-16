@@ -28,8 +28,6 @@ export interface NavItem {
   key: NavKey;
   /** Icon name from `@/lib/nav-icons`, resolved by the sidebar. */
   icon: string;
-  /** Not built yet — the page shows a "coming soon" state. */
-  soon?: boolean;
   /** Show in the mobile bottom bar. */
   mobile?: boolean;
 }

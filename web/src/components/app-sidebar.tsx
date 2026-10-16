@@ -25,7 +25,6 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
@@ -99,11 +98,6 @@ export function AppSidebar() {
                           <span>{copy.nav[item.key]}</span>
                         </Link>
                       </SidebarMenuButton>
-                      {item.soon && (
-                        <SidebarMenuBadge className="text-[10px] text-muted-foreground">
-                          {copy.nav.comingSoon}
-                        </SidebarMenuBadge>
-                      )}
                     </SidebarMenuItem>
                   );
                 })}

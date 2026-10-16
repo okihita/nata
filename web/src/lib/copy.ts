@@ -42,13 +42,9 @@ export const copy = {
     perizinan: "Perizinan",
     usaha: "Profil Usaha",
     pengaturan: "Pengaturan",
-    comingSoon: "Segera hadir",
   },
 
   common: {
-    comingSoonTitle: "Fitur ini segera hadir",
-    comingSoonBody:
-      "Kami sedang menyiapkannya. Untuk sekarang, silakan pakai menu Catat Struk, Transaksi, dan Laporan Keuangan.",
     backToDashboard: "Kembali ke dasbor",
     save: "Simpan",
     cancel: "Batal",
@@ -459,15 +455,6 @@ export const copy = {
     resetConfirmBody:
       "Profil usaha dan seluruh catatan akan dihapus permanen dari perangkat ini. Tindakan ini tidak bisa dibatalkan.",
     reset: "Semua data dihapus.",
-  },
-
-  comingSoon: {
-    usaha: "Profil Usaha",
-    usahaBody:
-      "Kelola data usaha, NPWP, dan identitas pemilik di sini. Segera hadir.",
-    pengaturan: "Pengaturan",
-    pengaturanBody:
-      "Atur bahasa, mata uang, dan preferensi tampilan Anda di sini. Segera hadir.",
   },
 
   status: {
