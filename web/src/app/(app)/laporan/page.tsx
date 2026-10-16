@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { FileBarChart, ShieldCheck, ShieldAlert, ScanLine } from "lucide-react";
+import { FileBarChart, ShieldCheck, ShieldAlert, ScanLine, Download } from "lucide-react";
 
 import Link from "next/link";
 
@@ -20,11 +20,13 @@ import {
 } from "@/components/ui/select";
 import { useWorkspace } from "@/lib/store";
 import { balanceSheet, incomeStatement, type JournalEntry } from "@/lib/ledger";
+import { downloadCsv, reportFilename, statementsToCsv } from "@/lib/export-csv";
 import { copy } from "@/lib/copy";
 import { idrFull } from "@/lib/format";
+import { toast } from "sonner";
 
 export default function LaporanPage() {
-  const { entries, ready } = useWorkspace();
+  const { entries, ready, business } = useWorkspace();
   const [period, setPeriod] = useState("all");
 
   const periods = useMemo(() => {
@@ -101,7 +103,21 @@ export default function LaporanPage() {
             ))}
           </SelectContent>
         </Select>
-        <Button variant="outline" disabled title={copy.laporan.exportSoon}>
+        <Button
+          variant="outline"
+          onClick={() => {
+            downloadCsv(
+              reportFilename(business?.name ?? copy.app.name, periodLabel),
+              statementsToCsv(scoped, {
+                periodLabel,
+                businessName: business?.name ?? copy.app.name,
+              }),
+            );
+            toast.success(copy.laporan.exported);
+          }}
+          disabled={scoped.length === 0}
+        >
+          <Download className="mr-2 size-4" />
           {copy.laporan.export}
         </Button>
       </PageHeader>

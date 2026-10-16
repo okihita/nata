@@ -220,7 +220,7 @@ export const copy = {
       "Pajak penghasilan menggunakan skema PPh Final UMKM 0,5% dari peredaran bruto.",
     ],
     export: "Ekspor",
-    exportSoon: "Ekspor segera hadir",
+    exported: "Laporan diekspor sebagai CSV.",
     emptyTitle: "Laporan muncul setelah ada catatan",
     emptyBody:
       "Laporan keuangan disusun dari pembukuan Anda. Catat struk pertama dulu, lalu laporan ini akan terisi sendiri.",
