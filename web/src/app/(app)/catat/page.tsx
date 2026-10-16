@@ -26,7 +26,7 @@ const SESSION_KEY = "***";
 
 export default function CatatPage() {
   const router = useRouter();
-  const { addEntry, business } = useWorkspace();
+  const { addEntry, business, updateBusiness } = useWorkspace();
 
   const [run, setRun] = useState<RunState>(emptyRun);
   const [file, setFile] = useState<File | null>(null);
@@ -140,13 +140,23 @@ export default function CatatPage() {
         });
         toast.success(copy.add.submitted, { description: finished.commit.description });
       }
+
+      // Agent Regulasi verified a KBLI during this run. It is a lasting attribute
+      // of the business, so persist it here too — otherwise it lives only in this
+      // screen's trace and the Perizinan screen cannot see it.
+      if (finished.kbli) {
+        updateBusiness({
+          kbliCode: finished.kbli.code,
+          kbliTitle: finished.kbli.title,
+        });
+      }
     } catch {
       setBanner(copy.banner.offline);
       setRun((current) => ({ ...current, status: "error" }));
     } finally {
       setBusy(false);
     }
-  }, [addEntry, busy, file, fileName, business]);
+  }, [addEntry, busy, file, fileName, business, updateBusiness]);
 
   const accepted = run.commit?.status === "success";
   const rejected = run.commit?.status === "error";
