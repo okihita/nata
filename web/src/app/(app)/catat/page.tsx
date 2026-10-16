@@ -3,7 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { CheckCircle2, Loader2, Landmark, ArrowRight, RotateCcw, Sparkles, Upload } from "lucide-react";
+import { CheckCircle2, Loader2, Landmark, ArrowRight, RotateCcw, ShieldCheck, Sparkles, Upload } from "lucide-react";
 
 import { PageHeader } from "@/components/app-sidebar";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -298,6 +298,7 @@ export default function CatatPage() {
             onViewAll={() => router.push("/transaksi")}
           />
           {run.tax && <TaxCard run={run} onViewTax={() => router.push("/pajak")} />}
+          <KbliCard run={run} onViewPerizinan={() => router.push("/perizinan")} />
         </div>
       </div>
     </>
@@ -531,8 +532,53 @@ function TaxCard({ run, onViewTax }: { run: RunState; onViewTax: () => void }) {
   );
 }
 
-function Metric({ label, value, strong }: { label: string; value: string; strong?: boolean }) {
+/**
+ * The licensing result from this run.
+ *
+ * Agent Regulasi verifies a KBLI code as part of the same receipt cascade, but
+ * only the tax card used to render — so the third agent's result was invisible
+ * on the very screen where it happened. This shows it next to the tax card.
+ */
+function KbliCard({ run, onViewPerizinan }: { run: RunState; onViewPerizinan: () => void }) {
+  const kbli = run.kbli;
+  if (!kbli) return null;
+
   return (
+    <Card className="border-indigo-500/20 bg-indigo-500/[0.03]">
+      <CardHeader>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <CardTitle className="flex items-center gap-2 text-base">
+              <ShieldCheck className="size-4 text-indigo-600" />
+              {copy.perizinan.agentTitle}
+            </CardTitle>
+            <CardDescription>
+              {copy.pajak.handoffFrom(copy.agents.fiskal, copy.agents.regulasi)}
+            </CardDescription>
+          </div>
+          <Badge variant="secondary" className="bg-tone-hijau-bg text-tone-hijau">
+            {copy.perizinan.verified}
+          </Badge>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid grid-cols-2 gap-3">
+          <Metric label={copy.perizinan.codeLabel} value={kbli.code} strong />
+          <Metric label={copy.dashboard.complianceKbli} value={kbli.title} />
+        </div>
+        <p className="text-xs leading-relaxed text-muted-foreground">
+          {copy.perizinan.riskNote}
+        </p>
+        <Button variant="outline" size="sm" className="w-full" onClick={onViewPerizinan}>
+          {copy.nav.perizinan}
+          <ArrowRight />
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+
+function Metric({ label, value, strong }: { label: string; value: string; strong?: boolean }) {  return (
     <div className="rounded-lg border bg-background/60 p-3">
       <p className="text-[0.7rem] text-muted-foreground">{label}</p>
       <p className={cn("tabular-nums", strong ? "text-base font-semibold" : "text-sm font-medium")}>
