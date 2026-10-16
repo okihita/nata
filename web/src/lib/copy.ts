@@ -357,7 +357,7 @@ export const copy = {
     heroBadge: "Pakai Gemini di Google Cloud",
     heroTitle: "Dari foto struk, jadi pembukuan rapi.",
     heroBody:
-      "Nata membaca struk Anda, mencatatnya ke pembukuan rangkap dua sesuai SAK EMKM, lalu menghitung PPh Final 0,5% — lengkap dengan dasar hukumnya. Tanpa akuntan, tanpa spreadsheet.",
+      "Nata membaca struk Anda, mencatatnya ke pembukuan rangkap dua sesuai SAK EMKM, menghitung PPh Final 0,5%, lalu menentukan kode KBLI usaha Anda — lengkap dengan dasar hukumnya. Tanpa akuntan, tanpa spreadsheet.",
     heroCta: "Mulai gratis",
     heroSecondary: "Lihat cara kerjanya",
     heroFootnote: "Untuk warung, toko, kafe, dan usaha jasa di Indonesia.",
@@ -388,8 +388,8 @@ export const copy = {
         body: "Belanja, penjualan, honor — apa saja. Nata membaca foto dan menentukan akunnya sendiri, sesuai SAK EMKM.",
       },
       {
-        title: "Pembukuan & pajak beres",
-        body: "Pembukuan dua sisi yang seimbang, laporan keuangan, dan PPh Final 0,5% beserta dasar hukumnya.",
+        title: "Pembukuan, pajak & izin beres",
+        body: "Pembukuan dua sisi yang seimbang, laporan keuangan, PPh Final 0,5%, dan kode KBLI 2020 untuk perizinan — semuanya beserta dasar hukumnya.",
       },
     ],
     whyTitle: "Kenapa Nata berbeda",
@@ -400,7 +400,7 @@ export const copy = {
       },
       {
         title: "Dasar hukum di setiap angka",
-        body: "Pajak dihitung dari teks resmi PP 55/2022, dan setiap angka disertai kutipan Pasal/Ayat-nya.",
+        body: "Pajak dihitung dari teks resmi PP 55/2022, dan kode KBLI diperiksa ke katalog resmi 1.790 kode — setiap angka dan kode disertai sumbernya.",
       },
       {
         title: "Berjalan di Google Cloud",
@@ -425,6 +425,11 @@ export const copy = {
         icon: "tax",
         title: "Pajak dengan kutipan Pasal",
         body: "PPh Final 0,5% dihitung dari teks resmi PP 55/2022, dan setiap angka menyertakan Pasal/Ayat-nya.",
+      },
+      {
+        icon: "license",
+        title: "Kode KBLI yang terverifikasi",
+        body: "Kegiatan usaha Anda dicocokkan ke katalog resmi KBLI 2020, dan kodenya diperiksa sebelum disimpan — bukan dikarang.",
       },
     ],
     ctaTitle: "Mulai pembukuan Anda hari ini",

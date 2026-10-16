@@ -18,6 +18,7 @@ import {
   ArrowRight,
   BookOpenCheck,
   Check,
+  FileCheck,
   ScanLine,
   ShieldCheck,
   Sparkles,
@@ -153,8 +154,10 @@ export default function LandingPage() {
                       <ScanLine className="size-4" />
                     ) : item.icon === "book" ? (
                       <BookOpenCheck className="size-4" />
-                    ) : (
+                    ) : item.icon === "tax" ? (
                       <Landmark className="size-4" />
+                    ) : (
+                      <ShieldCheck className="size-4" />
                     )}
                   </span>
                   <h3 className="mt-4 text-sm font-semibold">{item.title}</h3>
@@ -193,6 +196,10 @@ export default function LandingPage() {
           <Capability
             icon={<ShieldCheck className="size-4 text-primary" />}
             text="PPh Final + Pasal"
+          />
+          <Capability
+            icon={<FileCheck className="size-4 text-primary" />}
+            text="Kode KBLI terverifikasi"
           />
         </div>
       </section>
