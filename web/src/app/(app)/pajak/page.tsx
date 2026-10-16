@@ -35,10 +35,14 @@ import { cn } from "@/lib/utils";
 export default function PajakPage() {
   const { entries, ready, business } = useWorkspace();
 
+  // Hoisted to a primitive: the React compiler cannot preserve manual
+  // memoization when a dependency is an optional chain (`business?.entity`).
+  const entity = business?.entity ?? "orang_pribadi";
+
   // The entity type chosen at onboarding decides whether the Rp 500 juta
   // exemption applies (Pasal 60 ayat (2)): orang pribadi gets it, PT Perorangan
   // and PT/CV do not.
-  const individual = entityHasExemption(business?.entity ?? "orang_pribadi");
+  const individual = entityHasExemption(entity);
   const tax = useMemo(
     () => taxPosition(entries, { individual }),
     [entries, individual],
@@ -68,7 +72,11 @@ export default function PajakPage() {
     setRunning(true);
     setError(null);
     try {
-      const result = await runFiskal({ turnover: tax.turnover, individual });
+      const result = await runFiskal({
+        turnover: tax.turnover,
+        entity,
+        individual,
+      });
       // cacheTax updates the external store, which re-renders this screen.
       if (result.tax) cacheTax(result.tax);
       setAnswer(result.answer);
@@ -78,7 +86,7 @@ export default function PajakPage() {
     } finally {
       setRunning(false);
     }
-  }, [tax.turnover, individual]);
+  }, [tax.turnover, individual, entity]);
 
   // Auto-run exactly once per turnover: the moment the books change, Agent
   // Fiskal assesses them (the cascade, seen from the tax screen). The persisted

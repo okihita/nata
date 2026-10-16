@@ -84,8 +84,12 @@ export interface TaxCitation {
  */
 export interface TaxAssessment {
   status: "success";
+  /** Coarse taxpayer class, as the tool still reports it. */
   taxpayer: "orang_pribadi" | "badan";
   taxpayer_label: string;
+  /** The precise business form, when the caller supplied one. */
+  entity?: "orang_pribadi" | "pt_perorangan" | "pt_cv";
+  entity_profile?: string;
   scheme: string;
   turnover: number;
   exemption_applied: number;
