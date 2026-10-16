@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start --port 48701",
     "lint": "eslint",
-    "test": "node --import ./tests/register.mjs --test 'tests/**/*.test.ts'"
+    "test": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --import ./tests/register.mjs --test 'tests/**/*.test.ts'"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
