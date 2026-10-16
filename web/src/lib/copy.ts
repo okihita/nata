@@ -340,6 +340,26 @@ export const copy = {
         body: "Gemini di Vertex AI, di atas Cloud Run — infrastruktur yang sama dengan yang dipakai perusahaan besar.",
       },
     ],
+    proofTitle: "Bukan sekadar catatan. Ini pembukuan sungguhan.",
+    proofBody:
+      "Setiap struk melewati pemeriksaan yang sama seperti pembukuan manual: kedua sisi harus seimbang, dan setiap angka pajak disertai dasar hukumnya.",
+    proofItems: [
+      {
+        icon: "scan",
+        title: "Kedua sisi selalu seimbang",
+        body: "Model hanya mengusulkan. Kode yang memutuskan — catatan yang tidak seimbang ditolak, bukan disimpan.",
+      },
+      {
+        icon: "book",
+        title: "Laporan sesuai SAK EMKM",
+        body: "Laba rugi, posisi keuangan, dan CALK disusun otomatis dari jurnal — bukan dari kolom yang diisi manual.",
+      },
+      {
+        icon: "tax",
+        title: "Pajak dengan kutipan Pasal",
+        body: "PPh Final 0,5% dihitung dari teks resmi PP 55/2022, dan setiap angka menyertakan Pasal/Ayat-nya.",
+      },
+    ],
     ctaTitle: "Mulai pembukuan Anda hari ini",
     ctaBody: "Gratis untuk memulai. Cukup satu usaha, satu ponsel.",
     ctaButton: "Mulai gratis sekarang",
