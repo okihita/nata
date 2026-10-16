@@ -248,6 +248,90 @@ export const copy = {
     fromBooks: "Dari pembukuan Anda",
   },
 
+  // ── Onboarding & Profil Usaha ─────────────────────────────────────────────
+  onboarding: {
+    title: "Kenalan dulu, yuk",
+    subtitle: "Isi data usaha Anda sebentar. Setelah ini, Nata langsung bisa bekerja.",
+    submit: "Mulai pakai Nata",
+    note: "Data ini hanya tersimpan di perangkat Anda.",
+  },
+
+  usaha: {
+    title: "Profil Usaha",
+    subtitle: "Data usaha Anda dipakai di seluruh pembukuan dan laporan.",
+    identity: "Identitas usaha",
+    identityHint: "Nama ini akan tampil di laporan dan dokumen Anda.",
+    nameLabel: "Nama usaha",
+    ownerLabel: "Nama pemilik",
+    ownerPlaceholder: "Nama Anda",
+    typeLabel: "Jenis usaha",
+    taxpayerLabel: "Status pajak",
+  },
+
+  // ── Halaman muka (landing) ────────────────────────────────────────────────
+  landing: {
+    navHow: "Cara kerja",
+    navWhy: "Kenapa Nata",
+    navStart: "Mulai sekarang",
+    heroBadge: "Pakai Gemini di Google Cloud",
+    heroTitle: "Dari foto struk, jadi pembukuan rapi.",
+    heroBody:
+      "Nata membaca struk Anda, mencatatnya ke pembukuan rangkap dua sesuai SAK EMKM, lalu menghitung PPh Final 0,5% — lengkap dengan dasar hukumnya. Tanpa akuntan, tanpa spreadsheet.",
+    heroCta: "Mulai gratis",
+    heroSecondary: "Lihat cara kerjanya",
+    heroFootnote: "Untuk warung, toko, kafe, dan usaha jasa di Indonesia.",
+    problemTitle: "Pembukuan itu merepotkan. Itu sebabnya banyak yang menyerah.",
+    problems: [
+      {
+        title: "Mencatat manual membosankan",
+        body: "Setelah seharian melayani pembeli, menyusun pembukuan dari tumpukan struk adalah hal terakhir yang ingin Anda kerjakan.",
+      },
+      {
+        title: "Jasa akuntan mahal",
+        body: "Konsultan pembukuan bulanan bisa lebih mahal daripada laba usaha kecil — padahal yang dibutuhkan hanya pembukuan yang rapi.",
+      },
+      {
+        title: "Tidak ada bukti untuk bank",
+        body: "Tanpa catatan resmi, usaha yang sehat pun sulit mengajukan modal — karena bank tidak bisa menilai usahanya.",
+      },
+    ],
+    howTitle: "Cara kerja Nata",
+    howBody: "Tiga langkah. Yang Anda lakukan hanya yang pertama.",
+    steps: [
+      {
+        title: "Isi data usaha",
+        body: "Nama usaha, dan status pajak Anda. Sekali saja, kurang dari satu menit.",
+      },
+      {
+        title: "Foto struknya",
+        body: "Belanja, penjualan, honor — apa saja. Nata membaca foto dan menentukan akunnya sendiri, sesuai SAK EMKM.",
+      },
+      {
+        title: "Pembukuan & pajak beres",
+        body: "Pembukuan dua sisi yang seimbang, laporan keuangan, dan PPh Final 0,5% beserta dasar hukumnya.",
+      },
+    ],
+    whyTitle: "Kenapa Nata berbeda",
+    reasons: [
+      {
+        title: "Model mengusulkan, kode yang memutuskan",
+        body: "Nata hanya menyimpan catatan yang benar-benar seimbang. Setiap angka diperiksa oleh kode, bukan oleh model.",
+      },
+      {
+        title: "Dasar hukum di setiap angka",
+        body: "Pajak dihitung dari teks resmi PP 55/2022, dan setiap angka disertai kutipan Pasal/Ayat-nya.",
+      },
+      {
+        title: "Berjalan di Google Cloud",
+        body: "Gemini di Vertex AI, di atas Cloud Run — infrastruktur yang sama dengan yang dipakai perusahaan besar.",
+      },
+    ],
+    ctaTitle: "Mulai pembukuan Anda hari ini",
+    ctaBody: "Gratis untuk memulai. Cukup satu usaha, satu ponsel.",
+    ctaButton: "Mulai gratis sekarang",
+    footerTagline: "Pembukuan otomatis untuk usaha Indonesia.",
+  },
+
   comingSoon: {
     usaha: "Profil Usaha",
     usahaBody:

@@ -46,7 +46,7 @@ export const NAV: NavGroup[] = [
   {
     label: "Ringkasan",
     tone: "hijau",
-    items: [{ href: "/", key: "dashboard", icon: "LayoutDashboard", mobile: true }],
+    items: [{ href: "/dasbor", key: "dashboard", icon: "LayoutDashboard", mobile: true }],
   },
   {
     label: "Operasional",

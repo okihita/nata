@@ -15,7 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useLedger } from "@/lib/store";
+import { useWorkspace } from "@/lib/store";
 import { entryTotals, type JournalEntry } from "@/lib/ledger";
 import { copy } from "@/lib/copy";
 import { idrFull } from "@/lib/format";
@@ -23,7 +23,7 @@ import { idrFull } from "@/lib/format";
 type Filter = "all" | "ocr" | "manual";
 
 export default function TransaksiPage() {
-  const { entries, ready } = useLedger();
+  const { entries, ready } = useWorkspace();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
   const [selected, setSelected] = useState<JournalEntry | null>(null);

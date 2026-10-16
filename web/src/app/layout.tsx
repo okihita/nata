@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
-import { LedgerProvider } from "@/lib/store";
+import { WorkspaceProvider } from "@/lib/store";
 import { copy } from "@/lib/copy";
 import "./globals.css";
 
@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body className="min-h-full">
         <TooltipProvider>
-          <LedgerProvider>{children}</LedgerProvider>
+          <WorkspaceProvider>{children}</WorkspaceProvider>
         </TooltipProvider>
         <Toaster position="top-center" richColors />
       </body>

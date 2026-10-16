@@ -15,13 +15,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useLedger } from "@/lib/store";
+import { useWorkspace } from "@/lib/store";
 import { balanceSheet, incomeStatement, type JournalEntry } from "@/lib/ledger";
 import { copy } from "@/lib/copy";
 import { idrFull } from "@/lib/format";
 
 export default function LaporanPage() {
-  const { entries, ready } = useLedger();
+  const { entries, ready } = useWorkspace();
   const [period, setPeriod] = useState("all");
 
   const periods = useMemo(() => {

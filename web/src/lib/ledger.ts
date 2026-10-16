@@ -241,10 +241,18 @@ export function summary(entries: JournalEntry[]) {
 
 const STORAGE_KEY = "nata.ledger.v3";
 
-export function loadLedger(): LedgerState {
+/**
+ * Per-business storage key. The ledger belongs to a business, so two businesses
+ * on the same browser never share a journal.
+ */
+function storageKeyFor(namespace?: string): string {
+  return namespace ? `${STORAGE_KEY}.${namespace}` : STORAGE_KEY;
+}
+
+export function loadLedger(namespace?: string): LedgerState {
   if (typeof window === "undefined") return { entries: [] };
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
+    const raw = window.localStorage.getItem(storageKeyFor(namespace));
     if (!raw) return { entries: [] };
     const parsed = JSON.parse(raw) as LedgerState;
     return { entries: Array.isArray(parsed.entries) ? parsed.entries : [] };
@@ -253,18 +261,18 @@ export function loadLedger(): LedgerState {
   }
 }
 
-export function saveLedger(state: LedgerState): void {
+export function saveLedger(state: LedgerState, namespace?: string): void {
   if (typeof window === "undefined") return;
   try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    window.localStorage.setItem(storageKeyFor(namespace), JSON.stringify(state));
   } catch {
     /* storage full or unavailable — the UI still works for this session */
   }
 }
 
-export function clearLedger(): void {
+export function clearLedger(namespace?: string): void {
   if (typeof window === "undefined") return;
-  window.localStorage.removeItem(STORAGE_KEY);
+  window.localStorage.removeItem(storageKeyFor(namespace));
 }
 
 /** Append an entry, returning the new state. */

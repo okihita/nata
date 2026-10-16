@@ -1,6 +1,7 @@
 "use client";
 
-import { ChevronsUpDown, Plus, Store } from "lucide-react";
+import Link from "next/link";
+import { ChevronsUpDown, Settings, Store } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -11,14 +12,24 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useWorkspace } from "@/lib/store";
 import { copy } from "@/lib/copy";
+import { TYPE_LABEL, TAXPAYER_LABEL } from "@/lib/business";
 
 /**
- * Workspace identity in the top bar. One real workspace today; the switcher
- * exists so the product reads as multi-business from the start (Nata is meant
- * for owners running more than one warung/toko).
+ * Identitas usaha di bilah atas. Membaca usaha yang sedang dipakai dari store —
+ * nama yang tampil adalah nama yang diisi pemilik saat mendaftar, bukan teks
+ * bawaan. Satu usaha per pemilik hari ini; penukar ini siap untuk beberapa
+ * usaha (banyak pemilik warung punya lebih dari satu).
  */
 export function WorkspaceSwitcher() {
+  const { business } = useWorkspace();
+
+  const name = business?.name ?? copy.app.name;
+  const subtitle = business
+    ? `${TYPE_LABEL[business.type]} · ${TAXPAYER_LABEL[business.taxpayer]}`
+    : copy.app.workspaceType;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -27,8 +38,8 @@ export function WorkspaceSwitcher() {
             <Store className="size-3.5" />
           </span>
           <span className="hidden text-left leading-tight sm:grid">
-            <span className="text-sm font-medium">{copy.app.workspace}</span>
-            <span className="text-[11px] text-muted-foreground">{copy.app.workspaceType}</span>
+            <span className="text-sm font-medium">{name}</span>
+            <span className="text-[11px] text-muted-foreground">{subtitle}</span>
           </span>
           <ChevronsUpDown className="size-4 text-muted-foreground" />
         </Button>
@@ -38,15 +49,16 @@ export function WorkspaceSwitcher() {
         <DropdownMenuItem className="gap-2">
           <Store className="size-4" />
           <div className="grid">
-            <span className="text-sm">{copy.app.workspace}</span>
-            <span className="text-[11px] text-muted-foreground">{copy.app.workspaceType}</span>
+            <span className="text-sm">{name}</span>
+            <span className="text-[11px] text-muted-foreground">{subtitle}</span>
           </div>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem disabled className="gap-2 text-muted-foreground">
-          <Plus className="size-4" />
-          Tambah usaha lain
-          <span className="ml-auto text-[10px]">{copy.nav.comingSoon}</span>
+        <DropdownMenuItem asChild className="gap-2">
+          <Link href="/usaha">
+            <Settings className="size-4" />
+            {copy.nav.usaha}
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

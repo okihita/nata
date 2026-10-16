@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useLedger } from "@/lib/store";
+import { useWorkspace } from "@/lib/store";
 import { taxPosition } from "@/lib/ledger";
 import { PPH_FINAL_RATE, PPH_INDIVIDUAL_EXEMPTION } from "@/lib/sak-emkm";
 import type { TaxAssessment } from "@/lib/adk";
@@ -29,7 +29,7 @@ import { idrFull } from "@/lib/format";
  * screen shows it instantly after a receipt has been recorded.
  */
 export default function PajakPage() {
-  const { entries, ready } = useLedger();
+  const { entries, ready } = useWorkspace();
 
   // Prototype assumes an individual taxpayer, so the Rp 500 juta exemption applies.
   const tax = useMemo(() => taxPosition(entries, { individual: true }), [entries]);

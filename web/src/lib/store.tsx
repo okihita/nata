@@ -1,12 +1,19 @@
 "use client";
 
 /**
- * Ledger state for the whole app.
+ * Identitas usaha + pembukuan (ledger) untuk seluruh aplikasi.
  *
- * One provider at the shell level owns the journal; every screen reads derived
- * figures (laba rugi, posisi keuangan, pajak) from here so nothing on screen can
- * disagree with the journal itself. Persistence is localStorage, seeded with a
- * month of demo activity on first run.
+ * Dua hal yang dimiliki provider ini:
+ *  1. `business` — usaha mana yang sedang dipakai (nama, jenis, jenis pajak).
+ *  2. `entries` — jurnal usaha itu, disimpan per-usaha lewat namespace.
+ *
+ * Sebelumnya jurnal disemai otomatis dengan data contoh sebuah kafe. Sekarang
+ * tidak: usaha baru mulai dari pembukuan kosong, dan pemilik mengisi usahanya
+ * sendiri lewat /usaha. Data contoh tetap tersedia sebagai aksi eksplisit
+ * (`loadDemo`) supaya demo tetap mudah, tapi tidak pernah muncul sendiri.
+ *
+ * Bentuk data sengaja tidak bergantung pada React, supaya penggantian ke
+ * Firebase Auth + Firestore nanti hanya menyentuh lapisan penyimpanan.
  */
 
 import {
@@ -20,6 +27,14 @@ import {
 } from "react";
 
 import {
+  BUSINESS_STORAGE_KEY,
+  clearBusiness,
+  loadBusiness,
+  newBusinessId,
+  saveBusiness,
+  type Business,
+} from "./business";
+import {
   addEntry as addEntryToState,
   loadLedger,
   newId,
@@ -30,12 +45,21 @@ import {
   type LedgerState,
 } from "./ledger";
 
-const SEEDED_KEY = "nata.seeded.v3";
-const STORAGE_KEY_VERSION = "nata.ledger.v3";
-
-interface LedgerContextValue {
+interface WorkspaceContextValue {
+  /** Null until the owner has set up a business. */
+  business: Business | null;
   entries: JournalEntry[];
+  /** False until localStorage has been read — screens show a skeleton. */
   ready: boolean;
+  /** Create the business (onboarding). */
+  createBusiness: (input: {
+    name: string;
+    ownerName: string;
+    type: Business["type"];
+    taxpayer: Business["taxpayer"];
+  }) => Business;
+  /** Edit the business (Profil Usaha). */
+  updateBusiness: (patch: Partial<Omit<Business, "id" | "createdAt">>) => void;
   addEntry: (input: {
     date: string;
     description: string;
@@ -43,38 +67,69 @@ interface LedgerContextValue {
     source?: JournalEntry["source"];
     receiptName?: string;
   }) => JournalEntry;
-  resetToDemo: () => void;
+  /** Explicitly load the demo café books (demo affordance, never automatic). */
+  loadDemo: () => void;
+  /** Empty the current business's journal. */
   clearAll: () => void;
+  /** Forget everything — business and its books. */
+  reset: () => void;
 }
 
-const LedgerContext = createContext<LedgerContextValue | null>(null);
+const WorkspaceContext = createContext<WorkspaceContextValue | null>(null);
 
-export function LedgerProvider({ children }: { children: ReactNode }) {
+export function WorkspaceProvider({ children }: { children: ReactNode }) {
+  const [business, setBusiness] = useState<Business | null>(null);
   const [state, setState] = useState<LedgerState>({ entries: [] });
   const [ready, setReady] = useState(false);
 
-  // Load once on mount. On a brand-new browser, seed a month of demo data so
-  // the dashboard and statements show a real shape.
+  // Load once on mount: the business identity and its journal.
   useEffect(() => {
-    const loaded = loadLedger();
-    const alreadySeeded = window.localStorage.getItem(SEEDED_KEY) === "1";
-    if (loaded.entries.length === 0 && !alreadySeeded) {
-      const seeded = seedEntries();
-      setState({ entries: seeded });
-      saveLedger({ entries: seeded });
-      window.localStorage.setItem(SEEDED_KEY, "1");
-    } else {
-      setState(loaded);
-    }
+    const biz = loadBusiness();
+    setBusiness(biz);
+    setState(biz ? loadLedger(biz.id) : { entries: [] });
     setReady(true);
   }, []);
 
-  const persist = useCallback((next: LedgerState) => {
-    setState(next);
-    saveLedger(next);
-  }, []);
+  const persistLedger = useCallback(
+    (next: LedgerState, forBusiness: Business | null) => {
+      setState(next);
+      if (forBusiness) saveLedger(next, forBusiness.id);
+    },
+    [],
+  );
 
-  const addEntry = useCallback<LedgerContextValue["addEntry"]>(
+  const createBusiness = useCallback<WorkspaceContextValue["createBusiness"]>(
+    (input) => {
+      const biz: Business = {
+        id: newBusinessId(),
+        name: input.name.trim(),
+        ownerName: input.ownerName.trim(),
+        type: input.type,
+        taxpayer: input.taxpayer,
+        createdAt: new Date().toISOString(),
+      };
+      saveBusiness(biz);
+      setBusiness(biz);
+      // A brand-new business starts with an empty journal.
+      persistLedger({ entries: [] }, biz);
+      return biz;
+    },
+    [persistLedger],
+  );
+
+  const updateBusiness = useCallback<WorkspaceContextValue["updateBusiness"]>(
+    (patch) => {
+      setBusiness((current) => {
+        if (!current) return current;
+        const next = { ...current, ...patch };
+        saveBusiness(next);
+        return next;
+      });
+    },
+    [],
+  );
+
+  const addEntry = useCallback<WorkspaceContextValue["addEntry"]>(
     (input) => {
       const entry: JournalEntry = {
         id: newId(),
@@ -91,34 +146,61 @@ export function LedgerProvider({ children }: { children: ReactNode }) {
       };
       setState((current) => {
         const next = addEntryToState(current, entry);
-        saveLedger(next);
+        if (business) saveLedger(next, business.id);
         return next;
       });
       return entry;
     },
-    [],
+    [business],
   );
 
-  const resetToDemo = useCallback(() => {
+  const loadDemo = useCallback(() => {
     const seeded = seedEntries();
-    persist({ entries: seeded });
-    window.localStorage.setItem(SEEDED_KEY, "1");
-  }, [persist]);
+    persistLedger({ entries: seeded }, business);
+  }, [business, persistLedger]);
 
   const clearAll = useCallback(() => {
-    persist({ entries: [] });
-  }, [persist]);
+    persistLedger({ entries: [] }, business);
+  }, [business, persistLedger]);
 
-  const value = useMemo<LedgerContextValue>(
-    () => ({ entries: state.entries, ready, addEntry, resetToDemo, clearAll }),
-    [state.entries, ready, addEntry, resetToDemo, clearAll],
+  const reset = useCallback(() => {
+    clearBusiness();
+    setBusiness(null);
+    setState({ entries: [] });
+  }, []);
+
+  const value = useMemo<WorkspaceContextValue>(
+    () => ({
+      business,
+      entries: state.entries,
+      ready,
+      createBusiness,
+      updateBusiness,
+      addEntry,
+      loadDemo,
+      clearAll,
+      reset,
+    }),
+    [
+      business,
+      state.entries,
+      ready,
+      createBusiness,
+      updateBusiness,
+      addEntry,
+      loadDemo,
+      clearAll,
+      reset,
+    ],
   );
 
-  return <LedgerContext.Provider value={value}>{children}</LedgerContext.Provider>;
+  return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>;
 }
 
-export function useLedger(): LedgerContextValue {
-  const ctx = useContext(LedgerContext);
-  if (!ctx) throw new Error("useLedger must be used inside <LedgerProvider>");
+export function useWorkspace(): WorkspaceContextValue {
+  const ctx = useContext(WorkspaceContext);
+  if (!ctx) throw new Error("useWorkspace must be used inside <WorkspaceProvider>");
   return ctx;
 }
+
+export { BUSINESS_STORAGE_KEY };

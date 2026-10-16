@@ -34,18 +34,18 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { useLedger } from "@/lib/store";
+import { useWorkspace } from "@/lib/store";
 import { balanceSheet, incomeStatement, monthlyRevenue, taxPosition, trialBalance } from "@/lib/ledger";
 import { copy } from "@/lib/copy";
 import { idr, idrFull } from "@/lib/format";
 
 export default function DashboardPage() {
-  const { entries, ready } = useLedger();
+  const { entries, ready, business } = useWorkspace();
   const income = incomeStatement(entries);
   const bs = balanceSheet(entries);
   const series = monthlyRevenue(entries);
   const accounts = trialBalance(entries);
-  const tax = taxPosition(entries, { individual: true });
+  const tax = taxPosition(entries, { individual: business?.taxpayer !== "badan" });
 
   // "Perlu tindakan": plain-language items the owner should look at. This is
   // the panel the incumbents do worst — an empty state here says the books are
@@ -132,7 +132,7 @@ export default function DashboardPage() {
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="text-base">{copy.dashboard.chartTitle}</CardTitle>
-            <CardDescription>{copy.app.workspace}</CardDescription>
+            <CardDescription>{business?.name ?? copy.app.name}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-64 w-full">

@@ -56,7 +56,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href="/" onClick={() => setOpenMobile(false)}>
+              <Link href="/dasbor" onClick={() => setOpenMobile(false)}>
                 <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-primary text-sm font-semibold text-primary-foreground">
                   ◈
                 </span>
@@ -83,8 +83,7 @@ export function AppSidebar() {
               <SidebarMenu>
                 {group.items.map((item) => {
                   const Icon = ICONS[item.icon] ?? LayoutDashboard;
-                  const active =
-                    item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+                  const active = pathname.startsWith(item.href);
                   return (
                     <SidebarMenuItem key={item.href}>
                       <SidebarMenuButton

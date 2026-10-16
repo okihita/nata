@@ -8,14 +8,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Skeleton } from "@/components/ui/skeleton";
 import { GROUP_LABEL, NORMAL_SIDE, codeOf, type AccountGroup } from "@/lib/sak-emkm";
 import { trialBalance } from "@/lib/ledger";
-import { useLedger } from "@/lib/store";
+import { useWorkspace } from "@/lib/store";
 import { copy } from "@/lib/copy";
 import { idrFull } from "@/lib/format";
 
 const GROUPS: AccountGroup[] = ["aset", "liabilitas", "ekuitas", "pendapatan", "beban"];
 
 export default function AkunPage() {
-  const { entries, ready } = useLedger();
+  const { entries, ready } = useWorkspace();
   const balances = trialBalance(entries);
 
   // Group the *used* accounts by their SAK EMKM class, in the canonical order.

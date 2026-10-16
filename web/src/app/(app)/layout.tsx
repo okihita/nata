@@ -1,5 +1,6 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { MobileTabBar } from "@/components/mobile-tab-bar";
+import { OnboardingGate } from "@/components/onboarding-gate";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { WorkspaceSwitcher } from "@/components/workspace-switcher";
@@ -9,6 +10,9 @@ import { WorkspaceSwitcher } from "@/components/workspace-switcher";
  *
  * On phones the sidebar collapses into a bottom tab bar, so the receipt →
  * ledger → tax path works one-handed.
+ *
+ * `OnboardingGate` sits inside the shell: a visitor with no business yet is
+ * sent to Profil Usaha to declare one before any bookkeeping screen renders.
  */
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -20,7 +24,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <Separator orientation="vertical" className="mr-2 h-4" />
           <WorkspaceSwitcher />
         </header>
-        <div className="flex-1 p-4 pb-24 sm:p-6 md:pb-8 lg:p-8">{children}</div>
+        <div className="flex-1 p-4 pb-24 sm:p-6 md:pb-8 lg:p-8">
+          <OnboardingGate>{children}</OnboardingGate>
+        </div>
       </SidebarInset>
       <MobileTabBar />
     </SidebarProvider>

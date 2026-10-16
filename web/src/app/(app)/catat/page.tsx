@@ -17,7 +17,7 @@ import { APP_NAME, ensureSession, streamRun, type AdkEvent, type RunRequest } fr
 import { emptyRun, readingStep, reduceEvent, type RunState } from "@/lib/trace";
 import { CitationList } from "@/components/citation-list";
 import { copy } from "@/lib/copy";
-import { useLedger } from "@/lib/store";
+import { useWorkspace } from "@/lib/store";
 import { idrFull } from "@/lib/format";
 
 const USER_ID = "web-console";
@@ -25,7 +25,7 @@ const SESSION_KEY = "***";
 
 export default function CatatPage() {
   const router = useRouter();
-  const { addEntry } = useLedger();
+  const { addEntry } = useWorkspace();
 
   const [run, setRun] = useState<RunState>(emptyRun);
   const [file, setFile] = useState<File | null>(null);
