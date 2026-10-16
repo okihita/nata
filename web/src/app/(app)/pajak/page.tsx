@@ -29,10 +29,15 @@ import { idrFull } from "@/lib/format";
  * screen shows it instantly after a receipt has been recorded.
  */
 export default function PajakPage() {
-  const { entries, ready } = useWorkspace();
+  const { entries, ready, business } = useWorkspace();
 
-  // Prototype assumes an individual taxpayer, so the Rp 500 juta exemption applies.
-  const tax = useMemo(() => taxPosition(entries, { individual: true }), [entries]);
+  // The taxpayer type chosen at onboarding decides whether the Rp 500 juta
+  // exemption applies (Pasal 60 ayat (2)): individuals get it, badan usaha do not.
+  const individual = business?.taxpayer !== "badan";
+  const tax = useMemo(
+    () => taxPosition(entries, { individual }),
+    [entries, individual],
+  );
 
   const [answer, setAnswer] = useState("");
   const [running, setRunning] = useState(false);
@@ -58,7 +63,7 @@ export default function PajakPage() {
     setRunning(true);
     setError(null);
     try {
-      const result = await runFiskal({ turnover: tax.turnover, individual: true });
+      const result = await runFiskal({ turnover: tax.turnover, individual });
       // cacheTax updates the external store, which re-renders this screen.
       if (result.tax) cacheTax(result.tax);
       setAnswer(result.answer);
@@ -68,7 +73,7 @@ export default function PajakPage() {
     } finally {
       setRunning(false);
     }
-  }, [tax.turnover]);
+  }, [tax.turnover, individual]);
 
   // Auto-run exactly once per turnover: the moment the books change, Agent
   // Fiskal assesses them (the cascade, seen from the tax screen). The persisted
