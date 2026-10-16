@@ -245,6 +245,7 @@ export const copy = {
     resultTitle: "Kode KBLI Anda",
     resultHintVerified: "Kode ini ada di katalog resmi KBLI 2020.",
     resultHintEmpty: "Hasil akan muncul di sini setelah pencarian.",
+    fromCascade: "Diverifikasi dari pencatatan struk",
     codeLabel: "Kode",
     verified: "Terverifikasi",
     hierarchyLabel: "Posisi dalam klasifikasi",

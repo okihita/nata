@@ -118,10 +118,20 @@ export default function PerizinanPage() {
   const verdict = cached?.verdict ?? null;
   const candidates = cached?.candidates ?? [];
 
+  // A KBLI verified anywhere in the app is saved on the business profile. If the
+  // receipt cascade verified one, this screen must show it rather than claiming
+  // nothing is known — the fact belongs to the business, not to this screen.
+  const saved = business?.kbliCode
+    ? { code: business.kbliCode, title: business.kbliTitle ?? "" }
+    : null;
+  const shownCode = verdict?.code ?? saved?.code ?? null;
+  const shownTitle = verdict?.title ?? saved?.title ?? null;
+  const fromProfile = !verdict && saved != null;
+
   return (
     <>
       <PageHeader title={copy.perizinan.title} subtitle={copy.perizinan.subtitle}>
-        {verdict && (
+        {shownCode && (
           <Button
             variant="outline"
             onClick={() => {
@@ -237,7 +247,7 @@ export default function PerizinanPage() {
             </Card>
           )}
 
-          {!verdict && !running && candidates.length === 0 && (
+          {!shownCode && !running && candidates.length === 0 && (
             <Card>
               <CardContent>
                 <EmptyState
@@ -259,20 +269,22 @@ export default function PerizinanPage() {
                 {copy.perizinan.resultTitle}
               </CardTitle>
               <CardDescription>
-                {verdict ? copy.perizinan.resultHintVerified : copy.perizinan.resultHintEmpty}
+                {shownCode
+                  ? copy.perizinan.resultHintVerified
+                  : copy.perizinan.resultHintEmpty}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {verdict ? (
+              {shownCode ? (
                 <>
                   <div id="kode-kbli-anda" className="rounded-xl border bg-card p-4">
                     <p className="text-xs text-muted-foreground">
                       {copy.perizinan.codeLabel}
                     </p>
                     <p className="mt-1 text-3xl font-semibold tabular-nums tracking-tight">
-                      {verdict.code}
+                      {shownCode}
                     </p>
-                    <p className="mt-1 text-sm font-medium">{verdict.title}</p>
+                    <p className="mt-1 text-sm font-medium">{shownTitle}</p>
                     <div className="mt-3 flex flex-wrap items-center gap-2 text-[10px]">
                       <Badge
                         variant="secondary"
@@ -281,12 +293,12 @@ export default function PerizinanPage() {
                         {copy.perizinan.verified}
                       </Badge>
                       <span className="text-muted-foreground">
-                        {verdict.source}
+                        {verdict?.source ?? copy.perizinan.fromCascade}
                       </span>
                     </div>
                   </div>
 
-                  {verdict.description && (
+                  {verdict?.description && (
                     <p className="text-xs leading-relaxed text-muted-foreground">
                       {verdict.description}
                     </p>
@@ -294,7 +306,7 @@ export default function PerizinanPage() {
 
                   {/* Di mana kode ini berada dalam klasifikasi — KBLI bersifat
                       hierarkis, jadi angkanya tidak berdiri sendiri. */}
-                  {verdict.hierarchy && verdict.hierarchy.length > 1 && (
+                  {verdict?.hierarchy && verdict.hierarchy.length > 1 && (
                     <div className="space-y-2">
                       <p className="text-[11px] font-medium text-muted-foreground">
                         {copy.perizinan.hierarchyLabel}
@@ -341,7 +353,7 @@ export default function PerizinanPage() {
           </Card>
 
           {/* Risiko: sengaja menyatakan belum diketahui, bukan menebak. */}
-          {verdict && (
+          {shownCode && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
