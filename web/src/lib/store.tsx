@@ -31,6 +31,7 @@ import {
 } from "./business";
 import {
   addEntry as addEntryToState,
+  clearLedger,
   loadLedger,
   newId,
   saveLedger,
@@ -158,7 +159,12 @@ export function clearAll(): void {
 
 /** Forget everything — business, its books, and any cached agent output. */
 export function reset(): void {
+  // Remove the business's own ledger key too. Each business is namespaced
+  // (`nata.ledger.v3.<businessId>`), so clearing the business alone left its
+  // journal orphaned in localStorage forever.
+  const doomed = snapshot.business?.id;
   clearBusiness();
+  if (doomed) clearLedger(doomed);
   // Agent caches are keyed to the business that produced them. Leaving them
   // behind would let a new business inherit a previous one's tax assessment or
   // KBLI code — and resume an ADK session that belongs to someone else's books.
