@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Env / secrets
+.env
+.env.*
+*.key
+*.pem
+**/secrets*
+
+# Node (for later UI)
+node_modules/
+.next/
+dist/
+
+# OS
+.DS_Store
+
+# ADK
+.adk/
+*.log
