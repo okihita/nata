@@ -247,6 +247,9 @@ export const copy = {
     candidatesHint:
       "Diambil dari katalog KBLI 2020 \u2014 1.790 kode resmi. Anda bisa melihat pilihannya.",
     chosen: "Dipilih",
+    useThis: "Pakai ini",
+    verifyFailed: (code: string) =>
+      `Kode ${code} tidak bisa diverifikasi di katalog. Coba kandidat lain.`,
     emptyTitle: "Belum ada kode KBLI",
     emptyBody:
       "Jelaskan kegiatan usaha Anda, lalu tekan Cari kode KBLI. Nata akan mencocokkannya ke katalog resmi.",

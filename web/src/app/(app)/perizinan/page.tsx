@@ -51,6 +51,7 @@ import {
   primeRegulasiStore,
   runRegulasi,
   subscribeRegulasi,
+  verifyRegulasiCode,
 } from "@/lib/agent-regulasi";
 import { copy } from "@/lib/copy";
 import { cn } from "@/lib/utils";
@@ -105,6 +106,39 @@ export default function PerizinanPage() {
       setRunning(false);
     }
   }, [description, business, updateBusiness]);
+
+  /**
+   * Human-in-the-loop: the owner picks a candidate, and it is verified against
+   * the catalogue before being stored. The agent still does the checking — we
+   * only choose which code to check.
+   */
+  const verifyCode = useCallback(
+    async (code: string, title?: string) => {
+      setRunning(true);
+      setError(null);
+      try {
+        const result = await verifyRegulasiCode({ code, title });
+        if (result.verdict) {
+          // Keep the candidate list so the owner can still compare options.
+          cacheRegulasi({ ...result, candidates: cached?.candidates ?? [] });
+          updateBusiness({
+            kbliCode: result.verdict.code,
+            kbliTitle: result.verdict.title,
+            kbliHierarchy: result.verdict.hierarchy,
+          });
+        } else {
+          setError(copy.perizinan.verifyFailed(code));
+        }
+        setAnswer(result.answer);
+        setLatency(result.latencyMs);
+      } catch {
+        setError(copy.banner.offline);
+      } finally {
+        setRunning(false);
+      }
+    },
+    [cached, updateBusiness],
+  );
 
   if (!ready) {
     return (
@@ -229,28 +263,46 @@ export default function PerizinanPage() {
               <CardContent>
                 <ul className="divide-y">
                   {candidates.map((c) => {
-                    const isChosen = verdict?.code === c.code;
+                    const isChosen = shownCode === c.code;
                     return (
-                      <li key={c.code} className="flex items-start gap-3 py-2.5">
-                        <span
+                      <li key={c.code}>
+                        <button
+                          type="button"
+                          onClick={() => verifyCode(c.code, c.title)}
+                          disabled={running || isChosen}
                           className={cn(
-                            "mt-0.5 grid size-6 shrink-0 place-items-center rounded-md text-[10px] font-semibold tabular-nums",
-                            isChosen
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-muted text-muted-foreground",
+                            "flex w-full items-start gap-3 rounded-lg px-2 py-2.5 text-left transition",
+                            isChosen ? "bg-primary/5" : "hover:bg-muted/50",
                           )}
                         >
-                          {isChosen ? <BadgeCheck className="size-3.5" /> : c.code.slice(0, 2)}
-                        </span>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium tabular-nums">{c.code}</p>
-                          <p className="text-xs text-muted-foreground">{c.title}</p>
-                        </div>
-                        {isChosen && (
-                          <Badge variant="secondary" className="shrink-0 text-[10px]">
-                            {copy.perizinan.chosen}
-                          </Badge>
-                        )}
+                          <span
+                            className={cn(
+                              "mt-0.5 grid size-6 shrink-0 place-items-center rounded-md text-[10px] font-semibold tabular-nums",
+                              isChosen
+                                ? "bg-primary text-primary-foreground"
+                                : "bg-muted text-muted-foreground",
+                            )}
+                          >
+                            {isChosen ? <BadgeCheck className="size-3.5" /> : c.code.slice(0, 2)}
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block text-sm font-medium tabular-nums">
+                              {c.code}
+                            </span>
+                            <span className="block text-xs text-muted-foreground">
+                              {c.title}
+                            </span>
+                          </span>
+                          {isChosen ? (
+                            <Badge variant="secondary" className="shrink-0 text-[10px]">
+                              {copy.perizinan.chosen}
+                            </Badge>
+                          ) : (
+                            <span className="shrink-0 self-center text-[11px] font-medium text-primary">
+                              {copy.perizinan.useThis}
+                            </span>
+                          )}
+                        </button>
                       </li>
                     );
                   })}

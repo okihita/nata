@@ -125,6 +125,71 @@ export async function runRegulasi(opts: {
   };
 }
 
+/**
+ * Ask Agent Regulasi to *verify* one specific code the owner has chosen.
+ *
+ * This is the human-in-the-loop path: the engine proposes candidates, the owner
+ * picks one, and the code is verified against the catalogue before it is stored.
+ * Nothing is saved on trust.
+ */
+export async function verifyRegulasiCode(opts: {
+  code: string;
+  title?: string;
+}): Promise<RegulasiRun> {
+  const started = performance.now();
+  const sessionId = await ensureSession(
+    USER_ID,
+    typeof window === "undefined" ? null : window.localStorage.getItem(SESSION_KEY),
+    REGULASI_APP,
+  );
+  if (typeof window !== "undefined") window.localStorage.setItem(SESSION_KEY, sessionId);
+
+  let verdict: KbliVerdict | null = null;
+  let streamed = "";
+  let finalText = "";
+
+  const prompt =
+    `Verifikasi kode KBLI ${opts.code} ("${opts.title ?? ""}") untuk usaha saya. ` +
+    `Panggil classify_kbli dengan kode itu. Laporkan hasilnya apa adanya: bila ` +
+    `kodenya tidak ada di katalog, katakan terus terang. Jangan mengarang judul.`;
+
+  await streamRun(
+    {
+      appName: REGULASI_APP,
+      userId: USER_ID,
+      sessionId,
+      streaming: true,
+      newMessage: { role: "user", parts: [{ text: prompt }] },
+    },
+    (event: AdkEvent) => {
+      for (const part of event.content?.parts ?? []) {
+        const response = part.functionResponse?.response as
+          | Record<string, unknown>
+          | undefined;
+        if (
+          part.functionResponse?.name === "classify_kbli" &&
+          response?.status === "success" &&
+          String(response.code) === opts.code
+        ) {
+          verdict = response as unknown as KbliVerdict;
+        }
+        if (typeof part.text === "string" && part.text.length > 0) {
+          if (event.partial) streamed += part.text;
+          else finalText = part.text;
+        }
+      }
+    },
+  );
+
+  return {
+    verdict,
+    candidates: [],
+    answer: streamed || finalText,
+    latencyMs: Math.round(performance.now() - started),
+    error: null,
+  };
+}
+
 /** Persist the last classification so the screen survives a reload. */
 export function cacheRegulasi(run: RegulasiRun): void {
   current = run;
