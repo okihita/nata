@@ -34,12 +34,14 @@ by its agent rather than by local arithmetic.
   agent steps, see the posting and the balance check. A committed entry is
   written into the ledger.
 - **Transaksi** — every journal entry, searchable and filterable by source
-  (dari struk / manual), with a detail dialog per transaction.
+  (dari struk / manual), with a detail dialog per transaction and a **CSV
+export** of whatever the filter is currently showing.
 - **Daftar Akun** — the SAK EMKM chart of accounts, grouped by the five classes,
   with balances shown on each account's normal side.
 - **Laporan Keuangan** — **Laporan Laba Rugi** and **Laporan Posisi Keuangan**
   with a period selector, plus CALK. The balance sheet proves
-  Aset = Liabilitas + Ekuitas on screen.
+  Aset = Liabilitas + Ekuitas on screen, and **Ekspor** writes both statements
+  to a CSV an accountant can open.
 - **Pajak** — PPh Final UMKM (0,5%) with the Rp 500 juta exemption quota shown
   as a progress meter, so a Rp 0 result is informative rather than blank. A
   treatment banner states which rule applies to *this* business form, because
@@ -192,13 +194,22 @@ EN/ID toggle later is a matter of swapping that one module.
 ## Verified
 
 - `pnpm exec tsc --noEmit` — clean.
-- `pnpm build` — clean production build; all 10 routes generate.
+- `pnpm lint` — clean.
+- `pnpm test` — 37 logic tests (entity/tax treatment, trace reduction, error
+  classification, CSV export). Node's built-in runner executes the TypeScript
+  directly; see `tests/register.mjs` for the resolver that teaches it the
+  `@/*` alias.
+- `pnpm build` — clean production build; all 12 routes generate.
 - Every route returns 200 on the production server.
 - End-to-end on the production bundle: sample receipt → Agent Keuangan →
-  `commit_journal_entry` → recorded entry, balanced, driven by live Gemini 3.8
-  Flash. Steps render in narrative order.
+  `commit_journal_entry` → Agent Fiskal → Agent Regulasi → a recorded entry,
+  balanced, with a verified KBLI code, driven by live Gemini 3.8 Flash. Steps
+  render in narrative order.
 - Statements reconcile: Aset = Liabilitas + Ekuitas proven on the Laporan page,
   and the tax figure on Dasbor matches the Pajak page.
+- Entity type changes the tax everywhere it should: the onboarding badge, the
+  Pajak treatment banner, the quota meter (individual only), and the dashboard
+  status row all agree.
 
 > Note: hydration was verified against the **production** build. Under headless
 > automation the dev server's HMR socket is unavailable, which stalls hydration —
