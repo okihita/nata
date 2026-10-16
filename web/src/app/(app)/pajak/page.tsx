@@ -153,7 +153,10 @@ export default function PajakPage() {
         </Card>
       )}
 
-      {tax.payable === 0 && (
+      {/* Banner ini hanya benar untuk yang punya kuota. Badan usaha bisa saja
+          Rp 0 karena omzetnya memang nol, dan mengatakan "masih di bawah batas
+          bebas pajak" akan menyiratkan ada batas yang tidak berlaku baginya. */}
+      {individual && tax.payable === 0 && (
         <Alert className="mb-6 border-tone-hijau/30 bg-tone-hijau-bg/40">
           <ShieldCheck className="size-4 text-tone-hijau" />
           <AlertDescription className="text-sm text-tone-hijau">
