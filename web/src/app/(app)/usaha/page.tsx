@@ -33,6 +33,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useWorkspace } from "@/lib/store";
+import { clearRegulasi as clearRegulasiCache } from "@/lib/agent-regulasi";
 import { copy } from "@/lib/copy";
 import {
   BUSINESS_TYPES,
@@ -97,6 +98,10 @@ export default function UsahaPage() {
     if (typeChanged && business?.kbliCode) {
       toast.info(copy.usaha.kbliInvalidated);
     }
+    // The cached run on the Perizinan screen would otherwise outlive the code it
+    // was verified for: `shownCode` falls back to that cache when the profile has
+    // no code, so the stale value would reappear there as if still valid.
+    if (typeChanged) clearRegulasiCache();
     router.push("/dasbor");
   }
 
