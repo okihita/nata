@@ -118,15 +118,17 @@ export default function PerizinanPage() {
   const verdict = cached?.verdict ?? null;
   const candidates = cached?.candidates ?? [];
 
-  // A KBLI verified anywhere in the app is saved on the business profile. If the
-  // receipt cascade verified one, this screen must show it rather than claiming
-  // nothing is known — the fact belongs to the business, not to this screen.
+  // A KBLI verified anywhere in the app is saved on the business profile, and
+  // BOTH paths write it — the cascade and this screen's own run. So the profile
+  // is always at least as fresh as this screen's cache, and it wins when they
+  // disagree. (Preferring the cache showed a stale code here after the receipt
+  // cascade had verified a different one.)
   const saved = business?.kbliCode
     ? { code: business.kbliCode, title: business.kbliTitle ?? "" }
     : null;
-  const shownCode = verdict?.code ?? saved?.code ?? null;
-  const shownTitle = verdict?.title ?? saved?.title ?? null;
-  const fromProfile = !verdict && saved != null;
+  const shownCode = saved?.code ?? verdict?.code ?? null;
+  const shownTitle = saved?.title ?? verdict?.title ?? null;
+  const fromProfile = saved != null && saved.code !== verdict?.code;
 
   return (
     <>
@@ -293,7 +295,9 @@ export default function PerizinanPage() {
                         {copy.perizinan.verified}
                       </Badge>
                       <span className="text-muted-foreground">
-                        {verdict?.source ?? copy.perizinan.fromCascade}
+                        {fromProfile
+                          ? copy.perizinan.fromCascade
+                          : (verdict?.source ?? copy.perizinan.fromCascade)}
                       </span>
                     </div>
                   </div>
