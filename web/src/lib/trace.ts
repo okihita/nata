@@ -52,7 +52,11 @@ export interface RunState {
   /** Agent Fiskal's plain-Indonesian narrative answer. */
   taxAnswer: string;
   /** Verified KBLI classification from Agent Regulasi, if it ran. */
-  kbli: { code: string; title: string } | null;
+  kbli: {
+    code: string;
+    title: string;
+    hierarchy?: { level: string; code: string; title: string }[];
+  } | null;
   latencyMs: number | null;
   error: string | null;
 }
@@ -210,8 +214,12 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
         // Only a verified code is recorded; a candidate list is an intermediate
         // step, not a result.
         if (response.status === "success" && response.code) {
-          const rec = response as { code: string; title: string };
-          next.kbli = { code: rec.code, title: rec.title };
+          const rec = response as {
+            code: string;
+            title: string;
+            hierarchy?: { level: string; code: string; title: string }[];
+          };
+          next.kbli = { code: rec.code, title: rec.title, hierarchy: rec.hierarchy };
           next.steps.push({
             id: nextId(),
             kind: "regulasi",

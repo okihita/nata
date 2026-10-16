@@ -94,6 +94,7 @@ export default function PerizinanPage() {
         updateBusiness({
           kbliCode: result.verdict.code,
           kbliTitle: result.verdict.title,
+          kbliHierarchy: result.verdict.hierarchy,
         });
       }
       setAnswer(result.answer);
@@ -123,11 +124,21 @@ export default function PerizinanPage() {
   // disagree. (Preferring the cache showed a stale code here after the receipt
   // cascade had verified a different one.)
   const saved = business?.kbliCode
-    ? { code: business.kbliCode, title: business.kbliTitle ?? "" }
+    ? {
+        code: business.kbliCode,
+        title: business.kbliTitle ?? "",
+        hierarchy: business.kbliHierarchy,
+      }
     : null;
   const shownCode = saved?.code ?? verdict?.code ?? null;
   const shownTitle = saved?.title ?? verdict?.title ?? null;
   const fromProfile = saved != null && saved.code !== verdict?.code;
+  // The hierarchy may come from this screen's run or from the stored profile,
+  // so a code verified by the receipt cascade still shows its position.
+  const shownHierarchy =
+    verdict?.code === shownCode && verdict.hierarchy?.length
+      ? verdict.hierarchy
+      : (saved?.hierarchy ?? []);
 
   return (
     <>
@@ -309,14 +320,14 @@ export default function PerizinanPage() {
 
                   {/* Di mana kode ini berada dalam klasifikasi — KBLI bersifat
                       hierarkis, jadi angkanya tidak berdiri sendiri. */}
-                  {verdict?.hierarchy && verdict.hierarchy.length > 1 && (
+                  {shownHierarchy.length > 1 && (
                     <div className="space-y-2">
                       <p className="text-[11px] font-medium text-muted-foreground">
                         {copy.perizinan.hierarchyLabel}
                       </p>
                       <ol className="space-y-1.5">
-                        {verdict.hierarchy.map((h, i) => {
-                          const last = i === verdict.hierarchy!.length - 1;
+                        {shownHierarchy.map((h, i) => {
+                          const last = i === shownHierarchy.length - 1;
                           return (
                             <li
                               key={h.code}

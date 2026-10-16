@@ -148,6 +148,7 @@ export default function CatatPage() {
         updateBusiness({
           kbliCode: finished.kbli.code,
           kbliTitle: finished.kbli.title,
+          kbliHierarchy: finished.kbli.hierarchy,
         });
       }
     } catch {

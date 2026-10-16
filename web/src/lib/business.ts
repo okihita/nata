@@ -39,6 +39,13 @@ export interface Business {
    */
   kbliCode?: string;
   kbliTitle?: string;
+  /**
+   * Posisi kode itu dalam klasifikasi (divisi → kelompok). Disimpan bersama
+   * kodenya supaya layar bisa menampilkan hierarkinya tanpa memanggil agen lagi —
+   * termasuk bila kode itu diverifikasi oleh pencatatan struk, bukan oleh layar
+   * Perizinan.
+   */
+  kbliHierarchy?: { level: string; code: string; title: string }[];
   createdAt: string;
 }
 
@@ -129,6 +136,9 @@ export function loadBusiness(): Business | null {
         (parsed.taxpayer === "badan" ? "pt_cv" : "orang_pribadi"),
       kbliCode: typeof parsed.kbliCode === "string" ? parsed.kbliCode : undefined,
       kbliTitle: typeof parsed.kbliTitle === "string" ? parsed.kbliTitle : undefined,
+      kbliHierarchy: Array.isArray(parsed.kbliHierarchy)
+        ? (parsed.kbliHierarchy as { level: string; code: string; title: string }[])
+        : undefined,
       createdAt: parsed.createdAt ?? new Date().toISOString(),
     };
   } catch {
