@@ -478,6 +478,14 @@ export const copy = {
     reference: "Kode rujukan",
   },
 
+  notFound: {
+    title: "Halaman tidak ditemukan",
+    body:
+      "Tautan yang Anda buka tidak ada, atau sudah berpindah. Pembukuan Anda tetap aman.",
+    toApp: "Buka pembukuan saya",
+    toLanding: "Ke halaman utama",
+  },
+
   status: {
     working: "Diproses…",
     recorded: "Tercatat",
