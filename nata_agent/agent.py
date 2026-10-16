@@ -17,6 +17,7 @@ from google.adk.agents.llm_agent import Agent
 from google.adk.tools import ToolContext
 
 from .tax import compute_pph_final
+from .regulasi import classify_kbli
 
 # Model id is configuration, not code: pin/update it via NATA_MODEL without a
 # code change. Default is the project's agreed starting model (see AGENTS.md).
@@ -232,7 +233,9 @@ Workflow — follow it on every request:
 5. After a successful commit, you MUST hand the posted entry to "Agent Fiskal"
    (the tax agent) so the PPh Final is computed on it. Do that by calling
    `transfer_to_agent` with `agent_name` = "agent_fiskal". Do not compute tax
-   yourself and do not answer the tax question yourself.
+   yourself and do not answer the tax question yourself. Fiskal will in turn
+   hand the case to Agent Regulasi for the KBLI licensing classification — you
+   do not need to contact Regulasi yourself.
 6. When transferred, output only the transfer function call — no accompanying
    text.
 
@@ -262,10 +265,56 @@ Workflow — follow it on every request:
    quote its text; do not paraphrase the law.
 4. State clearly when the Rp 500.000.000 individual exemption (Pasal 60 ayat (2))
    makes the tax Rp 0, and how much of that band has been used.
-5. Do not transfer anywhere. Do not call any other tool.
+5. After reporting the tax, hand the case to "Agent Regulasi" so the business's
+   KBLI 2020 licensing code is classified. Do that by calling `transfer_to_agent`
+   with `agent_name` = "agent_regulasi". Report the tax FIRST, then transfer —
+   do not mention licensing yourself, that is Regulasi's job.
+6. Do not call any other tool.
 
 Answer in Indonesian. Amounts are Indonesian Rupiah (IDR).
 """
+
+_REGULASI_INSTRUCTION = """You are "Agent Regulasi", the Indonesian business-licensing
+agent for a micro/small business. Agent Fiskal has just finished the tax
+assessment and handed the case to you; your job is the *perizinan* follow-through —
+mapping what the business actually does to its official KBLI 2020 code.
+
+Workflow — follow it on every request:
+1. Work out what the business actually does, in plain words, from the receipt(s)
+   and the journal in this session (for example: "warung kopi, pembeli makan di
+   tempat"), or from the description given in the request.
+2. Call the `classify_kbli` tool with that `description`. It returns real
+   candidates from the official KBLI 2020 catalogue (1.790 codes). NEVER invent
+   a KBLI code and never guess one from memory.
+3. Pick the single best candidate, then call `classify_kbli` AGAIN with that
+   `code` to verify it. Only a `status: "success"` result is a verified code.
+   If it returns "error", take another candidate and verify that instead.
+4. Report the verified code with its official title quoted exactly as the tool
+   returned it. State the code and name (for example: "56102 — Rumah/Warung
+   Makan").
+5. Be honest about what is NOT known: the tool returns `risk_level: null`
+   because KBLI does not carry the risk tier. Say plainly that the risk level
+   (Rendah/Menengah/Tinggi) and the licensing steps must be confirmed at
+   OSS-RBA, and that Nata does not guess them. Never invent a licence name,
+   cost, or processing time.
+6. Do not transfer anywhere. Do not call any other tool.
+
+Answer in Indonesian, in plain language a shop owner understands. Amounts are
+Indonesian Rupiah (IDR).
+"""
+
+agent_regulasi = Agent(
+    model=MODEL,
+    name="agent_regulasi",
+    description=(
+        "Agent Regulasi maps a micro/small business's activities to its exact "
+        "KBLI 2020 code and grounds it in the official catalogue."
+    ),
+    instruction=_REGULASI_INSTRUCTION,
+    tools=[classify_kbli],
+    # One-way hop: licensing is the last stop, it never bounces back up.
+    disallow_transfer_to_parent=True,
+)
 
 agent_fiskal = Agent(
     model=MODEL,
@@ -276,7 +325,8 @@ agent_fiskal = Agent(
     ),
     instruction=_TAX_INSTRUCTION,
     tools=[compute_pph_final],
-    # One-way hop: the tax agent reports back up, it never bounces to the parent.
+    # Chains onward to Regulasi: the cascade is one-way, never back to the parent.
+    sub_agents=[agent_regulasi],
     disallow_transfer_to_parent=True,
 )
 
