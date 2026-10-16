@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { APP_NAME, ensureSession, streamRun, type AdkEvent, type RunRequest } from "@/lib/adk";
 import { emptyRun, readingStep, reduceEvent, type RunState } from "@/lib/trace";
 import { CitationList } from "@/components/citation-list";
+import { Prose } from "@/components/prose";
 import { copy } from "@/lib/copy";
 import { useWorkspace } from "@/lib/store";
 import { idrFull } from "@/lib/format";
@@ -500,9 +501,10 @@ function TaxCard({ run, onViewTax }: { run: RunState; onViewTax: () => void }) {
         </div>
 
         {run.taxAnswer && (
-          <div className="max-h-56 overflow-y-auto whitespace-pre-wrap rounded-lg border bg-background/60 p-3 text-xs leading-relaxed text-muted-foreground">
-            {run.taxAnswer}
-          </div>
+          <Prose
+            text={run.taxAnswer}
+            className="max-h-56 overflow-y-auto rounded-lg border bg-background/60 p-3 text-xs text-muted-foreground"
+          />
         )}
 
         <CitationList citations={tax.citations} />
