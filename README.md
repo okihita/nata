@@ -1,18 +1,27 @@
-# Nata — Slice A
+# Nata
 
-**Receipt photo → SAK EMKM double-entry journal entry.**
+**Receipt photo → SAK EMKM double-entry journal entry → PPh Final tax, with
+statutory citations.**
 
 Nata is an autonomous back-office & compliance engine for Indonesian SMBs,
-built for the **Google Cloud AI Builder Cup 2026**. Slice A is the first
-vertical: an agent ("Agent Keuangan") reads a receipt image and proposes a
-balanced double-entry journal entry under **SAK EMKM** (the Indonesian
-financial-accounting standard for micro, small & medium entities).
+built for the **Google Cloud AI Builder Cup 2026**.
 
-This is a Python [ADK](https://google.github.io/adk-docs/) project. Gemini
-multimodal parses the receipt; a deterministic Python tool enforces the
-accounting identity `Assets = Liabilities + Equity`.
+Two vertical slices are built:
 
-## Architecture (Slice A)
+| Slice | What it does |
+| --- | --- |
+| **A — Agent Keuangan** | Reads a receipt image and commits a balanced double-entry journal entry under **SAK EMKM** (the Indonesian financial-accounting standard for micro, small & medium entities). |
+| **B — Agent Fiskal** | Receives the committed journal, computes the **PPh Final UMKM 0,5%** liability (PP 55/2022) and grounds every figure in an exact Pasal/Ayat citation. |
+
+This is a Python [ADK](https://google.github.io/adk-docs/) project with a
+Next.js console. Gemini multimodal parses the receipt; deterministic Python
+tools enforce the accounting identity `Assets = Liabilities + Equity` and do
+the tax arithmetic.
+
+> **Branching:** this repo uses a lite git flow (`main` / `develop` /
+> `feature/*`). See [AGENTS.md](./AGENTS.md) before making changes.
+
+## Architecture
 
 ```
 receipt image ──▶ Agent Keuangan (LlmAgent, Gemini multimodal)
@@ -23,11 +32,21 @@ receipt image ──▶ Agent Keuangan (LlmAgent, Gemini multimodal)
                         │   • debit total == credit total
                         │   • ≥2 lines, each debit XOR credit
                         ▼
-                  accepted ledger entry  |  clear error
+              accepted entry ──▶ session state (ledger_entries)
+                        │  one-way handoff
+                        ▼
+                  Agent Fiskal (tax compliance)
+                        │  calls compute_pph_final(turnover)
+                        ▼
+              PPh Final 0,5%  +  verbatim Pasal/Ayat citations
+                        (read from nata_agent/statutes/ — no managed RAG)
 ```
 
 **The model proposes, the code enforces.** `commit_journal_entry` never trusts
-the LLM: it re-validates the posting and raises on any violation.
+the LLM: it re-validates the posting and raises on any violation. The tax
+agent likewise never does its own arithmetic and never invents a citation —
+`compute_pph_final` recomputes everything and attaches quotes that are checked
+verbatim against the in-repo statute text.
 
 ## Prerequisites
 
@@ -86,8 +105,9 @@ uv run pytest
 │   ├── __init__.py           # exports root_agent
 │   └── agent.py              # Agent Keuangan + commit_journal_entry tool
 ├── tests/
-│   └── test_commit_journal_entry.py
-└── web/                      # Next.js operator console (see web/README.md)
+│   ├── test_commit_journal_entry.py
+│   └── test_compute_pph_final.py
+└── web/                      # Next.js console (see web/README.md)
     └── src/
 ```
 
@@ -104,5 +124,18 @@ See `.env.example`. All values are placeholders; secrets are never committed.
 
 ## Roadmap
 
-Slice A is step 1. Next: **Slice B** — Agent Keuangan hands off to *Agent
-Fiskal*, which computes `PPh Final 0.5%` with a Pasal citation.
+Slice A and Slice B are done and verified. Next: **Agent Regulasi** (KBLI 2020
+classification, OSS-RBA licensing) and a production deploy to Cloud Run /
+Firebase, staying live through the judging window (19 Oct – 6 Nov).
+
+## Contributing
+
+This repository uses a lite git flow — `main` for releases, `develop` for
+integration, and short-lived `feature/*` / `fix/*` / `hotfix/*` branches.
+The full workflow, commit-message convention, and pre-commit checks are in
+[AGENTS.md](./AGENTS.md).
+
+```bash
+uv run pytest                        # Python: agent + tax engine
+git switch develop && git switch -c feature/<slice>
+```
