@@ -213,6 +213,9 @@ export const copy = {
     ],
     export: "Ekspor",
     exportSoon: "Ekspor segera hadir",
+    emptyTitle: "Laporan muncul setelah ada catatan",
+    emptyBody:
+      "Laporan keuangan disusun dari pembukuan Anda. Catat struk pertama dulu, lalu laporan ini akan terisi sendiri.",
   },
 
   pajak: {
