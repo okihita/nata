@@ -346,6 +346,32 @@ export const copy = {
     footerTagline: "Pembukuan otomatis untuk usaha Indonesia.",
   },
 
+  pengaturan: {
+    title: "Pengaturan",
+    subtitle: "Kelola data usaha Anda di perangkat ini.",
+    dataTitle: "Data usaha",
+    dataBody: (name: string, count: number) =>
+      `${name} — ${count} catatan tersimpan di perangkat ini.`,
+    demoTitle: "Muat data contoh",
+    demoBody: "Isi pembukuan dengan contoh usaha kafe untuk mencoba semua layar.",
+    demoLoaded: "Data contoh dimuat.",
+    clearTitle: "Kosongkan pembukuan",
+    clearBody: "Hapus semua catatan, tetapi tetap simpan profil usaha Anda.",
+    clearAction: "Kosongkan",
+    clearConfirmTitle: "Kosongkan pembukuan?",
+    clearConfirmBody:
+      "Semua transaksi akan dihapus dan tidak bisa dikembalikan. Profil usaha Anda tetap tersimpan.",
+    cleared: "Pembukuan dikosongkan.",
+    dangerTitle: "Hapus usaha ini",
+    dangerBody:
+      "Menghapus usaha beserta seluruh pembukuannya dari perangkat ini, dan mengembalikan Anda ke halaman awal.",
+    resetAction: "Hapus semua data",
+    resetConfirmTitle: "Hapus semua data?",
+    resetConfirmBody:
+      "Profil usaha dan seluruh catatan akan dihapus permanen dari perangkat ini. Tindakan ini tidak bisa dibatalkan.",
+    reset: "Semua data dihapus.",
+  },
+
   comingSoon: {
     usaha: "Profil Usaha",
     usahaBody:
