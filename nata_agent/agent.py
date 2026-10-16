@@ -14,6 +14,9 @@ from typing import Any
 from pydantic import BaseModel, Field, ValidationError
 
 from google.adk.agents.llm_agent import Agent
+from google.adk.tools import ToolContext
+
+from .tax import compute_pph_final
 
 # Model id is configuration, not code: pin/update it via NATA_MODEL without a
 # code change. Default is the project's agreed starting model (see AGENTS.md).
@@ -132,7 +135,11 @@ def validate_journal_entry(lines: Any) -> list[JournalLine]:
     return coerced
 
 
-def commit_journal_entry(description: str, lines: list[JournalLine]) -> dict:
+def commit_journal_entry(
+    description: str,
+    lines: list[JournalLine],
+    tool_context: ToolContext = None,
+) -> dict:
     """Validate and commit a double-entry journal entry to the SAK EMKM ledger.
 
     Call this tool for EVERY receipt — never write the journal entry as free
@@ -164,6 +171,24 @@ def commit_journal_entry(description: str, lines: list[JournalLine]) -> dict:
         return {"status": "error", "error_message": str(exc)}
 
     total = round(sum(line.debit for line in committed), 2)
+
+    # Record the committed posting in session state so Agent Fiskal can assess
+    # the tax on the same journal (the cascade reads state, not a side channel).
+    committed_lines = [
+        {"account": line.account.strip(), "debit": line.debit, "credit": line.credit}
+        for line in committed
+    ]
+    if tool_context is not None and getattr(tool_context, "state", None) is not None:
+        ledger = list(tool_context.state.get("ledger_entries") or [])
+        ledger.append(
+            {
+                "date": _today_iso(),
+                "description": description.strip(),
+                "lines": committed_lines,
+            }
+        )
+        tool_context.state["ledger_entries"] = ledger
+
     return {
         "status": "success",
         "message": (
@@ -171,15 +196,18 @@ def commit_journal_entry(description: str, lines: list[JournalLine]) -> dict:
             f"total debit = total credit = {total:,.2f} IDR."
         ),
         "description": description.strip(),
-        "lines": [
-            {"account": line.account.strip(), "debit": line.debit, "credit": line.credit}
-            for line in committed
-        ],
+        "lines": committed_lines,
         "total_debit": total,
         "total_credit": total,
         "balanced": True,
         "accounting_equation": "Assets = Liabilities + Equity",
     }
+
+
+def _today_iso() -> str:
+    from datetime import date
+
+    return date.today().isoformat()
 
 
 _INSTRUCTION = """You are "Agent Keuangan", the bookkeeping agent for an Indonesian
@@ -201,20 +229,65 @@ Workflow — follow it on every request:
 4. If the tool returns status "error", read the error message, fix the lines
    (usually the totals are unbalanced or a line has both sides set), and call
    the tool again. Do not give up while the entry can still be balanced.
-5. After a successful commit, reply with a short summary: the description, the
-   lines, and the total amount.
+5. After a successful commit, you MUST hand the posted entry to "Agent Fiskal"
+   (the tax agent) so the PPh Final is computed on it. Do that by calling
+   `transfer_to_agent` with `agent_name` = "agent_fiskal". Do not compute tax
+   yourself and do not answer the tax question yourself.
+6. When transferred, output only the transfer function call — no accompanying
+   text.
 
 Always answer in English. Keep amounts in Indonesian Rupiah (IDR). Never invent
 amounts that are not on the receipt.
 """
+
+_TAX_INSTRUCTION = """You are "Agent Fiskal", the Indonesian tax-compliance agent
+for a micro/small business. Agent Keuangan has just posted a journal entry to the
+ledger and handed it to you; your job is the tax follow-through.
+
+Workflow — follow it on every request:
+1. Call the `compute_pph_final` tool EXACTLY ONCE. It returns the turnover, the
+   tax payable and the Pasal/Ayat citations. NEVER compute tax yourself and
+   never invent a figure.
+   - If the request states a specific turnover figure (peredaran bruto, in
+     rupiah), pass it to the tool as the `turnover` argument (a number, no
+     separators), and pass `taxpayer` ("orang_pribadi" or "badan") when a
+     taxpayer type is named.
+   - Otherwise omit `turnover`: the tool then reads the journal that Agent
+     Keuangan committed in this session.
+2. If the tool returns status "error" (for example, no ledger entries yet),
+   report the error plainly and stop — there is nothing to assess.
+3. Report the result in plain Indonesian for the shop owner, and for EVERY
+   figure quote its Pasal/Ayat citation verbatim from the tool's `citations`
+   array (for example: "Tarif 0,5% — Pasal 56 ayat (2)"). Name the article and
+   quote its text; do not paraphrase the law.
+4. State clearly when the Rp 500.000.000 individual exemption (Pasal 60 ayat (2))
+   makes the tax Rp 0, and how much of that band has been used.
+5. Do not transfer anywhere. Do not call any other tool.
+
+Answer in Indonesian. Amounts are Indonesian Rupiah (IDR).
+"""
+
+agent_fiskal = Agent(
+    model=MODEL,
+    name="agent_fiskal",
+    description=(
+        "Agent Fiskal computes the PPh Final UMKM 0,5% liability under PP 55/2022 "
+        "and grounds every figure in its exact Pasal/Ayat citation."
+    ),
+    instruction=_TAX_INSTRUCTION,
+    tools=[compute_pph_final],
+    # One-way hop: the tax agent reports back up, it never bounces to the parent.
+    disallow_transfer_to_parent=True,
+)
 
 root_agent = Agent(
     model=MODEL,
     name="agent_keuangan",
     description=(
         "Agent Keuangan turns a receipt photo into a balanced SAK EMKM "
-        "double-entry journal entry."
+        "double-entry journal entry, then hands off to Agent Fiskal for tax."
     ),
     instruction=_INSTRUCTION,
     tools=[commit_journal_entry],
+    sub_agents=[agent_fiskal],
 )
