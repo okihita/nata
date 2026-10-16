@@ -92,10 +92,19 @@ cp .env.example .env    # .env is gitignored; never commit real values
 uv run adk web --port 48702   # open http://localhost:48702, pick "nata_agent"
 ```
 
-CLI instead of a browser:
+`adk api_server` serves every agent package in the repo, so both apps appear in
+the picker:
+
+| App | What it is |
+| --- | --- |
+| `nata_agent` | The cascade entry point — Agent Keuangan, which hands off to Fiskal and on to Regulasi |
+| `nata_regulasi` | Agent Regulasi on its own, so a screen can call `classify_kbli` directly |
+
+CLI instead of a browser (either app):
 
 ```bash
-uv run adk run nata_agent
+uv run adk run nata_agent       # the whole cascade
+uv run adk run nata_regulasi    # licensing only
 ```
 
 `adk web` is the framework's dev harness (a generic chat playground). The
