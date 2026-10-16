@@ -247,6 +247,7 @@ export const copy = {
     resultHintEmpty: "Hasil akan muncul di sini setelah pencarian.",
     codeLabel: "Kode",
     verified: "Terverifikasi",
+    hierarchyLabel: "Posisi dalam klasifikasi",
     noResult: "Belum ada kode terverifikasi. Jalankan pencarian dulu.",
     riskTitle: "Tingkat risiko & izin",
     riskLevelLabel: "Tingkat risiko",

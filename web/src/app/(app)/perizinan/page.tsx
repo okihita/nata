@@ -283,6 +283,46 @@ export default function PerizinanPage() {
                       {verdict.description}
                     </p>
                   )}
+
+                  {/* Di mana kode ini berada dalam klasifikasi — KBLI bersifat
+                      hierarkis, jadi angkanya tidak berdiri sendiri. */}
+                  {verdict.hierarchy && verdict.hierarchy.length > 1 && (
+                    <div className="space-y-2">
+                      <p className="text-[11px] font-medium text-muted-foreground">
+                        {copy.perizinan.hierarchyLabel}
+                      </p>
+                      <ol className="space-y-1.5">
+                        {verdict.hierarchy.map((h, i) => {
+                          const last = i === verdict.hierarchy!.length - 1;
+                          return (
+                            <li
+                              key={h.code}
+                              className="flex items-start gap-2"
+                              style={{ paddingLeft: `${i * 12}px` }}
+                            >
+                              <span
+                                className={cn(
+                                  "mt-1 size-1.5 shrink-0 rounded-full",
+                                  last ? "bg-primary" : "bg-muted-foreground/40",
+                                )}
+                              />
+                              <span className="min-w-0 flex-1 text-[11px] leading-snug">
+                                <span
+                                  className={cn(
+                                    "tabular-nums",
+                                    last ? "font-semibold" : "text-muted-foreground",
+                                  )}
+                                >
+                                  {h.code}
+                                </span>
+                                <span className="text-muted-foreground"> · {h.title}</span>
+                              </span>
+                            </li>
+                          );
+                        })}
+                      </ol>
+                    </div>
+                  )}
                 </>
               ) : (
                 <p className="py-6 text-center text-sm text-muted-foreground">

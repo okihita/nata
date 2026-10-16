@@ -38,6 +38,8 @@ export interface KbliVerdict {
   source: string;
   file: string;
   title_verbatim: boolean;
+  /** Ancestors from division down to the subclass — real taxonomy, not decoration. */
+  hierarchy?: { level: string; code: string; title: string }[];
   /** null by design: KBLI carries no risk tier, so nothing is invented. */
   risk_level: string | null;
   risk_note: string;
