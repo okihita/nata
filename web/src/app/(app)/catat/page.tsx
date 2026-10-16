@@ -25,7 +25,7 @@ const SESSION_KEY = "***";
 
 export default function CatatPage() {
   const router = useRouter();
-  const { addEntry } = useWorkspace();
+  const { addEntry, business } = useWorkspace();
 
   const [run, setRun] = useState<RunState>(emptyRun);
   const [file, setFile] = useState<File | null>(null);
@@ -92,7 +92,20 @@ export default function CatatPage() {
         newMessage: {
           role: "user",
           parts: [
-            { text: "Here is a receipt photo. Post it to the ledger." },
+            {
+              // The KBLI classification must describe the *business*, not the
+              // receipt. Without this, a stationery purchase at a coffee shop
+              // was classified as a stationery retailer (47611) rather than a
+              // cafe (56303) — the agent can only see what it is told.
+              text:
+                `Here is a receipt photo. Post it to the ledger.` +
+                (business
+                  ? ` This business is "${business.name}", a ${business.type} ` +
+                    `(entity: ${business.entity}). Use THAT as the business's ` +
+                    `activity when classifying its KBLI code — the receipt is ` +
+                    `only one purchase it made, not what the business does.`
+                  : ""),
+            },
             { inlineData: { mimeType: file.type || "image/png", data: base64 } } as never,
           ],
         },
@@ -132,7 +145,7 @@ export default function CatatPage() {
     } finally {
       setBusy(false);
     }
-  }, [addEntry, busy, file, fileName]);
+  }, [addEntry, busy, file, fileName, business]);
 
   const accepted = run.commit?.status === "success";
   const rejected = run.commit?.status === "error";
