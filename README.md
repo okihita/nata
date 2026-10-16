@@ -69,7 +69,7 @@ uv sync
 cp .env.example .env    # .env is gitignored; never commit real values
 
 # 3. Launch the ADK dev UI from the repo root
-uv run adk web          # open http://localhost:8000, pick "nata_agent"
+uv run adk web --port 48702   # open http://localhost:48702, pick "nata_agent"
 ```
 
 CLI instead of a browser:
@@ -84,6 +84,15 @@ written for shop owners: **Dasbor**, **Catat Struk** (receipt OCR), **Transaksi*
 **Daftar Akun**, **Laporan Keuangan** (SAK EMKM statements) and **Pajak**
 (PPh Final UMKM), plus routed "segera hadir" placeholders. It talks to the same
 agent API; run `adk api_server --port 48700` behind it.
+
+Ports are a reserved, high/uncommon namespace so they never collide with other
+dev servers on the same machine:
+
+| Port | Service |
+| --- | --- |
+| `48700` | ADK `api_server` (backend the console proxies to) |
+| `48701` | Next.js console |
+| `48702` | `adk web` dev playground |
 
 See [`web/README.md`](./web/README.md) for the information architecture, the
 accounting model, and how to run it.

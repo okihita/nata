@@ -87,8 +87,16 @@ pnpm install
 pnpm build && pnpm start --port 48701      # http://localhost:48701
 ```
 
-Ports are deliberately high/uncommon (`48700` backend, `48701` console) so they
-never collide with the usual dev suspects.
+Ports are deliberately high/uncommon (`48700` backend, `48701` console, `48702`
+`adk web` playground) so they never collide with the usual dev suspects. They sit
+just below the OS ephemeral port range (49152–65535) to avoid clashing with
+transient outbound sockets:
+
+| Port | Service |
+| --- | --- |
+| `48700` | ADK `api_server` — backend this console proxies to |
+| `48701` | Next.js console |
+| `48702` | `adk web` dev playground (framework harness) |
 
 ### Demo data
 
