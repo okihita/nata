@@ -111,6 +111,7 @@ export const copy = {
     needsActionEmpty: "Tidak ada yang perlu ditindak. Pembukuan Anda rapi.",
     needsTaxDue: (amount: string) => `Pajak final periode ini ${amount}`,
     needsTaxExempt: "Omzet masih di bawah batas bebas pajak",
+    needsKbli: "Kode KBLI belum ditentukan — perlu untuk perizinan",
     needsUnpaid: (count: number, amount: string) =>
       `${count} utang usaha belum dibayar (${amount})`,
     complianceTitle: "Status usaha Anda",

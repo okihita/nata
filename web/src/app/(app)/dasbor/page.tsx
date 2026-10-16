@@ -169,7 +169,10 @@ export default function DashboardPage() {
           karena inilah layar pertama yang dibuka pemilik. */}
       {business && (
         <Card className="mt-4">
-          <CardContent className="grid gap-4 pt-6 sm:grid-cols-3">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">{copy.dashboard.complianceTitle}</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-4 sm:grid-cols-3">
             <ComplianceItem
               icon={<Building2 className="size-3.5" />}
               label={copy.dashboard.complianceEntity}
