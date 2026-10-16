@@ -1,10 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Search, ReceiptText } from "lucide-react";
+import Link from "next/link";
+import { Search, ReceiptText, ScanLine } from "lucide-react";
 
 import { PageHeader } from "@/components/app-sidebar";
+import { EmptyState } from "@/components/empty-state";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -95,15 +98,19 @@ export default function TransaksiPage() {
       <Card>
         <CardContent className="pt-6">
           {filtered.length === 0 ? (
-            <div className="flex flex-col items-center gap-2 py-16 text-center">
-              <span className="grid size-12 place-items-center rounded-full bg-muted">
-                <ReceiptText className="size-5 text-muted-foreground" />
-              </span>
-              <p className="text-sm font-medium">{copy.transaksi.emptyTitle}</p>
-              <p className="max-w-sm text-sm text-muted-foreground">
-                {copy.transaksi.emptyBody}
-              </p>
-            </div>
+            <EmptyState
+              icon={<ReceiptText className="size-6" />}
+              title={copy.transaksi.emptyTitle}
+              body={copy.transaksi.emptyBody}
+              actions={
+                <Button asChild size="sm">
+                  <Link href="/catat">
+                    <ScanLine className="mr-2 size-4" />
+                    {copy.dashboard.actionScan}
+                  </Link>
+                </Button>
+              }
+            />
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
