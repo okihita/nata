@@ -86,16 +86,17 @@ export const MOBILE_NAV: NavItem[] = NAV.flatMap((group) => group.items)
 
 /** Tone → Tailwind colour classes for the active state. */
 export const TONE_CLASS: Record<NavTone, string> = {
-  hijau: "text-emerald-700 data-[active=true]:bg-emerald-50 data-[active=true]:text-emerald-800",
-  biru: "text-sky-700 data-[active=true]:bg-sky-50 data-[active=true]:text-sky-800",
-  ungu: "text-violet-700 data-[active=true]:bg-violet-50 data-[active=true]:text-violet-800",
-  oranye: "text-amber-700 data-[active=true]:bg-amber-50 data-[active=true]:text-amber-800",
+  hijau: "text-tone-hijau data-[active=true]:bg-tone-hijau-bg data-[active=true]:text-tone-hijau",
+  biru: "text-tone-biru data-[active=true]:bg-tone-biru-bg data-[active=true]:text-tone-biru",
+  ungu: "text-tone-ungu data-[active=true]:bg-tone-ungu-bg data-[active=true]:text-tone-ungu",
+  oranye:
+    "text-tone-oranye data-[active=true]:bg-tone-oranye-bg data-[active=true]:text-tone-oranye",
 };
 
 /** Small coloured dot per group, as a legend/key. */
 export const TONE_DOT: Record<NavTone, string> = {
-  hijau: "bg-emerald-500",
-  biru: "bg-sky-500",
-  ungu: "bg-violet-500",
-  oranye: "bg-amber-500",
+  hijau: "bg-tone-hijau",
+  biru: "bg-tone-biru",
+  ungu: "bg-tone-ungu",
+  oranye: "bg-tone-oranye",
 };
