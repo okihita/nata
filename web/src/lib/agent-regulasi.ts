@@ -10,7 +10,7 @@
  * tool's verbatim quote — the same discipline as the tax screen.
  */
 
-import { APP_NAME, ensureSession, streamRun, type AdkEvent } from "./adk";
+import { ensureSession, streamRun, type AdkEvent } from "./adk";
 
 /**
  * Agent Regulasi is served as its own ADK app (`nata_regulasi`), not through the

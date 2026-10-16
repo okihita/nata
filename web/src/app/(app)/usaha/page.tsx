@@ -13,7 +13,7 @@
  * akibat pajaknya secara terbuka, bukan disembunyikan di balik istilah.
  */
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Check, ShieldCheck, Store } from "lucide-react";
 import Link from "next/link";
@@ -44,19 +44,29 @@ export default function UsahaPage() {
   const router = useRouter();
   const { business, ready, createBusiness, updateBusiness } = useWorkspace();
 
-  const [name, setName] = useState("");
-  const [ownerName, setOwnerName] = useState("");
-  const [type, setType] = useState<BusinessType>("warung");
-  const [entity, setEntity] = useState<EntityType>("orang_pribadi");
+  // Derive the form from the stored business during render, with a local
+  // override once the owner edits a field. Same pattern as the Perizinan
+  // description: no effect, so there is no extra render pass on mount and no
+  // set-state-in-effect. (An effect that copied `business` into state ran a
+  // second render and blanked the fields for one frame.)
+  const [edited, setEdited] = useState<
+    Partial<{
+      name: string;
+      ownerName: string;
+      type: BusinessType;
+      entity: EntityType;
+    }>
+  >({});
 
-  // Fill the form from the stored business once it has loaded.
-  useEffect(() => {
-    if (!business) return;
-    setName(business.name);
-    setOwnerName(business.ownerName);
-    setType(business.type);
-    setEntity(business.entity);
-  }, [business]);
+  const name = edited.name ?? business?.name ?? "";
+  const ownerName = edited.ownerName ?? business?.ownerName ?? "";
+  const type = edited.type ?? business?.type ?? "warung";
+  const entity = edited.entity ?? business?.entity ?? "orang_pribadi";
+
+  const setName = (value: string) => setEdited((s) => ({ ...s, name: value }));
+  const setOwnerName = (value: string) => setEdited((s) => ({ ...s, ownerName: value }));
+  const setType = (value: BusinessType) => setEdited((s) => ({ ...s, type: value }));
+  const setEntity = (value: EntityType) => setEdited((s) => ({ ...s, entity: value }));
 
   const isOnboarding = ready && business == null;
   const canSubmit = name.trim().length > 0;

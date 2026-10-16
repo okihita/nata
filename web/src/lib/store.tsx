@@ -3,31 +3,26 @@
 /**
  * Identitas usaha + pembukuan (ledger) untuk seluruh aplikasi.
  *
- * Dua hal yang dimiliki provider ini:
- *  1. `business` — usaha mana yang sedang dipakai (nama, jenis, jenis pajak).
- *  2. `entries` — jurnal usaha itu, disimpan per-usaha lewat namespace.
+ * Nilainya disimpan sebagai *external store* (bukan state React), lalu dibaca
+ * komponen lewat `useSyncExternalStore`. Alasannya bukan gaya: datanya ada di
+ * `localStorage`, dan `localStorage` memang penyimpanan eksternal. Pola ini
+ * membuat:
  *
- * Sebelumnya jurnal disemai otomatis dengan data contoh sebuah kafe. Sekarang
- * tidak: usaha baru mulai dari pembukuan kosong, dan pemilik mengisi usahanya
- * sendiri lewat /usaha. Data contoh tetap tersedia sebagai aksi eksplisit
- * (`loadDemo`) supaya demo tetap mudah, tapi tidak pernah muncul sendiri.
+ *  - pembacaan awal terjadi di klien saja, dengan `getServerSnapshot` yang tetap
+ *    sehingga render server dan render pertama klien tidak berbeda (tidak ada
+ *    hydration mismatch);
+ *  - tidak ada `setState` di dalam `useEffect`, jadi tidak ada render berantai
+ *    saat halaman pertama dimuat;
+ *  - pemanggil di luar React (mis. dari handler di modul lain) tetap bisa
+ *    membaca dan mengubah data.
  *
- * Bentuk data sengaja tidak bergantung pada React, supaya penggantian ke
+ * Bentuk datanya sengaja tidak bergantung pada React, supaya penggantian ke
  * Firebase Auth + Firestore nanti hanya menyentuh lapisan penyimpanan.
  */
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { useSyncExternalStore } from "react";
 
 import {
-  BUSINESS_STORAGE_KEY,
   clearBusiness,
   loadBusiness,
   newBusinessId,
@@ -42,165 +37,166 @@ import {
   seedEntries,
   type JournalEntry,
   type JournalLine,
-  type LedgerState,
 } from "./ledger";
 
-interface WorkspaceContextValue {
+export interface WorkspaceSnapshot {
   /** Null until the owner has set up a business. */
   business: Business | null;
   entries: JournalEntry[];
   /** False until localStorage has been read — screens show a skeleton. */
   ready: boolean;
-  /** Create the business (onboarding). */
-  createBusiness: (input: {
-    name: string;
-    ownerName: string;
-    type: Business["type"];
-    entity: Business["entity"];
-  }) => Business;
-  /** Edit the business (Profil Usaha). */
-  updateBusiness: (patch: Partial<Omit<Business, "id" | "createdAt">>) => void;
-  addEntry: (input: {
-    date: string;
-    description: string;
-    lines: JournalLine[];
-    source?: JournalEntry["source"];
-    receiptName?: string;
-  }) => JournalEntry;
-  /** Explicitly load the demo café books (demo affordance, never automatic). */
-  loadDemo: () => void;
-  /** Empty the current business's journal. */
-  clearAll: () => void;
-  /** Forget everything — business and its books. */
-  reset: () => void;
 }
 
-const WorkspaceContext = createContext<WorkspaceContextValue | null>(null);
+const EMPTY: WorkspaceSnapshot = { business: null, entries: [], ready: false };
 
-export function WorkspaceProvider({ children }: { children: ReactNode }) {
-  const [business, setBusiness] = useState<Business | null>(null);
-  const [state, setState] = useState<LedgerState>({ entries: [] });
-  const [ready, setReady] = useState(false);
+/**
+ * Server snapshot. Must be referentially stable, or React re-renders forever.
+ * `ready: false` keeps prerendered HTML and the first client paint identical.
+ */
+const SERVER_SNAPSHOT: WorkspaceSnapshot = { business: null, entries: [], ready: false };
 
-  // Load once on mount: the business identity and its journal.
-  useEffect(() => {
-    const biz = loadBusiness();
-    setBusiness(biz);
-    setState(biz ? loadLedger(biz.id) : { entries: [] });
-    setReady(true);
-  }, []);
+let snapshot: WorkspaceSnapshot = EMPTY;
+let loaded = false;
 
-  const persistLedger = useCallback(
-    (next: LedgerState, forBusiness: Business | null) => {
-      setState(next);
-      if (forBusiness) saveLedger(next, forBusiness.id);
-    },
-    [],
-  );
+const listeners = new Set<() => void>();
 
-  const createBusiness = useCallback<WorkspaceContextValue["createBusiness"]>(
-    (input) => {
-      const biz: Business = {
-        id: newBusinessId(),
-        name: input.name.trim(),
-        ownerName: input.ownerName.trim(),
-        type: input.type,
-        entity: input.entity,
-        createdAt: new Date().toISOString(),
-      };
-      saveBusiness(biz);
-      setBusiness(biz);
-      // A brand-new business starts with an empty journal.
-      persistLedger({ entries: [] }, biz);
-      return biz;
-    },
-    [persistLedger],
-  );
-
-  const updateBusiness = useCallback<WorkspaceContextValue["updateBusiness"]>(
-    (patch) => {
-      setBusiness((current) => {
-        if (!current) return current;
-        const next = { ...current, ...patch };
-        saveBusiness(next);
-        return next;
-      });
-    },
-    [],
-  );
-
-  const addEntry = useCallback<WorkspaceContextValue["addEntry"]>(
-    (input) => {
-      const entry: JournalEntry = {
-        id: newId(),
-        date: input.date,
-        description: input.description,
-        lines: input.lines.map((line) => ({
-          account: line.account,
-          debit: line.debit || 0,
-          credit: line.credit || 0,
-        })),
-        source: input.source ?? "manual",
-        receiptName: input.receiptName,
-        createdAt: new Date().toISOString(),
-      };
-      setState((current) => {
-        const next = addEntryToState(current, entry);
-        if (business) saveLedger(next, business.id);
-        return next;
-      });
-      return entry;
-    },
-    [business],
-  );
-
-  const loadDemo = useCallback(() => {
-    const seeded = seedEntries();
-    persistLedger({ entries: seeded }, business);
-  }, [business, persistLedger]);
-
-  const clearAll = useCallback(() => {
-    persistLedger({ entries: [] }, business);
-  }, [business, persistLedger]);
-
-  const reset = useCallback(() => {
-    clearBusiness();
-    setBusiness(null);
-    setState({ entries: [] });
-  }, []);
-
-  const value = useMemo<WorkspaceContextValue>(
-    () => ({
-      business,
-      entries: state.entries,
-      ready,
-      createBusiness,
-      updateBusiness,
-      addEntry,
-      loadDemo,
-      clearAll,
-      reset,
-    }),
-    [
-      business,
-      state.entries,
-      ready,
-      createBusiness,
-      updateBusiness,
-      addEntry,
-      loadDemo,
-      clearAll,
-      reset,
-    ],
-  );
-
-  return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>;
+function emit(next: WorkspaceSnapshot): void {
+  snapshot = next;
+  for (const listener of listeners) listener();
 }
 
-export function useWorkspace(): WorkspaceContextValue {
-  const ctx = useContext(WorkspaceContext);
-  if (!ctx) throw new Error("useWorkspace must be used inside <WorkspaceProvider>");
-  return ctx;
+/** Read localStorage once, on the client, on first subscribe. */
+function ensureLoaded(): void {
+  if (loaded || typeof window === "undefined") return;
+  loaded = true;
+  const business = loadBusiness();
+  emit({
+    business,
+    entries: business ? loadLedger(business.id).entries : [],
+    ready: true,
+  });
 }
 
-export { BUSINESS_STORAGE_KEY };
+/** Test/dev affordance: forget the in-memory cache so the next read reloads. */
+export function invalidateWorkspace(): void {
+  loaded = false;
+  emit(EMPTY);
+}
+
+// ── Actions ─────────────────────────────────────────────────────────────────
+
+function persist(entries: JournalEntry[], business: Business | null): void {
+  if (business) saveLedger({ entries }, business.id);
+  emit({ ...snapshot, entries, ready: true });
+}
+
+export function createBusiness(input: {
+  name: string;
+  ownerName: string;
+  type: Business["type"];
+  entity: Business["entity"];
+}): Business {
+  const biz: Business = {
+    id: newBusinessId(),
+    name: input.name.trim(),
+    ownerName: input.ownerName.trim(),
+    type: input.type,
+    entity: input.entity,
+    createdAt: new Date().toISOString(),
+  };
+  saveBusiness(biz);
+  // A brand-new business starts with an empty journal.
+  saveLedger({ entries: [] }, biz.id);
+  emit({ business: biz, entries: [], ready: true });
+  return biz;
+}
+
+export function updateBusiness(patch: Partial<Omit<Business, "id" | "createdAt">>): void {
+  const current = snapshot.business;
+  if (!current) return;
+  const next = { ...current, ...patch };
+  saveBusiness(next);
+  emit({ ...snapshot, business: next });
+}
+
+export function addEntry(input: {
+  date: string;
+  description: string;
+  lines: JournalLine[];
+  source?: JournalEntry["source"];
+  receiptName?: string;
+}): JournalEntry {
+  const entry: JournalEntry = {
+    id: newId(),
+    date: input.date,
+    description: input.description,
+    lines: input.lines.map((line) => ({
+      account: line.account,
+      debit: line.debit || 0,
+      credit: line.credit || 0,
+    })),
+    source: input.source ?? "manual",
+    receiptName: input.receiptName,
+    createdAt: new Date().toISOString(),
+  };
+  const next = addEntryToState({ entries: snapshot.entries }, entry);
+  persist(next.entries, snapshot.business);
+  return entry;
+}
+
+/** Explicitly load the demo cafe books (demo affordance, never automatic). */
+export function loadDemo(): void {
+  persist(seedEntries(), snapshot.business);
+}
+
+/** Empty the current business's journal. */
+export function clearAll(): void {
+  persist([], snapshot.business);
+}
+
+/** Forget everything — business and its books. */
+export function reset(): void {
+  clearBusiness();
+  loaded = true; // deliberate: do not re-read the storage we just cleared
+  emit({ business: null, entries: [], ready: true });
+}
+
+// ── React binding ───────────────────────────────────────────────────────────
+
+function subscribe(onChange: () => void): () => void {
+  ensureLoaded();
+  listeners.add(onChange);
+  return () => {
+    listeners.delete(onChange);
+  };
+}
+
+function getSnapshot(): WorkspaceSnapshot {
+  return snapshot;
+}
+
+function getServerSnapshot(): WorkspaceSnapshot {
+  return SERVER_SNAPSHOT;
+}
+
+export interface Workspace extends WorkspaceSnapshot {
+  createBusiness: typeof createBusiness;
+  updateBusiness: typeof updateBusiness;
+  addEntry: typeof addEntry;
+  loadDemo: typeof loadDemo;
+  clearAll: typeof clearAll;
+  reset: typeof reset;
+}
+
+export function useWorkspace(): Workspace {
+  const snap = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  return {
+    ...snap,
+    createBusiness,
+    updateBusiness,
+    addEntry,
+    loadDemo,
+    clearAll,
+    reset,
+  };
+}

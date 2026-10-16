@@ -14,7 +14,7 @@
  * baik daripada menampilkan tebakan sebagai fakta.
  */
 
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import {
   AlertTriangle,
   BadgeCheck,
@@ -67,19 +67,18 @@ export default function PerizinanPage() {
   const [running, setRunning] = useState(false);
   const [latency, setLatency] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [description, setDescription] = useState("");
+  // Null until the owner edits it. Deriving the default during render (rather
+  // than seeding state in an effect) keeps the first paint correct and avoids a
+  // second render pass on mount.
+  const [editedDescription, setEditedDescription] = useState<string | null>(null);
 
-  // Seed the description from what the owner already told us, so the common
-  // case needs no typing at all.
-  useEffect(() => {
-    if (!business) return;
-    setDescription((current) => current || defaultDescription(business.type));
-  }, [business]);
+  const description =
+    editedDescription ?? defaultDescription(business?.type ?? "lainnya");
+  const setDescription = setEditedDescription;
 
   useEffect(() => {
     primeRegulasiStore();
   }, []);
-
   const run = useCallback(async () => {
     setRunning(true);
     setError(null);
