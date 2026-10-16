@@ -39,6 +39,7 @@ export const copy = {
     akun: "Daftar Akun",
     laporan: "Laporan Keuangan",
     pajak: "Pajak",
+    perizinan: "Perizinan",
     usaha: "Profil Usaha",
     pengaturan: "Pengaturan",
     comingSoon: "Segera hadir",
@@ -219,6 +220,41 @@ export const copy = {
     emptyTitle: "Laporan muncul setelah ada catatan",
     emptyBody:
       "Laporan keuangan disusun dari pembukuan Anda. Catat struk pertama dulu, lalu laporan ini akan terisi sendiri.",
+  },
+
+  perizinan: {
+    title: "Perizinan",
+    subtitle: "Kode KBLI 2020 untuk usaha Anda, dari katalog resmi.",
+    describeTitle: "Usaha Anda melakukan apa?",
+    describeHint:
+      "Tulis dengan bahasa sehari-hari. Nata mencocokkannya ke kode KBLI resmi — bukan menebak.",
+    describePlaceholder:
+      "Contoh: warung yang menjual makanan dan minuman, pembeli makan di tempat.",
+    run: "Cari kode KBLI",
+    running: "Mencari kode…",
+    rerun: "Cari ulang",
+    reset: "Mulai ulang",
+    done: (seconds: string) => `Selesai dalam ${seconds} detik.`,
+    candidatesTitle: "Kode yang dipertimbangkan",
+    candidatesHint:
+      "Diambil dari katalog KBLI 2020 \u2014 1.790 kode resmi. Anda bisa melihat pilihannya.",
+    chosen: "Dipilih",
+    emptyTitle: "Belum ada kode KBLI",
+    emptyBody:
+      "Jelaskan kegiatan usaha Anda, lalu tekan Cari kode KBLI. Nata akan mencocokkannya ke katalog resmi.",
+    resultTitle: "Kode KBLI Anda",
+    resultHint: "Terverifikasi ada di katalog KBLI 2020.",
+    codeLabel: "Kode",
+    verified: "Terverifikasi",
+    noResult: "Belum ada kode terverifikasi. Jalankan pencarian dulu.",
+    riskTitle: "Tingkat risiko & izin",
+    riskLevelLabel: "Tingkat risiko",
+    riskUnknown: "Perlu dicek di OSS-RBA",
+    riskNote:
+      "Katalog KBLI tidak memuat tingkat risiko (Rendah/Menengah/Tinggi) maupun syarat izinnya. Nata sengaja tidak menebak keduanya, karena keduanya berasal dari OSS-RBA dan berdampak hukum.",
+    ossHint:
+      "Langkah berikutnya: buka oss.go.id, masukkan kode di atas, lalu ikuti persyaratan yang muncul untuk usaha Anda.",
+    agentTitle: "Penjelasan Agent Regulasi",
   },
 
   pajak: {

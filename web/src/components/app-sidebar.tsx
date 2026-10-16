@@ -10,6 +10,7 @@ import {
   ReceiptText,
   ScanLine,
   Settings,
+  ShieldCheck,
   Store,
   Sparkles,
   type LucideIcon,
@@ -41,6 +42,7 @@ export const ICONS: Record<string, LucideIcon> = {
   BookOpen,
   FileBarChart,
   Landmark,
+  ShieldCheck,
   Store,
   Settings,
 };
