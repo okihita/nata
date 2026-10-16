@@ -27,6 +27,7 @@ import {
 
 import { PageHeader } from "@/components/app-sidebar";
 import { EmptyState } from "@/components/empty-state";
+import { Prose } from "@/components/prose";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -328,9 +329,10 @@ export default function PerizinanPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="max-h-80 overflow-y-auto whitespace-pre-wrap rounded-lg bg-muted/40 p-3 text-xs leading-relaxed">
-                  {answer}
-                </div>
+                <Prose
+                  text={answer}
+                  className="max-h-80 overflow-y-auto rounded-lg bg-muted/40 p-3 text-xs"
+                />
               </CardContent>
             </Card>
           )}

@@ -5,6 +5,7 @@ import { Landmark, Info, ShieldCheck, Sparkles, Loader2 } from "lucide-react";
 
 import { PageHeader } from "@/components/app-sidebar";
 import { CitationList } from "@/components/citation-list";
+import { Prose } from "@/components/prose";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -191,9 +192,10 @@ export default function PajakPage() {
                   </div>
 
                   {answer && (
-                    <div className="max-h-64 overflow-y-auto whitespace-pre-wrap rounded-lg border bg-background/60 p-3 text-xs leading-relaxed text-muted-foreground">
-                      {answer}
-                    </div>
+                    <Prose
+                      text={answer}
+                      className="max-h-64 overflow-y-auto rounded-lg border bg-background/60 p-3 text-xs text-muted-foreground"
+                    />
                   )}
 
                   <CitationList citations={agentTax.citations} showQuotes />
