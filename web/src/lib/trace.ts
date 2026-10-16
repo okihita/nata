@@ -103,6 +103,22 @@ function ensureChecking(next: RunState, at: number): void {
   else next.steps.splice(outcomeAt, 0, step);
 }
 
+/**
+ * Push a step unless it repeats the one immediately before it.
+ *
+ * Observed live: the agent called `classify_kbli` twice with a description, so
+ * the trace showed "Mencari kode KBLI 2020" twice in a row with identical text.
+ * A repeated identical line reads as a glitch rather than as information.
+ *
+ * Only *consecutive* duplicates collapse — a step that legitimately recurs
+ * later (after other work) is kept, because the sequence then carries meaning.
+ */
+function pushStep(next: RunState, step: TraceStep): void {
+  const last = next.steps[next.steps.length - 1];
+  if (last && last.kind === step.kind && last.title === step.title) return;
+  next.steps.push(step);
+}
+
 /** Fold one SSE frame into the current run state. Returns a new state object. */
 export function reduceEvent(state: RunState, event: AdkEvent): RunState {
   const next: RunState = { ...state, steps: [...state.steps] };
@@ -130,7 +146,7 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
 
       // The tax agent running its own tool.
       if (call.name === "compute_pph_final") {
-        next.steps.push({
+        pushStep(next, {
           id: nextId(),
           kind: "tax",
           title: copy.steps.taxChecking.title,
@@ -148,7 +164,7 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
         // description, then verifying a chosen code. Naming them the same made
         // the trace read as a duplicated step.
         const isVerify = typeof args.code === "string" && args.code.length > 0;
-        next.steps.push({
+        pushStep(next, {
           id: nextId(),
           kind: "regulasi",
           title: isVerify
@@ -170,7 +186,7 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
         // Regulasi follows Fiskal, so it gets its own wording rather than the
         // "handed to the tax agent" line meant for the first hop.
         const toRegulasi = target === "agent_regulasi";
-        next.steps.push({
+        pushStep(next, {
           id: nextId(),
           kind: "handoff",
           title: toRegulasi
@@ -192,7 +208,7 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
       const wording = lines?.length
         ? copy.steps.matching(lines.length)
         : copy.steps.matchingNoLines;
-      next.steps.push({
+      pushStep(next, {
         id: nextId(),
         kind: "matching",
         title: wording.title,
@@ -241,7 +257,7 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
       if (toolName === "compute_pph_final") {
         if (response.status === "success") {
           next.tax = response as unknown as TaxAssessment;
-          next.steps.push({
+          pushStep(next, {
             id: nextId(),
             kind: "tax",
             title: copy.steps.taxDone.title,
@@ -249,7 +265,7 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
             at,
           });
         } else {
-          next.steps.push({
+          pushStep(next, {
             id: nextId(),
             kind: "problem",
             title: copy.pajak.agentTitle,

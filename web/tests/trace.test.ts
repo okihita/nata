@@ -180,6 +180,31 @@ test("identical frames for one call do not duplicate a step", () => {
   assert.equal(s.steps.length, 1, `expected one step, got ${s.steps.length}`);
 });
 
+test("two searches in a row collapse to one line", () => {
+  // Observed live: the agent called classify_kbli twice with a description, so
+  // the trace showed "Mencari kode KBLI 2020" twice consecutively. Different call
+  // ids, same wording — a repeated identical line reads as a glitch.
+  let s = reduceEvent(emptyRun, call("classify_kbli", { description: "warung kopi" }, "k1"));
+  s = reduceEvent(s, call("classify_kbli", { description: "warung kopi lagi" }, "k2"));
+
+  const searches = s.steps.filter((x) => x.title === copy.steps.kbliChecking.title);
+  assert.equal(searches.length, 1, `expected one search line, got ${searches.length}`);
+});
+
+test("a step that recurs later is kept", () => {
+  // Only *consecutive* repeats collapse. Search -> verify -> search is a real
+  // sequence (the owner changed the description), and must stay visible.
+  let s = reduceEvent(emptyRun, call("classify_kbli", { description: "warung kopi" }, "a"));
+  s = reduceEvent(s, call("classify_kbli", { code: "56102" }, "b"));
+  s = reduceEvent(s, call("classify_kbli", { description: "toko bangunan" }, "c"));
+  assert.deepEqual(
+    kinds(s),
+    ["regulasi", "regulasi", "regulasi"],
+    "all three acts should be present",
+  );
+  assert.equal(new Set(titles(s)).size, 2, "search/verify wording should differ");
+});
+
 // ── Small helpers ──────────────────────────────────────────────────────────
 
 test("the reading step marks the run as started", () => {
