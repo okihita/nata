@@ -145,7 +145,7 @@ export default function LandingPage() {
           </h2>
           <p className="mt-3 max-w-2xl text-muted-foreground">{L.proofBody}</p>
 
-          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {L.proofItems.map((item) => (
               <Card key={item.title} className="h-full bg-card">
                 <CardContent className="pt-6">
@@ -190,7 +190,7 @@ export default function LandingPage() {
           ))}
         </div>
 
-        <div className="mt-10 grid gap-3 sm:grid-cols-3">
+        <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Capability icon={<ScanLine className="size-4 text-primary" />} text="Foto struk → jurnal" />
           <Capability icon={<BookOpenCheck className="size-4 text-primary" />} text="Laporan SAK EMKM" />
           <Capability
