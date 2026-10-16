@@ -19,6 +19,7 @@ import { CitationList } from "@/components/citation-list";
 import { Prose } from "@/components/prose";
 import { copy } from "@/lib/copy";
 import { useWorkspace } from "@/lib/store";
+import { describeAgentError } from "@/lib/agent-errors";
 import { idrFull } from "@/lib/format";
 
 const USER_ID = "web-console";
@@ -151,8 +152,8 @@ export default function CatatPage() {
           kbliHierarchy: finished.kbli.hierarchy,
         });
       }
-    } catch {
-      setBanner(copy.banner.offline);
+    } catch (error) {
+      setBanner(describeAgentError(error));
       setRun((current) => ({ ...current, status: "error" }));
     } finally {
       setBusy(false);

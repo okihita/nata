@@ -561,5 +561,9 @@ export const copy = {
     title: "Ada yang perlu dicek",
     offline:
       "Kami belum bisa terhubung ke layanan pembukuan. Pastikan Nata sedang berjalan, lalu coba lagi.",
+    busy:
+      "Layanan sedang sibuk dan belum bisa memproses permintaan ini. Catatan Anda tidak berubah — tunggu sebentar, lalu coba lagi.",
+    timeout:
+      "Prosesnya memakan waktu lebih lama dari biasanya. Catatan Anda tidak berubah — coba lagi sebentar lagi.",
   },
 } as const;

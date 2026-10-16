@@ -1,5 +1,6 @@
 import type { AdkEvent, JournalOutcome, TaxAssessment } from "./adk";
 import { copy } from "./copy";
+import { describeAgentError } from "./agent-errors";
 
 /**
  * The screen's model of one receipt: a plain-language activity feed plus the
@@ -126,7 +127,9 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
 
   if (event.errorMessage) {
     next.status = "error";
-    next.error = copy.banner.offline;
+    // The server sends the underlying message here, so it can be classified:
+    // a quota/rate-limit event is not the same as an unreachable backend.
+    next.error = describeAgentError(event.errorMessage);
     next.steps.push({
       id: nextId(),
       kind: "problem",

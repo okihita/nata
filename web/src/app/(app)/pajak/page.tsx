@@ -20,6 +20,7 @@ import { PPH_FINAL_RATE, PPH_INDIVIDUAL_EXEMPTION } from "@/lib/sak-emkm";
 import type { TaxAssessment } from "@/lib/adk";
 import { cacheTax, getServerTaxSnapshot, getTaxSnapshot, primeTaxStore, readCachedTax, runFiskal, subscribeTax } from "@/lib/agent-tax";
 import { copy } from "@/lib/copy";
+import { describeAgentError } from "@/lib/agent-errors";
 import { idrFull } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -72,8 +73,8 @@ export default function PajakPage() {
       if (result.tax) cacheTax(result.tax);
       setAnswer(result.answer);
       setLatency(result.latencyMs);
-    } catch {
-      setError(copy.banner.offline);
+    } catch (error) {
+      setError(describeAgentError(error));
     } finally {
       setRunning(false);
     }

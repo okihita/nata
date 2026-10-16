@@ -54,6 +54,7 @@ import {
   verifyRegulasiCode,
 } from "@/lib/agent-regulasi";
 import { copy } from "@/lib/copy";
+import { describeAgentError } from "@/lib/agent-errors";
 import { cn } from "@/lib/utils";
 
 export default function PerizinanPage() {
@@ -100,8 +101,8 @@ export default function PerizinanPage() {
       }
       setAnswer(result.answer);
       setLatency(result.latencyMs);
-    } catch {
-      setError(copy.banner.offline);
+    } catch (error) {
+      setError(describeAgentError(error));
     } finally {
       setRunning(false);
     }
@@ -131,8 +132,8 @@ export default function PerizinanPage() {
         }
         setAnswer(result.answer);
         setLatency(result.latencyMs);
-      } catch {
-        setError(copy.banner.offline);
+      } catch (error) {
+        setError(describeAgentError(error));
       } finally {
         setRunning(false);
       }
