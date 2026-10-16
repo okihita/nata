@@ -124,6 +124,12 @@ export default function DashboardPage() {
             />
           </CardContent>
         </Card>
+
+        {/* Bentuk usaha dan perlakuan pajaknya sudah pasti sejak onboarding, jadi
+            pemilik baru harus melihatnya di sini juga — bukan baru setelah ada
+            transaksi. Kode KBLI memang belum ada, dan justru itu yang perlu
+            terlihat sebagai langkah berikutnya. */}
+        {business && <ComplianceRow business={business} />}
       </>
     );
   }
@@ -167,42 +173,7 @@ export default function DashboardPage() {
       {/* Status usaha: tiga hal yang menentukan kewajiban pemilik — bentuk
           usaha, perlakuan pajaknya, dan kode KBLI-nya. Ditampilkan di sini
           karena inilah layar pertama yang dibuka pemilik. */}
-      {business && (
-        <Card className="mt-4">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base">{copy.dashboard.complianceTitle}</CardTitle>
-          </CardHeader>
-          <CardContent className="grid gap-4 sm:grid-cols-3">
-            <ComplianceItem
-              icon={<Building2 className="size-3.5" />}
-              label={copy.dashboard.complianceEntity}
-              value={ENTITY_LABEL[business.entity]}
-            />
-            <ComplianceItem
-              icon={<Landmark className="size-3.5" />}
-              label={copy.dashboard.complianceTax}
-              value={
-                entityHasExemption(business.entity)
-                  ? copy.pajak.entityExemptTitle
-                  : copy.pajak.entityTaxedTitle
-              }
-              tone={entityHasExemption(business.entity) ? "ok" : "warn"}
-            />
-            <ComplianceItem
-              icon={<ShieldCheck className="size-3.5" />}
-              label={copy.dashboard.complianceKbli}
-              value={
-                business.kbliCode
-                  ? `${business.kbliCode} · ${business.kbliTitle ?? ""}`
-                  : copy.dashboard.complianceKbliNone
-              }
-              href={business.kbliCode ? "/perizinan" : "/perizinan"}
-              cta={business.kbliCode ? copy.dashboard.complianceOpen : copy.dashboard.complianceKbliCta}
-              tone={business.kbliCode ? "ok" : "warn"}
-            />
-          </CardContent>
-        </Card>
-      )}
+      {business && <ComplianceRow business={business} className="mt-4" />}
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         {/* Grafik */}
@@ -507,6 +478,61 @@ function QuickAction({
         </div>
       </Link>
     </Button>
+  );
+}
+
+/**
+ * The three standing facts that decide what the owner owes: business form, its
+ * tax treatment, and its KBLI code.
+ *
+ * Extracted because it must appear on both dashboard branches — the first-run
+ * view as well as the populated one. Entity and tax treatment are settled at
+ * onboarding, so a brand-new owner can already see them; the KBLI is usually
+ * still open, which is exactly what makes it useful there.
+ */
+function ComplianceRow({
+  business,
+  className,
+}: {
+  business: NonNullable<ReturnType<typeof useWorkspace>["business"]>;
+  className?: string;
+}) {
+  const exempt = entityHasExemption(business.entity);
+  return (
+    <Card className={className}>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base">{copy.dashboard.complianceTitle}</CardTitle>
+      </CardHeader>
+      <CardContent className="grid gap-4 sm:grid-cols-3">
+        <ComplianceItem
+          icon={<Building2 className="size-3.5" />}
+          label={copy.dashboard.complianceEntity}
+          value={ENTITY_LABEL[business.entity]}
+        />
+        <ComplianceItem
+          icon={<Landmark className="size-3.5" />}
+          label={copy.dashboard.complianceTax}
+          value={exempt ? copy.pajak.entityExemptTitle : copy.pajak.entityTaxedTitle}
+          tone={exempt ? "ok" : "warn"}
+        />
+        <ComplianceItem
+          icon={<ShieldCheck className="size-3.5" />}
+          label={copy.dashboard.complianceKbli}
+          value={
+            business.kbliCode
+              ? `${business.kbliCode} · ${business.kbliTitle ?? ""}`
+              : copy.dashboard.complianceKbliNone
+          }
+          href="/perizinan"
+          cta={
+            business.kbliCode
+              ? copy.dashboard.complianceOpen
+              : copy.dashboard.complianceKbliCta
+          }
+          tone={business.kbliCode ? "ok" : "warn"}
+        />
+      </CardContent>
+    </Card>
   );
 }
 
