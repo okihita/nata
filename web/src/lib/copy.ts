@@ -178,6 +178,9 @@ export const copy = {
     used: "Dipakai",
     unused: "Belum dipakai",
     emptyBalance: "—",
+    emptyTitle: "Belum ada akun yang dipakai",
+    emptyBody:
+      "Daftar ini terisi sendiri begitu Anda mencatat transaksi — Nata memilih akun yang sesuai untuk tiap struk.",
   },
 
   laporan: {
