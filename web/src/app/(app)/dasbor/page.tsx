@@ -4,6 +4,8 @@ import Link from "next/link";
 import {
   ArrowDownRight,
   ArrowUpRight,
+  Building2,
+  ChevronRight,
   FileBarChart,
   Landmark,
   ScanLine,
@@ -36,7 +38,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useWorkspace } from "@/lib/store";
-import { entityHasExemption } from "@/lib/business";
+import { ENTITY_LABEL, entityHasExemption } from "@/lib/business";
 import { balanceSheet, incomeStatement, monthlyRevenue, taxPosition, trialBalance } from "@/lib/ledger";
 import { copy } from "@/lib/copy";
 import { idr, idrFull } from "@/lib/format";
@@ -161,6 +163,43 @@ export default function DashboardPage() {
           tone="neutral"
         />
       </div>
+
+      {/* Status usaha: tiga hal yang menentukan kewajiban pemilik — bentuk
+          usaha, perlakuan pajaknya, dan kode KBLI-nya. Ditampilkan di sini
+          karena inilah layar pertama yang dibuka pemilik. */}
+      {business && (
+        <Card className="mt-4">
+          <CardContent className="grid gap-4 pt-6 sm:grid-cols-3">
+            <ComplianceItem
+              icon={<Building2 className="size-3.5" />}
+              label={copy.dashboard.complianceEntity}
+              value={ENTITY_LABEL[business.entity]}
+            />
+            <ComplianceItem
+              icon={<Landmark className="size-3.5" />}
+              label={copy.dashboard.complianceTax}
+              value={
+                entityHasExemption(business.entity)
+                  ? copy.pajak.entityExemptTitle
+                  : copy.pajak.entityTaxedTitle
+              }
+              tone={entityHasExemption(business.entity) ? "ok" : "warn"}
+            />
+            <ComplianceItem
+              icon={<ShieldCheck className="size-3.5" />}
+              label={copy.dashboard.complianceKbli}
+              value={
+                business.kbliCode
+                  ? `${business.kbliCode} · ${business.kbliTitle ?? ""}`
+                  : copy.dashboard.complianceKbliNone
+              }
+              href={business.kbliCode ? "/perizinan" : "/perizinan"}
+              cta={business.kbliCode ? copy.dashboard.complianceOpen : copy.dashboard.complianceKbliCta}
+              tone={business.kbliCode ? "ok" : "warn"}
+            />
+          </CardContent>
+        </Card>
+      )}
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         {/* Grafik */}
@@ -465,5 +504,69 @@ function QuickAction({
         </div>
       </Link>
     </Button>
+  );
+}
+
+/**
+ * One compliance fact about the business (entity, tax treatment, KBLI).
+ *
+ * These are durable facts, not figures for the period, so they are presented as
+ * a quiet status row rather than as a metric card — and the KBLI item links
+ * straight to the screen that can determine it.
+ */
+function ComplianceItem({
+  icon,
+  label,
+  value,
+  tone = "neutral",
+  href,
+  cta,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  tone?: "ok" | "warn" | "neutral";
+  href?: string;
+  cta?: string;
+}) {
+  const toneClass =
+    tone === "ok"
+      ? "text-tone-hijau"
+      : tone === "warn"
+        ? "text-tone-oranye"
+        : "text-muted-foreground";
+
+  const body = (
+    <>
+      <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+        {icon}
+        {label}
+      </span>
+      <span className="mt-1 block truncate text-sm font-medium" title={value}>
+        {value}
+      </span>
+      {href && cta && (
+        <span
+          className={cn(
+            "mt-1 inline-flex items-center gap-0.5 text-[11px] font-medium",
+            toneClass,
+          )}
+        >
+          {cta}
+          <ChevronRight className="size-3" />
+        </span>
+      )}
+    </>
+  );
+
+  return href ? (
+    <Link
+      href={href}
+      className="min-w-0 rounded-lg border bg-card p-3 transition hover:bg-muted/40"
+    >
+      {body}
+    </Link>
+  ) : (
+    <div className="min-w-0 rounded-lg border bg-card p-3">{body}</div>
   );
 }

@@ -113,6 +113,13 @@ export const copy = {
     needsTaxExempt: "Omzet masih di bawah batas bebas pajak",
     needsUnpaid: (count: number, amount: string) =>
       `${count} utang usaha belum dibayar (${amount})`,
+    complianceTitle: "Status usaha Anda",
+    complianceEntity: "Bentuk usaha",
+    complianceTax: "Perlakuan pajak",
+    complianceKbli: "Kode KBLI",
+    complianceKbliNone: "Belum ditentukan",
+    complianceKbliCta: "Tentukan",
+    complianceOpen: "Lihat perizinan",
     letNataHandle: "Biarkan Nata yang mencatat",
     ownerHint: "Untuk pemilik usaha — cukup foto struk, sisanya otomatis.",
   },
