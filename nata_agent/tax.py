@@ -388,6 +388,7 @@ def assess_pph_final(
 def compute_pph_final(
     tool_context: ToolContext = None,
     taxpayer: str = TAXPAYER_INDIVIDUAL,
+    entity: str = "",
     turnover: int | None = None,
 ) -> dict:
     """Compute the PPh Final UMKM 0,5% liability for the posted ledger.
@@ -398,8 +399,14 @@ def compute_pph_final(
     arithmetic itself.
 
     Args:
-        taxpayer: ``"orang_pribadi"`` (individual — gets the Rp 500.000.000
-            exemption, Pasal 60 ayat (2)) or ``"badan"`` (entity — no exemption).
+        entity: The precise business form — ``"orang_pribadi"``,
+            ``"pt_perorangan"`` or ``"pt_cv"``. Prefer this over ``taxpayer``:
+            it decides the Rp 500 million band exactly, which matters because
+            PT Perorangan is a *badan* (no band) while an individual owner gets
+            it. See :mod:`nata_agent.entities`.
+        taxpayer: Coarse fallback when the precise form is unknown —
+            ``"orang_pribadi"`` (gets the band, Pasal 60 ayat (2)) or
+            ``"badan"`` (no band).
         turnover: Optional explicit gross turnover (peredaran bruto) to assess.
             Pass this only when an explicit figure is given in the request;
             omit it to assess the session ledger that was committed here.
@@ -438,11 +445,31 @@ def compute_pph_final(
 
     year = period_year(entries)
     months = period_months(entries)
+
+    # An unknown entity string is reported rather than silently ignored: falling
+    # back to the payer flag would quietly apply the wrong tax treatment.
+    entity_key = (entity or "").strip()
+    if entity_key and not entities.is_known_entity(entity_key):
+        return {
+            "status": "error",
+            "error_message": (
+                f"bentuk usaha {entity!r} tidak dikenal. "
+                f"Pilihan: {', '.join(entities.ENTITY_TYPES)}."
+            ),
+        }
+
     assessment = assess_pph_final(
-        assessed_turnover, taxpayer=taxpayer, year=year, months=months
+        assessed_turnover,
+        taxpayer=taxpayer,
+        entity=entity_key or None,
+        year=year,
+        months=months,
     )
     result = assessment.as_dict()
     result["turnover_source"] = "argument" if turnover is not None else "session_ledger"
+    if entity_key:
+        result["entity"] = entity_key
+        result["entity_profile"] = entities.profile_of(entity_key).label
 
     if tool_context is not None:
         state = getattr(tool_context, "state", None)

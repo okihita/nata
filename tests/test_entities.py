@@ -110,3 +110,43 @@ def test_entity_overrides_the_coarse_flag():
     """When both are given, the precise entity form wins."""
     a = assess_pph_final(600_000_000, taxpayer="orang_pribadi", entity="pt_perorangan")
     assert a.payable == 3_000_000  # entity wins: no band
+
+
+# ── The ADK tool must expose the entity too ─────────────────────────────────
+#
+# The engine understood entity types before the tool did, which meant Agent
+# Fiskal could only pass the coarse `taxpayer` flag — so a PT Perorangan
+# received the individual's Rp 500 million band. The tool is what the model
+# actually calls, so the capability has to be there.
+
+
+def test_tool_accepts_the_entity_argument():
+    from nata_agent.tax import compute_pph_final
+
+    individual = compute_pph_final(entity="orang_pribadi", turnover=600_000_000)
+    pt_perorangan = compute_pph_final(entity="pt_perorangan", turnover=600_000_000)
+
+    assert individual["status"] == "success"
+    assert individual["payable"] == 500_000
+    assert individual["entity_profile"] == "Orang pribadi"
+
+    assert pt_perorangan["status"] == "success"
+    assert pt_perorangan["payable"] == 3_000_000
+    assert pt_perorangan["entity_profile"] == "PT Perorangan"
+
+
+def test_tool_rejects_an_unknown_entity_rather_than_guessing():
+    """An unrecognised form must not silently fall back to the payer flag."""
+    from nata_agent.tax import compute_pph_final
+
+    r = compute_pph_final(entity="badan_tidak_ada", turnover=600_000_000)
+    assert r["status"] == "error"
+    assert "tidak dikenal" in r["error_message"]
+
+
+def test_tool_without_entity_keeps_legacy_behaviour():
+    from nata_agent.tax import compute_pph_final
+
+    r = compute_pph_final(turnover=600_000_000)
+    assert r["status"] == "success"
+    assert r["payable"] == 500_000  # defaults to orang pribadi
