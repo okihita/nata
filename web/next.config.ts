@@ -4,6 +4,8 @@ const nextConfig: NextConfig = {
   /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
+  // Hide the Next.js dev toolbar/indicator overlay in development.
+  devIndicators: false,
   turbopack: {
     rules: {
       "*.css": {
