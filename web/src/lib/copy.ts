@@ -54,6 +54,8 @@ export const copy = {
     close: "Tutup",
     loading: "Memuat…",
     reset: "Mulai ulang",
+    tryDemo: "Coba data contoh",
+    loadDemo: "Muat data contoh",
     seeAll: "Lihat semua",
     total: "Total",
     account: "Akun",
@@ -72,6 +74,12 @@ export const copy = {
   dashboard: {
     title: "Dasbor",
     subtitle: "Ringkasan usaha Anda hari ini.",
+    firstRunTitle: "Pembukuan Anda masih kosong",
+    firstRunBody:
+      "Belum ada satu pun catatan. Mulai dengan memfoto struk pertama Anda — Nata yang mengurus sisanya.",
+    firstRunDemoHint: "Belum punya struk? Coba dengan data contoh.",
+    emptyChart: "Grafik akan muncul setelah ada transaksi pertama.",
+    emptyActivity: "Belum ada aktivitas. Aktivitas terakhir akan tampil di sini.",
     revenue: "Pendapatan",
     expenses: "Beban",
     netIncome: "Laba bersih",

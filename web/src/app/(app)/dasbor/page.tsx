@@ -23,6 +23,7 @@ import {
 } from "recharts";
 
 import { PageHeader } from "@/components/app-sidebar";
+import { EmptyState } from "@/components/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -40,7 +41,7 @@ import { copy } from "@/lib/copy";
 import { idr, idrFull } from "@/lib/format";
 
 export default function DashboardPage() {
-  const { entries, ready, business } = useWorkspace();
+  const { entries, ready, business, loadDemo } = useWorkspace();
   const income = incomeStatement(entries);
   const bs = balanceSheet(entries);
   const series = monthlyRevenue(entries);
@@ -91,6 +92,39 @@ export default function DashboardPage() {
     );
   }
 
+  // First run: a business with an empty journal. Showing four Rp 0 cards and an
+  // empty chart would read as broken, so the whole page becomes one clear step.
+  if (entries.length === 0) {
+    return (
+      <>
+        <PageHeader title={copy.dashboard.title} subtitle={copy.dashboard.subtitle} />
+        <Card>
+          <CardContent>
+            <EmptyState
+              icon={<ScanLine className="size-6" />}
+              title={copy.dashboard.firstRunTitle}
+              body={copy.dashboard.firstRunBody}
+              actions={
+                <>
+                  <Button asChild>
+                    <Link href="/catat">
+                      <ScanLine className="mr-2 size-4" />
+                      {copy.dashboard.actionScan}
+                    </Link>
+                  </Button>
+                  <Button variant="outline" onClick={loadDemo}>
+                    {copy.common.tryDemo}
+                  </Button>
+                </>
+              }
+              hint={copy.dashboard.firstRunDemoHint}
+            />
+          </CardContent>
+        </Card>
+      </>
+    );
+  }
+
   return (
     <>
       <PageHeader title={copy.dashboard.title} subtitle={copy.dashboard.subtitle} />
@@ -135,7 +169,15 @@ export default function DashboardPage() {
             <CardDescription>{business?.name ?? copy.app.name}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-64 w-full">
+            {series.length === 0 ? (
+              <EmptyState
+                compact
+                icon={<FileBarChart className="size-5" />}
+                title={copy.dashboard.emptyChart}
+                body={copy.dashboard.firstRunBody}
+              />
+            ) : (
+              <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={series} margin={{ left: 4, right: 8, top: 4, bottom: 0 }}>
                   <defs>
@@ -198,6 +240,7 @@ export default function DashboardPage() {
                 </AreaChart>
               </ResponsiveContainer>
             </div>
+            )}
           </CardContent>
         </Card>
 
@@ -302,9 +345,12 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent>
           {entries.length === 0 ? (
-            <p className="py-6 text-center text-sm text-muted-foreground">
-              {copy.dashboard.recentEmpty}
-            </p>
+            <EmptyState
+              compact
+              icon={<ArrowUpRight className="size-5" />}
+              title={copy.dashboard.emptyActivity}
+              body={copy.dashboard.recentEmpty}
+            />
           ) : (
             <ul className="divide-y">
               {[...entries]
