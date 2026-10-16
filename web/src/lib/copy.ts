@@ -345,6 +345,8 @@ export const copy = {
     kbliLabel: "Kode KBLI 2020",
     kbliNone: "Belum ditentukan",
     kbliNoneHint: "Tentukan di halaman Perizinan.",
+    kbliInvalidated:
+      "Jenis usaha berubah, jadi kode KBLI sebelumnya dihapus. Tentukan ulang di Perizinan.",
   },
 
   // ── Halaman muka (landing) ────────────────────────────────────────────────

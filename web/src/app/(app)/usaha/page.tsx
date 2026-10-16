@@ -17,6 +17,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Check, ShieldCheck, Store } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 import { PageHeader } from "@/components/app-sidebar";
 import { Badge } from "@/components/ui/badge";
@@ -78,7 +79,24 @@ export default function UsahaPage() {
       router.push("/catat");
       return;
     }
-    updateBusiness({ name, ownerName, type, entity });
+
+    // A KBLI is derived from what the business does, so it cannot survive a
+    // change of type. Keeping it would leave a code that was verified for a
+    // different activity — worse than no code, because it looks authoritative.
+    const typeChanged = business != null && business.type !== type;
+    updateBusiness({
+      name,
+      ownerName,
+      type,
+      entity,
+      ...(typeChanged
+        ? { kbliCode: undefined, kbliTitle: undefined, kbliHierarchy: undefined }
+        : {}),
+    });
+
+    if (typeChanged && business?.kbliCode) {
+      toast.info(copy.usaha.kbliInvalidated);
+    }
     router.push("/dasbor");
   }
 
