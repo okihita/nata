@@ -155,8 +155,9 @@ src/
 │   │   ├── akun/page.tsx            # Daftar Akun
 │   │   ├── laporan/page.tsx         # Laporan Keuangan
 │   │   ├── pajak/page.tsx           # Pajak
-│   │   ├── usaha/page.tsx           # Profil Usaha (segera hadir)
-│   │   └── pengaturan/page.tsx      # Pengaturan (segera hadir)
+│   │   ├── perizinan/page.tsx       # Perizinan (KBLI 2020)
+│   │   ├── usaha/page.tsx           # Profil Usaha (identity + onboarding)
+│   │   └── pengaturan/page.tsx      # Pengaturan (data actions)
 │   ├── api/adk/[...path]/route.ts   # streaming proxy to the ADK server
 │   ├── layout.tsx                   # <html lang="id">, providers, toaster
 │   └── globals.css                  # shadcn light theme

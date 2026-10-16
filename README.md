@@ -99,11 +99,12 @@ uv run adk run nata_agent
 ```
 
 `adk web` is the framework's dev harness (a generic chat playground). The
-product UI is the Next.js dashboard in [`web/`](./web) — Indonesian, light mode,
+product UI is the Next.js console in [`web/`](./web) — Indonesian, light mode,
 written for shop owners: **Dasbor**, **Catat Struk** (receipt OCR), **Transaksi**,
-**Daftar Akun**, **Laporan Keuangan** (SAK EMKM statements) and **Pajak**
-(PPh Final UMKM), plus routed "segera hadir" placeholders. It talks to the same
-agent API; run `adk api_server --port 48700` behind it.
+**Daftar Akun**, **Laporan Keuangan** (SAK EMKM statements), **Pajak**
+(PPh Final UMKM), **Perizinan** (KBLI 2020), plus **Profil Usaha** and
+**Pengaturan**. It talks to the same agent API; run `adk api_server --port 48700`
+behind it.
 
 Ports are a reserved, high/uncommon namespace so they never collide with other
 dev servers on the same machine:
