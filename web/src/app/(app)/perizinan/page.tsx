@@ -181,9 +181,14 @@ export default function PerizinanPage() {
           <Button
             variant="outline"
             onClick={() => {
+              // Clear the run AND the stored code: the profile fallback would
+              // otherwise keep rendering the same code, so the button would
+              // appear to do nothing.
               clearRegulasi();
+              updateBusiness({ kbliCode: undefined, kbliTitle: undefined, kbliHierarchy: undefined });
               setAnswer("");
               setLatency(null);
+              setError(null);
             }}
           >
             {copy.perizinan.reset}
