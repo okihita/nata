@@ -20,6 +20,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 
 import { emptyRun, reduceEvent, totals, readingStep } from "../src/lib/trace.ts";
+import { copy } from "../src/lib/copy.ts";
 
 const at = 1_700_000_000;
 
@@ -110,6 +111,27 @@ test("a rejected KBLI is not recorded", () => {
   );
   assert.equal(s.kbli, null);
   assert.ok(!kinds(s).includes("regulasi"), "an error should not become a result step");
+});
+
+test("verifying a second code replaces the first, not appends to it", () => {
+  // Observed live: the agent verified 56303 then 56102, and the trace showed
+  // two contradictory steps both labelled "Kode KBLI terverifikasi".
+  let s = reduceEvent(
+    emptyRun,
+    response("classify_kbli", { status: "success", code: "56303", title: "Rumah Minum/Kafe" }),
+  );
+  s = reduceEvent(
+    s,
+    response("classify_kbli", { status: "success", code: "56102", title: "Rumah/Warung Makan" }),
+  );
+
+  const done = s.steps.filter((x) => x.title === copy.steps.kbliDone.title);
+  assert.equal(done.length, 1, `expected one verified step, got ${done.length}`);
+  assert.deepEqual(s.kbli?.code, "56102", "the latest verification is the result");
+  assert.ok(
+    (done[0].detail ?? "").includes("56102"),
+    "the surviving step must describe the final code",
+  );
 });
 
 // ── Journal outcomes ───────────────────────────────────────────────────────

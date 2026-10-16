@@ -220,6 +220,13 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
             hierarchy?: { level: string; code: string; title: string }[];
           };
           next.kbli = { code: rec.code, title: rec.title, hierarchy: rec.hierarchy };
+          // A business has exactly one KBLI code, so a later verification
+          // *replaces* the earlier result rather than joining it. Observed live:
+          // the agent verified 56303 then 56102, and the trace showed two
+          // contradictory steps both labelled "terverifikasi".
+          next.steps = next.steps.filter(
+            (s) => s.kind !== "regulasi" || s.title !== copy.steps.kbliDone.title,
+          );
           next.steps.push({
             id: nextId(),
             kind: "regulasi",
