@@ -230,6 +230,22 @@ export const copy = {
       "Omzet Anda masih di bawah batas bebas pajak, jadi pajak terutang Rp 0. Nata akan menghitungnya otomatis begitu omzet melewati batas.",
     perMonth: (amount: string) => `≈ ${amount} per bulan`,
     basedOn: (months: number) => `dihitung dari ${months} bulan data`,
+    agentTitle: "Pemeriksaan pajak oleh Agent Fiskal",
+    agentIdle:
+      "Agent Fiskal menghitung pajak dari omzet yang sudah tercatat. Catat penjualan lewat Catat Struk dulu untuk melihatnya bekerja.",
+    agentRun: "Hitung pajak dengan Agent Fiskal",
+    agentRerun: "Hitung ulang",
+    agentRunning: "Agent Fiskal sedang menghitung…",
+    agentDone: (seconds: string) => `Selesai dalam ${seconds} detik.`,
+    agentNote:
+      "Nata memakai omzet (peredaran bruto) yang tercatat di pembukuan, bukan laba. Setiap angka disertai dasar hukumnya.",
+    legalBasis: "Dasar hukum",
+    verbatimQuote: "Kutipan Pasal",
+    officialCalc: "Perhitungan resmi Agent Fiskal",
+    noAgentYet:
+      "Belum dihitung oleh Agent Fiskal. Angka di atas dihitung langsung dari pembukuan Anda; jalankan agent untuk melihat dasar hukum tiap angka.",
+    handoffFrom: (from: string, to: string) => `${from} menyerahkan catatan ke ${to}`,
+    fromBooks: "Dari pembukuan Anda",
   },
 
   comingSoon: {
@@ -246,6 +262,13 @@ export const copy = {
     recorded: "Tercatat",
     notRecorded: "Belum tercatat",
     waiting: "Menunggu",
+  },
+
+  agents: {
+    keuangan: "Agent Keuangan",
+    fiskal: "Agent Fiskal",
+    keuanganRole: "Mencatat pembukuan",
+    fiskalRole: "Menghitung pajak",
   },
 
   steps: {
@@ -270,6 +293,18 @@ export const copy = {
       detail: "Hitungannya pas, jadi sudah tercatat.",
     },
     problem: { title: "Dihentikan sebelum dicatat" },
+    handoff: {
+      title: "Diteruskan ke pemeriksa pajak",
+      detail: "Catatan diteruskan ke Agent Fiskal untuk dihitung pajaknya.",
+    },
+    taxChecking: {
+      title: "Menghitung PPh Final 0,5%",
+      detail: "Memakai omzet yang tercatat dan mengecek pembebasan Rp 500 juta.",
+    },
+    taxDone: {
+      title: "Pajak selesai dihitung",
+      detail: "Tiap angka disertai dasar hukum Pasal/Ayat.",
+    },
     failure: {
       title: "Kali ini belum berhasil",
       detail: "Struk tidak dicatat. Tidak ada yang masuk ke pembukuan Anda.",
