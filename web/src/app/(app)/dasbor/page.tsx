@@ -72,7 +72,7 @@ export default function DashboardPage() {
       tone: "warn",
       href: "/pajak",
     });
-  } else {
+  } else if (entityHasExemption(business?.entity ?? "orang_pribadi")) {
     actions.push({
       id: "tax-exempt",
       text: copy.dashboard.needsTaxExempt,
@@ -80,6 +80,9 @@ export default function DashboardPage() {
       href: "/pajak",
     });
   }
+  // A badan usaha can owe Rp 0 simply because turnover is zero. Saying "masih di
+  // bawah batas bebas pajak" would imply a threshold that does not apply to it,
+  // so no tax item is shown at all in that case.
 
   if (!ready) {
     return (
