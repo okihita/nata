@@ -123,6 +123,26 @@ function emit(): void {
   for (const listener of listeners) listener();
 }
 
+/**
+ * Drop the cached assessment and the ADK session id.
+ *
+ * Deleting a business must not leave these behind: the cache would show a
+ * previous business's tax, and the session id would resume a conversation
+ * about a ledger that no longer belongs to anyone.
+ */
+export function clearTax(): void {
+  current = null;
+  if (typeof window !== "undefined") {
+    try {
+      window.localStorage.removeItem(CACHE_KEY);
+      window.localStorage.removeItem(SESSION_KEY);
+    } catch {
+      /* ignore */
+    }
+  }
+  emit();
+}
+
 /** Subscribe to cache changes (no-op on the server). */
 export function subscribeTax(callback: () => void): () => void {
   listeners.add(callback);

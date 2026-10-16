@@ -38,6 +38,8 @@ import {
   type JournalEntry,
   type JournalLine,
 } from "./ledger";
+import { clearTax } from "./agent-tax";
+import { clearRegulasi, clearRegulasiSession } from "./agent-regulasi";
 
 export interface WorkspaceSnapshot {
   /** Null until the owner has set up a business. */
@@ -154,9 +156,15 @@ export function clearAll(): void {
   persist([], snapshot.business);
 }
 
-/** Forget everything — business and its books. */
+/** Forget everything — business, its books, and any cached agent output. */
 export function reset(): void {
   clearBusiness();
+  // Agent caches are keyed to the business that produced them. Leaving them
+  // behind would let a new business inherit a previous one's tax assessment or
+  // KBLI code — and resume an ADK session that belongs to someone else's books.
+  clearTax();
+  clearRegulasi();
+  clearRegulasiSession();
   loaded = true; // deliberate: do not re-read the storage we just cleared
   emit({ business: null, entries: [], ready: true });
 }

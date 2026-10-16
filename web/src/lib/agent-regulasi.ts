@@ -257,3 +257,19 @@ export function clearRegulasi(): void {
   }
   emit();
 }
+
+/**
+ * Drop everything this module owns, including the ADK session id.
+ *
+ * Deleting a business must not leave a session id behind: the next business
+ * would resume the previous one's conversation, and the agent would answer
+ * about a business that no longer exists.
+ */
+export function clearRegulasiSession(): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(SESSION_KEY);
+  } catch {
+    /* ignore */
+  }
+}
