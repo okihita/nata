@@ -293,6 +293,11 @@ export const copy = {
     breakdown: "Rincian perhitungan",
     estimateOnly: "Estimasi",
     exemptionUsage: "Pemakaian kuota bebas pajak",
+    noQuotaTitle: "Tidak ada kuota bebas pajak",
+    noQuotaBody:
+      "Badan usaha tidak mendapat pembebasan Rp 500 juta, jadi seluruh omzet dikenai tarif 0,5% sejak rupiah pertama.",
+    noQuotaCitation:
+      "Dasar hukum: PP 55/2022 Pasal 60 ayat (2) — pembebasan hanya untuk Wajib Pajak orang pribadi.",
     exemptionRemaining: (amount: string) => `Sisa ${amount} sebelum mulai kena pajak.`,
     exemptionUsed: (percent: string) => `${percent} dari kuota bebas pajak sudah terpakai.`,
     exemptBanner:

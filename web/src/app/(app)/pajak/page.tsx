@@ -288,25 +288,42 @@ export default function PajakPage() {
             </CardContent>
           </Card>
 
-          {/* Pemakaian kuota bebas pajak — membuat hasil Rp 0 tetap informatif. */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">{copy.pajak.exemptionUsage}</CardTitle>
-              <CardDescription>{copy.pajak.exemptNote}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Progress value={exemptPercent} className="h-2" />
-              <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <span>{idrFull(tax.turnover)}</span>
-                <span>{idrFull(PPH_INDIVIDUAL_EXEMPTION)}</span>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                {remaining > 0
-                  ? copy.pajak.exemptionRemaining(idrFull(remaining))
-                  : copy.pajak.exemptionUsed(`${exemptPercent}%`)}
-              </p>
-            </CardContent>
-          </Card>
+          {/* Pemakaian kuota bebas pajak — hanya relevan untuk orang pribadi.
+              Badan usaha tidak punya kuota ini, jadi menampilkan meter yang
+              membandingkan omzet dengan Rp 500 juta akan menyesatkan: seolah
+              ada batas yang sebenarnya tidak berlaku baginya. */}
+          {individual ? (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">{copy.pajak.exemptionUsage}</CardTitle>
+                <CardDescription>{copy.pajak.exemptNote}</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Progress value={exemptPercent} className="h-2" />
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <span>{idrFull(tax.turnover)}</span>
+                  <span>{idrFull(PPH_INDIVIDUAL_EXEMPTION)}</span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {remaining > 0
+                    ? copy.pajak.exemptionRemaining(idrFull(remaining))
+                    : copy.pajak.exemptionUsed(`${exemptPercent}%`)}
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">{copy.pajak.noQuotaTitle}</CardTitle>
+                <CardDescription>{copy.pajak.noQuotaBody}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  {copy.pajak.noQuotaCitation}
+                </p>
+              </CardContent>
+            </Card>
+          )}
 
           <Alert>
             <Info className="size-4" />
