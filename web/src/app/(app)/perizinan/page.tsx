@@ -56,7 +56,7 @@ import { copy } from "@/lib/copy";
 import { cn } from "@/lib/utils";
 
 export default function PerizinanPage() {
-  const { business, ready } = useWorkspace();
+  const { business, ready, updateBusiness } = useWorkspace();
   const cached = useSyncExternalStore(
     subscribeRegulasi,
     getRegulasiSnapshot,
@@ -88,7 +88,15 @@ export default function PerizinanPage() {
         description: description.trim(),
         entity: business ? ENTITY_LABEL[business.entity] : undefined,
       });
-      if (result.verdict) cacheRegulasi(result);
+      if (result.verdict) {
+        cacheRegulasi(result);
+        // Simpan kode terverifikasi ke profil usaha: ini atribut tetap usaha,
+        // bukan hasil sesaat, jadi tidak boleh hilang saat cache dibersihkan.
+        updateBusiness({
+          kbliCode: result.verdict.code,
+          kbliTitle: result.verdict.title,
+        });
+      }
       setAnswer(result.answer);
       setLatency(result.latencyMs);
     } catch {
@@ -96,7 +104,7 @@ export default function PerizinanPage() {
     } finally {
       setRunning(false);
     }
-  }, [description, business]);
+  }, [description, business, updateBusiness]);
 
   if (!ready) {
     return (

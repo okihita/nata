@@ -15,9 +15,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, Store } from "lucide-react";
+import { Check, ShieldCheck, Store } from "lucide-react";
+import Link from "next/link";
 
 import { PageHeader } from "@/components/app-sidebar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -193,6 +195,43 @@ export default function UsahaPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Kode KBLI yang sudah terverifikasi — atribut tetap usaha. */}
+        {business && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <ShieldCheck className="size-4 text-primary" />
+                {copy.usaha.kbliLabel}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {business.kbliCode ? (
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="text-2xl font-semibold tabular-nums tracking-tight">
+                    {business.kbliCode}
+                  </span>
+                  <span className="text-sm">{business.kbliTitle}</span>
+                  <Badge
+                    variant="secondary"
+                    className="ml-auto bg-tone-hijau-bg text-tone-hijau text-[10px]"
+                  >
+                    {copy.perizinan.verified}
+                  </Badge>
+                </div>
+              ) : (
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <p className="text-sm text-muted-foreground">
+                    {copy.usaha.kbliNone} · {copy.usaha.kbliNoneHint}
+                  </p>
+                  <Button asChild variant="outline" size="sm">
+                    <Link href="/perizinan">{copy.nav.perizinan}</Link>
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
 
         <div className="flex items-center gap-3">
           <Button onClick={submit} disabled={!canSubmit}>

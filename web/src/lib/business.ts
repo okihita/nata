@@ -32,6 +32,13 @@ export interface Business {
   type: BusinessType;
   /** Bentuk badan usaha — menentukan perlakuan pajak. */
   entity: EntityType;
+  /**
+   * Kode KBLI 2020 yang sudah **diverifikasi** Agent Regulasi terhadap katalog,
+   * beserta judul resminya. Ini atribut tetap usaha (seperti NPWP), bukan hasil
+   * sesaat — karena itu disimpan di profil, bukan hanya di cache layar.
+   */
+  kbliCode?: string;
+  kbliTitle?: string;
   createdAt: string;
 }
 
@@ -120,6 +127,8 @@ export function loadBusiness(): Business | null {
       entity:
         (parsed.entity as EntityType) ??
         (parsed.taxpayer === "badan" ? "pt_cv" : "orang_pribadi"),
+      kbliCode: typeof parsed.kbliCode === "string" ? parsed.kbliCode : undefined,
+      kbliTitle: typeof parsed.kbliTitle === "string" ? parsed.kbliTitle : undefined,
       createdAt: parsed.createdAt ?? new Date().toISOString(),
     };
   } catch {

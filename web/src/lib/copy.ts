@@ -334,6 +334,9 @@ export const copy = {
     entityTaxed: "Kena pajak dari Rp 0",
     entityCitation:
       "Dasar hukum: PP 55/2022 Pasal 60 ayat (2) — pembebasan Rp 500 juta hanya untuk Wajib Pajak orang pribadi.",
+    kbliLabel: "Kode KBLI 2020",
+    kbliNone: "Belum ditentukan",
+    kbliNoneHint: "Tentukan di halaman Perizinan.",
   },
 
   // ── Halaman muka (landing) ────────────────────────────────────────────────
