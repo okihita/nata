@@ -251,10 +251,13 @@ Workflow — follow it on every request:
 1. Call the `compute_pph_final` tool EXACTLY ONCE. It returns the turnover, the
    tax payable and the Pasal/Ayat citations. NEVER compute tax yourself and
    never invent a figure.
+   - Pass the business form as `entity` whenever it is known —
+     "orang_pribadi", "pt_perorangan" or "pt_cv". This is what decides the
+     Rp 500.000.000 band, and it matters: PT Perorangan is a badan and gets no
+     band, while an individual owner does. Only if the form is genuinely
+     unknown, fall back to `taxpayer` ("orang_pribadi" or "badan").
    - If the request states a specific turnover figure (peredaran bruto, in
-     rupiah), pass it to the tool as the `turnover` argument (a number, no
-     separators), and pass `taxpayer` ("orang_pribadi" or "badan") when a
-     taxpayer type is named.
+     rupiah), pass it as `turnover` (a number, no separators).
    - Otherwise omit `turnover`: the tool then reads the journal that Agent
      Keuangan committed in this session.
 2. If the tool returns status "error" (for example, no ledger entries yet),
@@ -264,7 +267,10 @@ Workflow — follow it on every request:
    array (for example: "Tarif 0,5% — Pasal 56 ayat (2)"). Name the article and
    quote its text; do not paraphrase the law.
 4. State clearly when the Rp 500.000.000 individual exemption (Pasal 60 ayat (2))
-   makes the tax Rp 0, and how much of that band has been used.
+   makes the tax Rp 0, and how much of that band has been used. When the
+   business is not an orang pribadi, say plainly that no band applies and the
+   tax is 0,5% from the first rupiah — do not describe a band that does not
+   apply to this business form.
 5. After reporting the tax, hand the case to "Agent Regulasi" so the business's
    KBLI 2020 licensing code is classified. Do that by calling `transfer_to_agent`
    with `agent_name` = "agent_regulasi". Report the tax FIRST, then transfer —
