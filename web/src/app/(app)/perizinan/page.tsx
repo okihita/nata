@@ -249,7 +249,9 @@ export default function PerizinanPage() {
                 <BadgeCheck className="size-4 text-primary" />
                 {copy.perizinan.resultTitle}
               </CardTitle>
-              <CardDescription>{copy.perizinan.resultHint}</CardDescription>
+              <CardDescription>
+                {verdict ? copy.perizinan.resultHintVerified : copy.perizinan.resultHintEmpty}
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {verdict ? (

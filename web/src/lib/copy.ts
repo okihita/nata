@@ -243,7 +243,8 @@ export const copy = {
     emptyBody:
       "Jelaskan kegiatan usaha Anda, lalu tekan Cari kode KBLI. Nata akan mencocokkannya ke katalog resmi.",
     resultTitle: "Kode KBLI Anda",
-    resultHint: "Terverifikasi ada di katalog KBLI 2020.",
+    resultHintVerified: "Kode ini ada di katalog resmi KBLI 2020.",
+    resultHintEmpty: "Hasil akan muncul di sini setelah pencarian.",
     codeLabel: "Kode",
     verified: "Terverifikasi",
     noResult: "Belum ada kode terverifikasi. Jalankan pencarian dulu.",

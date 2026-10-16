@@ -114,20 +114,25 @@ async function json<T>(res: Response): Promise<T> {
 /**
  * Reuse `sessionId` if the backend still knows it, otherwise open a fresh
  * session. Sessions carry the conversation + ledger state for one user.
+ *
+ * `appName` selects which ADK app the session belongs to — the cascade entry
+ * point by default, or a standalone agent (e.g. `nata_regulasi`) whose tools the
+ * entry point does not own.
  */
 export async function ensureSession(
   userId: string,
   existing?: string | null,
+  appName: string = APP_NAME,
 ): Promise<string> {
   if (existing) {
     const probe = await fetch(
-      `${ADK_BASE}/apps/${APP_NAME}/users/${userId}/sessions/${existing}`,
+      `${ADK_BASE}/apps/${appName}/users/${userId}/sessions/${existing}`,
       { cache: "no-store" },
     );
     if (probe.ok) return existing;
   }
 
-  const res = await fetch(`${ADK_BASE}/apps/${APP_NAME}/users/${userId}/sessions`, {
+  const res = await fetch(`${ADK_BASE}/apps/${appName}/users/${userId}/sessions`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: "{}",

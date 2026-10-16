@@ -12,6 +12,14 @@
 
 import { APP_NAME, ensureSession, streamRun, type AdkEvent } from "./adk";
 
+/**
+ * Agent Regulasi is served as its own ADK app (`nata_regulasi`), not through the
+ * cascade entry point. The cascade root is Agent Keuangan, which has no
+ * `classify_kbli` tool — asking it to classify produced a hallucinated code.
+ * Talking to the app that owns the tool removes that failure mode entirely.
+ */
+const REGULASI_APP = "nata_regulasi";
+
 const USER_ID = "web-console";
 const SESSION_KEY = "nata.regulasi.session";
 const CACHE_KEY = "nata.regulasi.run.v1";
@@ -53,11 +61,11 @@ export interface RegulasiRun {
 export async function runRegulasi(opts: {
   description: string;
   entity?: string;
-}): Promise<RegulasiRun> {
-  const started = performance.now();
+}): Promise<RegulasiRun> {  const started = performance.now();
   const sessionId = await ensureSession(
     USER_ID,
     typeof window === "undefined" ? null : window.localStorage.getItem(SESSION_KEY),
+    REGULASI_APP,
   );
   if (typeof window !== "undefined") window.localStorage.setItem(SESSION_KEY, sessionId);
 
@@ -72,12 +80,13 @@ export async function runRegulasi(opts: {
     `Kegiatan usahanya: "${opts.description}".${entityNote} ` +
     `Panggil classify_kbli dengan deskripsi itu untuk melihat kandidat, ` +
     `pilih satu, lalu panggil classify_kbli lagi dengan kodenya untuk ` +
-    `memverifikasi. Laporkan kode dan judul resminya, dan sebutkan bahwa ` +
-    `tingkat risiko perlu dicek di OSS-RBA.`;
+    `memverifikasi. Jangan mengarang kode KBLI dari ingatan — hanya kode ` +
+    `yang dikembalikan tool yang boleh dilaporkan. Laporkan kode dan judul ` +
+    `resminya, dan sebutkan bahwa tingkat risiko perlu dicek di OSS-RBA.`;
 
   await streamRun(
     {
-      appName: APP_NAME,
+      appName: REGULASI_APP,
       userId: USER_ID,
       sessionId,
       streaming: true,
