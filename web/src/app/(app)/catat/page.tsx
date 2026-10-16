@@ -564,7 +564,7 @@ function KbliCard({ run, onViewPerizinan }: { run: RunState; onViewPerizinan: ()
       <CardContent className="space-y-4">
         <div className="grid grid-cols-2 gap-3">
           <Metric label={copy.perizinan.codeLabel} value={kbli.code} strong />
-          <Metric label={copy.dashboard.complianceKbli} value={kbli.title} />
+          <Metric label={copy.perizinan.officialNameLabel} value={kbli.title} />
         </div>
         <p className="text-xs leading-relaxed text-muted-foreground">
           {copy.perizinan.riskNote}

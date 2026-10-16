@@ -255,6 +255,7 @@ export const copy = {
     resultHintEmpty: "Hasil akan muncul di sini setelah pencarian.",
     fromCascade: "Diverifikasi dari pencatatan struk",
     codeLabel: "Kode",
+    officialNameLabel: "Nama resmi",
     verified: "Terverifikasi",
     hierarchyLabel: "Posisi dalam klasifikasi",
     noResult: "Belum ada kode terverifikasi. Jalankan pencarian dulu.",
