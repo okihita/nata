@@ -14,7 +14,9 @@ from typing import Any
 from pydantic import BaseModel, Field, ValidationError
 
 from google.adk.agents.llm_agent import Agent
+from google.adk.models.google_llm import Gemini
 from google.adk.tools import ToolContext
+from google.genai import types
 
 from .tax import compute_pph_final
 from .regulasi import classify_kbli
@@ -24,7 +26,24 @@ from .regulasi import classify_kbli
 # NOTE: Gemini on this project is only reachable through the *global* Vertex AI
 # endpoint (asia-southeast2 returns FAILED_PRECONDITION for Gemini models), so
 # GOOGLE_CLOUD_LOCATION must be "global" for live calls to succeed.
-MODEL = os.environ.get("NATA_MODEL", "gemini-3.8-flash")
+_MODEL_ID = os.environ.get("NATA_MODEL", "gemini-3.8-flash")
+
+# Vertex AI answers 429 RESOURCE_EXHAUSTED under load, and a live demo hit it.
+# Retrying at the HTTP layer is the right place: the request is re-issued
+# unchanged, so no tool runs twice and no ledger entry can be posted twice.
+# (`google.genai` already treats 429 as retryable; these are the backoff
+# numbers.) Retrying the *agent loop* instead would risk re-running tools.
+MODEL = Gemini(
+    model=_MODEL_ID,
+    retry_options=types.HttpRetryOptions(
+        attempts=4,
+        initial_delay=1,
+        max_delay=16,
+        exp_base=2,
+        jitter=1,
+    ),
+)
+"""The model shared by all three agents, with retry-on-429 configured."""
 
 
 class JournalEntryError(ValueError):

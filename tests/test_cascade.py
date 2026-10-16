@@ -115,6 +115,42 @@ def test_standalone_app_shares_the_single_definition():
     assert regulasi_app is _agent_by_name(root_agent, "agent_regulasi")
 
 
+# ── Reliability ─────────────────────────────────────────────────────────────
+#
+# A live cascade run hit HTTP 429 RESOURCE_EXHAUSTED from Vertex AI. Retrying at
+# the HTTP layer is the correct place: the request is re-issued unchanged, so no
+# tool runs twice and no ledger entry can be posted twice. Retrying the agent
+# loop instead would risk re-running tools.
+
+
+def test_every_agent_retries_on_rate_limits():
+    def walk(agent):
+        opts = getattr(agent.model, "retry_options", None)
+        assert opts is not None, f"{agent.name} has no retry_options"
+        assert opts.attempts and opts.attempts > 1, (
+            f"{agent.name} would not retry (attempts={opts.attempts})"
+        )
+        for sub in getattr(agent, "sub_agents", []) or []:
+            walk(sub)
+
+    walk(root_agent)
+
+
+def test_rate_limit_retries_use_backoff_not_hammering():
+    """Retries must back off: a tight loop would deepen the throttling."""
+    opts = root_agent.model.retry_options
+    assert opts.initial_delay and opts.initial_delay >= 0.5
+    assert opts.exp_base and opts.exp_base >= 2
+    assert opts.max_delay and opts.max_delay >= 8
+
+
+def test_the_standalone_regulasi_app_shares_the_retry_config():
+    from nata_regulasi import root_agent as regulasi_app
+
+    opts = getattr(regulasi_app.model, "retry_options", None)
+    assert opts is not None and opts.attempts > 1
+
+
 # ── Instructions carry the anti-hallucination rule ──────────────────────────
 
 
