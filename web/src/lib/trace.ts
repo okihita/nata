@@ -17,6 +17,7 @@ export type StepKind =
   | "posted"
   | "handoff"
   | "tax"
+  | "regulasi"
   | "problem";
 
 export interface TraceStep {
@@ -50,6 +51,8 @@ export interface RunState {
   tax: TaxAssessment | null;
   /** Agent Fiskal's plain-Indonesian narrative answer. */
   taxAnswer: string;
+  /** Verified KBLI classification from Agent Regulasi, if it ran. */
+  kbli: { code: string; title: string } | null;
   latencyMs: number | null;
   error: string | null;
 }
@@ -63,6 +66,7 @@ export const emptyRun: RunState = {
   handoff: null,
   tax: null,
   taxAnswer: "",
+  kbli: null,
   latencyMs: null,
   error: null,
 };
@@ -133,15 +137,35 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
         continue;
       }
 
-      // The bookkeeping agent handing the entry to the tax agent.
+      // The licensing agent verifying a KBLI code against the catalogue.
+      if (call.name === "classify_kbli") {
+        next.steps.push({
+          id: nextId(),
+          kind: "regulasi",
+          title: copy.steps.kbliChecking.title,
+          detail: copy.steps.kbliChecking.detail,
+          callId: call.id,
+          at,
+        });
+        continue;
+      }
+
+      // The licensing agent handing off from the tax agent.
       if (call.name === "transfer_to_agent") {
         const target = (call.args as { agent_name?: string } | undefined)?.agent_name ?? null;
         next.handoff = target;
+        // Regulasi follows Fiskal, so it gets its own wording rather than the
+        // "handed to the tax agent" line meant for the first hop.
+        const toRegulasi = target === "agent_regulasi";
         next.steps.push({
           id: nextId(),
           kind: "handoff",
-          title: copy.steps.handoff.title,
-          detail: copy.steps.handoff.detail,
+          title: toRegulasi
+            ? copy.steps.handoffRegulasi.title
+            : copy.steps.handoff.title,
+          detail: toRegulasi
+            ? copy.steps.handoffRegulasi.detail
+            : copy.steps.handoff.detail,
           callId: call.id,
           at,
         });
@@ -172,6 +196,23 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
     if (part.functionResponse) {
       const toolName = part.functionResponse.name;
       const response = (part.functionResponse.response ?? {}) as Record<string, unknown>;
+
+      if (toolName === "classify_kbli") {
+        // Only a verified code is recorded; a candidate list is an intermediate
+        // step, not a result.
+        if (response.status === "success" && response.code) {
+          const rec = response as { code: string; title: string };
+          next.kbli = { code: rec.code, title: rec.title };
+          next.steps.push({
+            id: nextId(),
+            kind: "regulasi",
+            title: copy.steps.kbliDone.title,
+            detail: `${rec.code} — ${rec.title}`,
+            at,
+          });
+        }
+        continue;
+      }
 
       if (toolName === "compute_pph_final") {
         if (response.status === "success") {
@@ -229,6 +270,9 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
       if (event.author === "agent_fiskal") {
         if (event.partial) next.taxAnswer = state.taxAnswer + part.text;
         else next.taxAnswer = part.text;
+      } else if (typeof event.author === "string" && event.author.includes("regulasi")) {
+        // Regulasi's narration is its own; it should not overwrite the receipt
+        // summary the owner already read.
       } else if (event.partial) {
         next.answer = state.answer + part.text;
       }

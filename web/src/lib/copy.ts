@@ -468,8 +468,10 @@ export const copy = {
   agents: {
     keuangan: "Agent Keuangan",
     fiskal: "Agent Fiskal",
+    regulasi: "Agent Regulasi",
     keuanganRole: "Mencatat pembukuan",
     fiskalRole: "Menghitung pajak",
+    regulasiRole: "Menentukan kode KBLI",
   },
 
   steps: {
@@ -497,6 +499,18 @@ export const copy = {
     handoff: {
       title: "Diteruskan ke pemeriksa pajak",
       detail: "Catatan diteruskan ke Agent Fiskal untuk dihitung pajaknya.",
+    },
+    handoffRegulasi: {
+      title: "Diteruskan ke pemeriksa izin",
+      detail: "Pajak selesai. Catatan diteruskan ke Agent Regulasi untuk kode KBLI.",
+    },
+    kbliChecking: {
+      title: "Mencari kode KBLI 2020",
+      detail: "Mencocokkan kegiatan usaha ke katalog resmi KBLI 2020.",
+    },
+    kbliDone: {
+      title: "Kode KBLI terverifikasi",
+      detail: "Kode ditemukan di katalog resmi.",
     },
     taxChecking: {
       title: "Menghitung PPh Final 0,5%",

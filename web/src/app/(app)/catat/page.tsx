@@ -333,6 +333,7 @@ const STEP_TONE: Record<string, string> = {
   posted: "bg-emerald-500",
   handoff: "bg-sky-500",
   tax: "bg-teal-500",
+  regulasi: "bg-indigo-500",
   problem: "bg-rose-500",
 };
 
