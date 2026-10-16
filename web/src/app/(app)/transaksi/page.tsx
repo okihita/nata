@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Search, ReceiptText, ScanLine } from "lucide-react";
+import { Search, ReceiptText, ScanLine, Download } from "lucide-react";
 
 import { PageHeader } from "@/components/app-sidebar";
 import { EmptyState } from "@/components/empty-state";
@@ -20,13 +20,15 @@ import {
 } from "@/components/ui/dialog";
 import { useWorkspace } from "@/lib/store";
 import { entryTotals, type JournalEntry } from "@/lib/ledger";
+import { downloadCsv, journalToCsv, reportFilename } from "@/lib/export-csv";
 import { copy } from "@/lib/copy";
 import { idrFull } from "@/lib/format";
+import { toast } from "sonner";
 
 type Filter = "all" | "ocr" | "manual";
 
 export default function TransaksiPage() {
-  const { entries, ready } = useWorkspace();
+  const { entries, ready, business } = useWorkspace();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
   const [selected, setSelected] = useState<JournalEntry | null>(null);
@@ -66,7 +68,22 @@ export default function TransaksiPage() {
         title={copy.transaksi.title}
         subtitle={copy.transaksi.subtitle}
         badge={copy.transaksi.countLabel(entries.length)}
-      />
+      >
+        <Button
+          variant="outline"
+          disabled={filtered.length === 0}
+          onClick={() => {
+            downloadCsv(
+              reportFilename(`${business?.name ?? copy.app.name}-jurnal`, copy.common.total),
+              journalToCsv(filtered),
+            );
+            toast.success(copy.transaksi.exported);
+          }}
+        >
+          <Download className="mr-2 size-4" />
+          {copy.transaksi.export}
+        </Button>
+      </PageHeader>
 
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <div className="relative w-full max-w-sm">

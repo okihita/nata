@@ -168,6 +168,8 @@ export const copy = {
     detailTitle: "Rincian transaksi",
     balanced: "Seimbang",
     viewReceipt: "Lihat struk",
+    export: "Ekspor jurnal",
+    exported: "Jurnal diekspor sebagai CSV.",
   },
 
   akun: {
