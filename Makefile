@@ -12,7 +12,7 @@ PLAY_PORT ?= 48702
 
 .DEFAULT_GOAL := help
 
-.PHONY: help setup test typecheck build check agent web playground dev down clean
+.PHONY: help setup test typecheck build check agent web playground dev down clean web-test lint
 
 help: ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -32,10 +32,16 @@ test: ## Run the Python test suite
 typecheck: ## Type-check the Next.js console
 	cd web && pnpm exec tsc --noEmit
 
+web-test: ## Run the web logic tests (entity, trace)
+	cd web && pnpm test
+
+lint: ## Lint the Next.js console
+	cd web && pnpm lint
+
 build: ## Production build of the Next.js console
 	cd web && pnpm build
 
-check: test typecheck build ## All pre-commit checks (AGENTS.md)
+check: test typecheck build web-test lint ## All pre-commit checks (AGENTS.md)
 
 ## --- run (one service per terminal) ---
 
