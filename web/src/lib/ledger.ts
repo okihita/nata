@@ -9,7 +9,6 @@
  */
 
 import {
-  ACCOUNTS,
   groupOf,
   normalSideOf,
   PPH_FINAL_RATE,
@@ -449,6 +448,3 @@ export function usedAccounts(entries: JournalEntry[]): string[] {
   for (const entry of entries) for (const line of entry.lines) set.add(line.account);
   return [...set].sort((a, b) => a.localeCompare(b, "id"));
 }
-
-/** The chart of accounts, exposed for the accounts screen. */
-export const CHART_OF_ACCOUNTS = ACCOUNTS;

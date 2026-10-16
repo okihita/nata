@@ -103,7 +103,6 @@ export const ENTITY_TAX_LABEL: Record<EntityType, string> = {
 export function entityHasExemption(entity: EntityType): boolean {
   return ENTITY_OPTIONS.find((o) => o.id === entity)?.exemption ?? false;
 }
-
 export const TYPE_LABEL: Record<BusinessType, string> = {
   warung: "Warung",
   toko: "Toko",
