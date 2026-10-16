@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { useWorkspace } from "@/lib/store";
+import { isUsableBusiness } from "@/lib/business";
 
 /** Routes that remain reachable before a business exists. */
 const EXEMPT = ["/usaha"];
@@ -27,7 +28,10 @@ export function OnboardingGate({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   const exempt = EXEMPT.some((p) => pathname.startsWith(p));
-  const needsOnboarding = ready && business == null && !exempt;
+  // `isUsableBusiness` rather than a plain null check: a business with no name
+  // is not usable either, and onboarding is where the name is collected. Using
+  // the same predicate as the rest of the app keeps the two from disagreeing.
+  const needsOnboarding = ready && !isUsableBusiness(business) && !exempt;
 
   useEffect(() => {
     if (needsOnboarding) router.replace("/usaha");

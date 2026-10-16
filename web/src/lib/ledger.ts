@@ -442,9 +442,3 @@ export function monthlyRevenue(entries: JournalEntry[]): { month: string; revenu
     .map(([month, v]) => ({ month, ...v }));
 }
 
-/** Distinct accounts used in the ledger, for chart-of-accounts views. */
-export function usedAccounts(entries: JournalEntry[]): string[] {
-  const set = new Set<string>();
-  for (const entry of entries) for (const line of entry.lines) set.add(line.account);
-  return [...set].sort((a, b) => a.localeCompare(b, "id"));
-}
