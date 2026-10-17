@@ -1,0 +1,69 @@
+# Cloud Build pipeline — the Nata console (web/).
+#
+# What this file is: the list of steps Cloud Build runs when the trigger fires.
+# Read it as three sentences:
+#   1. build a container image from web/Dockerfile
+#   2. push that image to Artifact Registry
+#   3. point Cloud Run at that exact image
+#
+# It deploys the FRONTEND only. The Python agent (ADK) is deployed separately
+# with `adk deploy cloud_run` — deliberately, because it changes rarely and a
+# UI typo should not be able to take the backend down.
+
+substitutions:
+  _REGION: asia-southeast2
+  _SERVICE: nata-web
+  # Set on the trigger (or override per-run). Must be the agent's Cloud Run URL;
+  # the console proxies /api/adk/* here at REQUEST time, so an empty value
+  # builds green and then returns 502 on every agent call.
+  _ADK_SERVER_URL: ""
+
+availableSecrets: []
+
+steps:
+  # ── 1. build ──────────────────────────────────────────────────────────────
+  - id: build
+    name: "gcr.io/cloud-builders/docker"
+    args:
+      - build
+      - "--tag=${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/${_SERVICE}:$SHORT_SHA"
+      - "--tag=${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/${_SERVICE}:latest"
+      - "./web"
+
+  # ── 2. push ───────────────────────────────────────────────────────────────
+  # Tagged with the commit SHA so every deployed image is traceable to a commit,
+  # which is what makes a rollback a one-liner (`--image=...:<earlier-sha>`).
+  - id: push
+    name: "gcr.io/cloud-builders/docker"
+    args:
+      - push
+      - "--all-tags"
+      - "${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/${_SERVICE}"
+
+  # ── 3. deploy ─────────────────────────────────────────────────────────────
+  - id: deploy
+    name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - "${_SERVICE}"
+      - "--image=${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/${_SERVICE}:$SHORT_SHA"
+      - "--region=${_REGION}"
+      - "--platform=managed"
+      - "--allow-unauthenticated"
+      - "--set-env-vars=ADK_SERVER_URL=${_ADK_SERVER_URL}"
+      - "--port=8080"
+      # 0 floor keeps cost at zero between demos; raise to 1 to avoid cold
+      # starts during judging.
+      - "--min-instances=0"
+      - "--max-instances=2"
+      - "--quiet"
+
+images:
+  - "${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/${_SERVICE}:$SHORT_SHA"
+  - "${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/${_SERVICE}:latest"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: E2_HIGHCPU_8
