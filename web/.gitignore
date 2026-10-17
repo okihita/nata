@@ -33,6 +33,10 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# ...but the template must be committable: the submission spec requires a
+# documented .env.example, and `.env*` was silently excluding it.
+!.env.example
+
 # vercel
 .vercel
 
