@@ -165,14 +165,43 @@ export function reset(): void {
   const doomed = snapshot.business?.id;
   clearBusiness();
   if (doomed) clearLedger(doomed);
-  // Agent caches are keyed to the business that produced them. Leaving them
-  // behind would let a new business inherit a previous one's tax assessment or
-  // KBLI code — and resume an ADK session that belongs to someone else's books.
+
+  // Agent caches and ADK session ids are keyed to the business that produced
+  // them. Leaving them behind would let a new business inherit a previous one's
+  // tax assessment or KBLI code, and resume an agent conversation about a ledger
+  // that no longer belongs to anyone.
   clearTax();
   clearRegulasi();
   clearRegulasiSession();
+
+  // Belt and braces: sweep every remaining `nata.*` key. Enumerating them by
+  // hand is how this bug recurred — the Catat screen's session key was missed
+  // because it lives in the page component, not in a lib module. A prefix sweep
+  // covers keys that do not exist yet.
+  clearAppStorage();
+
   loaded = true; // deliberate: do not re-read the storage we just cleared
   emit({ business: null, entries: [], ready: true });
+}
+
+/**
+ * Remove every localStorage key this app owns (all are `nata.*`).
+ *
+ * Exported so a future session key cannot be forgotten by whichever code path
+ * is supposed to clean it up.
+ */
+export function clearAppStorage(): void {
+  if (typeof window === "undefined") return;
+  try {
+    const doomed: string[] = [];
+    for (let i = 0; i < window.localStorage.length; i++) {
+      const key = window.localStorage.key(i);
+      if (key && key.startsWith("nata.")) doomed.push(key);
+    }
+    for (const key of doomed) window.localStorage.removeItem(key);
+  } catch {
+    /* storage unavailable — nothing to clean */
+  }
 }
 
 // ── React binding ───────────────────────────────────────────────────────────
