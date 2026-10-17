@@ -17,6 +17,11 @@ substitutions:
   # the console proxies /api/adk/* here at REQUEST time, so an empty value
   # builds green and then returns 502 on every agent call.
   _ADK_SERVER_URL: ""
+  # Agent Regulasi runs as its OWN service: ADK discovers apps by scanning
+  # /app/agents, while `adk deploy --extra_packages` stages to /app, so a single
+  # service cannot serve both apps. The proxy routes nata_regulasi here.
+  # Empty locally, where one `adk api_server` serves every app.
+  _ADK_REGULASI_SERVER_URL: ""
 
 steps:
   # ── 1. build ──────────────────────────────────────────────────────────────
@@ -50,7 +55,7 @@ steps:
       - "--region=${_REGION}"
       - "--platform=managed"
       - "--allow-unauthenticated"
-      - "--set-env-vars=ADK_SERVER_URL=${_ADK_SERVER_URL}"
+      - "--set-env-vars=ADK_SERVER_URL=${_ADK_SERVER_URL},ADK_REGULASI_SERVER_URL=${_ADK_REGULASI_SERVER_URL}"
       - "--port=8080"
       # 0 floor keeps cost at zero between demos; raise to 1 to avoid cold
       # starts during judging.
