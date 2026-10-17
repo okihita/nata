@@ -27,7 +27,7 @@ export function MobileTabBar() {
       <ul className="mx-auto flex max-w-lg items-stretch justify-between px-1">
         {MOBILE_NAV.map((item) => {
           const Icon = ICONS[item.icon] ?? LayoutDashboard;
-          const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+          const active = pathname.startsWith(item.href);
           return (
             <li key={item.href} className="flex-1">
               <Link

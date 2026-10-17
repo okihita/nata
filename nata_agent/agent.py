@@ -14,16 +14,36 @@ from typing import Any
 from pydantic import BaseModel, Field, ValidationError
 
 from google.adk.agents.llm_agent import Agent
+from google.adk.models.google_llm import Gemini
 from google.adk.tools import ToolContext
+from google.genai import types
 
 from .tax import compute_pph_final
+from .regulasi import classify_kbli
 
 # Model id is configuration, not code: pin/update it via NATA_MODEL without a
 # code change. Default is the project's agreed starting model (see AGENTS.md).
 # NOTE: Gemini on this project is only reachable through the *global* Vertex AI
 # endpoint (asia-southeast2 returns FAILED_PRECONDITION for Gemini models), so
 # GOOGLE_CLOUD_LOCATION must be "global" for live calls to succeed.
-MODEL = os.environ.get("NATA_MODEL", "gemini-3.8-flash")
+_MODEL_ID = os.environ.get("NATA_MODEL", "gemini-3.8-flash")
+
+# Vertex AI answers 429 RESOURCE_EXHAUSTED under load, and a live demo hit it.
+# Retrying at the HTTP layer is the right place: the request is re-issued
+# unchanged, so no tool runs twice and no ledger entry can be posted twice.
+# (`google.genai` already treats 429 as retryable; these are the backoff
+# numbers.) Retrying the *agent loop* instead would risk re-running tools.
+MODEL = Gemini(
+    model=_MODEL_ID,
+    retry_options=types.HttpRetryOptions(
+        attempts=4,
+        initial_delay=1,
+        max_delay=16,
+        exp_base=2,
+        jitter=1,
+    ),
+)
+"""The model shared by all three agents, with retry-on-429 configured."""
 
 
 class JournalEntryError(ValueError):
@@ -232,7 +252,9 @@ Workflow — follow it on every request:
 5. After a successful commit, you MUST hand the posted entry to "Agent Fiskal"
    (the tax agent) so the PPh Final is computed on it. Do that by calling
    `transfer_to_agent` with `agent_name` = "agent_fiskal". Do not compute tax
-   yourself and do not answer the tax question yourself.
+   yourself and do not answer the tax question yourself. Fiskal will in turn
+   hand the case to Agent Regulasi for the KBLI licensing classification — you
+   do not need to contact Regulasi yourself.
 6. When transferred, output only the transfer function call — no accompanying
    text.
 
@@ -248,10 +270,13 @@ Workflow — follow it on every request:
 1. Call the `compute_pph_final` tool EXACTLY ONCE. It returns the turnover, the
    tax payable and the Pasal/Ayat citations. NEVER compute tax yourself and
    never invent a figure.
+   - Pass the business form as `entity` whenever it is known —
+     "orang_pribadi", "pt_perorangan" or "pt_cv". This is what decides the
+     Rp 500.000.000 band, and it matters: PT Perorangan is a badan and gets no
+     band, while an individual owner does. Only if the form is genuinely
+     unknown, fall back to `taxpayer` ("orang_pribadi" or "badan").
    - If the request states a specific turnover figure (peredaran bruto, in
-     rupiah), pass it to the tool as the `turnover` argument (a number, no
-     separators), and pass `taxpayer` ("orang_pribadi" or "badan") when a
-     taxpayer type is named.
+     rupiah), pass it as `turnover` (a number, no separators).
    - Otherwise omit `turnover`: the tool then reads the journal that Agent
      Keuangan committed in this session.
 2. If the tool returns status "error" (for example, no ledger entries yet),
@@ -261,11 +286,60 @@ Workflow — follow it on every request:
    array (for example: "Tarif 0,5% — Pasal 56 ayat (2)"). Name the article and
    quote its text; do not paraphrase the law.
 4. State clearly when the Rp 500.000.000 individual exemption (Pasal 60 ayat (2))
-   makes the tax Rp 0, and how much of that band has been used.
-5. Do not transfer anywhere. Do not call any other tool.
+   makes the tax Rp 0, and how much of that band has been used. When the
+   business is not an orang pribadi, say plainly that no band applies and the
+   tax is 0,5% from the first rupiah — do not describe a band that does not
+   apply to this business form.
+5. After reporting the tax, hand the case to "Agent Regulasi" so the business's
+   KBLI 2020 licensing code is classified. Do that by calling `transfer_to_agent`
+   with `agent_name` = "agent_regulasi". Report the tax FIRST, then transfer —
+   do not mention licensing yourself, that is Regulasi's job.
+6. Do not call any other tool.
 
 Answer in Indonesian. Amounts are Indonesian Rupiah (IDR).
 """
+
+_REGULASI_INSTRUCTION = """You are "Agent Regulasi", the Indonesian business-licensing
+agent for a micro/small business. Agent Fiskal has just finished the tax
+assessment and handed the case to you; your job is the *perizinan* follow-through —
+mapping what the business actually does to its official KBLI 2020 code.
+
+Workflow — follow it on every request:
+1. Work out what the business actually does, in plain words, from the receipt(s)
+   and the journal in this session (for example: "warung kopi, pembeli makan di
+   tempat"), or from the description given in the request.
+2. Call the `classify_kbli` tool with that `description`. It returns real
+   candidates from the official KBLI 2020 catalogue (1.790 codes). NEVER invent
+   a KBLI code and never guess one from memory.
+3. Pick the single best candidate, then call `classify_kbli` AGAIN with that
+   `code` to verify it. Only a `status: "success"` result is a verified code.
+   If it returns "error", take another candidate and verify that instead.
+4. Report the verified code with its official title quoted exactly as the tool
+   returned it. State the code and name (for example: "56102 — Rumah/Warung
+   Makan").
+5. Be honest about what is NOT known: the tool returns `risk_level: null`
+   because KBLI does not carry the risk tier. Say plainly that the risk level
+   (Rendah/Menengah/Tinggi) and the licensing steps must be confirmed at
+   OSS-RBA, and that Nata does not guess them. Never invent a licence name,
+   cost, or processing time.
+6. Do not transfer anywhere. Do not call any other tool.
+
+Answer in Indonesian, in plain language a shop owner understands. Amounts are
+Indonesian Rupiah (IDR).
+"""
+
+agent_regulasi = Agent(
+    model=MODEL,
+    name="agent_regulasi",
+    description=(
+        "Agent Regulasi maps a micro/small business's activities to its exact "
+        "KBLI 2020 code and grounds it in the official catalogue."
+    ),
+    instruction=_REGULASI_INSTRUCTION,
+    tools=[classify_kbli],
+    # One-way hop: licensing is the last stop, it never bounces back up.
+    disallow_transfer_to_parent=True,
+)
 
 agent_fiskal = Agent(
     model=MODEL,
@@ -276,7 +350,8 @@ agent_fiskal = Agent(
     ),
     instruction=_TAX_INSTRUCTION,
     tools=[compute_pph_final],
-    # One-way hop: the tax agent reports back up, it never bounces to the parent.
+    # Chains onward to Regulasi: the cascade is one-way, never back to the parent.
+    sub_agents=[agent_regulasi],
     disallow_transfer_to_parent=True,
 )
 

@@ -30,6 +30,9 @@ export interface FiskalRun {
  */
 export async function runFiskal(opts: {
   turnover: number;
+  /** The precise business form — preferred, because it decides the Rp 500 jt band. */
+  entity?: "orang_pribadi" | "pt_perorangan" | "pt_cv";
+  /** Coarse fallback when the form is unknown. */
   individual?: boolean;
 }): Promise<FiskalRun> {
   const started = performance.now();
@@ -44,12 +47,18 @@ export async function runFiskal(opts: {
   let streamed = "";
   let finalText = "";
 
+  // Pass `entity` when it is known: PT Perorangan is a badan and gets no
+  // Rp 500 million band, which the coarse taxpayer flag cannot express.
+  const formNote = opts.entity
+    ? `Bentuk badan usaha: ${opts.entity}. Panggil compute_pph_final dengan ` +
+      `argumen entity itu.`
+    : `Jenis wajib pajak: ${individual ? "orang pribadi" : "badan"}.`;
+
   const prompt =
     `Hitung PPh Final UMKM untuk usaha saya. ` +
     `Peredaran bruto (omzet) menurut pembukuan: ${opts.turnover} rupiah. ` +
-    `Jenis wajib pajak: ${individual ? "orang pribadi" : "badan"}. ` +
-    `Panggil compute_pph_final dengan angka omzet itu dan jenis wajib pajak itu, ` +
-    `lalu laporkan hasilnya beserta kutipan Pasal/Ayat untuk setiap angka.`;
+    `${formNote} ` +
+    `Lalu laporkan hasilnya beserta kutipan Pasal/Ayat untuk setiap angka.`;
 
   await streamRun(
     {
@@ -121,6 +130,26 @@ const listeners = new Set<() => void>();
 
 function emit(): void {
   for (const listener of listeners) listener();
+}
+
+/**
+ * Drop the cached assessment and the ADK session id.
+ *
+ * Deleting a business must not leave these behind: the cache would show a
+ * previous business's tax, and the session id would resume a conversation
+ * about a ledger that no longer belongs to anyone.
+ */
+export function clearTax(): void {
+  current = null;
+  if (typeof window !== "undefined") {
+    try {
+      window.localStorage.removeItem(CACHE_KEY);
+      window.localStorage.removeItem(SESSION_KEY);
+    } catch {
+      /* ignore */
+    }
+  }
+  emit();
 }
 
 /** Subscribe to cache changes (no-op on the server). */

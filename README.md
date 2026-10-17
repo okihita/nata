@@ -1,22 +1,23 @@
 # Nata
 
-**Receipt photo → SAK EMKM double-entry journal entry → PPh Final tax, with
-statutory citations.**
+**Receipt photo → SAK EMKM double-entry journal → PPh Final tax → KBLI 2020
+licensing, each with its statutory citation.**
 
 Nata is an autonomous back-office & compliance engine for Indonesian SMBs,
 built for the **Google Cloud AI Builder Cup 2026**.
 
-Two vertical slices are built:
+Three agents are live, running as one one-way cascade:
 
-| Slice | What it does |
+| Agent | What it does |
 | --- | --- |
-| **A — Agent Keuangan** | Reads a receipt image and commits a balanced double-entry journal entry under **SAK EMKM** (the Indonesian financial-accounting standard for micro, small & medium entities). |
-| **B — Agent Fiskal** | Receives the committed journal, computes the **PPh Final UMKM 0,5%** liability (PP 55/2022) and grounds every figure in an exact Pasal/Ayat citation. |
+| **Agent Keuangan** | Reads a receipt image and commits a balanced double-entry journal entry under **SAK EMKM** (the Indonesian financial-accounting standard for micro, small & medium entities). |
+| **Agent Fiskal** | Receives the committed journal, computes the **PPh Final UMKM 0,5%** liability (PP 55/2022) and grounds every figure in an exact Pasal/Ayat citation. |
+| **Agent Regulasi** | Classifies the business's activity into its **KBLI 2020** code and grounds it in the official 5-digit catalogue. |
 
 This is a Python [ADK](https://google.github.io/adk-docs/) project with a
 Next.js console. Gemini multimodal parses the receipt; deterministic Python
-tools enforce the accounting identity `Assets = Liabilities + Equity` and do
-the tax arithmetic.
+tools enforce the accounting identity `Assets = Liabilities + Equity`, do the
+tax arithmetic, and verify classification codes against the shipped catalogue.
 
 > **Branching:** this repo uses a lite git flow (`main` / `develop` /
 > `feature/*`). See [AGENTS.md](./AGENTS.md) before making changes.
@@ -39,14 +40,33 @@ receipt image ──▶ Agent Keuangan (LlmAgent, Gemini multimodal)
                         │  calls compute_pph_final(turnover)
                         ▼
               PPh Final 0,5%  +  verbatim Pasal/Ayat citations
-                        (read from nata_agent/statutes/ — no managed RAG)
+                        │  one-way handoff
+                        ▼
+                  Agent Regulasi (licensing)
+                        │  calls classify_kbli(description | code)
+                        ▼
+              KBLI 2020 code + official title
+                        (verified against the in-repo catalogue)
 ```
 
 **The model proposes, the code enforces.** `commit_journal_entry` never trusts
 the LLM: it re-validates the posting and raises on any violation. The tax
 agent likewise never does its own arithmetic and never invents a citation —
 `compute_pph_final` recomputes everything and attaches quotes that are checked
-verbatim against the in-repo statute text.
+verbatim against the in-repo statute text. And `classify_kbli` refuses any code
+that is not in the catalogue, so a hallucinated KBLI cannot reach the UI.
+
+Grounding is **in-repo and in-context**, by deliberate choice: the statute text
+and the KBLI catalogue ship with the code, so no managed RAG index can surface
+a wrong or paraphrased passage. See
+[`docs/regulasi-provenance.md`](./docs/regulasi-provenance.md) for the source
+and verification status of every legal dataset.
+
+**Entity type decides the tax.** The business form is a first-class field, not
+a label: under PP 55/2022 Pasal 60 ayat (2) the Rp 500 million zero-tax band
+applies to *orang pribadi* only — PT Perorangan and PT/CV are taxed from the
+first rupiah. `nata_agent/entities.py` encodes that, and the tax engine takes
+the entity rather than a coarse yes/no flag.
 
 ## Prerequisites
 
@@ -72,18 +92,28 @@ cp .env.example .env    # .env is gitignored; never commit real values
 uv run adk web --port 48702   # open http://localhost:48702, pick "nata_agent"
 ```
 
-CLI instead of a browser:
+`adk api_server` serves every agent package in the repo, so both apps appear in
+the picker:
+
+| App | What it is |
+| --- | --- |
+| `nata_agent` | The cascade entry point — Agent Keuangan, which hands off to Fiskal and on to Regulasi |
+| `nata_regulasi` | Agent Regulasi on its own, so a screen can call `classify_kbli` directly |
+
+CLI instead of a browser (either app):
 
 ```bash
-uv run adk run nata_agent
+uv run adk run nata_agent       # the whole cascade
+uv run adk run nata_regulasi    # licensing only
 ```
 
 `adk web` is the framework's dev harness (a generic chat playground). The
-product UI is the Next.js dashboard in [`web/`](./web) — Indonesian, light mode,
+product UI is the Next.js console in [`web/`](./web) — Indonesian, light mode,
 written for shop owners: **Dasbor**, **Catat Struk** (receipt OCR), **Transaksi**,
-**Daftar Akun**, **Laporan Keuangan** (SAK EMKM statements) and **Pajak**
-(PPh Final UMKM), plus routed "segera hadir" placeholders. It talks to the same
-agent API; run `adk api_server --port 48700` behind it.
+**Daftar Akun**, **Laporan Keuangan** (SAK EMKM statements), **Pajak**
+(PPh Final UMKM), **Perizinan** (KBLI 2020), plus **Profil Usaha** and
+**Pengaturan**. It talks to the same agent API; run `adk api_server --port 48700`
+behind it.
 
 Ports are a reserved, high/uncommon namespace so they never collide with other
 dev servers on the same machine:
@@ -109,13 +139,28 @@ uv run pytest
 .
 ├── pyproject.toml            # uv-managed; pins adk + google-genai + pydantic
 ├── .env.example              # placeholder env (no secrets)
+├── Makefile                  # dev tasks: make dev / check / down
 ├── README.md
-├── nata_agent/
+├── docs/
+│   └── regulasi-provenance.md  # source + verification status of legal data
+├── nata_agent/               # the cascade entry point
 │   ├── __init__.py           # exports root_agent
-│   └── agent.py              # Agent Keuangan + commit_journal_entry tool
+│   ├── agent.py              # the three agents + instructions
+│   ├── tax.py                # Agent Fiskal's engine + Pasal citations
+│   ├── regulasi.py           # Agent Regulasi: KBLI catalogue + verify guardrail
+│   ├── entities.py           # business forms and their tax treatment
+│   └── statutes/             # grounded corpora (shipped, not retrieved)
+│       ├── pp-55-2022-pph-final-umkm.md
+│       └── kbli/kbli-2020-5digit.json   # 1,790 codes + hierarchy
+├── nata_regulasi/            # Agent Regulasi as its own ADK app
+│   └── __init__.py           # re-exports the one definition (see docs)
 ├── tests/
 │   ├── test_commit_journal_entry.py
-│   └── test_compute_pph_final.py
+│   ├── test_compute_pph_final.py
+│   ├── test_entities.py      # entity → tax treatment
+│   ├── test_regulasi.py      # verify-not-invent guardrail
+│   ├── test_kbli_quality.py  # classification quality floor
+│   └── test_cascade.py       # cascade topology
 └── web/                      # Next.js console (see web/README.md)
     └── src/
 ```
@@ -133,9 +178,21 @@ See `.env.example`. All values are placeholders; secrets are never committed.
 
 ## Roadmap
 
-Slice A and Slice B are done and verified. Next: **Agent Regulasi** (KBLI 2020
-classification, OSS-RBA licensing) and a production deploy to Cloud Run /
-Firebase, staying live through the judging window (19 Oct – 6 Nov).
+All three agents are implemented and verified: Agent Keuangan, Agent Fiskal
+and Agent Regulasi. Next: a production deploy to Cloud Run / Firebase,
+staying live through the judging window (19 Oct – 6 Nov).
+
+Two things are deliberately **not** done, and are flagged rather than hidden:
+
+- **`statutes/kbli/` re-sourcing.** The KBLI catalogue was taken from a public
+  GitHub mirror that carries no licence. The codes are factual government data
+  (KBLI 2020, BPS), but the extraction path needs replacing with an official
+  source before public distribution.
+- **PP 20/2026.** Research notes claim it amends PP 55/2022 (permanent 0.5%
+  rate, PT/CV excluded). It could not be verified from a primary source, so it
+  is **not** encoded; the engine follows the in-repo PP 55/2022.
+
+See [`docs/regulasi-provenance.md`](./docs/regulasi-provenance.md).
 
 ## Contributing
 

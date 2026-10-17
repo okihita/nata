@@ -1,10 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Search, ReceiptText } from "lucide-react";
+import Link from "next/link";
+import { Search, ReceiptText, ScanLine, Download } from "lucide-react";
 
 import { PageHeader } from "@/components/app-sidebar";
+import { EmptyState } from "@/components/empty-state";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -15,15 +18,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useLedger } from "@/lib/store";
+import { useWorkspace } from "@/lib/store";
 import { entryTotals, type JournalEntry } from "@/lib/ledger";
+import { downloadCsv, journalToCsv, reportFilename } from "@/lib/export-csv";
 import { copy } from "@/lib/copy";
 import { idrFull } from "@/lib/format";
+import { toast } from "sonner";
 
 type Filter = "all" | "ocr" | "manual";
 
 export default function TransaksiPage() {
-  const { entries, ready } = useLedger();
+  const { entries, ready, business } = useWorkspace();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
   const [selected, setSelected] = useState<JournalEntry | null>(null);
@@ -63,7 +68,22 @@ export default function TransaksiPage() {
         title={copy.transaksi.title}
         subtitle={copy.transaksi.subtitle}
         badge={copy.transaksi.countLabel(entries.length)}
-      />
+      >
+        <Button
+          variant="outline"
+          disabled={filtered.length === 0}
+          onClick={() => {
+            downloadCsv(
+              reportFilename(`${business?.name ?? copy.app.name}-jurnal`, copy.common.total),
+              journalToCsv(filtered),
+            );
+            toast.success(copy.transaksi.exported);
+          }}
+        >
+          <Download className="mr-2 size-4" />
+          {copy.transaksi.export}
+        </Button>
+      </PageHeader>
 
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <div className="relative w-full max-w-sm">
@@ -72,6 +92,8 @@ export default function TransaksiPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={copy.transaksi.searchPlaceholder}
+            aria-label={copy.transaksi.searchPlaceholder}
+            type="search"
             className="pl-9"
           />
         </div>
@@ -95,15 +117,19 @@ export default function TransaksiPage() {
       <Card>
         <CardContent className="pt-6">
           {filtered.length === 0 ? (
-            <div className="flex flex-col items-center gap-2 py-16 text-center">
-              <span className="grid size-12 place-items-center rounded-full bg-muted">
-                <ReceiptText className="size-5 text-muted-foreground" />
-              </span>
-              <p className="text-sm font-medium">{copy.transaksi.emptyTitle}</p>
-              <p className="max-w-sm text-sm text-muted-foreground">
-                {copy.transaksi.emptyBody}
-              </p>
-            </div>
+            <EmptyState
+              icon={<ReceiptText className="size-6" />}
+              title={copy.transaksi.emptyTitle}
+              body={copy.transaksi.emptyBody}
+              actions={
+                <Button asChild size="sm">
+                  <Link href="/catat">
+                    <ScanLine className="mr-2 size-4" />
+                    {copy.dashboard.actionScan}
+                  </Link>
+                </Button>
+              }
+            />
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">

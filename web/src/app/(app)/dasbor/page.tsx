@@ -4,6 +4,8 @@ import Link from "next/link";
 import {
   ArrowDownRight,
   ArrowUpRight,
+  Building2,
+  ChevronRight,
   FileBarChart,
   Landmark,
   ScanLine,
@@ -23,6 +25,7 @@ import {
 } from "recharts";
 
 import { PageHeader } from "@/components/app-sidebar";
+import { EmptyState } from "@/components/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,18 +37,19 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { useLedger } from "@/lib/store";
+import { useWorkspace } from "@/lib/store";
+import { ENTITY_LABEL, entityHasExemption } from "@/lib/business";
 import { balanceSheet, incomeStatement, monthlyRevenue, taxPosition, trialBalance } from "@/lib/ledger";
 import { copy } from "@/lib/copy";
 import { idr, idrFull } from "@/lib/format";
 
 export default function DashboardPage() {
-  const { entries, ready } = useLedger();
+  const { entries, ready, business, loadDemo } = useWorkspace();
   const income = incomeStatement(entries);
   const bs = balanceSheet(entries);
   const series = monthlyRevenue(entries);
   const accounts = trialBalance(entries);
-  const tax = taxPosition(entries, { individual: true });
+  const tax = taxPosition(entries, { individual: entityHasExemption(business?.entity ?? "orang_pribadi") });
 
   // "Perlu tindakan": plain-language items the owner should look at. This is
   // the panel the incumbents do worst — an empty state here says the books are
@@ -68,7 +72,7 @@ export default function DashboardPage() {
       tone: "warn",
       href: "/pajak",
     });
-  } else {
+  } else if (entityHasExemption(business?.entity ?? "orang_pribadi")) {
     actions.push({
       id: "tax-exempt",
       text: copy.dashboard.needsTaxExempt,
@@ -76,6 +80,9 @@ export default function DashboardPage() {
       href: "/pajak",
     });
   }
+  // A badan usaha can owe Rp 0 simply because turnover is zero. Saying "masih di
+  // bawah batas bebas pajak" would imply a threshold that does not apply to it,
+  // so no tax item is shown at all in that case.
 
   if (!ready) {
     return (
@@ -88,6 +95,45 @@ export default function DashboardPage() {
         </div>
         <Skeleton className="h-72" />
       </div>
+    );
+  }
+
+  // First run: a business with an empty journal. Showing four Rp 0 cards and an
+  // empty chart would read as broken, so the whole page becomes one clear step.
+  if (entries.length === 0) {
+    return (
+      <>
+        <PageHeader title={copy.dashboard.title} subtitle={copy.dashboard.subtitle} />
+        <Card>
+          <CardContent>
+            <EmptyState
+              icon={<ScanLine className="size-6" />}
+              title={copy.dashboard.firstRunTitle}
+              body={copy.dashboard.firstRunBody}
+              actions={
+                <>
+                  <Button asChild>
+                    <Link href="/catat">
+                      <ScanLine className="mr-2 size-4" />
+                      {copy.dashboard.actionScan}
+                    </Link>
+                  </Button>
+                  <Button variant="outline" onClick={loadDemo}>
+                    {copy.common.tryDemo}
+                  </Button>
+                </>
+              }
+              hint={copy.dashboard.firstRunDemoHint}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Bentuk usaha dan perlakuan pajaknya sudah pasti sejak onboarding, jadi
+            pemilik baru harus melihatnya di sini juga — bukan baru setelah ada
+            transaksi. Kode KBLI memang belum ada, dan justru itu yang perlu
+            terlihat sebagai langkah berikutnya. */}
+        {business && <ComplianceRow business={business} />}
+      </>
     );
   }
 
@@ -127,15 +173,28 @@ export default function DashboardPage() {
         />
       </div>
 
+      {/* Status usaha: tiga hal yang menentukan kewajiban pemilik — bentuk
+          usaha, perlakuan pajaknya, dan kode KBLI-nya. Ditampilkan di sini
+          karena inilah layar pertama yang dibuka pemilik. */}
+      {business && <ComplianceRow business={business} className="mt-4" />}
+
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         {/* Grafik */}
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="text-base">{copy.dashboard.chartTitle}</CardTitle>
-            <CardDescription>{copy.app.workspace}</CardDescription>
+            <CardDescription>{business?.name ?? copy.app.name}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-64 w-full">
+            {series.length === 0 ? (
+              <EmptyState
+                compact
+                icon={<FileBarChart className="size-5" />}
+                title={copy.dashboard.emptyChart}
+                body={copy.dashboard.firstRunBody}
+              />
+            ) : (
+              <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={series} margin={{ left: 4, right: 8, top: 4, bottom: 0 }}>
                   <defs>
@@ -198,6 +257,7 @@ export default function DashboardPage() {
                 </AreaChart>
               </ResponsiveContainer>
             </div>
+            )}
           </CardContent>
         </Card>
 
@@ -302,9 +362,12 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent>
           {entries.length === 0 ? (
-            <p className="py-6 text-center text-sm text-muted-foreground">
-              {copy.dashboard.recentEmpty}
-            </p>
+            <EmptyState
+              compact
+              icon={<ArrowUpRight className="size-5" />}
+              title={copy.dashboard.emptyActivity}
+              body={copy.dashboard.recentEmpty}
+            />
           ) : (
             <ul className="divide-y">
               {[...entries]
@@ -418,5 +481,124 @@ function QuickAction({
         </div>
       </Link>
     </Button>
+  );
+}
+
+/**
+ * The three standing facts that decide what the owner owes: business form, its
+ * tax treatment, and its KBLI code.
+ *
+ * Extracted because it must appear on both dashboard branches — the first-run
+ * view as well as the populated one. Entity and tax treatment are settled at
+ * onboarding, so a brand-new owner can already see them; the KBLI is usually
+ * still open, which is exactly what makes it useful there.
+ */
+function ComplianceRow({
+  business,
+  className,
+}: {
+  business: NonNullable<ReturnType<typeof useWorkspace>["business"]>;
+  className?: string;
+}) {
+  const exempt = entityHasExemption(business.entity);
+  return (
+    <Card className={className}>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base">{copy.dashboard.complianceTitle}</CardTitle>
+      </CardHeader>
+      <CardContent className="grid gap-4 sm:grid-cols-3">
+        <ComplianceItem
+          icon={<Building2 className="size-3.5" />}
+          label={copy.dashboard.complianceEntity}
+          value={ENTITY_LABEL[business.entity]}
+        />
+        <ComplianceItem
+          icon={<Landmark className="size-3.5" />}
+          label={copy.dashboard.complianceTax}
+          value={exempt ? copy.pajak.entityExemptTitle : copy.pajak.entityTaxedTitle}
+          tone={exempt ? "ok" : "warn"}
+        />
+        <ComplianceItem
+          icon={<ShieldCheck className="size-3.5" />}
+          label={copy.dashboard.complianceKbli}
+          value={
+            business.kbliCode
+              ? `${business.kbliCode} · ${business.kbliTitle ?? ""}`
+              : copy.dashboard.complianceKbliNone
+          }
+          href="/perizinan"
+          cta={
+            business.kbliCode
+              ? copy.dashboard.complianceOpen
+              : copy.dashboard.complianceKbliCta
+          }
+          tone={business.kbliCode ? "ok" : "warn"}
+        />
+      </CardContent>
+    </Card>
+  );
+}
+
+/**
+ * One compliance fact about the business (entity, tax treatment, KBLI).
+ *
+ * These are durable facts, not figures for the period, so they are presented as
+ * a quiet status row rather than as a metric card — and the KBLI item links
+ * straight to the screen that can determine it.
+ */
+function ComplianceItem({
+  icon,
+  label,
+  value,
+  tone = "neutral",
+  href,
+  cta,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  tone?: "ok" | "warn" | "neutral";
+  href?: string;
+  cta?: string;
+}) {
+  const toneClass =
+    tone === "ok"
+      ? "text-tone-hijau"
+      : tone === "warn"
+        ? "text-tone-oranye"
+        : "text-muted-foreground";
+
+  const body = (
+    <>
+      <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+        {icon}
+        {label}
+      </span>
+      <span className="mt-1 block truncate text-sm font-medium" title={value}>
+        {value}
+      </span>
+      {href && cta && (
+        <span
+          className={cn(
+            "mt-1 inline-flex items-center gap-0.5 text-[11px] font-medium",
+            toneClass,
+          )}
+        >
+          {cta}
+          <ChevronRight className="size-3" />
+        </span>
+      )}
+    </>
+  );
+
+  return href ? (
+    <Link
+      href={href}
+      className="min-w-0 rounded-lg border bg-card p-3 transition hover:bg-muted/40"
+    >
+      {body}
+    </Link>
+  ) : (
+    <div className="min-w-0 rounded-lg border bg-card p-3">{body}</div>
   );
 }

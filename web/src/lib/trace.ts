@@ -1,5 +1,6 @@
 import type { AdkEvent, JournalOutcome, TaxAssessment } from "./adk";
 import { copy } from "./copy";
+import { describeAgentError } from "./agent-errors";
 
 /**
  * The screen's model of one receipt: a plain-language activity feed plus the
@@ -17,6 +18,7 @@ export type StepKind =
   | "posted"
   | "handoff"
   | "tax"
+  | "regulasi"
   | "problem";
 
 export interface TraceStep {
@@ -50,6 +52,12 @@ export interface RunState {
   tax: TaxAssessment | null;
   /** Agent Fiskal's plain-Indonesian narrative answer. */
   taxAnswer: string;
+  /** Verified KBLI classification from Agent Regulasi, if it ran. */
+  kbli: {
+    code: string;
+    title: string;
+    hierarchy?: { level: string; code: string; title: string }[];
+  } | null;
   latencyMs: number | null;
   error: string | null;
 }
@@ -63,6 +71,7 @@ export const emptyRun: RunState = {
   handoff: null,
   tax: null,
   taxAnswer: "",
+  kbli: null,
   latencyMs: null,
   error: null,
 };
@@ -95,6 +104,22 @@ function ensureChecking(next: RunState, at: number): void {
   else next.steps.splice(outcomeAt, 0, step);
 }
 
+/**
+ * Push a step unless it repeats the one immediately before it.
+ *
+ * Observed live: the agent called `classify_kbli` twice with a description, so
+ * the trace showed "Mencari kode KBLI 2020" twice in a row with identical text.
+ * A repeated identical line reads as a glitch rather than as information.
+ *
+ * Only *consecutive* duplicates collapse — a step that legitimately recurs
+ * later (after other work) is kept, because the sequence then carries meaning.
+ */
+function pushStep(next: RunState, step: TraceStep): void {
+  const last = next.steps[next.steps.length - 1];
+  if (last && last.kind === step.kind && last.title === step.title) return;
+  next.steps.push(step);
+}
+
 /** Fold one SSE frame into the current run state. Returns a new state object. */
 export function reduceEvent(state: RunState, event: AdkEvent): RunState {
   const next: RunState = { ...state, steps: [...state.steps] };
@@ -102,7 +127,9 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
 
   if (event.errorMessage) {
     next.status = "error";
-    next.error = copy.banner.offline;
+    // The server sends the underlying message here, so it can be classified:
+    // a quota/rate-limit event is not the same as an unreachable backend.
+    next.error = describeAgentError(event.errorMessage);
     next.steps.push({
       id: nextId(),
       kind: "problem",
@@ -122,7 +149,7 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
 
       // The tax agent running its own tool.
       if (call.name === "compute_pph_final") {
-        next.steps.push({
+        pushStep(next, {
           id: nextId(),
           kind: "tax",
           title: copy.steps.taxChecking.title,
@@ -133,15 +160,44 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
         continue;
       }
 
-      // The bookkeeping agent handing the entry to the tax agent.
+      // The licensing agent verifying a KBLI code against the catalogue.
+      if (call.name === "classify_kbli") {
+        const args = (call.args ?? {}) as { code?: string };
+        // Two different acts share one tool: proposing candidates from a
+        // description, then verifying a chosen code. Naming them the same made
+        // the trace read as a duplicated step.
+        const isVerify = typeof args.code === "string" && args.code.length > 0;
+        pushStep(next, {
+          id: nextId(),
+          kind: "regulasi",
+          title: isVerify
+            ? copy.steps.kbliVerify.title
+            : copy.steps.kbliChecking.title,
+          detail: isVerify
+            ? copy.steps.kbliVerify.detail
+            : copy.steps.kbliChecking.detail,
+          callId: call.id,
+          at,
+        });
+        continue;
+      }
+
+      // The licensing agent handing off from the tax agent.
       if (call.name === "transfer_to_agent") {
         const target = (call.args as { agent_name?: string } | undefined)?.agent_name ?? null;
         next.handoff = target;
-        next.steps.push({
+        // Regulasi follows Fiskal, so it gets its own wording rather than the
+        // "handed to the tax agent" line meant for the first hop.
+        const toRegulasi = target === "agent_regulasi";
+        pushStep(next, {
           id: nextId(),
           kind: "handoff",
-          title: copy.steps.handoff.title,
-          detail: copy.steps.handoff.detail,
+          title: toRegulasi
+            ? copy.steps.handoffRegulasi.title
+            : copy.steps.handoff.title,
+          detail: toRegulasi
+            ? copy.steps.handoffRegulasi.detail
+            : copy.steps.handoff.detail,
           callId: call.id,
           at,
         });
@@ -155,7 +211,7 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
       const wording = lines?.length
         ? copy.steps.matching(lines.length)
         : copy.steps.matchingNoLines;
-      next.steps.push({
+      pushStep(next, {
         id: nextId(),
         kind: "matching",
         title: wording.title,
@@ -173,10 +229,38 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
       const toolName = part.functionResponse.name;
       const response = (part.functionResponse.response ?? {}) as Record<string, unknown>;
 
+      if (toolName === "classify_kbli") {
+        // Only a verified code is recorded; a candidate list is an intermediate
+        // step, not a result.
+        if (response.status === "success" && response.code) {
+          const rec = response as {
+            code: string;
+            title: string;
+            hierarchy?: { level: string; code: string; title: string }[];
+          };
+          next.kbli = { code: rec.code, title: rec.title, hierarchy: rec.hierarchy };
+          // A business has exactly one KBLI code, so a later verification
+          // *replaces* the earlier result rather than joining it. Observed live:
+          // the agent verified 56303 then 56102, and the trace showed two
+          // contradictory steps both labelled "terverifikasi".
+          next.steps = next.steps.filter(
+            (s) => s.kind !== "regulasi" || s.title !== copy.steps.kbliDone.title,
+          );
+          next.steps.push({
+            id: nextId(),
+            kind: "regulasi",
+            title: copy.steps.kbliDone.title,
+            detail: `${rec.code} — ${rec.title}`,
+            at,
+          });
+        }
+        continue;
+      }
+
       if (toolName === "compute_pph_final") {
         if (response.status === "success") {
           next.tax = response as unknown as TaxAssessment;
-          next.steps.push({
+          pushStep(next, {
             id: nextId(),
             kind: "tax",
             title: copy.steps.taxDone.title,
@@ -184,7 +268,7 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
             at,
           });
         } else {
-          next.steps.push({
+          pushStep(next, {
             id: nextId(),
             kind: "problem",
             title: copy.pajak.agentTitle,
@@ -194,6 +278,13 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
         }
         continue;
       }
+
+      // Only the journal tool carries a posting outcome. Everything else —
+      // transfer_to_agent, and any tool added later — is matched above or
+      // ignored, rather than being mistaken for a commitment result. Assuming
+      // "anything not matched is the journal tool" produced a spurious
+      // "posting rejected" step on every handoff.
+      if (toolName !== "commit_journal_entry") continue;
 
       const outcome = response as unknown as JournalOutcome;
       next.commit = outcome;
@@ -225,12 +316,19 @@ export function reduceEvent(state: RunState, event: AdkEvent): RunState {
     // 3. Streamed narration. Agent Fiskal's narration is kept separate so the
     //    tax view can show the tax agent's own words; Keuangan's stays as the
     //    receipt summary. The balance check is shown once, before the outcome.
+    //
+    //    Each agent's final (non-partial) frame *replaces* what accumulated,
+    //    mirroring the tax path. Handling only the partial frames dropped
+    //    Keuangan's final wording, so the receipt summary could end up as a
+    //    half-sentence while the tax summary was complete.
     if (typeof part.text === "string" && part.text.length > 0) {
       if (event.author === "agent_fiskal") {
-        if (event.partial) next.taxAnswer = state.taxAnswer + part.text;
-        else next.taxAnswer = part.text;
-      } else if (event.partial) {
-        next.answer = state.answer + part.text;
+        next.taxAnswer = event.partial ? state.taxAnswer + part.text : part.text;
+      } else if (typeof event.author === "string" && event.author.includes("regulasi")) {
+        // Regulasi's narration is its own; it should not overwrite the receipt
+        // summary the owner already read.
+      } else {
+        next.answer = event.partial ? state.answer + part.text : part.text;
       }
       ensureChecking(next, at);
     }
@@ -254,5 +352,9 @@ export function readingStep(): TraceStep {
 export function totals(lines: DraftLine[] | null | undefined) {
   const debit = lines?.reduce((sum, line) => sum + (line.debit || 0), 0) ?? 0;
   const credit = lines?.reduce((sum, line) => sum + (line.credit || 0), 0) ?? 0;
-  return { debit, credit, balanced: lines != null && Math.abs(debit - credit) < 0.005 };
+  // Must agree with `ledger.entryTotals`, which the guardrail enforces: a
+  // posting is only balanced when both sides match *and* carry an amount. An
+  // empty list has matching zeroes, and calling that "balanced" would let the
+  // trace show a green tick for a posting that was never made.
+  return { debit, credit, balanced: debit === credit && debit > 0 };
 }

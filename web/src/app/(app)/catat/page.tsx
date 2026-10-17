@@ -3,7 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { CheckCircle2, Loader2, Landmark, ArrowRight, RotateCcw, Sparkles, Upload } from "lucide-react";
+import { CheckCircle2, Loader2, Landmark, ArrowRight, RotateCcw, ShieldCheck, Sparkles, Upload } from "lucide-react";
 
 import { PageHeader } from "@/components/app-sidebar";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -16,16 +16,22 @@ import { cn } from "@/lib/utils";
 import { APP_NAME, ensureSession, streamRun, type AdkEvent, type RunRequest } from "@/lib/adk";
 import { emptyRun, readingStep, reduceEvent, type RunState } from "@/lib/trace";
 import { CitationList } from "@/components/citation-list";
+import { Prose } from "@/components/prose";
 import { copy } from "@/lib/copy";
-import { useLedger } from "@/lib/store";
+import { useWorkspace } from "@/lib/store";
+import { describeAgentError } from "@/lib/agent-errors";
 import { idrFull } from "@/lib/format";
 
 const USER_ID = "web-console";
-const SESSION_KEY = "***";
+// Namespaced like the other agent session keys (`nata.pajak.session`,
+// `nata.regulasi.session`) so that `clearAppStorage()` — which sweeps `nata.*` —
+// actually removes it. A key outside that namespace survived "delete all data",
+// leaving a stale ADK session id pointing at a ledger that no longer existed.
+const SESSION_KEY = "nata.catat.session";
 
 export default function CatatPage() {
   const router = useRouter();
-  const { addEntry } = useLedger();
+  const { addEntry, business, updateBusiness } = useWorkspace();
 
   const [run, setRun] = useState<RunState>(emptyRun);
   const [file, setFile] = useState<File | null>(null);
@@ -92,7 +98,20 @@ export default function CatatPage() {
         newMessage: {
           role: "user",
           parts: [
-            { text: "Here is a receipt photo. Post it to the ledger." },
+            {
+              // The KBLI classification must describe the *business*, not the
+              // receipt. Without this, a stationery purchase at a coffee shop
+              // was classified as a stationery retailer (47611) rather than a
+              // cafe (56303) — the agent can only see what it is told.
+              text:
+                `Here is a receipt photo. Post it to the ledger.` +
+                (business
+                  ? ` This business is "${business.name}", a ${business.type} ` +
+                    `(entity: ${business.entity}). Use THAT as the business's ` +
+                    `activity when classifying its KBLI code — the receipt is ` +
+                    `only one purchase it made, not what the business does.`
+                  : ""),
+            },
             { inlineData: { mimeType: file.type || "image/png", data: base64 } } as never,
           ],
         },
@@ -126,13 +145,24 @@ export default function CatatPage() {
         });
         toast.success(copy.add.submitted, { description: finished.commit.description });
       }
-    } catch {
-      setBanner(copy.banner.offline);
+
+      // Agent Regulasi verified a KBLI during this run. It is a lasting attribute
+      // of the business, so persist it here too — otherwise it lives only in this
+      // screen's trace and the Perizinan screen cannot see it.
+      if (finished.kbli) {
+        updateBusiness({
+          kbliCode: finished.kbli.code,
+          kbliTitle: finished.kbli.title,
+          kbliHierarchy: finished.kbli.hierarchy,
+        });
+      }
+    } catch (error) {
+      setBanner(describeAgentError(error));
       setRun((current) => ({ ...current, status: "error" }));
     } finally {
       setBusy(false);
     }
-  }, [addEntry, busy, file, fileName]);
+  }, [addEntry, busy, file, fileName, business, updateBusiness]);
 
   const accepted = run.commit?.status === "success";
   const rejected = run.commit?.status === "error";
@@ -211,6 +241,7 @@ export default function CatatPage() {
               type="file"
               accept="image/*"
               className="hidden"
+              aria-label={copy.add.dropTitle}
               onChange={(e) => {
                 const chosen = e.target.files?.[0];
                 if (chosen) pick(chosen, URL.createObjectURL(chosen), chosen.name);
@@ -271,6 +302,7 @@ export default function CatatPage() {
             onViewAll={() => router.push("/transaksi")}
           />
           {run.tax && <TaxCard run={run} onViewTax={() => router.push("/pajak")} />}
+          <KbliCard run={run} onViewPerizinan={() => router.push("/perizinan")} />
         </div>
       </div>
     </>
@@ -333,6 +365,7 @@ const STEP_TONE: Record<string, string> = {
   posted: "bg-emerald-500",
   handoff: "bg-sky-500",
   tax: "bg-teal-500",
+  regulasi: "bg-indigo-500",
   problem: "bg-rose-500",
 };
 
@@ -486,9 +519,10 @@ function TaxCard({ run, onViewTax }: { run: RunState; onViewTax: () => void }) {
         </div>
 
         {run.taxAnswer && (
-          <div className="max-h-56 overflow-y-auto whitespace-pre-wrap rounded-lg border bg-background/60 p-3 text-xs leading-relaxed text-muted-foreground">
-            {run.taxAnswer}
-          </div>
+          <Prose
+            text={run.taxAnswer}
+            className="max-h-56 overflow-y-auto rounded-lg border bg-background/60 p-3 text-xs text-muted-foreground"
+          />
         )}
 
         <CitationList citations={tax.citations} />
@@ -502,8 +536,53 @@ function TaxCard({ run, onViewTax }: { run: RunState; onViewTax: () => void }) {
   );
 }
 
-function Metric({ label, value, strong }: { label: string; value: string; strong?: boolean }) {
+/**
+ * The licensing result from this run.
+ *
+ * Agent Regulasi verifies a KBLI code as part of the same receipt cascade, but
+ * only the tax card used to render — so the third agent's result was invisible
+ * on the very screen where it happened. This shows it next to the tax card.
+ */
+function KbliCard({ run, onViewPerizinan }: { run: RunState; onViewPerizinan: () => void }) {
+  const kbli = run.kbli;
+  if (!kbli) return null;
+
   return (
+    <Card className="border-indigo-500/20 bg-indigo-500/[0.03]">
+      <CardHeader>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <CardTitle className="flex items-center gap-2 text-base">
+              <ShieldCheck className="size-4 text-indigo-600" />
+              {copy.perizinan.agentTitle}
+            </CardTitle>
+            <CardDescription>
+              {copy.pajak.handoffFrom(copy.agents.fiskal, copy.agents.regulasi)}
+            </CardDescription>
+          </div>
+          <Badge variant="secondary" className="bg-tone-hijau-bg text-tone-hijau">
+            {copy.perizinan.verified}
+          </Badge>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid grid-cols-2 gap-3">
+          <Metric label={copy.perizinan.codeLabel} value={kbli.code} strong />
+          <Metric label={copy.perizinan.officialNameLabel} value={kbli.title} />
+        </div>
+        <p className="text-xs leading-relaxed text-muted-foreground">
+          {copy.perizinan.riskNote}
+        </p>
+        <Button variant="outline" size="sm" className="w-full" onClick={onViewPerizinan}>
+          {copy.nav.perizinan}
+          <ArrowRight />
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+
+function Metric({ label, value, strong }: { label: string; value: string; strong?: boolean }) {  return (
     <div className="rounded-lg border bg-background/60 p-3">
       <p className="text-[0.7rem] text-muted-foreground">{label}</p>
       <p className={cn("tabular-nums", strong ? "text-base font-semibold" : "text-sm font-medium")}>

@@ -1,10 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { Landmark, Info, ShieldCheck, Sparkles, Loader2 } from "lucide-react";
+import { Landmark, Info, ShieldCheck, Sparkles, Loader2, Building2, ScanLine } from "lucide-react";
+import Link from "next/link";
 
 import { PageHeader } from "@/components/app-sidebar";
 import { CitationList } from "@/components/citation-list";
+import { EmptyState } from "@/components/empty-state";
+import { Prose } from "@/components/prose";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,13 +15,16 @@ import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useLedger } from "@/lib/store";
+import { useWorkspace } from "@/lib/store";
+import { ENTITY_LABEL, entityHasExemption } from "@/lib/business";
 import { taxPosition } from "@/lib/ledger";
 import { PPH_FINAL_RATE, PPH_INDIVIDUAL_EXEMPTION } from "@/lib/sak-emkm";
 import type { TaxAssessment } from "@/lib/adk";
 import { cacheTax, getServerTaxSnapshot, getTaxSnapshot, primeTaxStore, readCachedTax, runFiskal, subscribeTax } from "@/lib/agent-tax";
 import { copy } from "@/lib/copy";
+import { describeAgentError } from "@/lib/agent-errors";
 import { idrFull } from "@/lib/format";
+import { cn } from "@/lib/utils";
 
 /**
  * Pajak — the tax screen.
@@ -29,10 +35,20 @@ import { idrFull } from "@/lib/format";
  * screen shows it instantly after a receipt has been recorded.
  */
 export default function PajakPage() {
-  const { entries, ready } = useLedger();
+  const { entries, ready, business } = useWorkspace();
 
-  // Prototype assumes an individual taxpayer, so the Rp 500 juta exemption applies.
-  const tax = useMemo(() => taxPosition(entries, { individual: true }), [entries]);
+  // Hoisted to a primitive: the React compiler cannot preserve manual
+  // memoization when a dependency is an optional chain (`business?.entity`).
+  const entity = business?.entity ?? "orang_pribadi";
+
+  // The entity type chosen at onboarding decides whether the Rp 500 juta
+  // exemption applies (Pasal 60 ayat (2)): orang pribadi gets it, PT Perorangan
+  // and PT/CV do not.
+  const individual = entityHasExemption(entity);
+  const tax = useMemo(
+    () => taxPosition(entries, { individual }),
+    [entries, individual],
+  );
 
   const [answer, setAnswer] = useState("");
   const [running, setRunning] = useState(false);
@@ -58,17 +74,21 @@ export default function PajakPage() {
     setRunning(true);
     setError(null);
     try {
-      const result = await runFiskal({ turnover: tax.turnover, individual: true });
+      const result = await runFiskal({
+        turnover: tax.turnover,
+        entity,
+        individual,
+      });
       // cacheTax updates the external store, which re-renders this screen.
       if (result.tax) cacheTax(result.tax);
       setAnswer(result.answer);
       setLatency(result.latencyMs);
-    } catch {
-      setError(copy.banner.offline);
+    } catch (error) {
+      setError(describeAgentError(error));
     } finally {
       setRunning(false);
     }
-  }, [tax.turnover]);
+  }, [tax.turnover, individual, entity]);
 
   // Auto-run exactly once per turnover: the moment the books change, Agent
   // Fiskal assesses them (the cascade, seen from the tax screen). The persisted
@@ -77,11 +97,16 @@ export default function PajakPage() {
   const attempted = useRef<number | null>(null);
   useEffect(() => {
     if (!ready || running) return;
+    // Nothing to assess without a ledger. Asking anyway costs a model call and
+    // can only return the tool's "no ledger entries yet" error — which the
+    // screen would then show as a problem, making a brand-new business look
+    // broken on first visit.
+    if (entries.length === 0) return;
     if (readCachedTax(tax.turnover)) return;
     if (attempted.current === tax.turnover) return;
     attempted.current = tax.turnover;
     void runAgent();
-  }, [ready, running, tax.turnover, runAgent]);
+  }, [ready, running, tax.turnover, runAgent, entries.length]);
 
   if (!ready) {
     return (
@@ -89,6 +114,34 @@ export default function PajakPage() {
         <Skeleton className="h-9 w-40" />
         <Skeleton className="h-96" />
       </div>
+    );
+  }
+
+  // A brand-new business has no turnover, so every figure below would be Rp 0
+  // and the agent call would be pointless. Point at the action that fills it
+  // instead, as the other screens do.
+  if (entries.length === 0) {
+    return (
+      <>
+        <PageHeader title={copy.pajak.title} subtitle={copy.pajak.subtitle} />
+        <Card>
+          <CardContent>
+            <EmptyState
+              icon={<Landmark className="size-6" />}
+              title={copy.pajak.emptyTitle}
+              body={copy.pajak.emptyBody}
+              actions={
+                <Button asChild size="sm">
+                  <Link href="/catat">
+                    <ScanLine className="mr-2 size-4" />
+                    {copy.dashboard.actionScan}
+                  </Link>
+                </Button>
+              }
+            />
+          </CardContent>
+        </Card>
+      </>
     );
   }
 
@@ -104,10 +157,53 @@ export default function PajakPage() {
         <Badge variant="secondary">{copy.pajak.scheme}</Badge>
       </PageHeader>
 
-      {tax.payable === 0 && (
-        <Alert className="mb-6 border-emerald-500/30 bg-emerald-500/5">
-          <ShieldCheck className="size-4 text-emerald-600" />
-          <AlertDescription className="text-sm text-emerald-800">
+      {/* Kenapa pajaknya seperti ini: bentuk usaha menentukan pembebasan. */}
+      {business && (
+        <Card
+          className={cn(
+            "mb-6",
+            individual
+              ? "border-tone-hijau/30 bg-tone-hijau-bg/40"
+              : "border-tone-oranye/30 bg-tone-oranye-bg/40",
+          )}
+        >
+          <CardContent className="flex flex-wrap items-start gap-3 pt-6">
+            <span
+              className={cn(
+                "grid size-8 shrink-0 place-items-center rounded-lg",
+                individual
+                  ? "bg-tone-hijau-bg text-tone-hijau"
+                  : "bg-tone-oranye-bg text-tone-oranye",
+              )}
+            >
+              {individual ? (
+                <ShieldCheck className="size-4" />
+              ) : (
+                <Building2 className="size-4" />
+              )}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-semibold">
+                {individual ? copy.pajak.entityExemptTitle : copy.pajak.entityTaxedTitle}
+              </p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                {individual ? copy.pajak.entityExemptBody : copy.pajak.entityTaxedBody}
+              </p>
+              <p className="mt-2 text-[11px] text-muted-foreground">
+                {ENTITY_LABEL[business.entity]} · {copy.pajak.entityChangeHint}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Banner ini hanya benar untuk yang punya kuota. Badan usaha bisa saja
+          Rp 0 karena omzetnya memang nol, dan mengatakan "masih di bawah batas
+          bebas pajak" akan menyiratkan ada batas yang tidak berlaku baginya. */}
+      {individual && tax.payable === 0 && (
+        <Alert className="mb-6 border-tone-hijau/30 bg-tone-hijau-bg/40">
+          <ShieldCheck className="size-4 text-tone-hijau" />
+          <AlertDescription className="text-sm text-tone-hijau">
             {copy.pajak.exemptBanner}
           </AlertDescription>
         </Alert>
@@ -184,9 +280,10 @@ export default function PajakPage() {
                   </div>
 
                   {answer && (
-                    <div className="max-h-64 overflow-y-auto whitespace-pre-wrap rounded-lg border bg-background/60 p-3 text-xs leading-relaxed text-muted-foreground">
-                      {answer}
-                    </div>
+                    <Prose
+                      text={answer}
+                      className="max-h-64 overflow-y-auto rounded-lg border bg-background/60 p-3 text-xs text-muted-foreground"
+                    />
                   )}
 
                   <CitationList citations={agentTax.citations} showQuotes />
@@ -238,25 +335,42 @@ export default function PajakPage() {
             </CardContent>
           </Card>
 
-          {/* Pemakaian kuota bebas pajak — membuat hasil Rp 0 tetap informatif. */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">{copy.pajak.exemptionUsage}</CardTitle>
-              <CardDescription>{copy.pajak.exemptNote}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Progress value={exemptPercent} className="h-2" />
-              <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <span>{idrFull(tax.turnover)}</span>
-                <span>{idrFull(PPH_INDIVIDUAL_EXEMPTION)}</span>
-              </div>
-              <p className="text-xs text-muted-foreground">
-                {remaining > 0
-                  ? copy.pajak.exemptionRemaining(idrFull(remaining))
-                  : copy.pajak.exemptionUsed(`${exemptPercent}%`)}
-              </p>
-            </CardContent>
-          </Card>
+          {/* Pemakaian kuota bebas pajak — hanya relevan untuk orang pribadi.
+              Badan usaha tidak punya kuota ini, jadi menampilkan meter yang
+              membandingkan omzet dengan Rp 500 juta akan menyesatkan: seolah
+              ada batas yang sebenarnya tidak berlaku baginya. */}
+          {individual ? (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">{copy.pajak.exemptionUsage}</CardTitle>
+                <CardDescription>{copy.pajak.exemptNote}</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Progress value={exemptPercent} className="h-2" />
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <span>{idrFull(tax.turnover)}</span>
+                  <span>{idrFull(PPH_INDIVIDUAL_EXEMPTION)}</span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {remaining > 0
+                    ? copy.pajak.exemptionRemaining(idrFull(remaining))
+                    : copy.pajak.exemptionUsed(`${exemptPercent}%`)}
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">{copy.pajak.noQuotaTitle}</CardTitle>
+                <CardDescription>{copy.pajak.noQuotaBody}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  {copy.pajak.noQuotaCitation}
+                </p>
+              </CardContent>
+            </Card>
+          )}
 
           <Alert>
             <Info className="size-4" />

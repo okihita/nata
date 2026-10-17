@@ -39,21 +39,19 @@ export const copy = {
     akun: "Daftar Akun",
     laporan: "Laporan Keuangan",
     pajak: "Pajak",
+    perizinan: "Perizinan",
     usaha: "Profil Usaha",
     pengaturan: "Pengaturan",
-    comingSoon: "Segera hadir",
   },
 
   common: {
-    comingSoonTitle: "Fitur ini segera hadir",
-    comingSoonBody:
-      "Kami sedang menyiapkannya. Untuk sekarang, silakan pakai menu Catat Struk, Transaksi, dan Laporan Keuangan.",
-    backToDashboard: "Kembali ke dasbor",
     save: "Simpan",
     cancel: "Batal",
     close: "Tutup",
     loading: "Memuat…",
     reset: "Mulai ulang",
+    tryDemo: "Coba data contoh",
+    loadDemo: "Muat data contoh",
     seeAll: "Lihat semua",
     total: "Total",
     account: "Akun",
@@ -72,6 +70,12 @@ export const copy = {
   dashboard: {
     title: "Dasbor",
     subtitle: "Ringkasan usaha Anda hari ini.",
+    firstRunTitle: "Pembukuan Anda masih kosong",
+    firstRunBody:
+      "Belum ada satu pun catatan. Mulai dengan memfoto struk pertama Anda — Nata yang mengurus sisanya.",
+    firstRunDemoHint: "Belum punya struk? Coba dengan data contoh.",
+    emptyChart: "Grafik akan muncul setelah ada transaksi pertama.",
+    emptyActivity: "Belum ada aktivitas. Aktivitas terakhir akan tampil di sini.",
     revenue: "Pendapatan",
     expenses: "Beban",
     netIncome: "Laba bersih",
@@ -102,9 +106,16 @@ export const copy = {
     needsActionEmpty: "Tidak ada yang perlu ditindak. Pembukuan Anda rapi.",
     needsTaxDue: (amount: string) => `Pajak final periode ini ${amount}`,
     needsTaxExempt: "Omzet masih di bawah batas bebas pajak",
+    needsKbli: "Kode KBLI belum ditentukan — perlu untuk perizinan",
     needsUnpaid: (count: number, amount: string) =>
       `${count} utang usaha belum dibayar (${amount})`,
-    letNataHandle: "Biarkan Nata yang mencatat",
+    complianceTitle: "Status usaha Anda",
+    complianceEntity: "Bentuk usaha",
+    complianceTax: "Perlakuan pajak",
+    complianceKbli: "Kode KBLI",
+    complianceKbliNone: "Belum ditentukan",
+    complianceKbliCta: "Tentukan",
+    complianceOpen: "Lihat perizinan",
     ownerHint: "Untuk pemilik usaha — cukup foto struk, sisanya otomatis.",
   },
 
@@ -155,6 +166,8 @@ export const copy = {
     detailTitle: "Rincian transaksi",
     balanced: "Seimbang",
     viewReceipt: "Lihat struk",
+    export: "Ekspor jurnal",
+    exported: "Jurnal diekspor sebagai CSV.",
   },
 
   akun: {
@@ -170,6 +183,9 @@ export const copy = {
     used: "Dipakai",
     unused: "Belum dipakai",
     emptyBalance: "—",
+    emptyTitle: "Belum ada akun yang dipakai",
+    emptyBody:
+      "Daftar ini terisi sendiri begitu Anda mencatat transaksi — Nata memilih akun yang sesuai untuk tiap struk.",
   },
 
   laporan: {
@@ -204,13 +220,66 @@ export const copy = {
       "Pajak penghasilan menggunakan skema PPh Final UMKM 0,5% dari peredaran bruto.",
     ],
     export: "Ekspor",
-    exportSoon: "Ekspor segera hadir",
+    exported: "Laporan diekspor sebagai CSV.",
+    emptyTitle: "Laporan muncul setelah ada catatan",
+    emptyBody:
+      "Laporan keuangan disusun dari pembukuan Anda. Catat struk pertama dulu, lalu laporan ini akan terisi sendiri.",
+  },
+
+  perizinan: {
+    title: "Perizinan",
+    subtitle: "Kode KBLI 2020 untuk usaha Anda, dari katalog resmi.",
+    describeTitle: "Usaha Anda melakukan apa?",
+    describeHint:
+      "Tulis dengan bahasa sehari-hari. Nata mencocokkannya ke kode KBLI resmi — bukan menebak.",
+    describePlaceholder:
+      "Contoh: warung yang menjual makanan dan minuman, pembeli makan di tempat.",
+    run: "Cari kode KBLI",
+    running: "Mencari kode…",
+    rerun: "Cari ulang",
+    reset: "Mulai ulang",
+    done: (seconds: string) => `Selesai dalam ${seconds} detik.`,
+    candidatesTitle: "Kode yang dipertimbangkan",
+    candidatesHint:
+      "Diambil dari katalog KBLI 2020 \u2014 1.790 kode resmi. Anda bisa melihat pilihannya.",
+    chosen: "Dipilih",
+    useThis: "Pakai ini",
+    verifyFailed: (code: string) =>
+      `Kode ${code} tidak bisa diverifikasi di katalog. Coba kandidat lain.`,
+    emptyTitle: "Belum ada kode KBLI",
+    emptyBody:
+      "Jelaskan kegiatan usaha Anda, lalu tekan Cari kode KBLI. Nata akan mencocokkannya ke katalog resmi.",
+    resultTitle: "Kode KBLI Anda",
+    resultHintVerified: "Kode ini ada di katalog resmi KBLI 2020.",
+    resultHintEmpty: "Hasil akan muncul di sini setelah pencarian.",
+    fromCascade: "Diverifikasi dari pencatatan struk",
+    codeLabel: "Kode",
+    officialNameLabel: "Nama resmi",
+    verified: "Terverifikasi",
+    hierarchyLabel: "Posisi dalam klasifikasi",
+    noResult: "Belum ada kode terverifikasi. Jalankan pencarian dulu.",
+    riskTitle: "Tingkat risiko & izin",
+    riskLevelLabel: "Tingkat risiko",
+    riskUnknown: "Perlu dicek di OSS-RBA",
+    riskNote:
+      "Katalog KBLI tidak memuat tingkat risiko (Rendah/Menengah/Tinggi) maupun syarat izinnya. Nata sengaja tidak menebak keduanya, karena keduanya berasal dari OSS-RBA dan berdampak hukum.",
+    ossHint:
+      "Langkah berikutnya: buka oss.go.id, masukkan kode di atas, lalu ikuti persyaratan yang muncul untuk usaha Anda.",
+    agentTitle: "Penjelasan Agent Regulasi",
   },
 
   pajak: {
     title: "Pajak",
     subtitle: "Perhitungan PPh Final UMKM Anda.",
     scheme: "PPh Final UMKM — PP 55/2022",
+    entityTitle: "Perlakuan pajak usaha Anda",
+    entityExemptTitle: "Bebas pajak sampai Rp 500 juta",
+    entityExemptBody:
+      "Sebagai Wajib Pajak orang pribadi, omzet sampai Rp 500 juta dalam satu tahun tidak dikenai PPh Final. Pajak baru dihitung dari kelebihannya.",
+    entityTaxedTitle: "Kena pajak sejak rupiah pertama",
+    entityTaxedBody:
+      "Sebagai badan usaha, tidak ada pembebasan Rp 500 juta. Seluruh omzet dikenai tarif 0,5% sejak awal.",
+    entityChangeHint: "Ubah bentuk usaha Anda di Profil Usaha.",
     rateLabel: "Tarif",
     turnoverLabel: "Peredaran bruto (omzet)",
     baseLabel: "Dasar pengenaan pajak",
@@ -224,6 +293,14 @@ export const copy = {
     breakdown: "Rincian perhitungan",
     estimateOnly: "Estimasi",
     exemptionUsage: "Pemakaian kuota bebas pajak",
+    emptyTitle: "Pajak muncul setelah ada catatan",
+    emptyBody:
+      "PPh Final dihitung dari omzet yang tercatat di pembukuan Anda. Catat struk pertama dulu — penjualan atau pengeluaran — lalu pajaknya dihitung otomatis.",
+    noQuotaTitle: "Tidak ada kuota bebas pajak",
+    noQuotaBody:
+      "Badan usaha tidak mendapat pembebasan Rp 500 juta, jadi seluruh omzet dikenai tarif 0,5% sejak rupiah pertama.",
+    noQuotaCitation:
+      "Dasar hukum: PP 55/2022 Pasal 60 ayat (2) — pembebasan hanya untuk Wajib Pajak orang pribadi.",
     exemptionRemaining: (amount: string) => `Sisa ${amount} sebelum mulai kena pajak.`,
     exemptionUsed: (percent: string) => `${percent} dari kuota bebas pajak sudah terpakai.`,
     exemptBanner:
@@ -231,8 +308,6 @@ export const copy = {
     perMonth: (amount: string) => `≈ ${amount} per bulan`,
     basedOn: (months: number) => `dihitung dari ${months} bulan data`,
     agentTitle: "Pemeriksaan pajak oleh Agent Fiskal",
-    agentIdle:
-      "Agent Fiskal menghitung pajak dari omzet yang sudah tercatat. Catat penjualan lewat Catat Struk dulu untuk melihatnya bekerja.",
     agentRun: "Hitung pajak dengan Agent Fiskal",
     agentRerun: "Hitung ulang",
     agentRunning: "Agent Fiskal sedang menghitung…",
@@ -248,13 +323,166 @@ export const copy = {
     fromBooks: "Dari pembukuan Anda",
   },
 
-  comingSoon: {
-    usaha: "Profil Usaha",
-    usahaBody:
-      "Kelola data usaha, NPWP, dan identitas pemilik di sini. Segera hadir.",
-    pengaturan: "Pengaturan",
-    pengaturanBody:
-      "Atur bahasa, mata uang, dan preferensi tampilan Anda di sini. Segera hadir.",
+  // ── Onboarding & Profil Usaha ─────────────────────────────────────────────
+  onboarding: {
+    title: "Kenalan dulu, yuk",
+    subtitle: "Isi data usaha Anda sebentar. Setelah ini, Nata langsung bisa bekerja.",
+    submit: "Mulai pakai Nata",
+    note: "Data ini hanya tersimpan di perangkat Anda.",
+  },
+
+  usaha: {
+    title: "Profil Usaha",
+    subtitle: "Data usaha Anda dipakai di seluruh pembukuan dan laporan.",
+    identity: "Identitas usaha",
+    identityHint: "Nama ini akan tampil di laporan dan dokumen Anda.",
+    nameLabel: "Nama usaha",
+    ownerLabel: "Nama pemilik",
+    ownerPlaceholder: "Nama Anda",
+    typeLabel: "Jenis usaha",
+    entityLabel: "Bentuk badan usaha",
+    entityHint:
+      "Ini menentukan apakah omzet Rp 500 juta pertama bebas pajak. Pilih yang paling sesuai dengan surat izin usaha Anda.",
+    entityExempt: "Bebas pajak s.d. Rp 500 jt",
+    entityTaxed: "Kena pajak dari Rp 0",
+    entityCitation:
+      "Dasar hukum: PP 55/2022 Pasal 60 ayat (2) — pembebasan Rp 500 juta hanya untuk Wajib Pajak orang pribadi.",
+    kbliLabel: "Kode KBLI 2020",
+    kbliNone: "Belum ditentukan",
+    kbliNoneHint: "Tentukan di halaman Perizinan.",
+    kbliInvalidated:
+      "Jenis usaha berubah, jadi kode KBLI sebelumnya dihapus. Tentukan ulang di Perizinan.",
+  },
+
+  // ── Halaman muka (landing) ────────────────────────────────────────────────
+  landing: {
+    navHow: "Cara kerja",
+    navWhy: "Kenapa Nata",
+    navStart: "Mulai sekarang",
+    heroBadge: "Pakai Gemini di Google Cloud",
+    heroTitle: "Dari foto struk, jadi pembukuan rapi.",
+    heroBody:
+      "Nata membaca struk Anda, mencatatnya ke pembukuan rangkap dua sesuai SAK EMKM, menghitung PPh Final 0,5%, lalu menentukan kode KBLI usaha Anda — lengkap dengan dasar hukumnya. Tanpa akuntan, tanpa spreadsheet.",
+    heroCta: "Mulai gratis",
+    heroSecondary: "Lihat cara kerjanya",
+    heroFootnote: "Untuk warung, toko, kafe, dan usaha jasa di Indonesia.",
+    problemTitle: "Pembukuan itu merepotkan. Itu sebabnya banyak yang menyerah.",
+    problems: [
+      {
+        title: "Mencatat manual membosankan",
+        body: "Setelah seharian melayani pembeli, menyusun pembukuan dari tumpukan struk adalah hal terakhir yang ingin Anda kerjakan.",
+      },
+      {
+        title: "Jasa akuntan mahal",
+        body: "Konsultan pembukuan bulanan bisa lebih mahal daripada laba usaha kecil — padahal yang dibutuhkan hanya pembukuan yang rapi.",
+      },
+      {
+        title: "Tidak ada bukti untuk bank",
+        body: "Tanpa catatan resmi, usaha yang sehat pun sulit mengajukan modal — karena bank tidak bisa menilai usahanya.",
+      },
+    ],
+    howTitle: "Cara kerja Nata",
+    howBody: "Tiga langkah. Yang Anda lakukan hanya yang pertama.",
+    steps: [
+      {
+        title: "Isi data usaha",
+        body: "Nama usaha, dan status pajak Anda. Sekali saja, kurang dari satu menit.",
+      },
+      {
+        title: "Foto struknya",
+        body: "Belanja, penjualan, honor — apa saja. Nata membaca foto dan menentukan akunnya sendiri, sesuai SAK EMKM.",
+      },
+      {
+        title: "Pembukuan, pajak & izin beres",
+        body: "Pembukuan dua sisi yang seimbang, laporan keuangan, PPh Final 0,5%, dan kode KBLI 2020 untuk perizinan — semuanya beserta dasar hukumnya.",
+      },
+    ],
+    whyTitle: "Kenapa Nata berbeda",
+    reasons: [
+      {
+        title: "Model mengusulkan, kode yang memutuskan",
+        body: "Nata hanya menyimpan catatan yang benar-benar seimbang. Setiap angka diperiksa oleh kode, bukan oleh model.",
+      },
+      {
+        title: "Dasar hukum di setiap angka",
+        body: "Pajak dihitung dari teks resmi PP 55/2022, dan kode KBLI diperiksa ke katalog resmi 1.790 kode — setiap angka dan kode disertai sumbernya.",
+      },
+      {
+        title: "Berjalan di Google Cloud",
+        body: "Gemini di Vertex AI, di atas Cloud Run — infrastruktur yang sama dengan yang dipakai perusahaan besar.",
+      },
+    ],
+    proofTitle: "Bukan sekadar catatan. Ini pembukuan sungguhan.",
+    proofBody:
+      "Setiap struk melewati pemeriksaan yang sama seperti pembukuan manual: kedua sisi harus seimbang, dan setiap angka pajak disertai dasar hukumnya.",
+    proofItems: [
+      {
+        icon: "scan",
+        title: "Kedua sisi selalu seimbang",
+        body: "Model hanya mengusulkan. Kode yang memutuskan — catatan yang tidak seimbang ditolak, bukan disimpan.",
+      },
+      {
+        icon: "book",
+        title: "Laporan sesuai SAK EMKM",
+        body: "Laba rugi, posisi keuangan, dan CALK disusun otomatis dari jurnal — bukan dari kolom yang diisi manual.",
+      },
+      {
+        icon: "tax",
+        title: "Pajak dengan kutipan Pasal",
+        body: "PPh Final 0,5% dihitung dari teks resmi PP 55/2022, dan setiap angka menyertakan Pasal/Ayat-nya.",
+      },
+      {
+        icon: "license",
+        title: "Kode KBLI yang terverifikasi",
+        body: "Kegiatan usaha Anda dicocokkan ke katalog resmi KBLI 2020, dan kodenya diperiksa sebelum disimpan — bukan dikarang.",
+      },
+    ],
+    ctaTitle: "Mulai pembukuan Anda hari ini",
+    ctaBody: "Gratis untuk memulai. Cukup satu usaha, satu ponsel.",
+    ctaButton: "Mulai gratis sekarang",
+    footerTagline: "Pembukuan otomatis untuk usaha Indonesia.",
+  },
+
+  pengaturan: {
+    title: "Pengaturan",
+    subtitle: "Kelola data usaha Anda di perangkat ini.",
+    dataTitle: "Data usaha",
+    dataBody: (name: string, count: number) =>
+      `${name} — ${count} catatan tersimpan di perangkat ini.`,
+    demoTitle: "Muat data contoh",
+    demoBody: "Isi pembukuan dengan contoh usaha kafe untuk mencoba semua layar.",
+    demoLoaded: "Data contoh dimuat.",
+    clearTitle: "Kosongkan pembukuan",
+    clearBody: "Hapus semua catatan, tetapi tetap simpan profil usaha Anda.",
+    clearAction: "Kosongkan",
+    clearConfirmTitle: "Kosongkan pembukuan?",
+    clearConfirmBody:
+      "Semua transaksi akan dihapus dan tidak bisa dikembalikan. Profil usaha Anda tetap tersimpan.",
+    cleared: "Pembukuan dikosongkan.",
+    dangerTitle: "Hapus usaha ini",
+    dangerBody:
+      "Menghapus usaha beserta seluruh pembukuannya dari perangkat ini, dan mengembalikan Anda ke halaman awal.",
+    resetAction: "Hapus semua data",
+    resetConfirmTitle: "Hapus semua data?",
+    resetConfirmBody:
+      "Profil usaha dan seluruh catatan akan dihapus permanen dari perangkat ini. Tindakan ini tidak bisa dibatalkan.",
+    reset: "Semua data dihapus.",
+  },
+
+  errorScreen: {
+    title: "Layar ini gagal dimuat",
+    body:
+      "Ada gangguan teknis saat menampilkan halaman ini. Catatan Anda tidak berubah — tidak ada yang setengah tersimpan.",
+    retry: "Coba muat ulang",
+    reference: "Kode rujukan",
+  },
+
+  notFound: {
+    title: "Halaman tidak ditemukan",
+    body:
+      "Tautan yang Anda buka tidak ada, atau sudah berpindah. Pembukuan Anda tetap aman.",
+    toApp: "Buka pembukuan saya",
+    toLanding: "Ke halaman utama",
   },
 
   status: {
@@ -267,8 +495,10 @@ export const copy = {
   agents: {
     keuangan: "Agent Keuangan",
     fiskal: "Agent Fiskal",
+    regulasi: "Agent Regulasi",
     keuanganRole: "Mencatat pembukuan",
     fiskalRole: "Menghitung pajak",
+    regulasiRole: "Menentukan kode KBLI",
   },
 
   steps: {
@@ -296,6 +526,22 @@ export const copy = {
     handoff: {
       title: "Diteruskan ke pemeriksa pajak",
       detail: "Catatan diteruskan ke Agent Fiskal untuk dihitung pajaknya.",
+    },
+    handoffRegulasi: {
+      title: "Diteruskan ke pemeriksa izin",
+      detail: "Pajak selesai. Catatan diteruskan ke Agent Regulasi untuk kode KBLI.",
+    },
+    kbliChecking: {
+      title: "Mencari kode KBLI 2020",
+      detail: "Mencocokkan kegiatan usaha ke katalog resmi KBLI 2020.",
+    },
+    kbliVerify: {
+      title: "Memeriksa kode ke katalog",
+      detail: "Memastikan kodenya benar-benar ada di katalog KBLI 2020.",
+    },
+    kbliDone: {
+      title: "Kode KBLI terverifikasi",
+      detail: "Kode ditemukan di katalog resmi.",
     },
     taxChecking: {
       title: "Menghitung PPh Final 0,5%",
@@ -331,5 +577,9 @@ export const copy = {
     title: "Ada yang perlu dicek",
     offline:
       "Kami belum bisa terhubung ke layanan pembukuan. Pastikan Nata sedang berjalan, lalu coba lagi.",
+    busy:
+      "Layanan sedang sibuk dan belum bisa memproses permintaan ini. Catatan Anda tidak berubah — tunggu sebentar, lalu coba lagi.",
+    timeout:
+      "Prosesnya memakan waktu lebih lama dari biasanya. Catatan Anda tidak berubah — coba lagi sebentar lagi.",
   },
 } as const;

@@ -84,8 +84,10 @@ evidence for a behavioural claim (test counts, a live run, a measured figure).
 
 ```bash
 uv run pytest                              # Python: agent + tax engine
+cd web && pnpm test                        # web: entity/trace logic
 cd web && pnpm exec tsc --noEmit           # types
 cd web && pnpm build                       # production build must pass
+cd web && pnpm lint                        # must be clean
 ```
 
 A change is not done without evidence: a passing test, a clean build, or a named
