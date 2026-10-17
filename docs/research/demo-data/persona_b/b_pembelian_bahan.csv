@@ -1,0 +1,1305 @@
+tanggal,outlet,no_nota,pemasok,bahan_id,nama_bahan,satuan,qty,harga_satuan,total,metode_bayar,nota_tulisan_tangan
+2026-07-01,DGO,NT-DGO-00001,Roastery Priangan,B01,Biji kopi arabika house blend,gram,9098,280,2547440,Transfer,N
+2026-07-08,DGO,NT-DGO-00002,Roastery Priangan,B01,Biji kopi arabika house blend,gram,8948,280,2505440,Transfer,N
+2026-07-15,DGO,NT-DGO-00003,Roastery Priangan,B01,Biji kopi arabika house blend,gram,8667,280,2426760,Transfer,N
+2026-07-22,DGO,NT-DGO-00004,Roastery Priangan,B01,Biji kopi arabika house blend,gram,8461,280,2369080,Transfer,N
+2026-07-29,DGO,NT-DGO-00005,Roastery Priangan,B01,Biji kopi arabika house blend,gram,9266,280,2594480,Transfer,N
+2026-08-05,DGO,NT-DGO-00006,Roastery Priangan,B01,Biji kopi arabika house blend,gram,8836,280,2474080,Transfer,N
+2026-08-12,DGO,NT-DGO-00007,Roastery Priangan,B01,Biji kopi arabika house blend,gram,9285,280,2599800,Transfer,N
+2026-08-19,DGO,NT-DGO-00008,Roastery Priangan,B01,Biji kopi arabika house blend,gram,9304,280,2605120,Transfer,N
+2026-08-26,DGO,NT-DGO-00009,Roastery Priangan,B01,Biji kopi arabika house blend,gram,9079,280,2542120,Transfer,N
+2026-09-02,DGO,NT-DGO-00010,Roastery Priangan,B01,Biji kopi arabika house blend,gram,9098,290,2638420,Transfer,N
+2026-09-09,DGO,NT-DGO-00011,Roastery Priangan,B01,Biji kopi arabika house blend,gram,8574,290,2486460,Transfer,N
+2026-09-16,DGO,NT-DGO-00012,Roastery Priangan,B01,Biji kopi arabika house blend,gram,9098,290,2638420,Transfer,N
+2026-09-23,DGO,NT-DGO-00013,Roastery Priangan,B01,Biji kopi arabika house blend,gram,8967,290,2600430,Transfer,N
+2026-09-30,DGO,NT-DGO-00014,Roastery Priangan,B01,Biji kopi arabika house blend,gram,1067,290,309430,Transfer,N
+2026-07-01,DGO,NT-DGO-00015,Distributor Susu Lembang,B02,Susu segar,ml,80756,22,1776632,Transfer,N
+2026-07-08,DGO,NT-DGO-00016,Distributor Susu Lembang,B02,Susu segar,ml,81141,22,1785102,Transfer,N
+2026-07-15,DGO,NT-DGO-00017,Distributor Susu Lembang,B02,Susu segar,ml,76419,22,1681218,Transfer,N
+2026-07-22,DGO,NT-DGO-00018,Distributor Susu Lembang,B02,Susu segar,ml,75109,22,1652398,Transfer,N
+2026-07-29,DGO,NT-DGO-00019,Distributor Susu Lembang,B02,Susu segar,ml,79508,22,1749176,Transfer,N
+2026-08-05,DGO,NT-DGO-00020,Distributor Susu Lembang,B02,Susu segar,ml,81286,22,1788292,Transfer,N
+2026-08-12,DGO,NT-DGO-00021,Distributor Susu Lembang,B02,Susu segar,ml,83554,22,1838188,Transfer,N
+2026-08-19,DGO,NT-DGO-00022,Distributor Susu Lembang,B02,Susu segar,ml,81775,22,1799050,Transfer,N
+2026-08-26,DGO,NT-DGO-00023,Distributor Susu Lembang,B02,Susu segar,ml,81910,22,1802020,Transfer,N
+2026-09-02,DGO,NT-DGO-00024,Distributor Susu Lembang,B02,Susu segar,ml,80756,23,1857388,Transfer,N
+2026-09-09,DGO,NT-DGO-00025,Distributor Susu Lembang,B02,Susu segar,ml,77324,23,1778452,Transfer,N
+2026-09-16,DGO,NT-DGO-00026,Distributor Susu Lembang,B02,Susu segar,ml,81692,23,1878916,Transfer,N
+2026-09-23,DGO,NT-DGO-00027,Distributor Susu Lembang,B02,Susu segar,ml,78697,23,1810031,Transfer,N
+2026-09-30,DGO,NT-DGO-00028,Distributor Susu Lembang,B02,Susu segar,ml,9142,23,210266,Transfer,N
+2026-07-01,DGO,NT-DGO-00029,Roastery Priangan,B03,Gula aren cair,ml,9292,40,371680,Transfer,N
+2026-07-08,DGO,NT-DGO-00030,Roastery Priangan,B03,Gula aren cair,ml,9095,40,363800,Transfer,N
+2026-07-15,DGO,NT-DGO-00031,Roastery Priangan,B03,Gula aren cair,ml,8606,40,344240,Transfer,N
+2026-07-22,DGO,NT-DGO-00032,Roastery Priangan,B03,Gula aren cair,ml,8710,40,348400,Transfer,N
+2026-07-29,DGO,NT-DGO-00033,Roastery Priangan,B03,Gula aren cair,ml,9204,40,368160,Transfer,N
+2026-08-05,DGO,NT-DGO-00034,Roastery Priangan,B03,Gula aren cair,ml,9251,40,370040,Transfer,N
+2026-08-12,DGO,NT-DGO-00035,Roastery Priangan,B03,Gula aren cair,ml,9537,40,381480,Transfer,N
+2026-08-19,DGO,NT-DGO-00036,Roastery Priangan,B03,Gula aren cair,ml,9261,40,370440,Transfer,N
+2026-08-26,DGO,NT-DGO-00037,Roastery Priangan,B03,Gula aren cair,ml,9308,40,372320,Transfer,N
+2026-09-02,DGO,NT-DGO-00038,Roastery Priangan,B03,Gula aren cair,ml,9454,42,397068,Transfer,N
+2026-09-09,DGO,NT-DGO-00039,Roastery Priangan,B03,Gula aren cair,ml,8668,42,364056,Transfer,N
+2026-09-16,DGO,NT-DGO-00040,Roastery Priangan,B03,Gula aren cair,ml,9027,42,379134,Transfer,N
+2026-09-23,DGO,NT-DGO-00041,Roastery Priangan,B03,Gula aren cair,ml,8934,42,375228,Transfer,N
+2026-09-30,DGO,NT-DGO-00042,Roastery Priangan,B03,Gula aren cair,ml,946,42,39732,Transfer,N
+2026-07-01,DGO,NT-DGO-00043,Depot Es Sejuk,B04,Es batu kristal,gram,76887,2,153774,Transfer,N
+2026-07-08,DGO,NT-DGO-00044,Depot Es Sejuk,B04,Es batu kristal,gram,76294,2,152588,Transfer,N
+2026-07-15,DGO,NT-DGO-00045,Depot Es Sejuk,B04,Es batu kristal,gram,71968,2,143936,Transfer,N
+2026-07-22,DGO,NT-DGO-00046,Depot Es Sejuk,B04,Es batu kristal,gram,71864,2,143728,Transfer,N
+2026-07-29,DGO,NT-DGO-00047,Depot Es Sejuk,B04,Es batu kristal,gram,76908,2,153816,Transfer,N
+2026-08-05,DGO,NT-DGO-00048,Depot Es Sejuk,B04,Es batu kristal,gram,76970,2,153940,Transfer,N
+2026-08-12,DGO,NT-DGO-00049,Depot Es Sejuk,B04,Es batu kristal,gram,80402,2,160804,Transfer,N
+2026-08-19,DGO,NT-DGO-00050,Depot Es Sejuk,B04,Es batu kristal,gram,77938,2,155876,Transfer,N
+2026-08-26,DGO,NT-DGO-00051,Depot Es Sejuk,B04,Es batu kristal,gram,76388,2,152776,Transfer,N
+2026-09-02,DGO,NT-DGO-00052,Depot Es Sejuk,B04,Es batu kristal,gram,77189,2,154378,Transfer,N
+2026-09-09,DGO,NT-DGO-00053,Depot Es Sejuk,B04,Es batu kristal,gram,72727,2,145454,Transfer,N
+2026-09-16,DGO,NT-DGO-00054,Depot Es Sejuk,B04,Es batu kristal,gram,76846,2,153692,Transfer,N
+2026-09-23,DGO,NT-DGO-00055,Depot Es Sejuk,B04,Es batu kristal,gram,75837,2,151674,Transfer,N
+2026-09-30,DGO,NT-DGO-00056,Depot Es Sejuk,B04,Es batu kristal,gram,8611,2,17222,Transfer,N
+2026-07-01,DGO,NT-DGO-00057,Roastery Priangan,B05,Bubuk matcha,gram,462,900,415800,Transfer,N
+2026-07-08,DGO,NT-DGO-00058,Roastery Priangan,B05,Bubuk matcha,gram,456,900,410400,Transfer,N
+2026-07-15,DGO,NT-DGO-00059,Roastery Priangan,B05,Bubuk matcha,gram,406,900,365400,Transfer,N
+2026-07-22,DGO,NT-DGO-00060,Roastery Priangan,B05,Bubuk matcha,gram,406,900,365400,Transfer,N
+2026-07-29,DGO,NT-DGO-00061,Roastery Priangan,B05,Bubuk matcha,gram,406,900,365400,Transfer,N
+2026-08-05,DGO,NT-DGO-00062,Roastery Priangan,B05,Bubuk matcha,gram,518,900,466200,Transfer,N
+2026-08-12,DGO,NT-DGO-00063,Roastery Priangan,B05,Bubuk matcha,gram,487,900,438300,Transfer,N
+2026-08-19,DGO,NT-DGO-00064,Roastery Priangan,B05,Bubuk matcha,gram,449,900,404100,Transfer,N
+2026-08-26,DGO,NT-DGO-00065,Roastery Priangan,B05,Bubuk matcha,gram,499,900,449100,Transfer,N
+2026-09-02,DGO,NT-DGO-00066,Roastery Priangan,B05,Bubuk matcha,gram,443,900,398700,Transfer,N
+2026-09-09,DGO,NT-DGO-00067,Roastery Priangan,B05,Bubuk matcha,gram,462,900,415800,Transfer,N
+2026-09-16,DGO,NT-DGO-00068,Roastery Priangan,B05,Bubuk matcha,gram,480,900,432000,Transfer,N
+2026-09-23,DGO,NT-DGO-00069,Roastery Priangan,B05,Bubuk matcha,gram,443,900,398700,Transfer,N
+2026-09-30,DGO,NT-DGO-00070,Roastery Priangan,B05,Bubuk matcha,gram,56,900,50400,Transfer,N
+2026-07-01,DGO,NT-DGO-00071,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,116,150,17400,Tunai,Y
+2026-07-03,DGO,NT-DGO-00072,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,175,150,26250,Tunai,Y
+2026-07-05,DGO,NT-DGO-00073,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,150,150,22500,Tunai,Y
+2026-07-07,DGO,NT-DGO-00074,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,150,150,22500,Tunai,Y
+2026-07-09,DGO,NT-DGO-00075,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,166,150,24900,Tunai,Y
+2026-07-11,DGO,NT-DGO-00076,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,166,150,24900,Tunai,Y
+2026-07-13,DGO,NT-DGO-00077,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,141,150,21150,Tunai,Y
+2026-07-15,DGO,NT-DGO-00078,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,141,150,21150,Tunai,Y
+2026-07-17,DGO,NT-DGO-00079,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,116,150,17400,Tunai,Y
+2026-07-19,DGO,NT-DGO-00080,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,175,150,26250,Tunai,Y
+2026-07-21,DGO,NT-DGO-00081,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,125,150,18750,Tunai,Y
+2026-07-23,DGO,NT-DGO-00082,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,133,150,19950,Tunai,Y
+2026-07-25,DGO,NT-DGO-00083,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,175,150,26250,Tunai,Y
+2026-07-27,DGO,NT-DGO-00084,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,133,150,19950,Tunai,Y
+2026-07-29,DGO,NT-DGO-00085,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,141,150,21150,Tunai,Y
+2026-07-31,DGO,NT-DGO-00086,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,133,150,19950,Tunai,Y
+2026-08-02,DGO,NT-DGO-00087,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,175,150,26250,Tunai,Y
+2026-08-04,DGO,NT-DGO-00088,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,125,150,18750,Tunai,Y
+2026-08-06,DGO,NT-DGO-00089,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,150,150,22500,Tunai,Y
+2026-08-08,DGO,NT-DGO-00090,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,158,150,23700,Tunai,Y
+2026-08-10,DGO,NT-DGO-00091,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,116,150,17400,Tunai,Y
+2026-08-12,DGO,NT-DGO-00092,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,141,150,21150,Tunai,Y
+2026-08-14,DGO,NT-DGO-00093,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,166,150,24900,Tunai,Y
+2026-08-16,DGO,NT-DGO-00094,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,191,150,28650,Tunai,Y
+2026-08-18,DGO,NT-DGO-00095,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,166,150,24900,Tunai,Y
+2026-08-20,DGO,NT-DGO-00096,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,125,150,18750,Tunai,Y
+2026-08-22,DGO,NT-DGO-00097,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,166,150,24900,Tunai,Y
+2026-08-24,DGO,NT-DGO-00098,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,141,150,21150,Tunai,Y
+2026-08-26,DGO,NT-DGO-00099,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,141,150,21150,Tunai,Y
+2026-08-28,DGO,NT-DGO-00100,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,100,150,15000,Tunai,Y
+2026-08-30,DGO,NT-DGO-00101,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,141,150,21150,Tunai,Y
+2026-09-01,DGO,NT-DGO-00102,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,141,150,21150,Tunai,Y
+2026-09-03,DGO,NT-DGO-00103,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,108,150,16200,Tunai,Y
+2026-09-05,DGO,NT-DGO-00104,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,133,150,19950,Tunai,Y
+2026-09-07,DGO,NT-DGO-00105,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,141,150,21150,Tunai,Y
+2026-09-09,DGO,NT-DGO-00106,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,158,150,23700,Tunai,Y
+2026-09-11,DGO,NT-DGO-00107,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,133,150,19950,Tunai,Y
+2026-09-13,DGO,NT-DGO-00108,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,150,150,22500,Tunai,Y
+2026-09-15,DGO,NT-DGO-00109,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,141,150,21150,Tunai,Y
+2026-09-17,DGO,NT-DGO-00110,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,150,150,22500,Tunai,Y
+2026-09-19,DGO,NT-DGO-00111,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,208,150,31200,Tunai,Y
+2026-09-21,DGO,NT-DGO-00112,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,133,150,19950,Tunai,Y
+2026-09-23,DGO,NT-DGO-00113,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,141,150,21150,Tunai,Y
+2026-09-25,DGO,NT-DGO-00114,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,150,150,22500,Tunai,Y
+2026-09-27,DGO,NT-DGO-00115,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,166,150,24900,Tunai,Y
+2026-09-29,DGO,NT-DGO-00116,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,108,150,16200,Tunai,Y
+2026-07-01,DGO,NT-DGO-00117,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,582,30,17460,Tunai,Y
+2026-07-03,DGO,NT-DGO-00118,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,874,30,26220,Tunai,Y
+2026-07-05,DGO,NT-DGO-00119,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,749,30,22470,Tunai,Y
+2026-07-07,DGO,NT-DGO-00120,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,749,30,22470,Tunai,Y
+2026-07-09,DGO,NT-DGO-00121,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,832,30,24960,Tunai,Y
+2026-07-11,DGO,NT-DGO-00122,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,832,30,24960,Tunai,Y
+2026-07-13,DGO,NT-DGO-00123,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,707,30,21210,Tunai,Y
+2026-07-15,DGO,NT-DGO-00124,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,707,30,21210,Tunai,Y
+2026-07-17,DGO,NT-DGO-00125,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,582,30,17460,Tunai,Y
+2026-07-19,DGO,NT-DGO-00126,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,874,30,26220,Tunai,Y
+2026-07-21,DGO,NT-DGO-00127,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,624,30,18720,Tunai,Y
+2026-07-23,DGO,NT-DGO-00128,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,666,30,19980,Tunai,Y
+2026-07-25,DGO,NT-DGO-00129,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,874,30,26220,Tunai,Y
+2026-07-27,DGO,NT-DGO-00130,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,666,30,19980,Tunai,Y
+2026-07-29,DGO,NT-DGO-00131,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,707,30,21210,Tunai,Y
+2026-07-31,DGO,NT-DGO-00132,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,666,30,19980,Tunai,Y
+2026-08-02,DGO,NT-DGO-00133,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,874,30,26220,Tunai,Y
+2026-08-04,DGO,NT-DGO-00134,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,624,30,18720,Tunai,Y
+2026-08-06,DGO,NT-DGO-00135,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,749,30,22470,Tunai,Y
+2026-08-08,DGO,NT-DGO-00136,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,790,30,23700,Tunai,Y
+2026-08-10,DGO,NT-DGO-00137,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,582,30,17460,Tunai,Y
+2026-08-12,DGO,NT-DGO-00138,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,707,30,21210,Tunai,Y
+2026-08-14,DGO,NT-DGO-00139,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,832,30,24960,Tunai,Y
+2026-08-16,DGO,NT-DGO-00140,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,957,30,28710,Tunai,Y
+2026-08-18,DGO,NT-DGO-00141,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,832,30,24960,Tunai,Y
+2026-08-20,DGO,NT-DGO-00142,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,624,30,18720,Tunai,Y
+2026-08-22,DGO,NT-DGO-00143,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,832,30,24960,Tunai,Y
+2026-08-24,DGO,NT-DGO-00144,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,707,30,21210,Tunai,Y
+2026-08-26,DGO,NT-DGO-00145,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,707,30,21210,Tunai,Y
+2026-08-28,DGO,NT-DGO-00146,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,499,30,14970,Tunai,Y
+2026-08-30,DGO,NT-DGO-00147,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,707,30,21210,Tunai,Y
+2026-09-01,DGO,NT-DGO-00148,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,707,31,21917,Tunai,Y
+2026-09-03,DGO,NT-DGO-00149,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,541,31,16771,Tunai,Y
+2026-09-05,DGO,NT-DGO-00150,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,666,31,20646,Tunai,Y
+2026-09-07,DGO,NT-DGO-00151,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,707,31,21917,Tunai,Y
+2026-09-09,DGO,NT-DGO-00152,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,790,31,24490,Tunai,Y
+2026-09-11,DGO,NT-DGO-00153,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,666,31,20646,Tunai,Y
+2026-09-13,DGO,NT-DGO-00154,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,749,31,23219,Tunai,Y
+2026-09-15,DGO,NT-DGO-00155,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,707,31,21917,Tunai,Y
+2026-09-17,DGO,NT-DGO-00156,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,749,31,23219,Tunai,Y
+2026-09-19,DGO,NT-DGO-00157,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,1040,31,32240,Tunai,Y
+2026-09-21,DGO,NT-DGO-00158,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,666,31,20646,Tunai,Y
+2026-09-23,DGO,NT-DGO-00159,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,707,31,21917,Tunai,Y
+2026-09-25,DGO,NT-DGO-00160,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,749,31,23219,Tunai,Y
+2026-09-27,DGO,NT-DGO-00161,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,832,31,25792,Tunai,Y
+2026-09-29,DGO,NT-DGO-00162,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,541,31,16771,Tunai,Y
+2026-07-01,DGO,NT-DGO-00163,Pasar Kosambi - Bu Tini,B08,Beras,gram,15330,14,214620,Tunai,Y
+2026-07-03,DGO,NT-DGO-00164,Pasar Kosambi - Bu Tini,B08,Beras,gram,17222,14,241108,Tunai,Y
+2026-07-05,DGO,NT-DGO-00165,Pasar Kosambi - Bu Tini,B08,Beras,gram,15538,14,217532,Tunai,Y
+2026-07-07,DGO,NT-DGO-00166,Pasar Kosambi - Bu Tini,B08,Beras,gram,15434,14,216076,Tunai,Y
+2026-07-09,DGO,NT-DGO-00167,Pasar Kosambi - Bu Tini,B08,Beras,gram,16973,14,237622,Tunai,Y
+2026-07-11,DGO,NT-DGO-00168,Pasar Kosambi - Bu Tini,B08,Beras,gram,20717,14,290038,Tunai,Y
+2026-07-13,DGO,NT-DGO-00169,Pasar Kosambi - Bu Tini,B08,Beras,gram,15184,14,212576,Tunai,Y
+2026-07-15,DGO,NT-DGO-00170,Pasar Kosambi - Bu Tini,B08,Beras,gram,16162,14,226268,Tunai,Y
+2026-07-17,DGO,NT-DGO-00171,Pasar Kosambi - Bu Tini,B08,Beras,gram,15933,14,223062,Tunai,Y
+2026-07-19,DGO,NT-DGO-00172,Pasar Kosambi - Bu Tini,B08,Beras,gram,16973,14,237622,Tunai,Y
+2026-07-21,DGO,NT-DGO-00173,Pasar Kosambi - Bu Tini,B08,Beras,gram,15558,14,217812,Tunai,Y
+2026-07-23,DGO,NT-DGO-00174,Pasar Kosambi - Bu Tini,B08,Beras,gram,15330,14,214620,Tunai,Y
+2026-07-25,DGO,NT-DGO-00175,Pasar Kosambi - Bu Tini,B08,Beras,gram,19448,14,272272,Tunai,Y
+2026-07-27,DGO,NT-DGO-00176,Pasar Kosambi - Bu Tini,B08,Beras,gram,14373,14,201222,Tunai,Y
+2026-07-29,DGO,NT-DGO-00177,Pasar Kosambi - Bu Tini,B08,Beras,gram,16370,14,229180,Tunai,Y
+2026-07-31,DGO,NT-DGO-00178,Pasar Kosambi - Bu Tini,B08,Beras,gram,18221,14,255094,Tunai,Y
+2026-08-02,DGO,NT-DGO-00179,Pasar Kosambi - Bu Tini,B08,Beras,gram,19178,14,268492,Tunai,Y
+2026-08-04,DGO,NT-DGO-00180,Pasar Kosambi - Bu Tini,B08,Beras,gram,15974,14,223636,Tunai,Y
+2026-08-06,DGO,NT-DGO-00181,Pasar Kosambi - Bu Tini,B08,Beras,gram,14914,14,208796,Tunai,Y
+2026-08-08,DGO,NT-DGO-00182,Pasar Kosambi - Bu Tini,B08,Beras,gram,20779,14,290906,Tunai,Y
+2026-08-10,DGO,NT-DGO-00183,Pasar Kosambi - Bu Tini,B08,Beras,gram,17534,14,245476,Tunai,Y
+2026-08-12,DGO,NT-DGO-00184,Pasar Kosambi - Bu Tini,B08,Beras,gram,15766,14,220724,Tunai,Y
+2026-08-14,DGO,NT-DGO-00185,Pasar Kosambi - Bu Tini,B08,Beras,gram,17930,14,251020,Tunai,Y
+2026-08-16,DGO,NT-DGO-00186,Pasar Kosambi - Bu Tini,B08,Beras,gram,19885,14,278390,Tunai,Y
+2026-08-18,DGO,NT-DGO-00187,Pasar Kosambi - Bu Tini,B08,Beras,gram,15496,14,216944,Tunai,Y
+2026-08-20,DGO,NT-DGO-00188,Pasar Kosambi - Bu Tini,B08,Beras,gram,16120,14,225680,Tunai,Y
+2026-08-22,DGO,NT-DGO-00189,Pasar Kosambi - Bu Tini,B08,Beras,gram,20155,14,282170,Tunai,Y
+2026-08-24,DGO,NT-DGO-00190,Pasar Kosambi - Bu Tini,B08,Beras,gram,15600,14,218400,Tunai,Y
+2026-08-26,DGO,NT-DGO-00191,Pasar Kosambi - Bu Tini,B08,Beras,gram,15350,14,214900,Tunai,Y
+2026-08-28,DGO,NT-DGO-00192,Pasar Kosambi - Bu Tini,B08,Beras,gram,18699,14,261786,Tunai,Y
+2026-08-30,DGO,NT-DGO-00193,Pasar Kosambi - Bu Tini,B08,Beras,gram,17326,14,242564,Tunai,Y
+2026-09-01,DGO,NT-DGO-00194,Pasar Kosambi - Bu Tini,B08,Beras,gram,15558,15,233370,Tunai,Y
+2026-09-03,DGO,NT-DGO-00195,Pasar Kosambi - Bu Tini,B08,Beras,gram,16182,15,242730,Tunai,Y
+2026-09-05,DGO,NT-DGO-00196,Pasar Kosambi - Bu Tini,B08,Beras,gram,20114,15,301710,Tunai,Y
+2026-09-07,DGO,NT-DGO-00197,Pasar Kosambi - Bu Tini,B08,Beras,gram,13208,15,198120,Tunai,Y
+2026-09-09,DGO,NT-DGO-00198,Pasar Kosambi - Bu Tini,B08,Beras,gram,16182,15,242730,Tunai,Y
+2026-09-11,DGO,NT-DGO-00199,Pasar Kosambi - Bu Tini,B08,Beras,gram,17139,15,257085,Tunai,Y
+2026-09-13,DGO,NT-DGO-00200,Pasar Kosambi - Bu Tini,B08,Beras,gram,16682,15,250230,Tunai,Y
+2026-09-15,DGO,NT-DGO-00201,Pasar Kosambi - Bu Tini,B08,Beras,gram,15267,15,229005,Tunai,Y
+2026-09-17,DGO,NT-DGO-00202,Pasar Kosambi - Bu Tini,B08,Beras,gram,15330,15,229950,Tunai,Y
+2026-09-19,DGO,NT-DGO-00203,Pasar Kosambi - Bu Tini,B08,Beras,gram,19968,15,299520,Tunai,Y
+2026-09-21,DGO,NT-DGO-00204,Pasar Kosambi - Bu Tini,B08,Beras,gram,17368,15,260520,Tunai,Y
+2026-09-23,DGO,NT-DGO-00205,Pasar Kosambi - Bu Tini,B08,Beras,gram,14373,15,215595,Tunai,Y
+2026-09-25,DGO,NT-DGO-00206,Pasar Kosambi - Bu Tini,B08,Beras,gram,17805,15,267075,Tunai,Y
+2026-09-27,DGO,NT-DGO-00207,Pasar Kosambi - Bu Tini,B08,Beras,gram,17742,15,266130,Tunai,Y
+2026-09-29,DGO,NT-DGO-00208,Pasar Kosambi - Bu Tini,B08,Beras,gram,17638,15,264570,Tunai,Y
+2026-07-01,DGO,NT-DGO-00209,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10286,42,432012,Tunai,Y
+2026-07-03,DGO,NT-DGO-00210,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,11253,42,472626,Tunai,Y
+2026-07-05,DGO,NT-DGO-00211,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10452,42,438984,Tunai,Y
+2026-07-07,DGO,NT-DGO-00212,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,9818,42,412356,Tunai,Y
+2026-07-09,DGO,NT-DGO-00213,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,11024,42,463008,Tunai,Y
+2026-07-11,DGO,NT-DGO-00214,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,13624,42,572208,Tunai,Y
+2026-07-13,DGO,NT-DGO-00215,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10026,42,421092,Tunai,Y
+2026-07-15,DGO,NT-DGO-00216,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10764,42,452088,Tunai,Y
+2026-07-17,DGO,NT-DGO-00217,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10816,42,454272,Tunai,Y
+2026-07-19,DGO,NT-DGO-00218,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,11149,42,468258,Tunai,Y
+2026-07-21,DGO,NT-DGO-00219,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10171,42,427182,Tunai,Y
+2026-07-23,DGO,NT-DGO-00220,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10098,42,424116,Tunai,Y
+2026-07-25,DGO,NT-DGO-00221,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,12865,42,540330,Tunai,Y
+2026-07-27,DGO,NT-DGO-00222,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,9766,42,410172,Tunai,Y
+2026-07-29,DGO,NT-DGO-00223,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10618,42,445956,Tunai,Y
+2026-07-31,DGO,NT-DGO-00224,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,11960,42,502320,Tunai,Y
+2026-08-02,DGO,NT-DGO-00225,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,12667,45,570015,Tunai,Y
+2026-08-04,DGO,NT-DGO-00226,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10442,45,469890,Tunai,Y
+2026-08-06,DGO,NT-DGO-00227,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,9766,45,439470,Tunai,Y
+2026-08-08,DGO,NT-DGO-00228,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,13406,45,603270,Tunai,Y
+2026-08-10,DGO,NT-DGO-00229,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,11430,45,514350,Tunai,Y
+2026-08-12,DGO,NT-DGO-00230,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10400,45,468000,Tunai,Y
+2026-08-14,DGO,NT-DGO-00231,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,11606,45,522270,Tunai,Y
+2026-08-16,DGO,NT-DGO-00232,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,13208,45,594360,Tunai,Y
+2026-08-18,DGO,NT-DGO-00233,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10202,45,459090,Tunai,Y
+2026-08-20,DGO,NT-DGO-00234,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10764,45,484380,Tunai,Y
+2026-08-22,DGO,NT-DGO-00235,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,13094,45,589230,Tunai,Y
+2026-08-24,DGO,NT-DGO-00236,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10171,45,457695,Tunai,Y
+2026-08-26,DGO,NT-DGO-00237,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10130,45,455850,Tunai,Y
+2026-08-28,DGO,NT-DGO-00238,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,12428,45,559260,Tunai,Y
+2026-08-30,DGO,NT-DGO-00239,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,11638,45,523710,Tunai,Y
+2026-09-01,DGO,NT-DGO-00240,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10421,56,583576,Tunai,Y
+2026-09-03,DGO,NT-DGO-00241,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10670,56,597520,Tunai,Y
+2026-09-05,DGO,NT-DGO-00242,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,13281,56,743736,Tunai,Y
+2026-09-07,DGO,NT-DGO-00243,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8830,56,494480,Tunai,Y
+2026-09-09,DGO,NT-DGO-00244,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10608,56,594048,Tunai,Y
+2026-09-11,DGO,NT-DGO-00245,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,11565,56,647640,Tunai,Y
+2026-09-13,DGO,NT-DGO-00246,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,11045,56,618520,Tunai,Y
+2026-09-15,DGO,NT-DGO-00247,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10317,56,577752,Tunai,Y
+2026-09-17,DGO,NT-DGO-00248,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10161,56,569016,Tunai,Y
+2026-09-19,DGO,NT-DGO-00249,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,12771,56,715176,Tunai,Y
+2026-09-21,DGO,NT-DGO-00250,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,11138,56,623728,Tunai,Y
+2026-09-23,DGO,NT-DGO-00251,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,9641,56,539896,Tunai,Y
+2026-09-25,DGO,NT-DGO-00252,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,11378,56,637168,Tunai,Y
+2026-09-27,DGO,NT-DGO-00253,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,11596,56,649376,Tunai,Y
+2026-09-29,DGO,NT-DGO-00254,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,11814,56,661584,Tunai,Y
+2026-07-01,DGO,NT-DGO-00255,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,120,2100,252000,Tunai,Y
+2026-07-03,DGO,NT-DGO-00256,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,138,2100,289800,Tunai,Y
+2026-07-05,DGO,NT-DGO-00257,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,120,2100,252000,Tunai,Y
+2026-07-07,DGO,NT-DGO-00258,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,124,2100,260400,Tunai,Y
+2026-07-09,DGO,NT-DGO-00259,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,131,2100,275100,Tunai,Y
+2026-07-11,DGO,NT-DGO-00260,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,157,2100,329700,Tunai,Y
+2026-07-13,DGO,NT-DGO-00261,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,122,2100,256200,Tunai,Y
+2026-07-15,DGO,NT-DGO-00262,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,127,2100,266700,Tunai,Y
+2026-07-17,DGO,NT-DGO-00263,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,129,2100,270900,Tunai,Y
+2026-07-19,DGO,NT-DGO-00264,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,132,2100,277200,Tunai,Y
+2026-07-21,DGO,NT-DGO-00265,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,118,2100,247800,Tunai,Y
+2026-07-23,DGO,NT-DGO-00266,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,118,2100,247800,Tunai,Y
+2026-07-25,DGO,NT-DGO-00267,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,164,2100,344400,Tunai,Y
+2026-07-27,DGO,NT-DGO-00268,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,120,2100,252000,Tunai,Y
+2026-07-29,DGO,NT-DGO-00269,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,128,2100,268800,Tunai,Y
+2026-07-31,DGO,NT-DGO-00270,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,148,2100,310800,Tunai,Y
+2026-08-02,DGO,NT-DGO-00271,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,151,2200,332200,Tunai,Y
+2026-08-04,DGO,NT-DGO-00272,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,125,2200,275000,Tunai,Y
+2026-08-06,DGO,NT-DGO-00273,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,107,2200,235400,Tunai,Y
+2026-08-08,DGO,NT-DGO-00274,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,157,2200,345400,Tunai,Y
+2026-08-10,DGO,NT-DGO-00275,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,132,2200,290400,Tunai,Y
+2026-08-12,DGO,NT-DGO-00276,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,126,2200,277200,Tunai,Y
+2026-08-14,DGO,NT-DGO-00277,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,133,2200,292600,Tunai,Y
+2026-08-16,DGO,NT-DGO-00278,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,148,2200,325600,Tunai,Y
+2026-08-18,DGO,NT-DGO-00279,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,111,2200,244200,Tunai,Y
+2026-08-20,DGO,NT-DGO-00280,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,124,2200,272800,Tunai,Y
+2026-08-22,DGO,NT-DGO-00281,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,154,2200,338800,Tunai,Y
+2026-08-24,DGO,NT-DGO-00282,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,123,2200,270600,Tunai,Y
+2026-08-26,DGO,NT-DGO-00283,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,119,2200,261800,Tunai,Y
+2026-08-28,DGO,NT-DGO-00284,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,137,2200,301400,Tunai,Y
+2026-08-30,DGO,NT-DGO-00285,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,133,2200,292600,Tunai,Y
+2026-09-01,DGO,NT-DGO-00286,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,125,2450,306250,Tunai,Y
+2026-09-03,DGO,NT-DGO-00287,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,129,2450,316050,Tunai,Y
+2026-09-05,DGO,NT-DGO-00288,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,155,2450,379750,Tunai,Y
+2026-09-07,DGO,NT-DGO-00289,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,114,2450,279300,Tunai,Y
+2026-09-09,DGO,NT-DGO-00290,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,129,2450,316050,Tunai,Y
+2026-09-11,DGO,NT-DGO-00291,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,136,2450,333200,Tunai,Y
+2026-09-13,DGO,NT-DGO-00292,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,122,2450,298900,Tunai,Y
+2026-09-15,DGO,NT-DGO-00293,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,111,2450,271950,Tunai,Y
+2026-09-17,DGO,NT-DGO-00294,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,114,2450,279300,Tunai,Y
+2026-09-19,DGO,NT-DGO-00295,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,150,2450,367500,Tunai,Y
+2026-09-21,DGO,NT-DGO-00296,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,130,2450,318500,Tunai,Y
+2026-09-23,DGO,NT-DGO-00297,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,118,2450,289100,Tunai,Y
+2026-09-25,DGO,NT-DGO-00298,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,139,2450,340550,Tunai,Y
+2026-09-27,DGO,NT-DGO-00299,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,133,2450,325850,Tunai,Y
+2026-09-29,DGO,NT-DGO-00300,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,121,2450,296450,Tunai,Y
+2026-07-01,DGO,NT-DGO-00301,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2382,60,142920,Tunai,Y
+2026-07-03,DGO,NT-DGO-00302,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2621,60,157260,Tunai,Y
+2026-07-05,DGO,NT-DGO-00303,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2418,60,145080,Tunai,Y
+2026-07-07,DGO,NT-DGO-00304,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2304,60,138240,Tunai,Y
+2026-07-09,DGO,NT-DGO-00305,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2574,60,154440,Tunai,Y
+2026-07-11,DGO,NT-DGO-00306,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,3172,60,190320,Tunai,Y
+2026-07-13,DGO,NT-DGO-00307,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2330,60,139800,Tunai,Y
+2026-07-15,DGO,NT-DGO-00308,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2496,60,149760,Tunai,Y
+2026-07-17,DGO,NT-DGO-00309,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2496,60,149760,Tunai,Y
+2026-07-19,DGO,NT-DGO-00310,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2595,60,155700,Tunai,Y
+2026-07-21,DGO,NT-DGO-00311,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2371,60,142260,Tunai,Y
+2026-07-23,DGO,NT-DGO-00312,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2350,60,141000,Tunai,Y
+2026-07-25,DGO,NT-DGO-00313,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2985,60,179100,Tunai,Y
+2026-07-27,DGO,NT-DGO-00314,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2252,60,135120,Tunai,Y
+2026-07-29,DGO,NT-DGO-00315,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2480,60,148800,Tunai,Y
+2026-07-31,DGO,NT-DGO-00316,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2782,60,166920,Tunai,Y
+2026-08-02,DGO,NT-DGO-00317,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2943,75,220725,Tunai,Y
+2026-08-04,DGO,NT-DGO-00318,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2434,75,182550,Tunai,Y
+2026-08-06,DGO,NT-DGO-00319,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2278,75,170850,Tunai,Y
+2026-08-08,DGO,NT-DGO-00320,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,3136,75,235200,Tunai,Y
+2026-08-10,DGO,NT-DGO-00321,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2668,75,200100,Tunai,Y
+2026-08-12,DGO,NT-DGO-00322,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2418,75,181350,Tunai,Y
+2026-08-14,DGO,NT-DGO-00323,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2714,75,203550,Tunai,Y
+2026-08-16,DGO,NT-DGO-00324,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,3068,75,230100,Tunai,Y
+2026-08-18,DGO,NT-DGO-00325,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2376,75,178200,Tunai,Y
+2026-08-20,DGO,NT-DGO-00326,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2496,75,187200,Tunai,Y
+2026-08-22,DGO,NT-DGO-00327,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,3058,75,229350,Tunai,Y
+2026-08-24,DGO,NT-DGO-00328,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2371,75,177825,Tunai,Y
+2026-08-26,DGO,NT-DGO-00329,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2356,75,176700,Tunai,Y
+2026-08-28,DGO,NT-DGO-00330,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2886,75,216450,Tunai,Y
+2026-08-30,DGO,NT-DGO-00331,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2694,75,202050,Tunai,Y
+2026-09-01,DGO,NT-DGO-00332,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2413,115,277495,Tunai,Y
+2026-09-03,DGO,NT-DGO-00333,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2480,115,285200,Tunai,Y
+2026-09-05,DGO,NT-DGO-00334,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,3089,115,355235,Tunai,Y
+2026-09-07,DGO,NT-DGO-00335,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2044,115,235060,Tunai,Y
+2026-09-09,DGO,NT-DGO-00336,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2470,115,284050,Tunai,Y
+2026-09-11,DGO,NT-DGO-00337,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2673,115,307395,Tunai,Y
+2026-09-13,DGO,NT-DGO-00338,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2569,115,295435,Tunai,Y
+2026-09-15,DGO,NT-DGO-00339,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2387,115,274505,Tunai,Y
+2026-09-17,DGO,NT-DGO-00340,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2361,115,271515,Tunai,Y
+2026-09-19,DGO,NT-DGO-00341,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2995,115,344425,Tunai,Y
+2026-09-21,DGO,NT-DGO-00342,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2610,115,300150,Tunai,Y
+2026-09-23,DGO,NT-DGO-00343,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2231,115,256565,Tunai,Y
+2026-09-25,DGO,NT-DGO-00344,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2668,115,306820,Tunai,Y
+2026-09-27,DGO,NT-DGO-00345,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2704,115,310960,Tunai,Y
+2026-09-29,DGO,NT-DGO-00346,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2740,115,315100,Tunai,Y
+2026-07-01,DGO,NT-DGO-00347,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2075,45,93375,Tunai,Y
+2026-07-03,DGO,NT-DGO-00348,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2340,45,105300,Tunai,Y
+2026-07-05,DGO,NT-DGO-00349,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2122,45,95490,Tunai,Y
+2026-07-07,DGO,NT-DGO-00350,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2023,45,91035,Tunai,Y
+2026-07-09,DGO,NT-DGO-00351,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2231,45,100395,Tunai,Y
+2026-07-11,DGO,NT-DGO-00352,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2725,45,122625,Tunai,Y
+2026-07-13,DGO,NT-DGO-00353,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2059,45,92655,Tunai,Y
+2026-07-15,DGO,NT-DGO-00354,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2200,45,99000,Tunai,Y
+2026-07-17,DGO,NT-DGO-00355,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2205,45,99225,Tunai,Y
+2026-07-19,DGO,NT-DGO-00356,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2272,45,102240,Tunai,Y
+2026-07-21,DGO,NT-DGO-00357,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2049,45,92205,Tunai,Y
+2026-07-23,DGO,NT-DGO-00358,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2012,45,90540,Tunai,Y
+2026-07-25,DGO,NT-DGO-00359,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2720,45,122400,Tunai,Y
+2026-07-27,DGO,NT-DGO-00360,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2028,45,91260,Tunai,Y
+2026-07-29,DGO,NT-DGO-00361,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2142,45,96390,Tunai,Y
+2026-07-31,DGO,NT-DGO-00362,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2491,45,112095,Tunai,Y
+2026-08-02,DGO,NT-DGO-00363,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2600,45,117000,Tunai,Y
+2026-08-04,DGO,NT-DGO-00364,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2122,45,95490,Tunai,Y
+2026-08-06,DGO,NT-DGO-00365,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1919,45,86355,Tunai,Y
+2026-08-08,DGO,NT-DGO-00366,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2714,45,122130,Tunai,Y
+2026-08-10,DGO,NT-DGO-00367,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2278,45,102510,Tunai,Y
+2026-08-12,DGO,NT-DGO-00368,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2116,45,95220,Tunai,Y
+2026-08-14,DGO,NT-DGO-00369,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2298,45,103410,Tunai,Y
+2026-08-16,DGO,NT-DGO-00370,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2621,45,117945,Tunai,Y
+2026-08-18,DGO,NT-DGO-00371,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1997,45,89865,Tunai,Y
+2026-08-20,DGO,NT-DGO-00372,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2158,45,97110,Tunai,Y
+2026-08-22,DGO,NT-DGO-00373,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2636,45,118620,Tunai,Y
+2026-08-24,DGO,NT-DGO-00374,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2090,45,94050,Tunai,Y
+2026-08-26,DGO,NT-DGO-00375,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2044,45,91980,Tunai,Y
+2026-08-28,DGO,NT-DGO-00376,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2475,45,111375,Tunai,Y
+2026-08-30,DGO,NT-DGO-00377,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2356,45,106020,Tunai,Y
+2026-09-01,DGO,NT-DGO-00378,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2132,52,110864,Tunai,Y
+2026-09-03,DGO,NT-DGO-00379,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2189,52,113828,Tunai,Y
+2026-09-05,DGO,NT-DGO-00380,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2657,52,138164,Tunai,Y
+2026-09-07,DGO,NT-DGO-00381,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1851,52,96252,Tunai,Y
+2026-09-09,DGO,NT-DGO-00382,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2168,52,112736,Tunai,Y
+2026-09-11,DGO,NT-DGO-00383,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2361,52,122772,Tunai,Y
+2026-09-13,DGO,NT-DGO-00384,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2163,52,112476,Tunai,Y
+2026-09-15,DGO,NT-DGO-00385,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2023,52,105196,Tunai,Y
+2026-09-17,DGO,NT-DGO-00386,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2033,52,105716,Tunai,Y
+2026-09-19,DGO,NT-DGO-00387,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2558,52,133016,Tunai,Y
+2026-09-21,DGO,NT-DGO-00388,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2231,52,116012,Tunai,Y
+2026-09-23,DGO,NT-DGO-00389,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1986,52,103272,Tunai,Y
+2026-09-25,DGO,NT-DGO-00390,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2314,52,120328,Tunai,Y
+2026-09-27,DGO,NT-DGO-00391,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2324,52,120848,Tunai,Y
+2026-09-29,DGO,NT-DGO-00392,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2293,52,119236,Tunai,Y
+2026-07-01,DGO,NT-DGO-00393,Toko Grosir Sinar,B13,Minyak goreng,ml,18736,18,337248,Transfer,N
+2026-07-08,DGO,NT-DGO-00394,Toko Grosir Sinar,B13,Minyak goreng,ml,19521,18,351378,Transfer,N
+2026-07-15,DGO,NT-DGO-00395,Toko Grosir Sinar,B13,Minyak goreng,ml,19417,18,349506,Transfer,N
+2026-07-22,DGO,NT-DGO-00396,Toko Grosir Sinar,B13,Minyak goreng,ml,18278,18,329004,Transfer,N
+2026-07-29,DGO,NT-DGO-00397,Toko Grosir Sinar,B13,Minyak goreng,ml,20119,18,362142,Transfer,N
+2026-08-05,DGO,NT-DGO-00398,Toko Grosir Sinar,B13,Minyak goreng,ml,19516,18,351288,Transfer,N
+2026-08-12,DGO,NT-DGO-00399,Toko Grosir Sinar,B13,Minyak goreng,ml,20514,18,369252,Transfer,N
+2026-08-19,DGO,NT-DGO-00400,Toko Grosir Sinar,B13,Minyak goreng,ml,19692,18,354456,Transfer,N
+2026-08-26,DGO,NT-DGO-00401,Toko Grosir Sinar,B13,Minyak goreng,ml,19734,18,355212,Transfer,N
+2026-09-02,DGO,NT-DGO-00402,Toko Grosir Sinar,B13,Minyak goreng,ml,19100,18,343800,Transfer,N
+2026-09-09,DGO,NT-DGO-00403,Toko Grosir Sinar,B13,Minyak goreng,ml,19432,18,349776,Transfer,N
+2026-09-16,DGO,NT-DGO-00404,Toko Grosir Sinar,B13,Minyak goreng,ml,19526,18,351468,Transfer,N
+2026-09-23,DGO,NT-DGO-00405,Toko Grosir Sinar,B13,Minyak goreng,ml,19547,18,351846,Transfer,N
+2026-09-30,DGO,NT-DGO-00406,Toko Grosir Sinar,B13,Minyak goreng,ml,2938,18,52884,Transfer,N
+2026-07-01,DGO,NT-DGO-00407,Toko Grosir Sinar,B14,Mie telur,gram,8611,25,215275,Transfer,N
+2026-07-08,DGO,NT-DGO-00408,Toko Grosir Sinar,B14,Mie telur,gram,8486,25,212150,Transfer,N
+2026-07-15,DGO,NT-DGO-00409,Toko Grosir Sinar,B14,Mie telur,gram,8986,25,224650,Transfer,N
+2026-07-22,DGO,NT-DGO-00410,Toko Grosir Sinar,B14,Mie telur,gram,9360,25,234000,Transfer,N
+2026-07-29,DGO,NT-DGO-00411,Toko Grosir Sinar,B14,Mie telur,gram,9360,25,234000,Transfer,N
+2026-08-05,DGO,NT-DGO-00412,Toko Grosir Sinar,B14,Mie telur,gram,7613,25,190325,Transfer,N
+2026-08-12,DGO,NT-DGO-00413,Toko Grosir Sinar,B14,Mie telur,gram,8611,25,215275,Transfer,N
+2026-08-19,DGO,NT-DGO-00414,Toko Grosir Sinar,B14,Mie telur,gram,8112,25,202800,Transfer,N
+2026-08-26,DGO,NT-DGO-00415,Toko Grosir Sinar,B14,Mie telur,gram,9110,25,227750,Transfer,N
+2026-09-02,DGO,NT-DGO-00416,Toko Grosir Sinar,B14,Mie telur,gram,9110,25,227750,Transfer,N
+2026-09-09,DGO,NT-DGO-00417,Toko Grosir Sinar,B14,Mie telur,gram,8611,25,215275,Transfer,N
+2026-09-16,DGO,NT-DGO-00418,Toko Grosir Sinar,B14,Mie telur,gram,7862,25,196550,Transfer,N
+2026-09-23,DGO,NT-DGO-00419,Toko Grosir Sinar,B14,Mie telur,gram,8362,25,209050,Transfer,N
+2026-09-30,DGO,NT-DGO-00420,Toko Grosir Sinar,B14,Mie telur,gram,1123,25,28075,Transfer,N
+2026-07-01,DGO,NT-DGO-00421,Toko Grosir Sinar,B15,Spaghetti,gram,2163,35,75705,Transfer,N
+2026-07-08,DGO,NT-DGO-00422,Toko Grosir Sinar,B15,Spaghetti,gram,3380,35,118300,Transfer,N
+2026-07-15,DGO,NT-DGO-00423,Toko Grosir Sinar,B15,Spaghetti,gram,2839,35,99365,Transfer,N
+2026-07-22,DGO,NT-DGO-00424,Toko Grosir Sinar,B15,Spaghetti,gram,3245,35,113575,Transfer,N
+2026-07-29,DGO,NT-DGO-00425,Toko Grosir Sinar,B15,Spaghetti,gram,2839,35,99365,Transfer,N
+2026-08-05,DGO,NT-DGO-00426,Toko Grosir Sinar,B15,Spaghetti,gram,2434,35,85190,Transfer,N
+2026-08-12,DGO,NT-DGO-00427,Toko Grosir Sinar,B15,Spaghetti,gram,3110,35,108850,Transfer,N
+2026-08-19,DGO,NT-DGO-00428,Toko Grosir Sinar,B15,Spaghetti,gram,2974,35,104090,Transfer,N
+2026-08-26,DGO,NT-DGO-00429,Toko Grosir Sinar,B15,Spaghetti,gram,2434,35,85190,Transfer,N
+2026-09-02,DGO,NT-DGO-00430,Toko Grosir Sinar,B15,Spaghetti,gram,3921,35,137235,Transfer,N
+2026-09-09,DGO,NT-DGO-00431,Toko Grosir Sinar,B15,Spaghetti,gram,3245,35,113575,Transfer,N
+2026-09-16,DGO,NT-DGO-00432,Toko Grosir Sinar,B15,Spaghetti,gram,2434,35,85190,Transfer,N
+2026-09-23,DGO,NT-DGO-00433,Toko Grosir Sinar,B15,Spaghetti,gram,2704,35,94640,Transfer,N
+2026-09-30,DGO,NT-DGO-00434,Toko Grosir Sinar,B15,Spaghetti,gram,135,35,4725,Transfer,N
+2026-07-01,DGO,NT-DGO-00435,Toko Grosir Sinar,B16,Krim masak,ml,1997,60,119820,Transfer,N
+2026-07-08,DGO,NT-DGO-00436,Toko Grosir Sinar,B16,Krim masak,ml,3120,60,187200,Transfer,N
+2026-07-15,DGO,NT-DGO-00437,Toko Grosir Sinar,B16,Krim masak,ml,2621,60,157260,Transfer,N
+2026-07-22,DGO,NT-DGO-00438,Toko Grosir Sinar,B16,Krim masak,ml,2995,60,179700,Transfer,N
+2026-07-29,DGO,NT-DGO-00439,Toko Grosir Sinar,B16,Krim masak,ml,2621,60,157260,Transfer,N
+2026-08-05,DGO,NT-DGO-00440,Toko Grosir Sinar,B16,Krim masak,ml,2246,60,134760,Transfer,N
+2026-08-12,DGO,NT-DGO-00441,Toko Grosir Sinar,B16,Krim masak,ml,2870,60,172200,Transfer,N
+2026-08-19,DGO,NT-DGO-00442,Toko Grosir Sinar,B16,Krim masak,ml,2746,60,164760,Transfer,N
+2026-08-26,DGO,NT-DGO-00443,Toko Grosir Sinar,B16,Krim masak,ml,2246,60,134760,Transfer,N
+2026-09-02,DGO,NT-DGO-00444,Toko Grosir Sinar,B16,Krim masak,ml,3619,62,224378,Transfer,N
+2026-09-09,DGO,NT-DGO-00445,Toko Grosir Sinar,B16,Krim masak,ml,2995,62,185690,Transfer,N
+2026-09-16,DGO,NT-DGO-00446,Toko Grosir Sinar,B16,Krim masak,ml,2246,62,139252,Transfer,N
+2026-09-23,DGO,NT-DGO-00447,Toko Grosir Sinar,B16,Krim masak,ml,2496,62,154752,Transfer,N
+2026-09-30,DGO,NT-DGO-00448,Toko Grosir Sinar,B16,Krim masak,ml,125,62,7750,Transfer,N
+2026-07-01,DGO,NT-DGO-00449,Toko Grosir Sinar,B17,Smoked beef,gram,998,180,179640,Transfer,N
+2026-07-08,DGO,NT-DGO-00450,Toko Grosir Sinar,B17,Smoked beef,gram,1560,180,280800,Transfer,N
+2026-07-15,DGO,NT-DGO-00451,Toko Grosir Sinar,B17,Smoked beef,gram,1310,180,235800,Transfer,N
+2026-07-22,DGO,NT-DGO-00452,Toko Grosir Sinar,B17,Smoked beef,gram,1498,180,269640,Transfer,N
+2026-07-29,DGO,NT-DGO-00453,Toko Grosir Sinar,B17,Smoked beef,gram,1310,180,235800,Transfer,N
+2026-08-05,DGO,NT-DGO-00454,Toko Grosir Sinar,B17,Smoked beef,gram,1123,180,202140,Transfer,N
+2026-08-12,DGO,NT-DGO-00455,Toko Grosir Sinar,B17,Smoked beef,gram,1435,180,258300,Transfer,N
+2026-08-19,DGO,NT-DGO-00456,Toko Grosir Sinar,B17,Smoked beef,gram,1373,180,247140,Transfer,N
+2026-08-26,DGO,NT-DGO-00457,Toko Grosir Sinar,B17,Smoked beef,gram,1123,180,202140,Transfer,N
+2026-09-02,DGO,NT-DGO-00458,Toko Grosir Sinar,B17,Smoked beef,gram,1810,185,334850,Transfer,N
+2026-09-09,DGO,NT-DGO-00459,Toko Grosir Sinar,B17,Smoked beef,gram,1498,185,277130,Transfer,N
+2026-09-16,DGO,NT-DGO-00460,Toko Grosir Sinar,B17,Smoked beef,gram,1123,185,207755,Transfer,N
+2026-09-23,DGO,NT-DGO-00461,Toko Grosir Sinar,B17,Smoked beef,gram,1248,185,230880,Transfer,N
+2026-09-30,DGO,NT-DGO-00462,Toko Grosir Sinar,B17,Smoked beef,gram,62,185,11470,Transfer,N
+2026-07-01,DGO,NT-DGO-00463,Toko Grosir Sinar,B18,Keju parmesan,gram,333,350,116550,Transfer,N
+2026-07-08,DGO,NT-DGO-00464,Toko Grosir Sinar,B18,Keju parmesan,gram,520,350,182000,Transfer,N
+2026-07-15,DGO,NT-DGO-00465,Toko Grosir Sinar,B18,Keju parmesan,gram,437,350,152950,Transfer,N
+2026-07-22,DGO,NT-DGO-00466,Toko Grosir Sinar,B18,Keju parmesan,gram,499,350,174650,Transfer,N
+2026-07-29,DGO,NT-DGO-00467,Toko Grosir Sinar,B18,Keju parmesan,gram,437,350,152950,Transfer,N
+2026-08-05,DGO,NT-DGO-00468,Toko Grosir Sinar,B18,Keju parmesan,gram,374,350,130900,Transfer,N
+2026-08-12,DGO,NT-DGO-00469,Toko Grosir Sinar,B18,Keju parmesan,gram,478,350,167300,Transfer,N
+2026-08-19,DGO,NT-DGO-00470,Toko Grosir Sinar,B18,Keju parmesan,gram,458,350,160300,Transfer,N
+2026-08-26,DGO,NT-DGO-00471,Toko Grosir Sinar,B18,Keju parmesan,gram,374,350,130900,Transfer,N
+2026-09-02,DGO,NT-DGO-00472,Toko Grosir Sinar,B18,Keju parmesan,gram,603,360,217080,Transfer,N
+2026-09-09,DGO,NT-DGO-00473,Toko Grosir Sinar,B18,Keju parmesan,gram,499,360,179640,Transfer,N
+2026-09-16,DGO,NT-DGO-00474,Toko Grosir Sinar,B18,Keju parmesan,gram,374,360,134640,Transfer,N
+2026-09-23,DGO,NT-DGO-00475,Toko Grosir Sinar,B18,Keju parmesan,gram,416,360,149760,Transfer,N
+2026-09-30,DGO,NT-DGO-00476,Toko Grosir Sinar,B18,Keju parmesan,gram,21,360,7560,Transfer,N
+2026-07-01,DGO,NT-DGO-00477,Bakery Mekar,B19,Roti tawar tebal,lembar,200,1500,300000,Transfer,N
+2026-07-08,DGO,NT-DGO-00478,Bakery Mekar,B19,Roti tawar tebal,lembar,175,1500,262500,Transfer,N
+2026-07-15,DGO,NT-DGO-00479,Bakery Mekar,B19,Roti tawar tebal,lembar,181,1500,271500,Transfer,N
+2026-07-22,DGO,NT-DGO-00480,Bakery Mekar,B19,Roti tawar tebal,lembar,218,1500,327000,Transfer,N
+2026-07-29,DGO,NT-DGO-00481,Bakery Mekar,B19,Roti tawar tebal,lembar,190,1500,285000,Transfer,N
+2026-08-05,DGO,NT-DGO-00482,Bakery Mekar,B19,Roti tawar tebal,lembar,193,1500,289500,Transfer,N
+2026-08-12,DGO,NT-DGO-00483,Bakery Mekar,B19,Roti tawar tebal,lembar,190,1500,285000,Transfer,N
+2026-08-19,DGO,NT-DGO-00484,Bakery Mekar,B19,Roti tawar tebal,lembar,193,1500,289500,Transfer,N
+2026-08-26,DGO,NT-DGO-00485,Bakery Mekar,B19,Roti tawar tebal,lembar,206,1500,309000,Transfer,N
+2026-09-02,DGO,NT-DGO-00486,Bakery Mekar,B19,Roti tawar tebal,lembar,187,1500,280500,Transfer,N
+2026-09-09,DGO,NT-DGO-00487,Bakery Mekar,B19,Roti tawar tebal,lembar,187,1500,280500,Transfer,N
+2026-09-16,DGO,NT-DGO-00488,Bakery Mekar,B19,Roti tawar tebal,lembar,184,1500,276000,Transfer,N
+2026-09-23,DGO,NT-DGO-00489,Bakery Mekar,B19,Roti tawar tebal,lembar,197,1500,295500,Transfer,N
+2026-09-30,DGO,NT-DGO-00490,Bakery Mekar,B19,Roti tawar tebal,lembar,34,1500,51000,Transfer,N
+2026-07-01,DGO,NT-DGO-00491,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2662,80,212960,Transfer,N
+2026-07-08,DGO,NT-DGO-00492,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2330,80,186400,Transfer,N
+2026-07-15,DGO,NT-DGO-00493,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2413,80,193040,Transfer,N
+2026-07-22,DGO,NT-DGO-00494,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2912,80,232960,Transfer,N
+2026-07-29,DGO,NT-DGO-00495,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2538,80,203040,Transfer,N
+2026-08-05,DGO,NT-DGO-00496,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2579,80,206320,Transfer,N
+2026-08-12,DGO,NT-DGO-00497,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2538,80,203040,Transfer,N
+2026-08-19,DGO,NT-DGO-00498,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2579,80,206320,Transfer,N
+2026-08-26,DGO,NT-DGO-00499,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2746,80,219680,Transfer,N
+2026-09-02,DGO,NT-DGO-00500,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2496,82,204672,Transfer,N
+2026-09-09,DGO,NT-DGO-00501,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2496,82,204672,Transfer,N
+2026-09-16,DGO,NT-DGO-00502,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2454,82,201228,Transfer,N
+2026-09-23,DGO,NT-DGO-00503,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2621,82,214922,Transfer,N
+2026-09-30,DGO,NT-DGO-00504,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,458,82,37556,Transfer,N
+2026-07-01,DGO,NT-DGO-00505,Toko Grosir Sinar,B21,Kentang beku,gram,11045,38,419710,Transfer,N
+2026-07-08,DGO,NT-DGO-00506,Toko Grosir Sinar,B21,Kentang beku,gram,11419,38,433922,Transfer,N
+2026-07-15,DGO,NT-DGO-00507,Toko Grosir Sinar,B21,Kentang beku,gram,11981,38,455278,Transfer,N
+2026-07-22,DGO,NT-DGO-00508,Toko Grosir Sinar,B21,Kentang beku,gram,10670,38,405460,Transfer,N
+2026-07-29,DGO,NT-DGO-00509,Toko Grosir Sinar,B21,Kentang beku,gram,11794,38,448172,Transfer,N
+2026-08-05,DGO,NT-DGO-00510,Toko Grosir Sinar,B21,Kentang beku,gram,11794,38,448172,Transfer,N
+2026-08-12,DGO,NT-DGO-00511,Toko Grosir Sinar,B21,Kentang beku,gram,13478,38,512164,Transfer,N
+2026-08-19,DGO,NT-DGO-00512,Toko Grosir Sinar,B21,Kentang beku,gram,11981,38,455278,Transfer,N
+2026-08-26,DGO,NT-DGO-00513,Toko Grosir Sinar,B21,Kentang beku,gram,10858,38,412604,Transfer,N
+2026-09-02,DGO,NT-DGO-00514,Toko Grosir Sinar,B21,Kentang beku,gram,11419,39,445341,Transfer,N
+2026-09-09,DGO,NT-DGO-00515,Toko Grosir Sinar,B21,Kentang beku,gram,11045,39,430755,Transfer,N
+2026-09-16,DGO,NT-DGO-00516,Toko Grosir Sinar,B21,Kentang beku,gram,11794,39,459966,Transfer,N
+2026-09-23,DGO,NT-DGO-00517,Toko Grosir Sinar,B21,Kentang beku,gram,13478,39,525642,Transfer,N
+2026-09-30,DGO,NT-DGO-00518,Toko Grosir Sinar,B21,Kentang beku,gram,1310,39,51090,Transfer,N
+2026-07-01,DGO,NT-DGO-00519,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,27,2500,67500,Tunai,Y
+2026-07-03,DGO,NT-DGO-00520,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,31,2500,77500,Tunai,Y
+2026-07-05,DGO,NT-DGO-00521,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,35,2500,87500,Tunai,Y
+2026-07-07,DGO,NT-DGO-00522,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,27,2500,67500,Tunai,Y
+2026-07-09,DGO,NT-DGO-00523,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,17,2500,42500,Tunai,Y
+2026-07-11,DGO,NT-DGO-00524,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,33,2500,82500,Tunai,Y
+2026-07-13,DGO,NT-DGO-00525,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,19,2500,47500,Tunai,Y
+2026-07-15,DGO,NT-DGO-00526,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,29,2500,72500,Tunai,Y
+2026-07-17,DGO,NT-DGO-00527,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,27,2500,67500,Tunai,Y
+2026-07-19,DGO,NT-DGO-00528,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,35,2500,87500,Tunai,Y
+2026-07-21,DGO,NT-DGO-00529,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2500,52500,Tunai,Y
+2026-07-23,DGO,NT-DGO-00530,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,15,2500,37500,Tunai,Y
+2026-07-25,DGO,NT-DGO-00531,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,23,2500,57500,Tunai,Y
+2026-07-27,DGO,NT-DGO-00532,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2500,52500,Tunai,Y
+2026-07-29,DGO,NT-DGO-00533,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,25,2500,62500,Tunai,Y
+2026-07-31,DGO,NT-DGO-00534,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,27,2500,67500,Tunai,Y
+2026-08-02,DGO,NT-DGO-00535,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,27,2500,67500,Tunai,Y
+2026-08-04,DGO,NT-DGO-00536,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2500,52500,Tunai,Y
+2026-08-06,DGO,NT-DGO-00537,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,25,2500,62500,Tunai,Y
+2026-08-08,DGO,NT-DGO-00538,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,23,2500,57500,Tunai,Y
+2026-08-10,DGO,NT-DGO-00539,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,27,2500,67500,Tunai,Y
+2026-08-12,DGO,NT-DGO-00540,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2500,52500,Tunai,Y
+2026-08-14,DGO,NT-DGO-00541,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,33,2500,82500,Tunai,Y
+2026-08-16,DGO,NT-DGO-00542,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,33,2500,82500,Tunai,Y
+2026-08-18,DGO,NT-DGO-00543,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2500,52500,Tunai,Y
+2026-08-20,DGO,NT-DGO-00544,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,27,2500,67500,Tunai,Y
+2026-08-22,DGO,NT-DGO-00545,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,27,2500,67500,Tunai,Y
+2026-08-24,DGO,NT-DGO-00546,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,23,2500,57500,Tunai,Y
+2026-08-26,DGO,NT-DGO-00547,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,25,2500,62500,Tunai,Y
+2026-08-28,DGO,NT-DGO-00548,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,35,2500,87500,Tunai,Y
+2026-08-30,DGO,NT-DGO-00549,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,29,2500,72500,Tunai,Y
+2026-09-01,DGO,NT-DGO-00550,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2700,56700,Tunai,Y
+2026-09-03,DGO,NT-DGO-00551,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2700,56700,Tunai,Y
+2026-09-05,DGO,NT-DGO-00552,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,35,2700,94500,Tunai,Y
+2026-09-07,DGO,NT-DGO-00553,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,25,2700,67500,Tunai,Y
+2026-09-09,DGO,NT-DGO-00554,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,29,2700,78300,Tunai,Y
+2026-09-11,DGO,NT-DGO-00555,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,33,2700,89100,Tunai,Y
+2026-09-13,DGO,NT-DGO-00556,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,23,2700,62100,Tunai,Y
+2026-09-15,DGO,NT-DGO-00557,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2700,56700,Tunai,Y
+2026-09-17,DGO,NT-DGO-00558,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,27,2700,72900,Tunai,Y
+2026-09-19,DGO,NT-DGO-00559,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,27,2700,72900,Tunai,Y
+2026-09-21,DGO,NT-DGO-00560,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,27,2700,72900,Tunai,Y
+2026-09-23,DGO,NT-DGO-00561,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,23,2700,62100,Tunai,Y
+2026-09-25,DGO,NT-DGO-00562,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,27,2700,72900,Tunai,Y
+2026-09-27,DGO,NT-DGO-00563,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,25,2700,67500,Tunai,Y
+2026-09-29,DGO,NT-DGO-00564,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,25,2700,67500,Tunai,Y
+2026-07-01,DGO,NT-DGO-00565,Toko Grosir Sinar,B23,Madu,ml,796,120,95520,Transfer,N
+2026-07-08,DGO,NT-DGO-00566,Toko Grosir Sinar,B23,Madu,ml,624,120,74880,Transfer,N
+2026-07-15,DGO,NT-DGO-00567,Toko Grosir Sinar,B23,Madu,ml,749,120,89880,Transfer,N
+2026-07-22,DGO,NT-DGO-00568,Toko Grosir Sinar,B23,Madu,ml,530,120,63600,Transfer,N
+2026-07-29,DGO,NT-DGO-00569,Toko Grosir Sinar,B23,Madu,ml,671,120,80520,Transfer,N
+2026-08-05,DGO,NT-DGO-00570,Toko Grosir Sinar,B23,Madu,ml,640,120,76800,Transfer,N
+2026-08-12,DGO,NT-DGO-00571,Toko Grosir Sinar,B23,Madu,ml,718,120,86160,Transfer,N
+2026-08-19,DGO,NT-DGO-00572,Toko Grosir Sinar,B23,Madu,ml,671,120,80520,Transfer,N
+2026-08-26,DGO,NT-DGO-00573,Toko Grosir Sinar,B23,Madu,ml,764,120,91680,Transfer,N
+2026-09-02,DGO,NT-DGO-00574,Toko Grosir Sinar,B23,Madu,ml,671,120,80520,Transfer,N
+2026-09-09,DGO,NT-DGO-00575,Toko Grosir Sinar,B23,Madu,ml,733,120,87960,Transfer,N
+2026-09-16,DGO,NT-DGO-00576,Toko Grosir Sinar,B23,Madu,ml,671,120,80520,Transfer,N
+2026-09-23,DGO,NT-DGO-00577,Toko Grosir Sinar,B23,Madu,ml,655,120,78600,Transfer,N
+2026-09-30,DGO,NT-DGO-00578,Toko Grosir Sinar,B23,Madu,ml,94,120,11280,Transfer,N
+2026-07-01,DGO,NT-DGO-00579,Distributor Susu Lembang,B24,Es krim vanila,gram,2080,60,124800,Transfer,N
+2026-07-08,DGO,NT-DGO-00580,Distributor Susu Lembang,B24,Es krim vanila,gram,1414,60,84840,Transfer,N
+2026-07-15,DGO,NT-DGO-00581,Distributor Susu Lembang,B24,Es krim vanila,gram,1664,60,99840,Transfer,N
+2026-07-22,DGO,NT-DGO-00582,Distributor Susu Lembang,B24,Es krim vanila,gram,1830,60,109800,Transfer,N
+2026-07-29,DGO,NT-DGO-00583,Distributor Susu Lembang,B24,Es krim vanila,gram,1997,60,119820,Transfer,N
+2026-08-05,DGO,NT-DGO-00584,Distributor Susu Lembang,B24,Es krim vanila,gram,1498,60,89880,Transfer,N
+2026-08-12,DGO,NT-DGO-00585,Distributor Susu Lembang,B24,Es krim vanila,gram,1581,60,94860,Transfer,N
+2026-08-19,DGO,NT-DGO-00586,Distributor Susu Lembang,B24,Es krim vanila,gram,1830,60,109800,Transfer,N
+2026-08-26,DGO,NT-DGO-00587,Distributor Susu Lembang,B24,Es krim vanila,gram,1997,60,119820,Transfer,N
+2026-09-02,DGO,NT-DGO-00588,Distributor Susu Lembang,B24,Es krim vanila,gram,1414,60,84840,Transfer,N
+2026-09-09,DGO,NT-DGO-00589,Distributor Susu Lembang,B24,Es krim vanila,gram,1747,60,104820,Transfer,N
+2026-09-16,DGO,NT-DGO-00590,Distributor Susu Lembang,B24,Es krim vanila,gram,1997,60,119820,Transfer,N
+2026-09-23,DGO,NT-DGO-00591,Distributor Susu Lembang,B24,Es krim vanila,gram,1747,60,104820,Transfer,N
+2026-09-30,DGO,NT-DGO-00592,Distributor Susu Lembang,B24,Es krim vanila,gram,166,60,9960,Transfer,N
+2026-07-01,DGO,NT-DGO-00593,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,80,1500,120000,Tunai,Y
+2026-07-03,DGO,NT-DGO-00594,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,89,1500,133500,Tunai,Y
+2026-07-05,DGO,NT-DGO-00595,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,81,1500,121500,Tunai,Y
+2026-07-07,DGO,NT-DGO-00596,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,80,1500,120000,Tunai,Y
+2026-07-09,DGO,NT-DGO-00597,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,88,1500,132000,Tunai,Y
+2026-07-11,DGO,NT-DGO-00598,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,108,1500,162000,Tunai,Y
+2026-07-13,DGO,NT-DGO-00599,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,79,1500,118500,Tunai,Y
+2026-07-15,DGO,NT-DGO-00600,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,84,1500,126000,Tunai,Y
+2026-07-17,DGO,NT-DGO-00601,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,83,1500,124500,Tunai,Y
+2026-07-19,DGO,NT-DGO-00602,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,88,1500,132000,Tunai,Y
+2026-07-21,DGO,NT-DGO-00603,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,81,1500,121500,Tunai,Y
+2026-07-23,DGO,NT-DGO-00604,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,80,1500,120000,Tunai,Y
+2026-07-25,DGO,NT-DGO-00605,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,101,1500,151500,Tunai,Y
+2026-07-27,DGO,NT-DGO-00606,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,75,1500,112500,Tunai,Y
+2026-07-29,DGO,NT-DGO-00607,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,85,1500,127500,Tunai,Y
+2026-07-31,DGO,NT-DGO-00608,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,95,1500,142500,Tunai,Y
+2026-08-02,DGO,NT-DGO-00609,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,100,1500,150000,Tunai,Y
+2026-08-04,DGO,NT-DGO-00610,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,83,1500,124500,Tunai,Y
+2026-08-06,DGO,NT-DGO-00611,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,78,1500,117000,Tunai,Y
+2026-08-08,DGO,NT-DGO-00612,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,108,1500,162000,Tunai,Y
+2026-08-10,DGO,NT-DGO-00613,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,92,1500,138000,Tunai,Y
+2026-08-12,DGO,NT-DGO-00614,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,82,1500,123000,Tunai,Y
+2026-08-14,DGO,NT-DGO-00615,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,94,1500,141000,Tunai,Y
+2026-08-16,DGO,NT-DGO-00616,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,104,1500,156000,Tunai,Y
+2026-08-18,DGO,NT-DGO-00617,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,81,1500,121500,Tunai,Y
+2026-08-20,DGO,NT-DGO-00618,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,84,1500,126000,Tunai,Y
+2026-08-22,DGO,NT-DGO-00619,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,105,1500,157500,Tunai,Y
+2026-08-24,DGO,NT-DGO-00620,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,81,1500,121500,Tunai,Y
+2026-08-26,DGO,NT-DGO-00621,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,80,1500,120000,Tunai,Y
+2026-08-28,DGO,NT-DGO-00622,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,98,1500,147000,Tunai,Y
+2026-08-30,DGO,NT-DGO-00623,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,90,1500,135000,Tunai,Y
+2026-09-01,DGO,NT-DGO-00624,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,81,1600,129600,Tunai,Y
+2026-09-03,DGO,NT-DGO-00625,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,84,1600,134400,Tunai,Y
+2026-09-05,DGO,NT-DGO-00626,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,105,1600,168000,Tunai,Y
+2026-09-07,DGO,NT-DGO-00627,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,69,1600,110400,Tunai,Y
+2026-09-09,DGO,NT-DGO-00628,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,84,1600,134400,Tunai,Y
+2026-09-11,DGO,NT-DGO-00629,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,89,1600,142400,Tunai,Y
+2026-09-13,DGO,NT-DGO-00630,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,87,1600,139200,Tunai,Y
+2026-09-15,DGO,NT-DGO-00631,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,80,1600,128000,Tunai,Y
+2026-09-17,DGO,NT-DGO-00632,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,80,1600,128000,Tunai,Y
+2026-09-19,DGO,NT-DGO-00633,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,104,1600,166400,Tunai,Y
+2026-09-21,DGO,NT-DGO-00634,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,90,1600,144000,Tunai,Y
+2026-09-23,DGO,NT-DGO-00635,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,75,1600,120000,Tunai,Y
+2026-09-25,DGO,NT-DGO-00636,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,93,1600,148800,Tunai,Y
+2026-09-27,DGO,NT-DGO-00637,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,93,1600,148800,Tunai,Y
+2026-09-29,DGO,NT-DGO-00638,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,93,1600,148800,Tunai,Y
+2026-07-01,DGO,NT-DGO-00639,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,603,1800,1085400,Transfer,N
+2026-07-08,DGO,NT-DGO-00640,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,623,1800,1121400,Transfer,N
+2026-07-15,DGO,NT-DGO-00641,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,586,1800,1054800,Transfer,N
+2026-07-22,DGO,NT-DGO-00642,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,586,1800,1054800,Transfer,N
+2026-07-29,DGO,NT-DGO-00643,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,612,1800,1101600,Transfer,N
+2026-08-05,DGO,NT-DGO-00644,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,603,1800,1085400,Transfer,N
+2026-08-12,DGO,NT-DGO-00645,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,626,1800,1126800,Transfer,N
+2026-08-19,DGO,NT-DGO-00646,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,626,1800,1126800,Transfer,N
+2026-08-26,DGO,NT-DGO-00647,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,618,1800,1112400,Transfer,N
+2026-09-02,DGO,NT-DGO-00648,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,621,1800,1117800,Transfer,N
+2026-09-09,DGO,NT-DGO-00649,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,583,1800,1049400,Transfer,N
+2026-09-16,DGO,NT-DGO-00650,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,628,1800,1130400,Transfer,N
+2026-09-23,DGO,NT-DGO-00651,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,612,1800,1101600,Transfer,N
+2026-09-30,DGO,NT-DGO-00652,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,80,1800,144000,Transfer,N
+2026-07-01,BBT,NT-BBT-00653,Roastery Priangan,B01,Biji kopi arabika house blend,gram,7245,280,2028600,Transfer,N
+2026-07-08,BBT,NT-BBT-00654,Roastery Priangan,B01,Biji kopi arabika house blend,gram,7132,280,1996960,Transfer,N
+2026-07-15,BBT,NT-BBT-00655,Roastery Priangan,B01,Biji kopi arabika house blend,gram,7282,280,2038960,Transfer,N
+2026-07-22,BBT,NT-BBT-00656,Roastery Priangan,B01,Biji kopi arabika house blend,gram,7226,280,2023280,Transfer,N
+2026-07-29,BBT,NT-BBT-00657,Roastery Priangan,B01,Biji kopi arabika house blend,gram,7320,280,2049600,Transfer,N
+2026-08-05,BBT,NT-BBT-00658,Roastery Priangan,B01,Biji kopi arabika house blend,gram,7656,280,2143680,Transfer,N
+2026-08-12,BBT,NT-BBT-00659,Roastery Priangan,B01,Biji kopi arabika house blend,gram,7656,280,2143680,Transfer,N
+2026-08-19,BBT,NT-BBT-00660,Roastery Priangan,B01,Biji kopi arabika house blend,gram,7525,280,2107000,Transfer,N
+2026-08-26,BBT,NT-BBT-00661,Roastery Priangan,B01,Biji kopi arabika house blend,gram,7694,280,2154320,Transfer,N
+2026-09-02,BBT,NT-BBT-00662,Roastery Priangan,B01,Biji kopi arabika house blend,gram,7207,290,2090030,Transfer,N
+2026-09-09,BBT,NT-BBT-00663,Roastery Priangan,B01,Biji kopi arabika house blend,gram,7114,290,2063060,Transfer,N
+2026-09-16,BBT,NT-BBT-00664,Roastery Priangan,B01,Biji kopi arabika house blend,gram,7656,290,2220240,Transfer,N
+2026-09-23,BBT,NT-BBT-00665,Roastery Priangan,B01,Biji kopi arabika house blend,gram,7207,290,2090030,Transfer,N
+2026-09-30,BBT,NT-BBT-00666,Roastery Priangan,B01,Biji kopi arabika house blend,gram,1067,290,309430,Transfer,N
+2026-07-01,BBT,NT-BBT-00667,Distributor Susu Lembang,B02,Susu segar,ml,65083,22,1431826,Transfer,N
+2026-07-08,BBT,NT-BBT-00668,Distributor Susu Lembang,B02,Susu segar,ml,63326,22,1393172,Transfer,N
+2026-07-15,BBT,NT-BBT-00669,Distributor Susu Lembang,B02,Susu segar,ml,65416,22,1439152,Transfer,N
+2026-07-22,BBT,NT-BBT-00670,Distributor Susu Lembang,B02,Susu segar,ml,61901,22,1361822,Transfer,N
+2026-07-29,BBT,NT-BBT-00671,Distributor Susu Lembang,B02,Susu segar,ml,67392,22,1482624,Transfer,N
+2026-08-05,BBT,NT-BBT-00672,Distributor Susu Lembang,B02,Susu segar,ml,66934,22,1472548,Transfer,N
+2026-08-12,BBT,NT-BBT-00673,Distributor Susu Lembang,B02,Susu segar,ml,68973,22,1517406,Transfer,N
+2026-08-19,BBT,NT-BBT-00674,Distributor Susu Lembang,B02,Susu segar,ml,68110,22,1498420,Transfer,N
+2026-08-26,BBT,NT-BBT-00675,Distributor Susu Lembang,B02,Susu segar,ml,68744,22,1512368,Transfer,N
+2026-09-02,BBT,NT-BBT-00676,Distributor Susu Lembang,B02,Susu segar,ml,64574,23,1485202,Transfer,N
+2026-09-09,BBT,NT-BBT-00677,Distributor Susu Lembang,B02,Susu segar,ml,63960,23,1471080,Transfer,N
+2026-09-16,BBT,NT-BBT-00678,Distributor Susu Lembang,B02,Susu segar,ml,65010,23,1495230,Transfer,N
+2026-09-23,BBT,NT-BBT-00679,Distributor Susu Lembang,B02,Susu segar,ml,66373,23,1526579,Transfer,N
+2026-09-30,BBT,NT-BBT-00680,Distributor Susu Lembang,B02,Susu segar,ml,9079,23,208817,Transfer,N
+2026-07-01,BBT,NT-BBT-00681,Roastery Priangan,B03,Gula aren cair,ml,7275,40,291000,Transfer,N
+2026-07-08,BBT,NT-BBT-00682,Roastery Priangan,B03,Gula aren cair,ml,7124,40,284960,Transfer,N
+2026-07-15,BBT,NT-BBT-00683,Roastery Priangan,B03,Gula aren cair,ml,7504,40,300160,Transfer,N
+2026-07-22,BBT,NT-BBT-00684,Roastery Priangan,B03,Gula aren cair,ml,7134,40,285360,Transfer,N
+2026-07-29,BBT,NT-BBT-00685,Roastery Priangan,B03,Gula aren cair,ml,7686,40,307440,Transfer,N
+2026-08-05,BBT,NT-BBT-00686,Roastery Priangan,B03,Gula aren cair,ml,7519,40,300760,Transfer,N
+2026-08-12,BBT,NT-BBT-00687,Roastery Priangan,B03,Gula aren cair,ml,7857,40,314280,Transfer,N
+2026-08-19,BBT,NT-BBT-00688,Roastery Priangan,B03,Gula aren cair,ml,7821,40,312840,Transfer,N
+2026-08-26,BBT,NT-BBT-00689,Roastery Priangan,B03,Gula aren cair,ml,7727,40,309080,Transfer,N
+2026-09-02,BBT,NT-BBT-00690,Roastery Priangan,B03,Gula aren cair,ml,7472,42,313824,Transfer,N
+2026-09-09,BBT,NT-BBT-00691,Roastery Priangan,B03,Gula aren cair,ml,7280,42,305760,Transfer,N
+2026-09-16,BBT,NT-BBT-00692,Roastery Priangan,B03,Gula aren cair,ml,7488,42,314496,Transfer,N
+2026-09-23,BBT,NT-BBT-00693,Roastery Priangan,B03,Gula aren cair,ml,7467,42,313614,Transfer,N
+2026-09-30,BBT,NT-BBT-00694,Roastery Priangan,B03,Gula aren cair,ml,1004,42,42168,Transfer,N
+2026-07-01,BBT,NT-BBT-00695,Depot Es Sejuk,B04,Es batu kristal,gram,60746,2,121492,Transfer,N
+2026-07-08,BBT,NT-BBT-00696,Depot Es Sejuk,B04,Es batu kristal,gram,59384,2,118768,Transfer,N
+2026-07-15,BBT,NT-BBT-00697,Depot Es Sejuk,B04,Es batu kristal,gram,61797,2,123594,Transfer,N
+2026-07-22,BBT,NT-BBT-00698,Depot Es Sejuk,B04,Es batu kristal,gram,60091,2,120182,Transfer,N
+2026-07-29,BBT,NT-BBT-00699,Depot Es Sejuk,B04,Es batu kristal,gram,62785,2,125570,Transfer,N
+2026-08-05,BBT,NT-BBT-00700,Depot Es Sejuk,B04,Es batu kristal,gram,64262,2,128524,Transfer,N
+2026-08-12,BBT,NT-BBT-00701,Depot Es Sejuk,B04,Es batu kristal,gram,66602,2,133204,Transfer,N
+2026-08-19,BBT,NT-BBT-00702,Depot Es Sejuk,B04,Es batu kristal,gram,63918,2,127836,Transfer,N
+2026-08-26,BBT,NT-BBT-00703,Depot Es Sejuk,B04,Es batu kristal,gram,64886,2,129772,Transfer,N
+2026-09-02,BBT,NT-BBT-00704,Depot Es Sejuk,B04,Es batu kristal,gram,62067,2,124134,Transfer,N
+2026-09-09,BBT,NT-BBT-00705,Depot Es Sejuk,B04,Es batu kristal,gram,60112,2,120224,Transfer,N
+2026-09-16,BBT,NT-BBT-00706,Depot Es Sejuk,B04,Es batu kristal,gram,63700,2,127400,Transfer,N
+2026-09-23,BBT,NT-BBT-00707,Depot Es Sejuk,B04,Es batu kristal,gram,62130,2,124260,Transfer,N
+2026-09-30,BBT,NT-BBT-00708,Depot Es Sejuk,B04,Es batu kristal,gram,7977,2,15954,Transfer,N
+2026-07-01,BBT,NT-BBT-00709,Roastery Priangan,B05,Bubuk matcha,gram,393,900,353700,Transfer,N
+2026-07-08,BBT,NT-BBT-00710,Roastery Priangan,B05,Bubuk matcha,gram,343,900,308700,Transfer,N
+2026-07-15,BBT,NT-BBT-00711,Roastery Priangan,B05,Bubuk matcha,gram,381,900,342900,Transfer,N
+2026-07-22,BBT,NT-BBT-00712,Roastery Priangan,B05,Bubuk matcha,gram,337,900,303300,Transfer,N
+2026-07-29,BBT,NT-BBT-00713,Roastery Priangan,B05,Bubuk matcha,gram,412,900,370800,Transfer,N
+2026-08-05,BBT,NT-BBT-00714,Roastery Priangan,B05,Bubuk matcha,gram,387,900,348300,Transfer,N
+2026-08-12,BBT,NT-BBT-00715,Roastery Priangan,B05,Bubuk matcha,gram,418,900,376200,Transfer,N
+2026-08-19,BBT,NT-BBT-00716,Roastery Priangan,B05,Bubuk matcha,gram,393,900,353700,Transfer,N
+2026-08-26,BBT,NT-BBT-00717,Roastery Priangan,B05,Bubuk matcha,gram,387,900,348300,Transfer,N
+2026-09-02,BBT,NT-BBT-00718,Roastery Priangan,B05,Bubuk matcha,gram,399,900,359100,Transfer,N
+2026-09-09,BBT,NT-BBT-00719,Roastery Priangan,B05,Bubuk matcha,gram,374,900,336600,Transfer,N
+2026-09-16,BBT,NT-BBT-00720,Roastery Priangan,B05,Bubuk matcha,gram,343,900,308700,Transfer,N
+2026-09-23,BBT,NT-BBT-00721,Roastery Priangan,B05,Bubuk matcha,gram,387,900,348300,Transfer,N
+2026-09-30,BBT,NT-BBT-00722,Roastery Priangan,B05,Bubuk matcha,gram,37,900,33300,Transfer,N
+2026-07-01,BBT,NT-BBT-00723,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,116,150,17400,Tunai,Y
+2026-07-03,BBT,NT-BBT-00724,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,83,150,12450,Tunai,Y
+2026-07-05,BBT,NT-BBT-00725,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,125,150,18750,Tunai,Y
+2026-07-07,BBT,NT-BBT-00726,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,133,150,19950,Tunai,Y
+2026-07-09,BBT,NT-BBT-00727,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,92,150,13800,Tunai,Y
+2026-07-11,BBT,NT-BBT-00728,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,133,150,19950,Tunai,Y
+2026-07-13,BBT,NT-BBT-00729,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,125,150,18750,Tunai,Y
+2026-07-15,BBT,NT-BBT-00730,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,125,150,18750,Tunai,Y
+2026-07-17,BBT,NT-BBT-00731,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,108,150,16200,Tunai,Y
+2026-07-19,BBT,NT-BBT-00732,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,100,150,15000,Tunai,Y
+2026-07-21,BBT,NT-BBT-00733,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,125,150,18750,Tunai,Y
+2026-07-23,BBT,NT-BBT-00734,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,116,150,17400,Tunai,Y
+2026-07-25,BBT,NT-BBT-00735,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,125,150,18750,Tunai,Y
+2026-07-27,BBT,NT-BBT-00736,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,92,150,13800,Tunai,Y
+2026-07-29,BBT,NT-BBT-00737,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,133,150,19950,Tunai,Y
+2026-07-31,BBT,NT-BBT-00738,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,133,150,19950,Tunai,Y
+2026-08-02,BBT,NT-BBT-00739,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,100,150,15000,Tunai,Y
+2026-08-04,BBT,NT-BBT-00740,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,100,150,15000,Tunai,Y
+2026-08-06,BBT,NT-BBT-00741,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,92,150,13800,Tunai,Y
+2026-08-08,BBT,NT-BBT-00742,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,166,150,24900,Tunai,Y
+2026-08-10,BBT,NT-BBT-00743,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,125,150,18750,Tunai,Y
+2026-08-12,BBT,NT-BBT-00744,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,125,150,18750,Tunai,Y
+2026-08-14,BBT,NT-BBT-00745,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,116,150,17400,Tunai,Y
+2026-08-16,BBT,NT-BBT-00746,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,183,150,27450,Tunai,Y
+2026-08-18,BBT,NT-BBT-00747,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,116,150,17400,Tunai,Y
+2026-08-20,BBT,NT-BBT-00748,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,100,150,15000,Tunai,Y
+2026-08-22,BBT,NT-BBT-00749,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,133,150,19950,Tunai,Y
+2026-08-24,BBT,NT-BBT-00750,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,108,150,16200,Tunai,Y
+2026-08-26,BBT,NT-BBT-00751,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,125,150,18750,Tunai,Y
+2026-08-28,BBT,NT-BBT-00752,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,116,150,17400,Tunai,Y
+2026-08-30,BBT,NT-BBT-00753,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,158,150,23700,Tunai,Y
+2026-09-01,BBT,NT-BBT-00754,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,125,150,18750,Tunai,Y
+2026-09-03,BBT,NT-BBT-00755,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,116,150,17400,Tunai,Y
+2026-09-05,BBT,NT-BBT-00756,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,133,150,19950,Tunai,Y
+2026-09-07,BBT,NT-BBT-00757,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,75,150,11250,Tunai,Y
+2026-09-09,BBT,NT-BBT-00758,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,100,150,15000,Tunai,Y
+2026-09-11,BBT,NT-BBT-00759,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,125,150,18750,Tunai,Y
+2026-09-13,BBT,NT-BBT-00760,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,100,150,15000,Tunai,Y
+2026-09-15,BBT,NT-BBT-00761,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,150,150,22500,Tunai,Y
+2026-09-17,BBT,NT-BBT-00762,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,67,150,10050,Tunai,Y
+2026-09-19,BBT,NT-BBT-00763,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,125,150,18750,Tunai,Y
+2026-09-21,BBT,NT-BBT-00764,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,141,150,21150,Tunai,Y
+2026-09-23,BBT,NT-BBT-00765,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,116,150,17400,Tunai,Y
+2026-09-25,BBT,NT-BBT-00766,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,116,150,17400,Tunai,Y
+2026-09-27,BBT,NT-BBT-00767,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,158,150,23700,Tunai,Y
+2026-09-29,BBT,NT-BBT-00768,Pasar Kosambi - Toko Teh Aroma,B06,Teh hitam,gram,108,150,16200,Tunai,Y
+2026-07-01,BBT,NT-BBT-00769,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,582,30,17460,Tunai,Y
+2026-07-03,BBT,NT-BBT-00770,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,416,30,12480,Tunai,Y
+2026-07-05,BBT,NT-BBT-00771,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,624,30,18720,Tunai,Y
+2026-07-07,BBT,NT-BBT-00772,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,666,30,19980,Tunai,Y
+2026-07-09,BBT,NT-BBT-00773,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,458,30,13740,Tunai,Y
+2026-07-11,BBT,NT-BBT-00774,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,666,30,19980,Tunai,Y
+2026-07-13,BBT,NT-BBT-00775,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,624,30,18720,Tunai,Y
+2026-07-15,BBT,NT-BBT-00776,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,624,30,18720,Tunai,Y
+2026-07-17,BBT,NT-BBT-00777,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,541,30,16230,Tunai,Y
+2026-07-19,BBT,NT-BBT-00778,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,499,30,14970,Tunai,Y
+2026-07-21,BBT,NT-BBT-00779,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,624,30,18720,Tunai,Y
+2026-07-23,BBT,NT-BBT-00780,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,582,30,17460,Tunai,Y
+2026-07-25,BBT,NT-BBT-00781,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,624,30,18720,Tunai,Y
+2026-07-27,BBT,NT-BBT-00782,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,458,30,13740,Tunai,Y
+2026-07-29,BBT,NT-BBT-00783,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,666,30,19980,Tunai,Y
+2026-07-31,BBT,NT-BBT-00784,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,666,30,19980,Tunai,Y
+2026-08-02,BBT,NT-BBT-00785,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,499,30,14970,Tunai,Y
+2026-08-04,BBT,NT-BBT-00786,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,499,30,14970,Tunai,Y
+2026-08-06,BBT,NT-BBT-00787,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,458,30,13740,Tunai,Y
+2026-08-08,BBT,NT-BBT-00788,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,832,30,24960,Tunai,Y
+2026-08-10,BBT,NT-BBT-00789,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,624,30,18720,Tunai,Y
+2026-08-12,BBT,NT-BBT-00790,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,624,30,18720,Tunai,Y
+2026-08-14,BBT,NT-BBT-00791,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,582,30,17460,Tunai,Y
+2026-08-16,BBT,NT-BBT-00792,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,915,30,27450,Tunai,Y
+2026-08-18,BBT,NT-BBT-00793,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,582,30,17460,Tunai,Y
+2026-08-20,BBT,NT-BBT-00794,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,499,30,14970,Tunai,Y
+2026-08-22,BBT,NT-BBT-00795,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,666,30,19980,Tunai,Y
+2026-08-24,BBT,NT-BBT-00796,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,541,30,16230,Tunai,Y
+2026-08-26,BBT,NT-BBT-00797,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,624,30,18720,Tunai,Y
+2026-08-28,BBT,NT-BBT-00798,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,582,30,17460,Tunai,Y
+2026-08-30,BBT,NT-BBT-00799,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,790,30,23700,Tunai,Y
+2026-09-01,BBT,NT-BBT-00800,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,624,31,19344,Tunai,Y
+2026-09-03,BBT,NT-BBT-00801,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,582,31,18042,Tunai,Y
+2026-09-05,BBT,NT-BBT-00802,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,666,31,20646,Tunai,Y
+2026-09-07,BBT,NT-BBT-00803,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,374,31,11594,Tunai,Y
+2026-09-09,BBT,NT-BBT-00804,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,499,31,15469,Tunai,Y
+2026-09-11,BBT,NT-BBT-00805,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,624,31,19344,Tunai,Y
+2026-09-13,BBT,NT-BBT-00806,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,499,31,15469,Tunai,Y
+2026-09-15,BBT,NT-BBT-00807,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,749,31,23219,Tunai,Y
+2026-09-17,BBT,NT-BBT-00808,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,333,31,10323,Tunai,Y
+2026-09-19,BBT,NT-BBT-00809,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,624,31,19344,Tunai,Y
+2026-09-21,BBT,NT-BBT-00810,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,707,31,21917,Tunai,Y
+2026-09-23,BBT,NT-BBT-00811,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,582,31,18042,Tunai,Y
+2026-09-25,BBT,NT-BBT-00812,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,582,31,18042,Tunai,Y
+2026-09-27,BBT,NT-BBT-00813,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,790,31,24490,Tunai,Y
+2026-09-29,BBT,NT-BBT-00814,Pasar Kosambi - Toko Teh Aroma,B07,Susu kental manis,gram,541,31,16771,Tunai,Y
+2026-07-01,BBT,NT-BBT-00815,Pasar Kosambi - Bu Tini,B08,Beras,gram,13541,14,189574,Tunai,Y
+2026-07-03,BBT,NT-BBT-00816,Pasar Kosambi - Bu Tini,B08,Beras,gram,14539,14,203546,Tunai,Y
+2026-07-05,BBT,NT-BBT-00817,Pasar Kosambi - Bu Tini,B08,Beras,gram,14290,14,200060,Tunai,Y
+2026-07-07,BBT,NT-BBT-00818,Pasar Kosambi - Bu Tini,B08,Beras,gram,13208,14,184912,Tunai,Y
+2026-07-09,BBT,NT-BBT-00819,Pasar Kosambi - Bu Tini,B08,Beras,gram,11981,14,167734,Tunai,Y
+2026-07-11,BBT,NT-BBT-00820,Pasar Kosambi - Bu Tini,B08,Beras,gram,14955,14,209370,Tunai,Y
+2026-07-13,BBT,NT-BBT-00821,Pasar Kosambi - Bu Tini,B08,Beras,gram,13354,14,186956,Tunai,Y
+2026-07-15,BBT,NT-BBT-00822,Pasar Kosambi - Bu Tini,B08,Beras,gram,12106,14,169484,Tunai,Y
+2026-07-17,BBT,NT-BBT-00823,Pasar Kosambi - Bu Tini,B08,Beras,gram,14102,14,197428,Tunai,Y
+2026-07-19,BBT,NT-BBT-00824,Pasar Kosambi - Bu Tini,B08,Beras,gram,14914,14,208796,Tunai,Y
+2026-07-21,BBT,NT-BBT-00825,Pasar Kosambi - Bu Tini,B08,Beras,gram,12293,14,172102,Tunai,Y
+2026-07-23,BBT,NT-BBT-00826,Pasar Kosambi - Bu Tini,B08,Beras,gram,11565,14,161910,Tunai,Y
+2026-07-25,BBT,NT-BBT-00827,Pasar Kosambi - Bu Tini,B08,Beras,gram,16349,14,228886,Tunai,Y
+2026-07-27,BBT,NT-BBT-00828,Pasar Kosambi - Bu Tini,B08,Beras,gram,12002,14,168028,Tunai,Y
+2026-07-29,BBT,NT-BBT-00829,Pasar Kosambi - Bu Tini,B08,Beras,gram,13333,14,186662,Tunai,Y
+2026-07-31,BBT,NT-BBT-00830,Pasar Kosambi - Bu Tini,B08,Beras,gram,14997,14,209958,Tunai,Y
+2026-08-02,BBT,NT-BBT-00831,Pasar Kosambi - Bu Tini,B08,Beras,gram,15059,14,210826,Tunai,Y
+2026-08-04,BBT,NT-BBT-00832,Pasar Kosambi - Bu Tini,B08,Beras,gram,12917,14,180838,Tunai,Y
+2026-08-06,BBT,NT-BBT-00833,Pasar Kosambi - Bu Tini,B08,Beras,gram,12355,14,172970,Tunai,Y
+2026-08-08,BBT,NT-BBT-00834,Pasar Kosambi - Bu Tini,B08,Beras,gram,18491,14,258874,Tunai,Y
+2026-08-10,BBT,NT-BBT-00835,Pasar Kosambi - Bu Tini,B08,Beras,gram,12542,14,175588,Tunai,Y
+2026-08-12,BBT,NT-BBT-00836,Pasar Kosambi - Bu Tini,B08,Beras,gram,12189,14,170646,Tunai,Y
+2026-08-14,BBT,NT-BBT-00837,Pasar Kosambi - Bu Tini,B08,Beras,gram,14934,14,209076,Tunai,Y
+2026-08-16,BBT,NT-BBT-00838,Pasar Kosambi - Bu Tini,B08,Beras,gram,18325,14,256550,Tunai,Y
+2026-08-18,BBT,NT-BBT-00839,Pasar Kosambi - Bu Tini,B08,Beras,gram,12085,14,169190,Tunai,Y
+2026-08-20,BBT,NT-BBT-00840,Pasar Kosambi - Bu Tini,B08,Beras,gram,13166,14,184324,Tunai,Y
+2026-08-22,BBT,NT-BBT-00841,Pasar Kosambi - Bu Tini,B08,Beras,gram,15392,14,215488,Tunai,Y
+2026-08-24,BBT,NT-BBT-00842,Pasar Kosambi - Bu Tini,B08,Beras,gram,12126,14,169764,Tunai,Y
+2026-08-26,BBT,NT-BBT-00843,Pasar Kosambi - Bu Tini,B08,Beras,gram,11398,14,159572,Tunai,Y
+2026-08-28,BBT,NT-BBT-00844,Pasar Kosambi - Bu Tini,B08,Beras,gram,14394,14,201516,Tunai,Y
+2026-08-30,BBT,NT-BBT-00845,Pasar Kosambi - Bu Tini,B08,Beras,gram,16120,14,225680,Tunai,Y
+2026-09-01,BBT,NT-BBT-00846,Pasar Kosambi - Bu Tini,B08,Beras,gram,13395,15,200925,Tunai,Y
+2026-09-03,BBT,NT-BBT-00847,Pasar Kosambi - Bu Tini,B08,Beras,gram,12771,15,191565,Tunai,Y
+2026-09-05,BBT,NT-BBT-00848,Pasar Kosambi - Bu Tini,B08,Beras,gram,15725,15,235875,Tunai,Y
+2026-09-07,BBT,NT-BBT-00849,Pasar Kosambi - Bu Tini,B08,Beras,gram,12563,15,188445,Tunai,Y
+2026-09-09,BBT,NT-BBT-00850,Pasar Kosambi - Bu Tini,B08,Beras,gram,12355,15,185325,Tunai,Y
+2026-09-11,BBT,NT-BBT-00851,Pasar Kosambi - Bu Tini,B08,Beras,gram,14955,15,224325,Tunai,Y
+2026-09-13,BBT,NT-BBT-00852,Pasar Kosambi - Bu Tini,B08,Beras,gram,14706,15,220590,Tunai,Y
+2026-09-15,BBT,NT-BBT-00853,Pasar Kosambi - Bu Tini,B08,Beras,gram,12813,15,192195,Tunai,Y
+2026-09-17,BBT,NT-BBT-00854,Pasar Kosambi - Bu Tini,B08,Beras,gram,14165,15,212475,Tunai,Y
+2026-09-19,BBT,NT-BBT-00855,Pasar Kosambi - Bu Tini,B08,Beras,gram,15766,15,236490,Tunai,Y
+2026-09-21,BBT,NT-BBT-00856,Pasar Kosambi - Bu Tini,B08,Beras,gram,12958,15,194370,Tunai,Y
+2026-09-23,BBT,NT-BBT-00857,Pasar Kosambi - Bu Tini,B08,Beras,gram,11170,15,167550,Tunai,Y
+2026-09-25,BBT,NT-BBT-00858,Pasar Kosambi - Bu Tini,B08,Beras,gram,15371,15,230565,Tunai,Y
+2026-09-27,BBT,NT-BBT-00859,Pasar Kosambi - Bu Tini,B08,Beras,gram,14851,15,222765,Tunai,Y
+2026-09-29,BBT,NT-BBT-00860,Pasar Kosambi - Bu Tini,B08,Beras,gram,13166,15,197490,Tunai,Y
+2026-07-01,BBT,NT-BBT-00861,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8913,42,374346,Tunai,Y
+2026-07-03,BBT,NT-BBT-00862,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,9558,42,401436,Tunai,Y
+2026-07-05,BBT,NT-BBT-00863,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,9578,42,402276,Tunai,Y
+2026-07-07,BBT,NT-BBT-00864,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8455,42,355110,Tunai,Y
+2026-07-09,BBT,NT-BBT-00865,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,7925,42,332850,Tunai,Y
+2026-07-11,BBT,NT-BBT-00866,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10015,42,420630,Tunai,Y
+2026-07-13,BBT,NT-BBT-00867,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8965,42,376530,Tunai,Y
+2026-07-15,BBT,NT-BBT-00868,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8341,42,350322,Tunai,Y
+2026-07-17,BBT,NT-BBT-00869,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,9381,42,394002,Tunai,Y
+2026-07-19,BBT,NT-BBT-00870,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,9890,42,415380,Tunai,Y
+2026-07-21,BBT,NT-BBT-00871,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8289,42,348138,Tunai,Y
+2026-07-23,BBT,NT-BBT-00872,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,7779,42,326718,Tunai,Y
+2026-07-25,BBT,NT-BBT-00873,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10712,42,449904,Tunai,Y
+2026-07-27,BBT,NT-BBT-00874,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,7894,42,331548,Tunai,Y
+2026-07-29,BBT,NT-BBT-00875,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8684,42,364728,Tunai,Y
+2026-07-31,BBT,NT-BBT-00876,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,9828,42,412776,Tunai,Y
+2026-08-02,BBT,NT-BBT-00877,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10088,45,453960,Tunai,Y
+2026-08-04,BBT,NT-BBT-00878,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8850,45,398250,Tunai,Y
+2026-08-06,BBT,NT-BBT-00879,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8320,45,374400,Tunai,Y
+2026-08-08,BBT,NT-BBT-00880,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,12386,45,557370,Tunai,Y
+2026-08-10,BBT,NT-BBT-00881,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8018,45,360810,Tunai,Y
+2026-08-12,BBT,NT-BBT-00882,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,7904,45,355680,Tunai,Y
+2026-08-14,BBT,NT-BBT-00883,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,9734,45,438030,Tunai,Y
+2026-08-16,BBT,NT-BBT-00884,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,11783,45,530235,Tunai,Y
+2026-08-18,BBT,NT-BBT-00885,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8372,45,376740,Tunai,Y
+2026-08-20,BBT,NT-BBT-00886,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8455,45,380475,Tunai,Y
+2026-08-22,BBT,NT-BBT-00887,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10005,45,450225,Tunai,Y
+2026-08-24,BBT,NT-BBT-00888,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8310,45,373950,Tunai,Y
+2026-08-26,BBT,NT-BBT-00889,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,7426,45,334170,Tunai,Y
+2026-08-28,BBT,NT-BBT-00890,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,9610,45,432450,Tunai,Y
+2026-08-30,BBT,NT-BBT-00891,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10764,45,484380,Tunai,Y
+2026-09-01,BBT,NT-BBT-00892,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8653,56,484568,Tunai,Y
+2026-09-03,BBT,NT-BBT-00893,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8653,56,484568,Tunai,Y
+2026-09-05,BBT,NT-BBT-00894,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10400,56,582400,Tunai,Y
+2026-09-07,BBT,NT-BBT-00895,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8299,56,464744,Tunai,Y
+2026-09-09,BBT,NT-BBT-00896,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8320,56,465920,Tunai,Y
+2026-09-11,BBT,NT-BBT-00897,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10015,56,560840,Tunai,Y
+2026-09-13,BBT,NT-BBT-00898,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,9724,56,544544,Tunai,Y
+2026-09-15,BBT,NT-BBT-00899,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8466,56,474096,Tunai,Y
+2026-09-17,BBT,NT-BBT-00900,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,9225,56,516600,Tunai,Y
+2026-09-19,BBT,NT-BBT-00901,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,10400,56,582400,Tunai,Y
+2026-09-21,BBT,NT-BBT-00902,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8726,56,488656,Tunai,Y
+2026-09-23,BBT,NT-BBT-00903,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,7540,56,422240,Tunai,Y
+2026-09-25,BBT,NT-BBT-00904,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,9974,56,558544,Tunai,Y
+2026-09-27,BBT,NT-BBT-00905,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,9630,56,539280,Tunai,Y
+2026-09-29,BBT,NT-BBT-00906,Pasar Kosambi - Pak Ujang Ayam,B09,Daging ayam fillet,gram,8518,56,477008,Tunai,Y
+2026-07-01,BBT,NT-BBT-00907,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,105,2100,220500,Tunai,Y
+2026-07-03,BBT,NT-BBT-00908,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,110,2100,231000,Tunai,Y
+2026-07-05,BBT,NT-BBT-00909,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,104,2100,218400,Tunai,Y
+2026-07-07,BBT,NT-BBT-00910,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,104,2100,218400,Tunai,Y
+2026-07-09,BBT,NT-BBT-00911,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,95,2100,199500,Tunai,Y
+2026-07-11,BBT,NT-BBT-00912,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,119,2100,249900,Tunai,Y
+2026-07-13,BBT,NT-BBT-00913,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,107,2100,224700,Tunai,Y
+2026-07-15,BBT,NT-BBT-00914,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,92,2100,193200,Tunai,Y
+2026-07-17,BBT,NT-BBT-00915,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,101,2100,212100,Tunai,Y
+2026-07-19,BBT,NT-BBT-00916,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,110,2100,231000,Tunai,Y
+2026-07-21,BBT,NT-BBT-00917,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,88,2100,184800,Tunai,Y
+2026-07-23,BBT,NT-BBT-00918,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,90,2100,189000,Tunai,Y
+2026-07-25,BBT,NT-BBT-00919,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,125,2100,262500,Tunai,Y
+2026-07-27,BBT,NT-BBT-00920,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,99,2100,207900,Tunai,Y
+2026-07-29,BBT,NT-BBT-00921,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,97,2100,203700,Tunai,Y
+2026-07-31,BBT,NT-BBT-00922,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,122,2100,256200,Tunai,Y
+2026-08-02,BBT,NT-BBT-00923,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,108,2200,237600,Tunai,Y
+2026-08-04,BBT,NT-BBT-00924,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,99,2200,217800,Tunai,Y
+2026-08-06,BBT,NT-BBT-00925,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,102,2200,224400,Tunai,Y
+2026-08-08,BBT,NT-BBT-00926,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,139,2200,305800,Tunai,Y
+2026-08-10,BBT,NT-BBT-00927,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,89,2200,195800,Tunai,Y
+2026-08-12,BBT,NT-BBT-00928,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,97,2200,213400,Tunai,Y
+2026-08-14,BBT,NT-BBT-00929,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,111,2200,244200,Tunai,Y
+2026-08-16,BBT,NT-BBT-00930,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,134,2200,294800,Tunai,Y
+2026-08-18,BBT,NT-BBT-00931,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,94,2200,206800,Tunai,Y
+2026-08-20,BBT,NT-BBT-00932,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,99,2200,217800,Tunai,Y
+2026-08-22,BBT,NT-BBT-00933,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,125,2200,275000,Tunai,Y
+2026-08-24,BBT,NT-BBT-00934,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,95,2200,209000,Tunai,Y
+2026-08-26,BBT,NT-BBT-00935,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,93,2200,204600,Tunai,Y
+2026-08-28,BBT,NT-BBT-00936,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,119,2200,261800,Tunai,Y
+2026-08-30,BBT,NT-BBT-00937,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,124,2200,272800,Tunai,Y
+2026-09-01,BBT,NT-BBT-00938,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,107,2450,262150,Tunai,Y
+2026-09-03,BBT,NT-BBT-00939,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,106,2450,259700,Tunai,Y
+2026-09-05,BBT,NT-BBT-00940,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,119,2450,291550,Tunai,Y
+2026-09-07,BBT,NT-BBT-00941,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,96,2450,235200,Tunai,Y
+2026-09-09,BBT,NT-BBT-00942,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,99,2450,242550,Tunai,Y
+2026-09-11,BBT,NT-BBT-00943,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,114,2450,279300,Tunai,Y
+2026-09-13,BBT,NT-BBT-00944,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,107,2450,262150,Tunai,Y
+2026-09-15,BBT,NT-BBT-00945,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,104,2450,254800,Tunai,Y
+2026-09-17,BBT,NT-BBT-00946,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,111,2450,271950,Tunai,Y
+2026-09-19,BBT,NT-BBT-00947,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,126,2450,308700,Tunai,Y
+2026-09-21,BBT,NT-BBT-00948,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,102,2450,249900,Tunai,Y
+2026-09-23,BBT,NT-BBT-00949,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,89,2450,218050,Tunai,Y
+2026-09-25,BBT,NT-BBT-00950,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,119,2450,291550,Tunai,Y
+2026-09-27,BBT,NT-BBT-00951,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,126,2450,308700,Tunai,Y
+2026-09-29,BBT,NT-BBT-00952,Pasar Kosambi - Bu Tini,B10,Telur ayam,butir,99,2450,242550,Tunai,Y
+2026-07-01,BBT,NT-BBT-00953,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2075,60,124500,Tunai,Y
+2026-07-03,BBT,NT-BBT-00954,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2226,60,133560,Tunai,Y
+2026-07-05,BBT,NT-BBT-00955,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2220,60,133200,Tunai,Y
+2026-07-07,BBT,NT-BBT-00956,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1981,60,118860,Tunai,Y
+2026-07-09,BBT,NT-BBT-00957,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1841,60,110460,Tunai,Y
+2026-07-11,BBT,NT-BBT-00958,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2319,60,139140,Tunai,Y
+2026-07-13,BBT,NT-BBT-00959,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2075,60,124500,Tunai,Y
+2026-07-15,BBT,NT-BBT-00960,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1919,60,115140,Tunai,Y
+2026-07-17,BBT,NT-BBT-00961,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2179,60,130740,Tunai,Y
+2026-07-19,BBT,NT-BBT-00962,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2298,60,137880,Tunai,Y
+2026-07-21,BBT,NT-BBT-00963,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1919,60,115140,Tunai,Y
+2026-07-23,BBT,NT-BBT-00964,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1799,60,107940,Tunai,Y
+2026-07-25,BBT,NT-BBT-00965,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2496,60,149760,Tunai,Y
+2026-07-27,BBT,NT-BBT-00966,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1836,60,110160,Tunai,Y
+2026-07-29,BBT,NT-BBT-00967,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2028,60,121680,Tunai,Y
+2026-07-31,BBT,NT-BBT-00968,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2288,60,137280,Tunai,Y
+2026-08-02,BBT,NT-BBT-00969,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2340,75,175500,Tunai,Y
+2026-08-04,BBT,NT-BBT-00970,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2038,75,152850,Tunai,Y
+2026-08-06,BBT,NT-BBT-00971,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1924,75,144300,Tunai,Y
+2026-08-08,BBT,NT-BBT-00972,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2870,75,215250,Tunai,Y
+2026-08-10,BBT,NT-BBT-00973,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1882,75,141150,Tunai,Y
+2026-08-12,BBT,NT-BBT-00974,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1846,75,138450,Tunai,Y
+2026-08-14,BBT,NT-BBT-00975,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2272,75,170400,Tunai,Y
+2026-08-16,BBT,NT-BBT-00976,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2761,75,207075,Tunai,Y
+2026-08-18,BBT,NT-BBT-00977,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1924,75,144300,Tunai,Y
+2026-08-20,BBT,NT-BBT-00978,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1981,75,148575,Tunai,Y
+2026-08-22,BBT,NT-BBT-00979,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2335,75,175125,Tunai,Y
+2026-08-24,BBT,NT-BBT-00980,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1914,75,143550,Tunai,Y
+2026-08-26,BBT,NT-BBT-00981,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1732,75,129900,Tunai,Y
+2026-08-28,BBT,NT-BBT-00982,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2226,75,166950,Tunai,Y
+2026-08-30,BBT,NT-BBT-00983,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2496,75,187200,Tunai,Y
+2026-09-01,BBT,NT-BBT-00984,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2023,115,232645,Tunai,Y
+2026-09-03,BBT,NT-BBT-00985,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1997,115,229655,Tunai,Y
+2026-09-05,BBT,NT-BBT-00986,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2418,115,278070,Tunai,Y
+2026-09-07,BBT,NT-BBT-00987,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1929,115,221835,Tunai,Y
+2026-09-09,BBT,NT-BBT-00988,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1924,115,221260,Tunai,Y
+2026-09-11,BBT,NT-BBT-00989,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2319,115,266685,Tunai,Y
+2026-09-13,BBT,NT-BBT-00990,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2262,115,260130,Tunai,Y
+2026-09-15,BBT,NT-BBT-00991,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1966,115,226090,Tunai,Y
+2026-09-17,BBT,NT-BBT-00992,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2153,115,247595,Tunai,Y
+2026-09-19,BBT,NT-BBT-00993,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2418,115,278070,Tunai,Y
+2026-09-21,BBT,NT-BBT-00994,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2018,115,232070,Tunai,Y
+2026-09-23,BBT,NT-BBT-00995,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1742,115,200330,Tunai,Y
+2026-09-25,BBT,NT-BBT-00996,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2330,115,267950,Tunai,Y
+2026-09-27,BBT,NT-BBT-00997,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,2246,115,258290,Tunai,Y
+2026-09-29,BBT,NT-BBT-00998,Pasar Kosambi - Bu Tini,B11,Cabai rawit,gram,1992,115,229080,Tunai,Y
+2026-07-01,BBT,NT-BBT-00999,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1778,45,80010,Tunai,Y
+2026-07-03,BBT,NT-BBT-01000,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1908,45,85860,Tunai,Y
+2026-07-05,BBT,NT-BBT-01001,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1882,45,84690,Tunai,Y
+2026-07-07,BBT,NT-BBT-01002,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1726,45,77670,Tunai,Y
+2026-07-09,BBT,NT-BBT-01003,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1622,45,72990,Tunai,Y
+2026-07-11,BBT,NT-BBT-01004,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2044,45,91980,Tunai,Y
+2026-07-13,BBT,NT-BBT-01005,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1825,45,82125,Tunai,Y
+2026-07-15,BBT,NT-BBT-01006,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1669,45,75105,Tunai,Y
+2026-07-17,BBT,NT-BBT-01007,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1846,45,83070,Tunai,Y
+2026-07-19,BBT,NT-BBT-01008,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1960,45,88200,Tunai,Y
+2026-07-21,BBT,NT-BBT-01009,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1622,45,72990,Tunai,Y
+2026-07-23,BBT,NT-BBT-01010,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1591,45,71595,Tunai,Y
+2026-07-25,BBT,NT-BBT-01011,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2153,45,96885,Tunai,Y
+2026-07-27,BBT,NT-BBT-01012,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1633,45,73485,Tunai,Y
+2026-07-29,BBT,NT-BBT-01013,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1711,45,76995,Tunai,Y
+2026-07-31,BBT,NT-BBT-01014,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2023,45,91035,Tunai,Y
+2026-08-02,BBT,NT-BBT-01015,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1955,45,87975,Tunai,Y
+2026-08-04,BBT,NT-BBT-01016,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1784,45,80280,Tunai,Y
+2026-08-06,BBT,NT-BBT-01017,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1695,45,76275,Tunai,Y
+2026-08-08,BBT,NT-BBT-01018,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2470,45,111150,Tunai,Y
+2026-08-10,BBT,NT-BBT-01019,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1565,45,70425,Tunai,Y
+2026-08-12,BBT,NT-BBT-01020,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1607,45,72315,Tunai,Y
+2026-08-14,BBT,NT-BBT-01021,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1929,45,86805,Tunai,Y
+2026-08-16,BBT,NT-BBT-01022,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2319,45,104355,Tunai,Y
+2026-08-18,BBT,NT-BBT-01023,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1659,45,74655,Tunai,Y
+2026-08-20,BBT,NT-BBT-01024,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1685,45,75825,Tunai,Y
+2026-08-22,BBT,NT-BBT-01025,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2044,45,91980,Tunai,Y
+2026-08-24,BBT,NT-BBT-01026,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1680,45,75600,Tunai,Y
+2026-08-26,BBT,NT-BBT-01027,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1524,45,68580,Tunai,Y
+2026-08-28,BBT,NT-BBT-01028,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1997,45,89865,Tunai,Y
+2026-08-30,BBT,NT-BBT-01029,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2158,45,97110,Tunai,Y
+2026-09-01,BBT,NT-BBT-01030,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1763,52,91676,Tunai,Y
+2026-09-03,BBT,NT-BBT-01031,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1789,52,93028,Tunai,Y
+2026-09-05,BBT,NT-BBT-01032,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2075,52,107900,Tunai,Y
+2026-09-07,BBT,NT-BBT-01033,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1680,52,87360,Tunai,Y
+2026-09-09,BBT,NT-BBT-01034,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1695,52,88140,Tunai,Y
+2026-09-11,BBT,NT-BBT-01035,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2044,52,106288,Tunai,Y
+2026-09-13,BBT,NT-BBT-01036,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1914,52,99528,Tunai,Y
+2026-09-15,BBT,NT-BBT-01037,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1768,52,91936,Tunai,Y
+2026-09-17,BBT,NT-BBT-01038,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1856,52,96512,Tunai,Y
+2026-09-19,BBT,NT-BBT-01039,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2116,52,110032,Tunai,Y
+2026-09-21,BBT,NT-BBT-01040,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1784,52,92768,Tunai,Y
+2026-09-23,BBT,NT-BBT-01041,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1550,52,80600,Tunai,Y
+2026-09-25,BBT,NT-BBT-01042,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2012,52,104624,Tunai,Y
+2026-09-27,BBT,NT-BBT-01043,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,2028,52,105456,Tunai,Y
+2026-09-29,BBT,NT-BBT-01044,Pasar Kosambi - Bu Tini,B12,Bawang merah,gram,1706,52,88712,Tunai,Y
+2026-07-01,BBT,NT-BBT-01045,Toko Grosir Sinar,B13,Minyak goreng,ml,15959,18,287262,Transfer,N
+2026-07-08,BBT,NT-BBT-01046,Toko Grosir Sinar,B13,Minyak goreng,ml,15324,18,275832,Transfer,N
+2026-07-15,BBT,NT-BBT-01047,Toko Grosir Sinar,B13,Minyak goreng,ml,15954,18,287172,Transfer,N
+2026-07-22,BBT,NT-BBT-01048,Toko Grosir Sinar,B13,Minyak goreng,ml,15356,18,276408,Transfer,N
+2026-07-29,BBT,NT-BBT-01049,Toko Grosir Sinar,B13,Minyak goreng,ml,16765,18,301770,Transfer,N
+2026-08-05,BBT,NT-BBT-01050,Toko Grosir Sinar,B13,Minyak goreng,ml,16520,18,297360,Transfer,N
+2026-08-12,BBT,NT-BBT-01051,Toko Grosir Sinar,B13,Minyak goreng,ml,16832,18,302976,Transfer,N
+2026-08-19,BBT,NT-BBT-01052,Toko Grosir Sinar,B13,Minyak goreng,ml,15964,18,287352,Transfer,N
+2026-08-26,BBT,NT-BBT-01053,Toko Grosir Sinar,B13,Minyak goreng,ml,16344,18,294192,Transfer,N
+2026-09-02,BBT,NT-BBT-01054,Toko Grosir Sinar,B13,Minyak goreng,ml,15600,18,280800,Transfer,N
+2026-09-09,BBT,NT-BBT-01055,Toko Grosir Sinar,B13,Minyak goreng,ml,16188,18,291384,Transfer,N
+2026-09-16,BBT,NT-BBT-01056,Toko Grosir Sinar,B13,Minyak goreng,ml,16312,18,293616,Transfer,N
+2026-09-23,BBT,NT-BBT-01057,Toko Grosir Sinar,B13,Minyak goreng,ml,15038,18,270684,Transfer,N
+2026-09-30,BBT,NT-BBT-01058,Toko Grosir Sinar,B13,Minyak goreng,ml,2293,18,41274,Transfer,N
+2026-07-01,BBT,NT-BBT-01059,Toko Grosir Sinar,B14,Mie telur,gram,6614,25,165350,Transfer,N
+2026-07-08,BBT,NT-BBT-01060,Toko Grosir Sinar,B14,Mie telur,gram,7613,25,190325,Transfer,N
+2026-07-15,BBT,NT-BBT-01061,Toko Grosir Sinar,B14,Mie telur,gram,7238,25,180950,Transfer,N
+2026-07-22,BBT,NT-BBT-01062,Toko Grosir Sinar,B14,Mie telur,gram,7114,25,177850,Transfer,N
+2026-07-29,BBT,NT-BBT-01063,Toko Grosir Sinar,B14,Mie telur,gram,7238,25,180950,Transfer,N
+2026-08-05,BBT,NT-BBT-01064,Toko Grosir Sinar,B14,Mie telur,gram,7363,25,184075,Transfer,N
+2026-08-12,BBT,NT-BBT-01065,Toko Grosir Sinar,B14,Mie telur,gram,6614,25,165350,Transfer,N
+2026-08-19,BBT,NT-BBT-01066,Toko Grosir Sinar,B14,Mie telur,gram,6989,25,174725,Transfer,N
+2026-08-26,BBT,NT-BBT-01067,Toko Grosir Sinar,B14,Mie telur,gram,7613,25,190325,Transfer,N
+2026-09-02,BBT,NT-BBT-01068,Toko Grosir Sinar,B14,Mie telur,gram,7238,25,180950,Transfer,N
+2026-09-09,BBT,NT-BBT-01069,Toko Grosir Sinar,B14,Mie telur,gram,7613,25,190325,Transfer,N
+2026-09-16,BBT,NT-BBT-01070,Toko Grosir Sinar,B14,Mie telur,gram,7613,25,190325,Transfer,N
+2026-09-23,BBT,NT-BBT-01071,Toko Grosir Sinar,B14,Mie telur,gram,6989,25,174725,Transfer,N
+2026-09-30,BBT,NT-BBT-01072,Toko Grosir Sinar,B14,Mie telur,gram,874,25,21850,Transfer,N
+2026-07-01,BBT,NT-BBT-01073,Toko Grosir Sinar,B15,Spaghetti,gram,2839,35,99365,Transfer,N
+2026-07-08,BBT,NT-BBT-01074,Toko Grosir Sinar,B15,Spaghetti,gram,2704,35,94640,Transfer,N
+2026-07-15,BBT,NT-BBT-01075,Toko Grosir Sinar,B15,Spaghetti,gram,1758,35,61530,Transfer,N
+2026-07-22,BBT,NT-BBT-01076,Toko Grosir Sinar,B15,Spaghetti,gram,2434,35,85190,Transfer,N
+2026-07-29,BBT,NT-BBT-01077,Toko Grosir Sinar,B15,Spaghetti,gram,2704,35,94640,Transfer,N
+2026-08-05,BBT,NT-BBT-01078,Toko Grosir Sinar,B15,Spaghetti,gram,2974,35,104090,Transfer,N
+2026-08-12,BBT,NT-BBT-01079,Toko Grosir Sinar,B15,Spaghetti,gram,3110,35,108850,Transfer,N
+2026-08-19,BBT,NT-BBT-01080,Toko Grosir Sinar,B15,Spaghetti,gram,3110,35,108850,Transfer,N
+2026-08-26,BBT,NT-BBT-01081,Toko Grosir Sinar,B15,Spaghetti,gram,2974,35,104090,Transfer,N
+2026-09-02,BBT,NT-BBT-01082,Toko Grosir Sinar,B15,Spaghetti,gram,2704,35,94640,Transfer,N
+2026-09-09,BBT,NT-BBT-01083,Toko Grosir Sinar,B15,Spaghetti,gram,2028,35,70980,Transfer,N
+2026-09-16,BBT,NT-BBT-01084,Toko Grosir Sinar,B15,Spaghetti,gram,2839,35,99365,Transfer,N
+2026-09-23,BBT,NT-BBT-01085,Toko Grosir Sinar,B15,Spaghetti,gram,2704,35,94640,Transfer,N
+2026-09-30,BBT,NT-BBT-01086,Toko Grosir Sinar,B15,Spaghetti,gram,135,35,4725,Transfer,N
+2026-07-01,BBT,NT-BBT-01087,Toko Grosir Sinar,B16,Krim masak,ml,2621,60,157260,Transfer,N
+2026-07-08,BBT,NT-BBT-01088,Toko Grosir Sinar,B16,Krim masak,ml,2496,60,149760,Transfer,N
+2026-07-15,BBT,NT-BBT-01089,Toko Grosir Sinar,B16,Krim masak,ml,1622,60,97320,Transfer,N
+2026-07-22,BBT,NT-BBT-01090,Toko Grosir Sinar,B16,Krim masak,ml,2246,60,134760,Transfer,N
+2026-07-29,BBT,NT-BBT-01091,Toko Grosir Sinar,B16,Krim masak,ml,2496,60,149760,Transfer,N
+2026-08-05,BBT,NT-BBT-01092,Toko Grosir Sinar,B16,Krim masak,ml,2746,60,164760,Transfer,N
+2026-08-12,BBT,NT-BBT-01093,Toko Grosir Sinar,B16,Krim masak,ml,2870,60,172200,Transfer,N
+2026-08-19,BBT,NT-BBT-01094,Toko Grosir Sinar,B16,Krim masak,ml,2870,60,172200,Transfer,N
+2026-08-26,BBT,NT-BBT-01095,Toko Grosir Sinar,B16,Krim masak,ml,2746,60,164760,Transfer,N
+2026-09-02,BBT,NT-BBT-01096,Toko Grosir Sinar,B16,Krim masak,ml,2496,62,154752,Transfer,N
+2026-09-09,BBT,NT-BBT-01097,Toko Grosir Sinar,B16,Krim masak,ml,1872,62,116064,Transfer,N
+2026-09-16,BBT,NT-BBT-01098,Toko Grosir Sinar,B16,Krim masak,ml,2621,62,162502,Transfer,N
+2026-09-23,BBT,NT-BBT-01099,Toko Grosir Sinar,B16,Krim masak,ml,2496,62,154752,Transfer,N
+2026-09-30,BBT,NT-BBT-01100,Toko Grosir Sinar,B16,Krim masak,ml,125,62,7750,Transfer,N
+2026-07-01,BBT,NT-BBT-01101,Toko Grosir Sinar,B17,Smoked beef,gram,1310,180,235800,Transfer,N
+2026-07-08,BBT,NT-BBT-01102,Toko Grosir Sinar,B17,Smoked beef,gram,1248,180,224640,Transfer,N
+2026-07-15,BBT,NT-BBT-01103,Toko Grosir Sinar,B17,Smoked beef,gram,811,180,145980,Transfer,N
+2026-07-22,BBT,NT-BBT-01104,Toko Grosir Sinar,B17,Smoked beef,gram,1123,180,202140,Transfer,N
+2026-07-29,BBT,NT-BBT-01105,Toko Grosir Sinar,B17,Smoked beef,gram,1248,180,224640,Transfer,N
+2026-08-05,BBT,NT-BBT-01106,Toko Grosir Sinar,B17,Smoked beef,gram,1373,180,247140,Transfer,N
+2026-08-12,BBT,NT-BBT-01107,Toko Grosir Sinar,B17,Smoked beef,gram,1435,180,258300,Transfer,N
+2026-08-19,BBT,NT-BBT-01108,Toko Grosir Sinar,B17,Smoked beef,gram,1435,180,258300,Transfer,N
+2026-08-26,BBT,NT-BBT-01109,Toko Grosir Sinar,B17,Smoked beef,gram,1373,180,247140,Transfer,N
+2026-09-02,BBT,NT-BBT-01110,Toko Grosir Sinar,B17,Smoked beef,gram,1248,185,230880,Transfer,N
+2026-09-09,BBT,NT-BBT-01111,Toko Grosir Sinar,B17,Smoked beef,gram,936,185,173160,Transfer,N
+2026-09-16,BBT,NT-BBT-01112,Toko Grosir Sinar,B17,Smoked beef,gram,1310,185,242350,Transfer,N
+2026-09-23,BBT,NT-BBT-01113,Toko Grosir Sinar,B17,Smoked beef,gram,1248,185,230880,Transfer,N
+2026-09-30,BBT,NT-BBT-01114,Toko Grosir Sinar,B17,Smoked beef,gram,62,185,11470,Transfer,N
+2026-07-01,BBT,NT-BBT-01115,Toko Grosir Sinar,B18,Keju parmesan,gram,437,350,152950,Transfer,N
+2026-07-08,BBT,NT-BBT-01116,Toko Grosir Sinar,B18,Keju parmesan,gram,416,350,145600,Transfer,N
+2026-07-15,BBT,NT-BBT-01117,Toko Grosir Sinar,B18,Keju parmesan,gram,270,350,94500,Transfer,N
+2026-07-22,BBT,NT-BBT-01118,Toko Grosir Sinar,B18,Keju parmesan,gram,374,350,130900,Transfer,N
+2026-07-29,BBT,NT-BBT-01119,Toko Grosir Sinar,B18,Keju parmesan,gram,416,350,145600,Transfer,N
+2026-08-05,BBT,NT-BBT-01120,Toko Grosir Sinar,B18,Keju parmesan,gram,458,350,160300,Transfer,N
+2026-08-12,BBT,NT-BBT-01121,Toko Grosir Sinar,B18,Keju parmesan,gram,478,350,167300,Transfer,N
+2026-08-19,BBT,NT-BBT-01122,Toko Grosir Sinar,B18,Keju parmesan,gram,478,350,167300,Transfer,N
+2026-08-26,BBT,NT-BBT-01123,Toko Grosir Sinar,B18,Keju parmesan,gram,458,350,160300,Transfer,N
+2026-09-02,BBT,NT-BBT-01124,Toko Grosir Sinar,B18,Keju parmesan,gram,416,360,149760,Transfer,N
+2026-09-09,BBT,NT-BBT-01125,Toko Grosir Sinar,B18,Keju parmesan,gram,312,360,112320,Transfer,N
+2026-09-16,BBT,NT-BBT-01126,Toko Grosir Sinar,B18,Keju parmesan,gram,437,360,157320,Transfer,N
+2026-09-23,BBT,NT-BBT-01127,Toko Grosir Sinar,B18,Keju parmesan,gram,416,360,149760,Transfer,N
+2026-09-30,BBT,NT-BBT-01128,Toko Grosir Sinar,B18,Keju parmesan,gram,21,360,7560,Transfer,N
+2026-07-01,BBT,NT-BBT-01129,Bakery Mekar,B19,Roti tawar tebal,lembar,159,1500,238500,Transfer,N
+2026-07-08,BBT,NT-BBT-01130,Bakery Mekar,B19,Roti tawar tebal,lembar,150,1500,225000,Transfer,N
+2026-07-15,BBT,NT-BBT-01131,Bakery Mekar,B19,Roti tawar tebal,lembar,147,1500,220500,Transfer,N
+2026-07-22,BBT,NT-BBT-01132,Bakery Mekar,B19,Roti tawar tebal,lembar,175,1500,262500,Transfer,N
+2026-07-29,BBT,NT-BBT-01133,Bakery Mekar,B19,Roti tawar tebal,lembar,162,1500,243000,Transfer,N
+2026-08-05,BBT,NT-BBT-01134,Bakery Mekar,B19,Roti tawar tebal,lembar,168,1500,252000,Transfer,N
+2026-08-12,BBT,NT-BBT-01135,Bakery Mekar,B19,Roti tawar tebal,lembar,165,1500,247500,Transfer,N
+2026-08-19,BBT,NT-BBT-01136,Bakery Mekar,B19,Roti tawar tebal,lembar,156,1500,234000,Transfer,N
+2026-08-26,BBT,NT-BBT-01137,Bakery Mekar,B19,Roti tawar tebal,lembar,168,1500,252000,Transfer,N
+2026-09-02,BBT,NT-BBT-01138,Bakery Mekar,B19,Roti tawar tebal,lembar,131,1500,196500,Transfer,N
+2026-09-09,BBT,NT-BBT-01139,Bakery Mekar,B19,Roti tawar tebal,lembar,150,1500,225000,Transfer,N
+2026-09-16,BBT,NT-BBT-01140,Bakery Mekar,B19,Roti tawar tebal,lembar,156,1500,234000,Transfer,N
+2026-09-23,BBT,NT-BBT-01141,Bakery Mekar,B19,Roti tawar tebal,lembar,150,1500,225000,Transfer,N
+2026-09-30,BBT,NT-BBT-01142,Bakery Mekar,B19,Roti tawar tebal,lembar,19,1500,28500,Transfer,N
+2026-07-01,BBT,NT-BBT-01143,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2122,80,169760,Transfer,N
+2026-07-08,BBT,NT-BBT-01144,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,1997,80,159760,Transfer,N
+2026-07-15,BBT,NT-BBT-01145,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,1955,80,156400,Transfer,N
+2026-07-22,BBT,NT-BBT-01146,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2330,80,186400,Transfer,N
+2026-07-29,BBT,NT-BBT-01147,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2163,80,173040,Transfer,N
+2026-08-05,BBT,NT-BBT-01148,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2246,80,179680,Transfer,N
+2026-08-12,BBT,NT-BBT-01149,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2205,80,176400,Transfer,N
+2026-08-19,BBT,NT-BBT-01150,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2080,80,166400,Transfer,N
+2026-08-26,BBT,NT-BBT-01151,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2246,80,179680,Transfer,N
+2026-09-02,BBT,NT-BBT-01152,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,1747,82,143254,Transfer,N
+2026-09-09,BBT,NT-BBT-01153,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,1997,82,163754,Transfer,N
+2026-09-16,BBT,NT-BBT-01154,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,2080,82,170560,Transfer,N
+2026-09-23,BBT,NT-BBT-01155,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,1997,82,163754,Transfer,N
+2026-09-30,BBT,NT-BBT-01156,Toko Grosir Sinar,B20,Cokelat meses & keju parut,gram,250,82,20500,Transfer,N
+2026-07-01,BBT,NT-BBT-01157,Toko Grosir Sinar,B21,Kentang beku,gram,9360,38,355680,Transfer,N
+2026-07-08,BBT,NT-BBT-01158,Toko Grosir Sinar,B21,Kentang beku,gram,8424,38,320112,Transfer,N
+2026-07-15,BBT,NT-BBT-01159,Toko Grosir Sinar,B21,Kentang beku,gram,8050,38,305900,Transfer,N
+2026-07-22,BBT,NT-BBT-01160,Toko Grosir Sinar,B21,Kentang beku,gram,9360,38,355680,Transfer,N
+2026-07-29,BBT,NT-BBT-01161,Toko Grosir Sinar,B21,Kentang beku,gram,10296,38,391248,Transfer,N
+2026-08-05,BBT,NT-BBT-01162,Toko Grosir Sinar,B21,Kentang beku,gram,9922,38,377036,Transfer,N
+2026-08-12,BBT,NT-BBT-01163,Toko Grosir Sinar,B21,Kentang beku,gram,10109,38,384142,Transfer,N
+2026-08-19,BBT,NT-BBT-01164,Toko Grosir Sinar,B21,Kentang beku,gram,10858,38,412604,Transfer,N
+2026-08-26,BBT,NT-BBT-01165,Toko Grosir Sinar,B21,Kentang beku,gram,10109,38,384142,Transfer,N
+2026-09-02,BBT,NT-BBT-01166,Toko Grosir Sinar,B21,Kentang beku,gram,8237,39,321243,Transfer,N
+2026-09-09,BBT,NT-BBT-01167,Toko Grosir Sinar,B21,Kentang beku,gram,10109,39,394251,Transfer,N
+2026-09-16,BBT,NT-BBT-01168,Toko Grosir Sinar,B21,Kentang beku,gram,10109,39,394251,Transfer,N
+2026-09-23,BBT,NT-BBT-01169,Toko Grosir Sinar,B21,Kentang beku,gram,9360,39,365040,Transfer,N
+2026-09-30,BBT,NT-BBT-01170,Toko Grosir Sinar,B21,Kentang beku,gram,1498,39,58422,Transfer,N
+2026-07-01,BBT,NT-BBT-01171,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,17,2500,42500,Tunai,Y
+2026-07-03,BBT,NT-BBT-01172,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,23,2500,57500,Tunai,Y
+2026-07-05,BBT,NT-BBT-01173,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2500,52500,Tunai,Y
+2026-07-07,BBT,NT-BBT-01174,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,17,2500,42500,Tunai,Y
+2026-07-09,BBT,NT-BBT-01175,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2500,52500,Tunai,Y
+2026-07-11,BBT,NT-BBT-01176,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2500,52500,Tunai,Y
+2026-07-13,BBT,NT-BBT-01177,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,15,2500,37500,Tunai,Y
+2026-07-15,BBT,NT-BBT-01178,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,23,2500,57500,Tunai,Y
+2026-07-17,BBT,NT-BBT-01179,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,23,2500,57500,Tunai,Y
+2026-07-19,BBT,NT-BBT-01180,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,23,2500,57500,Tunai,Y
+2026-07-21,BBT,NT-BBT-01181,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,25,2500,62500,Tunai,Y
+2026-07-23,BBT,NT-BBT-01182,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,15,2500,37500,Tunai,Y
+2026-07-25,BBT,NT-BBT-01183,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,27,2500,67500,Tunai,Y
+2026-07-27,BBT,NT-BBT-01184,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,23,2500,57500,Tunai,Y
+2026-07-29,BBT,NT-BBT-01185,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,19,2500,47500,Tunai,Y
+2026-07-31,BBT,NT-BBT-01186,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2500,52500,Tunai,Y
+2026-08-02,BBT,NT-BBT-01187,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,25,2500,62500,Tunai,Y
+2026-08-04,BBT,NT-BBT-01188,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,15,2500,37500,Tunai,Y
+2026-08-06,BBT,NT-BBT-01189,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,19,2500,47500,Tunai,Y
+2026-08-08,BBT,NT-BBT-01190,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,27,2500,67500,Tunai,Y
+2026-08-10,BBT,NT-BBT-01191,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2500,52500,Tunai,Y
+2026-08-12,BBT,NT-BBT-01192,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,19,2500,47500,Tunai,Y
+2026-08-14,BBT,NT-BBT-01193,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,25,2500,62500,Tunai,Y
+2026-08-16,BBT,NT-BBT-01194,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,29,2500,72500,Tunai,Y
+2026-08-18,BBT,NT-BBT-01195,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,17,2500,42500,Tunai,Y
+2026-08-20,BBT,NT-BBT-01196,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,25,2500,62500,Tunai,Y
+2026-08-22,BBT,NT-BBT-01197,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2500,52500,Tunai,Y
+2026-08-24,BBT,NT-BBT-01198,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,12,2500,30000,Tunai,Y
+2026-08-26,BBT,NT-BBT-01199,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,25,2500,62500,Tunai,Y
+2026-08-28,BBT,NT-BBT-01200,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,25,2500,62500,Tunai,Y
+2026-08-30,BBT,NT-BBT-01201,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,19,2500,47500,Tunai,Y
+2026-09-01,BBT,NT-BBT-01202,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,17,2700,45900,Tunai,Y
+2026-09-03,BBT,NT-BBT-01203,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2700,56700,Tunai,Y
+2026-09-05,BBT,NT-BBT-01204,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,29,2700,78300,Tunai,Y
+2026-09-07,BBT,NT-BBT-01205,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,21,2700,56700,Tunai,Y
+2026-09-09,BBT,NT-BBT-01206,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,23,2700,62100,Tunai,Y
+2026-09-11,BBT,NT-BBT-01207,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,23,2700,62100,Tunai,Y
+2026-09-13,BBT,NT-BBT-01208,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,23,2700,62100,Tunai,Y
+2026-09-15,BBT,NT-BBT-01209,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,17,2700,45900,Tunai,Y
+2026-09-17,BBT,NT-BBT-01210,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,17,2700,45900,Tunai,Y
+2026-09-19,BBT,NT-BBT-01211,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,29,2700,78300,Tunai,Y
+2026-09-21,BBT,NT-BBT-01212,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,12,2700,32400,Tunai,Y
+2026-09-23,BBT,NT-BBT-01213,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,15,2700,40500,Tunai,Y
+2026-09-25,BBT,NT-BBT-01214,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,12,2700,32400,Tunai,Y
+2026-09-27,BBT,NT-BBT-01215,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,19,2700,51300,Tunai,Y
+2026-09-29,BBT,NT-BBT-01216,Pasar Kosambi - Bu Tini,B22,Pisang kepok,buah,15,2700,40500,Tunai,Y
+2026-07-01,BBT,NT-BBT-01217,Toko Grosir Sinar,B23,Madu,ml,499,120,59880,Transfer,N
+2026-07-08,BBT,NT-BBT-01218,Toko Grosir Sinar,B23,Madu,ml,499,120,59880,Transfer,N
+2026-07-15,BBT,NT-BBT-01219,Toko Grosir Sinar,B23,Madu,ml,624,120,74880,Transfer,N
+2026-07-22,BBT,NT-BBT-01220,Toko Grosir Sinar,B23,Madu,ml,562,120,67440,Transfer,N
+2026-07-29,BBT,NT-BBT-01221,Toko Grosir Sinar,B23,Madu,ml,562,120,67440,Transfer,N
+2026-08-05,BBT,NT-BBT-01222,Toko Grosir Sinar,B23,Madu,ml,530,120,63600,Transfer,N
+2026-08-12,BBT,NT-BBT-01223,Toko Grosir Sinar,B23,Madu,ml,593,120,71160,Transfer,N
+2026-08-19,BBT,NT-BBT-01224,Toko Grosir Sinar,B23,Madu,ml,515,120,61800,Transfer,N
+2026-08-26,BBT,NT-BBT-01225,Toko Grosir Sinar,B23,Madu,ml,593,120,71160,Transfer,N
+2026-09-02,BBT,NT-BBT-01226,Toko Grosir Sinar,B23,Madu,ml,577,120,69240,Transfer,N
+2026-09-09,BBT,NT-BBT-01227,Toko Grosir Sinar,B23,Madu,ml,562,120,67440,Transfer,N
+2026-09-16,BBT,NT-BBT-01228,Toko Grosir Sinar,B23,Madu,ml,515,120,61800,Transfer,N
+2026-09-23,BBT,NT-BBT-01229,Toko Grosir Sinar,B23,Madu,ml,374,120,44880,Transfer,N
+2026-09-30,BBT,NT-BBT-01230,Toko Grosir Sinar,B23,Madu,ml,78,120,9360,Transfer,N
+2026-07-01,BBT,NT-BBT-01231,Distributor Susu Lembang,B24,Es krim vanila,gram,1664,60,99840,Transfer,N
+2026-07-08,BBT,NT-BBT-01232,Distributor Susu Lembang,B24,Es krim vanila,gram,1414,60,84840,Transfer,N
+2026-07-15,BBT,NT-BBT-01233,Distributor Susu Lembang,B24,Es krim vanila,gram,1414,60,84840,Transfer,N
+2026-07-22,BBT,NT-BBT-01234,Distributor Susu Lembang,B24,Es krim vanila,gram,1914,60,114840,Transfer,N
+2026-07-29,BBT,NT-BBT-01235,Distributor Susu Lembang,B24,Es krim vanila,gram,1414,60,84840,Transfer,N
+2026-08-05,BBT,NT-BBT-01236,Distributor Susu Lembang,B24,Es krim vanila,gram,1747,60,104820,Transfer,N
+2026-08-12,BBT,NT-BBT-01237,Distributor Susu Lembang,B24,Es krim vanila,gram,1581,60,94860,Transfer,N
+2026-08-19,BBT,NT-BBT-01238,Distributor Susu Lembang,B24,Es krim vanila,gram,1248,60,74880,Transfer,N
+2026-08-26,BBT,NT-BBT-01239,Distributor Susu Lembang,B24,Es krim vanila,gram,1581,60,94860,Transfer,N
+2026-09-02,BBT,NT-BBT-01240,Distributor Susu Lembang,B24,Es krim vanila,gram,1498,60,89880,Transfer,N
+2026-09-09,BBT,NT-BBT-01241,Distributor Susu Lembang,B24,Es krim vanila,gram,1498,60,89880,Transfer,N
+2026-09-16,BBT,NT-BBT-01242,Distributor Susu Lembang,B24,Es krim vanila,gram,1747,60,104820,Transfer,N
+2026-09-23,BBT,NT-BBT-01243,Distributor Susu Lembang,B24,Es krim vanila,gram,1165,60,69900,Transfer,N
+2026-09-30,BBT,NT-BBT-01244,Distributor Susu Lembang,B24,Es krim vanila,gram,250,60,15000,Transfer,N
+2026-07-01,BBT,NT-BBT-01245,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,71,1500,106500,Tunai,Y
+2026-07-03,BBT,NT-BBT-01246,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,76,1500,114000,Tunai,Y
+2026-07-05,BBT,NT-BBT-01247,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,75,1500,112500,Tunai,Y
+2026-07-07,BBT,NT-BBT-01248,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,69,1500,103500,Tunai,Y
+2026-07-09,BBT,NT-BBT-01249,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,62,1500,93000,Tunai,Y
+2026-07-11,BBT,NT-BBT-01250,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,78,1500,117000,Tunai,Y
+2026-07-13,BBT,NT-BBT-01251,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,70,1500,105000,Tunai,Y
+2026-07-15,BBT,NT-BBT-01252,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,63,1500,94500,Tunai,Y
+2026-07-17,BBT,NT-BBT-01253,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,74,1500,111000,Tunai,Y
+2026-07-19,BBT,NT-BBT-01254,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,78,1500,117000,Tunai,Y
+2026-07-21,BBT,NT-BBT-01255,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,64,1500,96000,Tunai,Y
+2026-07-23,BBT,NT-BBT-01256,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,60,1500,90000,Tunai,Y
+2026-07-25,BBT,NT-BBT-01257,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,85,1500,127500,Tunai,Y
+2026-07-27,BBT,NT-BBT-01258,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,62,1500,93000,Tunai,Y
+2026-07-29,BBT,NT-BBT-01259,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,70,1500,105000,Tunai,Y
+2026-07-31,BBT,NT-BBT-01260,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,78,1500,117000,Tunai,Y
+2026-08-02,BBT,NT-BBT-01261,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,79,1500,118500,Tunai,Y
+2026-08-04,BBT,NT-BBT-01262,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,68,1500,102000,Tunai,Y
+2026-08-06,BBT,NT-BBT-01263,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,64,1500,96000,Tunai,Y
+2026-08-08,BBT,NT-BBT-01264,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,97,1500,145500,Tunai,Y
+2026-08-10,BBT,NT-BBT-01265,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,66,1500,99000,Tunai,Y
+2026-08-12,BBT,NT-BBT-01266,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,63,1500,94500,Tunai,Y
+2026-08-14,BBT,NT-BBT-01267,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,78,1500,117000,Tunai,Y
+2026-08-16,BBT,NT-BBT-01268,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,96,1500,144000,Tunai,Y
+2026-08-18,BBT,NT-BBT-01269,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,63,1500,94500,Tunai,Y
+2026-08-20,BBT,NT-BBT-01270,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,69,1500,103500,Tunai,Y
+2026-08-22,BBT,NT-BBT-01271,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,80,1500,120000,Tunai,Y
+2026-08-24,BBT,NT-BBT-01272,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,63,1500,94500,Tunai,Y
+2026-08-26,BBT,NT-BBT-01273,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,59,1500,88500,Tunai,Y
+2026-08-28,BBT,NT-BBT-01274,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,75,1500,112500,Tunai,Y
+2026-08-30,BBT,NT-BBT-01275,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,84,1500,126000,Tunai,Y
+2026-09-01,BBT,NT-BBT-01276,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,70,1600,112000,Tunai,Y
+2026-09-03,BBT,NT-BBT-01277,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,67,1600,107200,Tunai,Y
+2026-09-05,BBT,NT-BBT-01278,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,82,1600,131200,Tunai,Y
+2026-09-07,BBT,NT-BBT-01279,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,66,1600,105600,Tunai,Y
+2026-09-09,BBT,NT-BBT-01280,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,64,1600,102400,Tunai,Y
+2026-09-11,BBT,NT-BBT-01281,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,78,1600,124800,Tunai,Y
+2026-09-13,BBT,NT-BBT-01282,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,77,1600,123200,Tunai,Y
+2026-09-15,BBT,NT-BBT-01283,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,67,1600,107200,Tunai,Y
+2026-09-17,BBT,NT-BBT-01284,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,74,1600,118400,Tunai,Y
+2026-09-19,BBT,NT-BBT-01285,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,82,1600,131200,Tunai,Y
+2026-09-21,BBT,NT-BBT-01286,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,68,1600,108800,Tunai,Y
+2026-09-23,BBT,NT-BBT-01287,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,58,1600,92800,Tunai,Y
+2026-09-25,BBT,NT-BBT-01288,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,80,1600,128000,Tunai,Y
+2026-09-27,BBT,NT-BBT-01289,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,77,1600,123200,Tunai,Y
+2026-09-29,BBT,NT-BBT-01290,Pasar Kosambi - Bu Tini,B25,Kerupuk & acar (porsi),porsi,69,1600,110400,Tunai,Y
+2026-07-01,BBT,NT-BBT-01291,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,479,1800,862200,Transfer,N
+2026-07-08,BBT,NT-BBT-01292,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,473,1800,851400,Transfer,N
+2026-07-15,BBT,NT-BBT-01293,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,494,1800,889200,Transfer,N
+2026-07-22,BBT,NT-BBT-01294,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,474,1800,853200,Transfer,N
+2026-07-29,BBT,NT-BBT-01295,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,532,1800,957600,Transfer,N
+2026-08-05,BBT,NT-BBT-01296,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,511,1800,919800,Transfer,N
+2026-08-12,BBT,NT-BBT-01297,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,522,1800,939600,Transfer,N
+2026-08-19,BBT,NT-BBT-01298,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,500,1800,900000,Transfer,N
+2026-08-26,BBT,NT-BBT-01299,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,528,1800,950400,Transfer,N
+2026-09-02,BBT,NT-BBT-01300,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,488,1800,878400,Transfer,N
+2026-09-09,BBT,NT-BBT-01301,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,484,1800,871200,Transfer,N
+2026-09-16,BBT,NT-BBT-01302,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,522,1800,939600,Transfer,N
+2026-09-23,BBT,NT-BBT-01303,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,473,1800,851400,Transfer,N
+2026-09-30,BBT,NT-BBT-01304,CV Kemasan Parahyangan,B26,Kemasan takeaway (cup/box + kantong),pcs,79,1800,142200,Transfer,N

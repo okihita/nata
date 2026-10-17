@@ -1,0 +1,10 @@
+kode_akun,nama_akun,debit,kredit
+1-1100,Kas tunai toko,4500000,0
+1-1200,Bank BCA,86400000,0
+1-1300,Piutang marketplace (saldo tertahan),18200000,0
+1-1400,Persediaan barang jadi,145000000,0
+1-2100,Peralatan toko & gudang,38000000,0
+1-2190,Akumulasi penyusutan peralatan,0,13500000
+1-1500,Sewa ruko dibayar dimuka (Jul-Des 2026),33000000,0
+2-1100,Utang usaha makloon,0,32000000
+3-1000,Modal pemilik,0,279600000

@@ -1,0 +1,51 @@
+menu_id,bahan_id,nama_bahan,qty_per_porsi,satuan
+M01,B01,Biji kopi arabika house blend,18,gram
+M01,B02,Susu segar,150,ml
+M01,B03,Gula aren cair,25,ml
+M01,B04,Es batu kristal,150,gram
+M02,B01,Biji kopi arabika house blend,18,gram
+M02,B04,Es batu kristal,150,gram
+M03,B01,Biji kopi arabika house blend,18,gram
+M03,B02,Susu segar,180,ml
+M04,B05,Bubuk matcha,6,gram
+M04,B02,Susu segar,200,ml
+M04,B03,Gula aren cair,15,ml
+M04,B04,Es batu kristal,120,gram
+M05,B06,Teh hitam,8,gram
+M05,B07,Susu kental manis,40,gram
+M05,B02,Susu segar,60,ml
+M05,B04,Es batu kristal,100,gram
+M06,B01,Biji kopi arabika house blend,18,gram
+M06,B24,Es krim vanila,80,gram
+M07,B08,Beras,200,gram
+M07,B09,Daging ayam fillet,100,gram
+M07,B10,Telur ayam,2,butir
+M07,B11,Cabai rawit,25,gram
+M07,B12,Bawang merah,25,gram
+M07,B13,Minyak goreng,30,ml
+M07,B25,Kerupuk & acar (porsi),1,porsi
+M08,B08,Beras,180,gram
+M08,B09,Daging ayam fillet,130,gram
+M08,B11,Cabai rawit,30,gram
+M08,B12,Bawang merah,15,gram
+M08,B13,Minyak goreng,60,ml
+M08,B25,Kerupuk & acar (porsi),1,porsi
+M09,B14,Mie telur,120,gram
+M09,B09,Daging ayam fillet,60,gram
+M09,B10,Telur ayam,1,butir
+M09,B11,Cabai rawit,10,gram
+M09,B12,Bawang merah,20,gram
+M09,B13,Minyak goreng,25,ml
+M10,B15,Spaghetti,130,gram
+M10,B16,Krim masak,120,ml
+M10,B17,Smoked beef,60,gram
+M10,B18,Keju parmesan,20,gram
+M10,B10,Telur ayam,1,butir
+M10,B13,Minyak goreng,10,ml
+M11,B19,Roti tawar tebal,3,lembar
+M11,B20,Cokelat meses & keju parut,40,gram
+M12,B21,Kentang beku,180,gram
+M12,B13,Minyak goreng,40,ml
+M13,B22,Pisang kepok,2,buah
+M13,B13,Minyak goreng,40,ml
+M13,B23,Madu,15,ml

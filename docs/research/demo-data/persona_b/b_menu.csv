@@ -1,0 +1,14 @@
+menu_id,nama_menu,kategori,harga_jual
+M01,Es Kopi Susu Seduh,Minuman,28000
+M02,Americano,Minuman,25000
+M03,Cappuccino,Minuman,32000
+M04,Matcha Latte,Minuman,34000
+M05,Teh Tarik,Minuman,22000
+M06,Affogato,Minuman,38000
+M07,Nasi Goreng Kampung,Makanan,35000
+M08,Ayam Geprek Sambal Matah,Makanan,33000
+M09,Mie Goreng Jawa,Makanan,32000
+M10,Pasta Carbonara,Makanan,42000
+M11,Roti Bakar Cokelat Keju,Camilan,24000
+M12,Kentang Goreng,Camilan,22000
+M13,Pisang Goreng Madu,Camilan,20000
