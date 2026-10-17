@@ -23,7 +23,11 @@ import { describeAgentError } from "@/lib/agent-errors";
 import { idrFull } from "@/lib/format";
 
 const USER_ID = "web-console";
-const SESSION_KEY = "***";
+// Namespaced like the other agent session keys (`nata.pajak.session`,
+// `nata.regulasi.session`) so that `clearAppStorage()` — which sweeps `nata.*` —
+// actually removes it. A key outside that namespace survived "delete all data",
+// leaving a stale ADK session id pointing at a ledger that no longer existed.
+const SESSION_KEY = "nata.catat.session";
 
 export default function CatatPage() {
   const router = useRouter();
