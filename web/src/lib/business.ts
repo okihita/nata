@@ -122,7 +122,8 @@ export function loadBusiness(): Business | null {
     if (!raw) return null;
     const parsed = JSON.parse(raw) as Partial<Business> & { taxpayer?: string };
     if (!parsed || typeof parsed.id !== "string" || !parsed.name) return null;
-    return {
+
+    const base: Business = {
       id: parsed.id,
       name: parsed.name,
       ownerName: parsed.ownerName ?? "",
@@ -133,13 +134,18 @@ export function loadBusiness(): Business | null {
       entity:
         (parsed.entity as EntityType) ??
         (parsed.taxpayer === "badan" ? "pt_cv" : "orang_pribadi"),
-      kbliCode: typeof parsed.kbliCode === "string" ? parsed.kbliCode : undefined,
-      kbliTitle: typeof parsed.kbliTitle === "string" ? parsed.kbliTitle : undefined,
-      kbliHierarchy: Array.isArray(parsed.kbliHierarchy)
-        ? (parsed.kbliHierarchy as { level: string; code: string; title: string }[])
-        : undefined,
       createdAt: parsed.createdAt ?? new Date().toISOString(),
     };
+
+    // Only attach the KBLI fields when they actually hold something. Spreading
+    // them unconditionally made "no KBLI" indistinguishable from "KBLI cleared"
+    // once serialised — `kbliCode: undefined` round-trips as a present-but-empty
+    // key, and a cleared code must be *absent* so nothing can read a stale one.
+    if (typeof parsed.kbliCode === "string") base.kbliCode = parsed.kbliCode;
+    if (typeof parsed.kbliTitle === "string") base.kbliTitle = parsed.kbliTitle;
+    if (Array.isArray(parsed.kbliHierarchy)) base.kbliHierarchy = parsed.kbliHierarchy;
+
+    return base;
   } catch {
     return null;
   }
