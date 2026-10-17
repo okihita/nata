@@ -33,15 +33,27 @@ export function WorkspaceSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-9 gap-2 px-2 data-[state=open]:bg-muted">
-          <span className="grid size-6 place-items-center rounded-md bg-primary/10 text-primary">
+        <Button
+          variant="ghost"
+          className="h-9 min-w-0 gap-2 px-2 data-[state=open]:bg-muted"
+        >
+          <span className="grid size-6 shrink-0 place-items-center rounded-md bg-primary/10 text-primary">
             <Store className="size-3.5" />
           </span>
-          <span className="hidden text-left leading-tight sm:grid">
-            <span className="text-sm font-medium">{name}</span>
-            <span className="text-[11px] text-muted-foreground">{subtitle}</span>
+          {/*
+            The name is shown at every width. Hiding it below `sm` left a phone
+            user with only a store icon — no way to tell which business they were
+            in, which is exactly the case the switcher exists for. The subtitle
+            (type · entity) stays desktop-only, and truncation keeps it from
+            crowding the sidebar trigger on a narrow bar.
+          */}
+          <span className="grid min-w-0 text-left leading-tight">
+            <span className="truncate text-sm font-medium">{name}</span>
+            <span className="hidden truncate text-[11px] text-muted-foreground sm:block">
+              {subtitle}
+            </span>
           </span>
-          <ChevronsUpDown className="size-4 text-muted-foreground" />
+          <ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-64">
