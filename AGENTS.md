@@ -106,3 +106,9 @@ blocker.
 - Deploy targets are Cloud Run / Firebase only (competition rule).
 - Grounding for statute text is **in-repo, in-context**. Do not wire Vertex AI
   Search / Discovery Engine / any managed RAG index.
+- **The console deploys from `main` only.** The Cloud Build trigger watches
+  `^main$`; `develop` is integration and deploys nothing. The deployed image tag
+  is the `main` commit SHA, which is what makes "what is live?" answerable.
+  See `docs/deploy-state.md`.
+- The agent (`nata_agent/`) deploys separately and manually — it changes rarely,
+  and a UI typo should not be able to take the backend down.

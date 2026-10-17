@@ -5,7 +5,7 @@ code are not the same thing**, and nothing in the repo said so.
 
 ## The gap
 
-| | Local (`feat/agent-regulasi`) | Deployed (`nata-agent` on Cloud Run) |
+| | Local (`develop` / `main`) | Deployed (`nata-agent` on Cloud Run) |
 | --- | --- | --- |
 | ADK apps served | `nata_agent`, `nata_regulasi` | **only `nata_agent`** |
 | Agents | Keuangan → Fiskal → **Regulasi** | Keuangan → Fiskal |
@@ -75,3 +75,42 @@ Two things to check after a redeploy:
 The failure mode is silent: the app looks correct, the UI is current, and only
 the *numbers* are wrong-ish (an exemption applied to a PT Perorangan). Naming the
 mismatch is cheaper than re-deriving it during a demo.
+
+---
+
+## How the console deploys
+
+Different mechanism from the agent, deliberately.
+
+| | Console (`web/`) | Agent (`nata_agent/`) |
+| --- | --- | --- |
+| Trigger | push to `main` | manual `adk deploy cloud_run` |
+| Builder | Cloud Build, `cloudbuild.yaml` | ADK CLI |
+| Cost | $0 (e2-standard-2 is inside the free tier) | $0 at this traffic |
+
+**The trigger watches `main`, not `develop`.** `develop` is the integration trunk
+and deploys nothing; only a release reaches production. That is what makes
+"what is live?" answerable: the deployed image tag is the `main` commit SHA.
+
+Check what is live:
+
+```bash
+gcloud run services describe nata-web --region=asia-southeast2 \
+  --format="value(spec.template.spec.containers[0].image)"
+```
+
+The trailing `:tag` is the commit — compare it with `git rev-parse --short main`.
+
+Roll back one deploy:
+
+```bash
+gcloud run services update-traffic nata-web --region=asia-southeast2 \
+  --to-revisions=<previous-revision>=100
+```
+
+Build history (the "did it fail?" surface):
+
+```bash
+gcloud builds list --limit=5 \
+  --format="table(id.slice(0,8),status,duration,substitutions.TRIGGER_NAME)"
+```
