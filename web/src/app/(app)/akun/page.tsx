@@ -1,21 +1,24 @@
 "use client";
 
-import { BookOpen } from "lucide-react";
+import { BookOpen, ScanLine } from "lucide-react";
+import Link from "next/link";
 
 import { PageHeader } from "@/components/app-sidebar";
+import { EmptyState } from "@/components/empty-state";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { GROUP_LABEL, NORMAL_SIDE, codeOf, type AccountGroup } from "@/lib/sak-emkm";
 import { trialBalance } from "@/lib/ledger";
-import { useLedger } from "@/lib/store";
+import { useWorkspace } from "@/lib/store";
 import { copy } from "@/lib/copy";
 import { idrFull } from "@/lib/format";
 
 const GROUPS: AccountGroup[] = ["aset", "liabilitas", "ekuitas", "pendapatan", "beban"];
 
 export default function AkunPage() {
-  const { entries, ready } = useLedger();
+  const { entries, ready } = useWorkspace();
   const balances = trialBalance(entries);
 
   // Group the *used* accounts by their SAK EMKM class, in the canonical order.
@@ -46,6 +49,32 @@ export default function AkunPage() {
         <Skeleton className="h-9 w-48" />
         <Skeleton className="h-96" />
       </div>
+    );
+  }
+
+  // With no entries, every group is empty and five empty cards say nothing.
+  if (entries.length === 0) {
+    return (
+      <>
+        <PageHeader title={copy.akun.title} subtitle={copy.akun.subtitle} />
+        <Card>
+          <CardContent>
+            <EmptyState
+              icon={<BookOpen className="size-6" />}
+              title={copy.akun.emptyTitle}
+              body={copy.akun.emptyBody}
+              actions={
+                <Button asChild size="sm">
+                  <Link href="/catat">
+                    <ScanLine className="mr-2 size-4" />
+                    {copy.dashboard.actionScan}
+                  </Link>
+                </Button>
+              }
+            />
+          </CardContent>
+        </Card>
+      </>
     );
   }
 

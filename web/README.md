@@ -18,11 +18,12 @@ accounting software colour-codes its menus:
 | **Ringkasan** | hijau | Dasbor |
 | **Operasional** | hijau | Catat Struk, Transaksi |
 | **Data Induk** | biru | Daftar Akun |
-| **Laporan** | ungu | Laporan Keuangan, Pajak |
-| **Lainnya** | oranye | Profil Usaha\*, Pengaturan\* |
+| **Laporan** | ungu | Laporan Keuangan, Pajak, Perizinan |
+| **Lainnya** | oranye | Profil Usaha, Pengaturan |
 
-\* mapped out, routed, and rendering a "segera hadir" state — the route is real
-so the product's intended scope is legible.
+Every route is implemented. Three screens carry the product's substance —
+Catat Struk (ingestion), Pajak (tax), Perizinan (licensing) — and each is driven
+by its agent rather than by local arithmetic.
 
 ### Screens
 
@@ -33,14 +34,27 @@ so the product's intended scope is legible.
   agent steps, see the posting and the balance check. A committed entry is
   written into the ledger.
 - **Transaksi** — every journal entry, searchable and filterable by source
-  (dari struk / manual), with a detail dialog per transaction.
+  (dari struk / manual), with a detail dialog per transaction and a **CSV
+export** of whatever the filter is currently showing.
 - **Daftar Akun** — the SAK EMKM chart of accounts, grouped by the five classes,
   with balances shown on each account's normal side.
 - **Laporan Keuangan** — **Laporan Laba Rugi** and **Laporan Posisi Keuangan**
   with a period selector, plus CALK. The balance sheet proves
-  Aset = Liabilitas + Ekuitas on screen.
+  Aset = Liabilitas + Ekuitas on screen, and **Ekspor** writes both statements
+  to a CSV an accountant can open.
 - **Pajak** — PPh Final UMKM (0,5%) with the Rp 500 juta exemption quota shown
-  as a progress meter, so a Rp 0 result is informative rather than blank.
+  as a progress meter, so a Rp 0 result is informative rather than blank. A
+  treatment banner states which rule applies to *this* business form, because
+  the exemption is for orang pribadi only (Pasal 60 ayat (2)).
+- **Perizinan** — the KBLI 2020 classification. Describe the business in plain
+  words, Agent Regulasi searches the official 5-digit catalogue, and the chosen
+  code is **verified against the catalogue** before it is stored. The candidate
+  list is interactive — the owner can pick a different candidate and it is
+  verified the same way. Risk tier is shown as "Perlu dicek di OSS-RBA" rather
+  than guessed, because KBLI carries no risk data.
+- **Profil Usaha** — business identity: name, owner, business type, and the
+  business form (orang pribadi / PT Perorangan / PT-CV). It doubles as
+  onboarding, and it shows the verified KBLI code once one exists.
 
 ## Accounting model
 
@@ -84,11 +98,20 @@ cd .. && uv run adk api_server --port 48700
 
 # terminal 2 — the console
 pnpm install
-pnpm build && pnpm start --port 48701      # http://localhost:48701
+pnpm dev                                    # http://localhost:48701
+pnpm build && pnpm start                    # production build, same port
 ```
 
-Ports are deliberately high/uncommon (`48700` backend, `48701` console) so they
-never collide with the usual dev suspects.
+Ports are deliberately high/uncommon (`48700` backend, `48701` console, `48702`
+`adk web` playground) so they never collide with the usual dev suspects. They sit
+just below the OS ephemeral port range (49152–65535) to avoid clashing with
+transient outbound sockets:
+
+| Port | Service |
+| --- | --- |
+| `48700` | ADK `api_server` — backend this console proxies to |
+| `48701` | Next.js console |
+| `48702` | `adk web` dev playground (framework harness) |
 
 ### Demo data
 
@@ -110,7 +133,7 @@ The browser never calls the Python server directly, which removes CORS from the
 picture and gives one place to repoint at a deployed Cloud Run URL:
 
 ```bash
-ADK_SERVER_URL=https://nata-agent-xxxx.a.run.app pnpm start --port 48701
+ADK_SERVER_URL=https://nata-agent-xxxx.a.run.app pnpm start
 ```
 
 ### Endpoints used
@@ -134,8 +157,9 @@ src/
 │   │   ├── akun/page.tsx            # Daftar Akun
 │   │   ├── laporan/page.tsx         # Laporan Keuangan
 │   │   ├── pajak/page.tsx           # Pajak
-│   │   ├── usaha/page.tsx           # Profil Usaha (segera hadir)
-│   │   └── pengaturan/page.tsx      # Pengaturan (segera hadir)
+│   │   ├── perizinan/page.tsx       # Perizinan (KBLI 2020)
+│   │   ├── usaha/page.tsx           # Profil Usaha (identity + onboarding)
+│   │   └── pengaturan/page.tsx      # Pengaturan (data actions)
 │   ├── api/adk/[...path]/route.ts   # streaming proxy to the ADK server
 │   ├── layout.tsx                   # <html lang="id">, providers, toaster
 │   └── globals.css                  # shadcn light theme
@@ -170,13 +194,22 @@ EN/ID toggle later is a matter of swapping that one module.
 ## Verified
 
 - `pnpm exec tsc --noEmit` — clean.
-- `pnpm build` — clean production build; all 10 routes generate.
+- `pnpm lint` — clean.
+- `pnpm test` — 37 logic tests (entity/tax treatment, trace reduction, error
+  classification, CSV export). Node's built-in runner executes the TypeScript
+  directly; see `tests/register.mjs` for the resolver that teaches it the
+  `@/*` alias.
+- `pnpm build` — clean production build; all 12 routes generate.
 - Every route returns 200 on the production server.
 - End-to-end on the production bundle: sample receipt → Agent Keuangan →
-  `commit_journal_entry` → recorded entry, balanced, driven by live Gemini 3.8
-  Flash. Steps render in narrative order.
+  `commit_journal_entry` → Agent Fiskal → Agent Regulasi → a recorded entry,
+  balanced, with a verified KBLI code, driven by live Gemini 3.8 Flash. Steps
+  render in narrative order.
 - Statements reconcile: Aset = Liabilitas + Ekuitas proven on the Laporan page,
   and the tax figure on Dasbor matches the Pajak page.
+- Entity type changes the tax everywhere it should: the onboarding badge, the
+  Pajak treatment banner, the quota meter (individual only), and the dashboard
+  status row all agree.
 
 > Note: hydration was verified against the **production** build. Under headless
 > automation the dev server's HMR socket is unavailable, which stalls hydration —

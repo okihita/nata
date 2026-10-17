@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
-import { LedgerProvider } from "@/lib/store";
 import { copy } from "@/lib/copy";
 import "./globals.css";
 
@@ -28,9 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full">
-        <TooltipProvider>
-          <LedgerProvider>{children}</LedgerProvider>
-        </TooltipProvider>
+        {/* Workspace data lives in an external store (`lib/store`), so there is
+            no provider to mount — screens subscribe with `useWorkspace()`. */}
+        <TooltipProvider>{children}</TooltipProvider>
         <Toaster position="top-center" richColors />
       </body>
     </html>

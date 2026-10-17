@@ -1,9 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { FileBarChart, ShieldCheck, ShieldAlert } from "lucide-react";
+import { FileBarChart, ShieldCheck, ShieldAlert, ScanLine, Download } from "lucide-react";
+
+import Link from "next/link";
 
 import { PageHeader } from "@/components/app-sidebar";
+import { EmptyState } from "@/components/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,13 +18,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useLedger } from "@/lib/store";
+import { useWorkspace } from "@/lib/store";
 import { balanceSheet, incomeStatement, type JournalEntry } from "@/lib/ledger";
+import { downloadCsv, reportFilename, statementsToCsv } from "@/lib/export-csv";
 import { copy } from "@/lib/copy";
 import { idrFull } from "@/lib/format";
+import { toast } from "sonner";
 
 export default function LaporanPage() {
-  const { entries, ready } = useLedger();
+  const { entries, ready, business } = useWorkspace();
   const [period, setPeriod] = useState("all");
 
   const periods = useMemo(() => {
@@ -43,6 +48,34 @@ export default function LaporanPage() {
         <Skeleton className="h-9 w-56" />
         <Skeleton className="h-96" />
       </div>
+    );
+  }
+
+  // Statements only mean something once there are entries. With an empty
+  // journal, point at the action that produces the first one instead of
+  // rendering two all-zero statements.
+  if (entries.length === 0) {
+    return (
+      <>
+        <PageHeader title={copy.laporan.title} subtitle={copy.laporan.subtitle} />
+        <Card>
+          <CardContent>
+            <EmptyState
+              icon={<FileBarChart className="size-6" />}
+              title={copy.laporan.emptyTitle}
+              body={copy.laporan.emptyBody}
+              actions={
+                <Button asChild size="sm">
+                  <Link href="/catat">
+                    <ScanLine className="mr-2 size-4" />
+                    {copy.dashboard.actionScan}
+                  </Link>
+                </Button>
+              }
+            />
+          </CardContent>
+        </Card>
+      </>
     );
   }
 
@@ -70,7 +103,21 @@ export default function LaporanPage() {
             ))}
           </SelectContent>
         </Select>
-        <Button variant="outline" disabled title={copy.laporan.exportSoon}>
+        <Button
+          variant="outline"
+          onClick={() => {
+            downloadCsv(
+              reportFilename(business?.name ?? copy.app.name, periodLabel),
+              statementsToCsv(scoped, {
+                periodLabel,
+                businessName: business?.name ?? copy.app.name,
+              }),
+            );
+            toast.success(copy.laporan.exported);
+          }}
+          disabled={scoped.length === 0}
+        >
+          <Download className="mr-2 size-4" />
           {copy.laporan.export}
         </Button>
       </PageHeader>

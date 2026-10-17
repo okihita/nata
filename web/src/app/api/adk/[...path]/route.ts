@@ -37,7 +37,7 @@ async function forward(req: NextRequest, path: string[]): Promise<Response> {
       {
         error: "adk_unreachable",
         message: `Could not reach the ADK server at ${SERVER}. ${message}`,
-        hint: "Start it with: uv run adk api_server --port 8000",
+        hint: "Start it with: uv run adk api_server --port 48700",
       },
       { status: 502 },
     );

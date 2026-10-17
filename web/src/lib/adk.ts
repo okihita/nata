@@ -20,6 +20,8 @@ export interface AdkEvent {
   finishReason?: string;
   usageMetadata?: Record<string, number>;
   nodeInfo?: { path?: string };
+  /** Routing metadata; set on the frame that performs a sub-agent handoff. */
+  actions?: { transferToAgent?: string; transferReason?: string };
   errorCode?: string;
   errorMessage?: string;
   content?: {
@@ -67,6 +69,43 @@ export interface JournalRejection {
 
 export type JournalOutcome = JournalCommit | JournalRejection;
 
+/** One grounded statutory reference returned by `compute_pph_final`. */
+export interface TaxCitation {
+  article: string;
+  label: string;
+  quote: string;
+  source: string;
+  file: string;
+}
+
+/**
+ * The result of Agent Fiskal's `compute_pph_final` tool (PP 55/2022). Every
+ * figure the agent reports is paired with the Pasal/Ayat that grounds it.
+ */
+export interface TaxAssessment {
+  status: "success";
+  /** Coarse taxpayer class, as the tool still reports it. */
+  taxpayer: "orang_pribadi" | "badan";
+  taxpayer_label: string;
+  /** The precise business form, when the caller supplied one. */
+  entity?: "orang_pribadi" | "pt_perorangan" | "pt_cv";
+  entity_profile?: string;
+  scheme: string;
+  turnover: number;
+  exemption_applied: number;
+  taxable_base: number;
+  rate: number;
+  rate_percent: string;
+  payable: number;
+  exemption_remaining: number;
+  over_ceiling: boolean;
+  year: number;
+  months: number;
+  monthly_estimate: number;
+  citations: TaxCitation[];
+  summary: string;
+}
+
 async function json<T>(res: Response): Promise<T> {
   const text = await res.text();
   try {
@@ -79,20 +118,25 @@ async function json<T>(res: Response): Promise<T> {
 /**
  * Reuse `sessionId` if the backend still knows it, otherwise open a fresh
  * session. Sessions carry the conversation + ledger state for one user.
+ *
+ * `appName` selects which ADK app the session belongs to — the cascade entry
+ * point by default, or a standalone agent (e.g. `nata_regulasi`) whose tools the
+ * entry point does not own.
  */
 export async function ensureSession(
   userId: string,
   existing?: string | null,
+  appName: string = APP_NAME,
 ): Promise<string> {
   if (existing) {
     const probe = await fetch(
-      `${ADK_BASE}/apps/${APP_NAME}/users/${userId}/sessions/${existing}`,
+      `${ADK_BASE}/apps/${appName}/users/${userId}/sessions/${existing}`,
       { cache: "no-store" },
     );
     if (probe.ok) return existing;
   }
 
-  const res = await fetch(`${ADK_BASE}/apps/${APP_NAME}/users/${userId}/sessions`, {
+  const res = await fetch(`${ADK_BASE}/apps/${appName}/users/${userId}/sessions`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: "{}",

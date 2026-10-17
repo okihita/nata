@@ -39,6 +39,14 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+  --color-tone-hijau: var(--tone-hijau);
+  --color-tone-biru: var(--tone-biru);
+  --color-tone-ungu: var(--tone-ungu);
+  --color-tone-oranye: var(--tone-oranye);
+  --color-tone-hijau-bg: var(--tone-hijau-bg);
+  --color-tone-biru-bg: var(--tone-biru-bg);
+  --color-tone-ungu-bg: var(--tone-ungu-bg);
+  --color-tone-oranye-bg: var(--tone-oranye-bg);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -50,38 +58,68 @@
 
 :root {
   color-scheme: light;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  /*
+   * Warm amber identity.
+   *
+   * Hues are pinned so the whole product reads warm rather than grey:
+   *   amber/primary  hue  65  — the brand colour (trust + warmth)
+   *   neutral        hue  75  — a faint warm cast instead of pure grey
+   *   success/green  hue 150 · info/blue hue 245 · violet hue 300
+   * Chakra is deliberate: the neutrals carry tiny chroma (0.004–0.012), which
+   * is invisible on its own but stops large grey areas looking cold next to
+   * the amber.
+   */
+  --background: oklch(0.995 0.004 75);
+  --foreground: oklch(0.21 0.012 55);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.21 0.012 55);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  --popover-foreground: oklch(0.21 0.012 55);
+
+  /* Brand — amber. Deepened to ~0.465 L so white text clears AA with margin
+     (≈5.9:1) and the button reads as solid rather than washed. */
+  --primary: oklch(0.465 0.125 60);
+  --primary-foreground: oklch(0.995 0.006 75);
+
+  --secondary: oklch(0.962 0.012 70);
+  --secondary-foreground: oklch(0.29 0.02 60);
+  --muted: oklch(0.965 0.008 75);
+  --muted-foreground: oklch(0.505 0.014 62);
+  --accent: oklch(0.955 0.028 75);
+  --accent-foreground: oklch(0.33 0.05 60);
+  --destructive: oklch(0.545 0.196 27.5);
+
+  --border: oklch(0.912 0.012 72);
+  --input: oklch(0.906 0.012 72);
+  --ring: oklch(0.62 0.115 65);
+
+  /* Chart ramp: amber → warm brown, so charts stop rendering grey. */
+  --chart-1: oklch(0.63 0.145 62);
+  --chart-2: oklch(0.72 0.115 82);
+  --chart-3: oklch(0.55 0.09 45);
+  --chart-4: oklch(0.80 0.06 88);
+  --chart-5: oklch(0.42 0.05 60);
+
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+
+  --sidebar: oklch(0.975 0.01 75);
+  --sidebar-foreground: oklch(0.21 0.012 55);
+  --sidebar-primary: oklch(0.465 0.125 60);
+  --sidebar-primary-foreground: oklch(0.99 0.008 75);
+  --sidebar-accent: oklch(0.945 0.022 72);
+  --sidebar-accent-foreground: oklch(0.3 0.04 60);
+  --sidebar-border: oklch(0.912 0.012 72);
+  --sidebar-ring: oklch(0.62 0.115 65);
+
+  /* Semantic tones used by the nav groups and status badges. */
+  --tone-hijau: oklch(0.52 0.12 155);
+  --tone-biru: oklch(0.51 0.13 245);
+  --tone-ungu: oklch(0.51 0.16 300);
+  --tone-oranye: oklch(0.56 0.14 55);
+  --tone-hijau-bg: oklch(0.95 0.04 155);
+  --tone-biru-bg: oklch(0.95 0.035 245);
+  --tone-ungu-bg: oklch(0.95 0.04 300);
+  --tone-oranye-bg: oklch(0.955 0.045 65);
 }
 
 html,
@@ -120,37 +158,46 @@ body {
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: oklch(0.17 0.012 60);
+  --foreground: oklch(0.97 0.008 75);
+  --card: oklch(0.215 0.014 58);
+  --card-foreground: oklch(0.97 0.008 75);
+  --popover: oklch(0.215 0.014 58);
+  --popover-foreground: oklch(0.97 0.008 75);
+  --primary: oklch(0.78 0.135 68);
+  --primary-foreground: oklch(0.2 0.03 55);
+  --secondary: oklch(0.27 0.014 60);
+  --secondary-foreground: oklch(0.97 0.008 75);
+  --muted: oklch(0.27 0.014 60);
+  --muted-foreground: oklch(0.72 0.018 70);
+  --accent: oklch(0.3 0.03 62);
+  --accent-foreground: oklch(0.97 0.008 75);
+  --destructive: oklch(0.66 0.19 25);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.7 0.12 68);
+  --chart-1: oklch(0.78 0.135 68);
+  --chart-2: oklch(0.68 0.1 88);
+  --chart-3: oklch(0.6 0.09 45);
+  --chart-4: oklch(0.85 0.06 92);
+  --chart-5: oklch(0.5 0.05 60);
+  --sidebar: oklch(0.215 0.014 58);
+  --sidebar-foreground: oklch(0.97 0.008 75);
+  --sidebar-primary: oklch(0.78 0.135 68);
+  --sidebar-primary-foreground: oklch(0.2 0.03 55);
+  --sidebar-accent: oklch(0.3 0.03 62);
+  --sidebar-accent-foreground: oklch(0.97 0.008 75);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.7 0.12 68);
+
+  --tone-hijau: oklch(0.75 0.13 155);
+  --tone-biru: oklch(0.75 0.12 245);
+  --tone-ungu: oklch(0.76 0.14 300);
+  --tone-oranye: oklch(0.79 0.13 65);
+  --tone-hijau-bg: oklch(0.3 0.06 155);
+  --tone-biru-bg: oklch(0.3 0.06 245);
+  --tone-ungu-bg: oklch(0.3 0.06 300);
+  --tone-oranye-bg: oklch(0.31 0.06 65);
 }
 
 @layer base {
@@ -162,5 +209,38 @@ body {
   }
   html {
     @apply font-sans;
+  }
+}
+
+/*
+ * Touch targets.
+ *
+ * The audience is Android-first and one-handed, so interactive controls need a
+ * comfortable target even where the visual size is compact — the desktop button
+ * scale (28–32px) is below the 44px recommendation.
+ *
+ * Scoped to `pointer: coarse`, so it applies on touch devices whatever their
+ * width and leaves desktop layout completely untouched. `[data-compact]` is an
+ * escape hatch for controls that are deliberately small (e.g. a colour swatch
+ * in a dense list), where enlarging the box would break the layout.
+ */
+@media (pointer: coarse) {
+  button:not([data-compact]),
+  [role="button"]:not([data-compact]),
+  [role="radio"]:not([data-compact]),
+  [role="tab"]:not([data-compact]),
+  input[type="checkbox"]:not([data-compact]),
+  input[type="radio"]:not([data-compact]) {
+    min-height: 44px;
+  }
+
+  /*
+   * Icon-only controls are also narrow: min-height alone left the sidebar
+   * toggle at 28x44. `:has(> svg)` catches buttons whose content is an icon,
+   * and `min-width` can only widen — a text button with an icon is already
+   * wider than 44px, so this cannot disturb any layout.
+   */
+  button:not([data-compact]):has(> svg) {
+    min-width: 44px;
   }
 }
