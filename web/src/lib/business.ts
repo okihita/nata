@@ -59,6 +59,33 @@ export const BUSINESS_TYPES: { id: BusinessType; label: string; hint: string }[]
   { id: "lainnya", label: "Lainnya", hint: "Usaha lain" },
 ];
 
+/**
+ * Profil usaha demo bawaan (Persona A: Retail, Persona B: F&B) untuk hackathon,
+ * review, dan development lokal agar aplikasi tidak terblokir onboarding kosong.
+ */
+export const DEMO_BUSINESS_PROFILES: Record<"persona_a" | "persona_b", Business> = {
+  persona_a: {
+    id: "biz-persona-a",
+    name: "Rona Kirana Beauty",
+    ownerName: "Kirana",
+    type: "toko",
+    entity: "orang_pribadi",
+    kbliCode: "47725",
+    kbliTitle: "Perdagangan Eceran Barang Kosmetik Untuk Manusia",
+    createdAt: "2026-07-01T00:00:00.000Z",
+  },
+  persona_b: {
+    id: "biz-persona-b",
+    name: "PT Seduh Rasa Nusantara",
+    ownerName: "Budi",
+    type: "kafe",
+    entity: "pt_cv",
+    kbliCode: "56303",
+    kbliTitle: "Rumah Minum / Kafe",
+    createdAt: "2026-07-01T00:00:00.000Z",
+  },
+};
+
 export const ENTITY_OPTIONS: {
   id: EntityType;
   label: string;

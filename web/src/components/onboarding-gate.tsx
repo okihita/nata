@@ -14,35 +14,32 @@
  */
 
 import { useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import { useWorkspace } from "@/lib/store";
-import { isUsableBusiness } from "@/lib/business";
+import { isUsableBusiness, DEMO_BUSINESS_PROFILES } from "@/lib/business";
 
 /** Routes that remain reachable before a business exists. */
 const EXEMPT = ["/usaha"];
 
 export function OnboardingGate({ children }: { children: React.ReactNode }) {
-  const { business, ready } = useWorkspace();
-  const router = useRouter();
+  const { business, ready, switchBusiness } = useWorkspace();
   const pathname = usePathname();
 
   const exempt = EXEMPT.some((p) => pathname.startsWith(p));
-  // `isUsableBusiness` rather than a plain null check: a business with no name
-  // is not usable either, and onboarding is where the name is collected. Using
-  // the same predicate as the rest of the app keeps the two from disagreeing.
-  const needsOnboarding = ready && !isUsableBusiness(business) && !exempt;
+  const hasUsable = isUsableBusiness(business);
 
+  // Development & hackathon convenience: if storage has finished reading and
+  // no business has ever been declared, automatically seed Persona A (Rona Kirana)
+  // so developers, judges, and direct page navigations are never blocked with a blank screen.
   useEffect(() => {
-    if (needsOnboarding) router.replace("/usaha");
-  }, [needsOnboarding, router]);
+    if (ready && !hasUsable && !exempt) {
+      switchBusiness(DEMO_BUSINESS_PROFILES.persona_a);
+    }
+  }, [ready, hasUsable, exempt, switchBusiness]);
 
-  // Before storage is read, render nothing rather than flashing an empty state.
+  // While storage is hydrating, render nothing briefly to avoid flash
   if (!ready) return null;
-
-  // While the redirect is in flight, keep the screen blank to avoid a flash of
-  // a dashboard belonging to nobody.
-  if (needsOnboarding) return null;
 
   return <>{children}</>;
 }

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useWorkspace } from "@/lib/store";
 import { copy } from "@/lib/copy";
-import { TYPE_LABEL, ENTITY_LABEL } from "@/lib/business";
+import { TYPE_LABEL, ENTITY_LABEL, DEMO_BUSINESS_PROFILES } from "@/lib/business";
 
 /**
  * Identitas usaha di bilah atas. Membaca usaha yang sedang dipakai dari store —
@@ -23,7 +23,7 @@ import { TYPE_LABEL, ENTITY_LABEL } from "@/lib/business";
  * usaha (banyak pemilik warung punya lebih dari satu).
  */
 export function WorkspaceSwitcher() {
-  const { business } = useWorkspace();
+  const { business, switchBusiness } = useWorkspace();
 
   const name = business?.name ?? copy.app.name;
   const subtitle = business
@@ -57,12 +57,36 @@ export function WorkspaceSwitcher() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-64">
-        <DropdownMenuLabel>Usaha Anda</DropdownMenuLabel>
-        <DropdownMenuItem className="gap-2">
-          <Store className="size-4" />
+        <DropdownMenuLabel>Usaha Aktif</DropdownMenuLabel>
+        <DropdownMenuItem className="gap-2 bg-muted/50 font-medium">
+          <Store className="size-4 text-primary" />
           <div className="grid">
             <span className="text-sm">{name}</span>
             <span className="text-[11px] text-muted-foreground">{subtitle}</span>
+          </div>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel className="text-xs text-muted-foreground">
+          Ganti Profil Demo
+        </DropdownMenuLabel>
+        <DropdownMenuItem
+          onClick={() => switchBusiness(DEMO_BUSINESS_PROFILES.persona_a)}
+          className="gap-2 cursor-pointer"
+        >
+          <span className="size-2 rounded-full bg-emerald-500" />
+          <div className="grid">
+            <span className="text-xs font-medium">Persona A: Rona Kirana</span>
+            <span className="text-[10px] text-muted-foreground">Retail Kosmetik (Shopee/Tokped)</span>
+          </div>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => switchBusiness(DEMO_BUSINESS_PROFILES.persona_b)}
+          className="gap-2 cursor-pointer"
+        >
+          <span className="size-2 rounded-full bg-amber-500" />
+          <div className="grid">
+            <span className="text-xs font-medium">Persona B: PT Seduh Rasa</span>
+            <span className="text-[10px] text-muted-foreground">F&B Kedai Kopi Multi-Outlet</span>
           </div>
         </DropdownMenuItem>
         <DropdownMenuSeparator />

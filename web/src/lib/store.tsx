@@ -122,6 +122,12 @@ export function updateBusiness(patch: Partial<Omit<Business, "id" | "createdAt">
   emit({ ...snapshot, business: next });
 }
 
+export function switchBusiness(nextBiz: Business): void {
+  saveBusiness(nextBiz);
+  const entries = loadLedger(nextBiz.id).entries;
+  emit({ business: nextBiz, entries, ready: true });
+}
+
 export function addEntry(input: {
   date: string;
   description: string;
@@ -225,6 +231,7 @@ function getServerSnapshot(): WorkspaceSnapshot {
 export interface Workspace extends WorkspaceSnapshot {
   createBusiness: typeof createBusiness;
   updateBusiness: typeof updateBusiness;
+  switchBusiness: typeof switchBusiness;
   addEntry: typeof addEntry;
   loadDemo: typeof loadDemo;
   clearAll: typeof clearAll;
@@ -237,6 +244,7 @@ export function useWorkspace(): Workspace {
     ...snap,
     createBusiness,
     updateBusiness,
+    switchBusiness,
     addEntry,
     loadDemo,
     clearAll,
