@@ -18,8 +18,6 @@ substitutions:
   # builds green and then returns 502 on every agent call.
   _ADK_SERVER_URL: ""
 
-availableSecrets: []
-
 steps:
   # ── 1. build ──────────────────────────────────────────────────────────────
   - id: build
