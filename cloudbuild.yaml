@@ -64,4 +64,11 @@ images:
 
 options:
   logging: CLOUD_LOGGING_ONLY
-  machineType: E2_HIGHCPU_8
+  # Free-tier eligible on purpose. E2_HIGHCPU_8 ($0.0156/min) is NOT covered by
+  # the 2,500 free build-minutes/month; E2_STANDARD_2 ($0.006/min) is.
+  #
+  # Trade-off, recorded so this is not "optimised" back later: 8 vCPU -> 2 vCPU
+  # makes the console build slower (~2 min becomes ~4-6 min). That is the right
+  # trade for a hackathon: deploys are infrequent, and the whole pipeline then
+  # costs nothing while staying well inside the free monthly quota.
+  machineType: E2_STANDARD_2
