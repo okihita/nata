@@ -1,0 +1,27 @@
+bahan_id,nama_bahan,satuan,harga_jul,harga_agu,harga_sep,pemasok_utama
+B01,Biji kopi arabika house blend,gram,280,280,290,Roastery Priangan
+B02,Susu segar,ml,22,22,23,Distributor Susu Lembang
+B03,Gula aren cair,ml,40,40,42,Roastery Priangan
+B04,Es batu kristal,gram,2,2,2,Depot Es Sejuk
+B05,Bubuk matcha,gram,900,900,900,Roastery Priangan
+B06,Teh hitam,gram,150,150,150,Pasar Kosambi - Toko Teh Aroma
+B07,Susu kental manis,gram,30,30,31,Pasar Kosambi - Toko Teh Aroma
+B08,Beras,gram,14,14,15,Pasar Kosambi - Bu Tini
+B09,Daging ayam fillet,gram,42,45,56,Pasar Kosambi - Pak Ujang Ayam
+B10,Telur ayam,butir,2100,2200,2450,Pasar Kosambi - Bu Tini
+B11,Cabai rawit,gram,60,75,115,Pasar Kosambi - Bu Tini
+B12,Bawang merah,gram,45,45,52,Pasar Kosambi - Bu Tini
+B13,Minyak goreng,ml,18,18,18,Toko Grosir Sinar
+B14,Mie telur,gram,25,25,25,Toko Grosir Sinar
+B15,Spaghetti,gram,35,35,35,Toko Grosir Sinar
+B16,Krim masak,ml,60,60,62,Toko Grosir Sinar
+B17,Smoked beef,gram,180,180,185,Toko Grosir Sinar
+B18,Keju parmesan,gram,350,350,360,Toko Grosir Sinar
+B19,Roti tawar tebal,lembar,1500,1500,1500,Bakery Mekar
+B20,Cokelat meses & keju parut,gram,80,80,82,Toko Grosir Sinar
+B21,Kentang beku,gram,38,38,39,Toko Grosir Sinar
+B22,Pisang kepok,buah,2500,2500,2700,Pasar Kosambi - Bu Tini
+B23,Madu,ml,120,120,120,Toko Grosir Sinar
+B24,Es krim vanila,gram,60,60,60,Distributor Susu Lembang
+B25,Kerupuk & acar (porsi),porsi,1500,1500,1600,Pasar Kosambi - Bu Tini
+B26,Kemasan takeaway (cup/box + kantong),pcs,1800,1800,1800,CV Kemasan Parahyangan

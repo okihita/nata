@@ -1,0 +1,15 @@
+karyawan_id,nama,jabatan,outlet,status_ptkp,gaji_pokok,tunjangan_tetap
+K01,Sari Wulandari,Admin keuangan,PUSAT,TK/0,5000000,300000
+K02,Yoga Pratama,Kepala outlet,DGO,K/1,4900000,450000
+K03,Nadia Putri,Kepala outlet,BBT,TK/0,4900000,450000
+K04,Rizky Maulana,Barista,DGO,TK/0,4300000,200000
+K05,Fajar Nugraha,Barista,DGO,TK/0,4300000,200000
+K06,Intan Lestari,Barista,BBT,TK/0,4300000,200000
+K07,Bayu Saputra,Barista,BBT,K/0,4300000,200000
+K08,Asep Hidayat,Cook,DGO,K/2,4400000,250000
+K09,Dedi Kurniawan,Cook,DGO,TK/0,4400000,250000
+K10,Ujang Supriatna,Cook,BBT,K/1,4400000,250000
+K11,Rina Marlina,Cook,BBT,TK/0,4400000,250000
+K12,Tia Anggraeni,Server/kasir,DGO,TK/0,4250000,150000
+K13,Galih Permana,Server/kasir,DGO,TK/0,4250000,150000
+K14,Wulan Sari,Server/kasir,BBT,TK/0,4250000,150000

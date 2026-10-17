@@ -1,0 +1,14 @@
+menu_id,nama_menu,harga,hpp_sep,hpp_jul,food_cost_pct,cm_per_porsi,qty_sep,share_pct,kelas
+M01,Es Kopi Susu Seduh,28000,10020,9640,35.8,17980,2352,26.1,Star
+M02,Americano,25000,5520,5340,22.1,19480,635,7.0,Star
+M03,Cappuccino,32000,9360,9000,29.2,22640,545,6.0,Star
+M04,Matcha Latte,34000,10870,10640,32.0,23130,566,6.3,Star
+M05,Teh Tarik,22000,4020,3920,18.3,17980,471,5.2,Puzzle
+M06,Affogato,38000,10020,9840,26.4,27980,165,1.8,Puzzle
+M07,Nasi Goreng Kampung,35000,19815,15865,56.6,15185,1348,14.9,Plowhorse
+M08,Ayam Geprek Sambal Matah,33000,16890,13035,51.2,16110,945,10.5,Plowhorse
+M09,Mie Goreng Jawa,32000,11450,9570,35.8,20550,542,6.0,Star
+M10,Pasta Carbonara,42000,32920,31830,78.4,9080,175,1.9,Dog
+M11,Roti Bakar Cokelat Keju,24000,7780,7700,32.4,16220,465,5.2,Dog
+M12,Kentang Goreng,22000,7740,7560,35.2,14260,487,5.4,Plowhorse
+M13,Pisang Goreng Madu,20000,7920,7520,39.6,12080,327,3.6,Dog
