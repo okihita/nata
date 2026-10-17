@@ -1,0 +1,53 @@
+Nata
+Copyright 2026 Okihita Sihaloho
+
+This product includes software developed as part of a submission to the
+Google Cloud AI Builder Cup 2026.
+
+---
+
+## Licence scope
+
+The Apache License 2.0 in `LICENSE` covers the **source code** of this
+repository: the Python agent package (`nata_agent/`, `nata_regulasi/`), the
+Next.js console (`web/`), and the tests (`tests/`, `web/tests/`).
+
+It does **not** relicense third-party material that is included for
+functionality. Those items keep their original status, described below.
+
+---
+
+## Third-party material
+
+### KBLI 2020 classification data
+
+`nata_agent/statutes/kbli/kbli-2020-5digit.json`
+
+Contains 1,790 five-digit KBLI codes with their official titles and
+descriptions. KBLI (Klasifikasi Baku Lapangan Usaha Indonesia) is the official
+industrial classification of **Badan Pusat Statistik (BPS)**, Republic of
+Indonesia, published under Peraturan BPS No. 2 Tahun 2020.
+
+The codes and titles are factual government data. This repository does not
+claim copyright over them, and the Apache-2.0 grant above does not extend to
+them. The extraction path used for this prototype is documented in
+`docs/regulasi-provenance.md`, including its known limitation: the public
+mirror it was taken from carries no explicit licence, and the dataset should be
+re-sourced from BPS or OSS-RBA before redistribution beyond this prototype.
+
+### PP 55/2022 statute text
+
+`nata_agent/statutes/pp-55-2022-pph-final-umkm.md`
+
+A transcription of selected articles from Peraturan Pemerintah No. 55 Tahun
+2022 (Indonesian government regulation on the final income tax for micro, small
+and medium enterprises). Indonesian legislation is publicly promulgated and is
+not subject to copyright as a legislative text. The transcription is included
+as a citation corpus so that every tax figure the application reports can be
+verified against its source; it is not claimed as original work.
+
+### Third-party libraries
+
+Python and JavaScript dependencies are listed in `pyproject.toml`,
+`uv.lock`, `web/package.json` and `web/pnpm-lock.yaml`. Each remains under its
+own licence as published by its authors.

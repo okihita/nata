@@ -24,29 +24,26 @@ tax arithmetic, and verify classification codes against the shipped catalogue.
 
 ## Architecture
 
-```
-receipt image ──▶ Agent Keuangan (LlmAgent, Gemini multimodal)
-                        │  proposes journal lines
-                        ▼
-              commit_journal_entry(description, lines[])
-                        │  HARD GUARDRAIL (deterministic):
-                        │   • debit total == credit total
-                        │   • ≥2 lines, each debit XOR credit
-                        ▼
-              accepted entry ──▶ session state (ledger_entries)
-                        │  one-way handoff
-                        ▼
-                  Agent Fiskal (tax compliance)
-                        │  calls compute_pph_final(turnover)
-                        ▼
-              PPh Final 0,5%  +  verbatim Pasal/Ayat citations
-                        │  one-way handoff
-                        ▼
-                  Agent Regulasi (licensing)
-                        │  calls classify_kbli(description | code)
-                        ▼
-              KBLI 2020 code + official title
-                        (verified against the in-repo catalogue)
+```mermaid
+flowchart TD
+    IMG["Receipt photo"] --> K["Agent Keuangan<br/>Gemini multimodal"]
+    K -->|proposes lines| CJE{"commit_journal_entry<br/>deterministic guardrail"}
+    CJE -->|unbalanced| REJ["Rejected<br/>nothing stored"]
+    CJE -->|Assets = Liab + Equity| LED[("Session ledger")]
+    LED -->|one-way handoff| F["Agent Fiskal<br/>tax compliance"]
+    F -->|compute_pph_final| TAX["PPh Final 0,5%<br/>+ verbatim Pasal/Ayat"]
+    TAX -->|one-way handoff| R["Agent Regulasi<br/>licensing"]
+    R -->|classify_kbli| KBLI["KBLI 2020 code<br/>verified against catalogue"]
+
+    STAT[("statutes/<br/>PP 55/2022 + KBLI")] -.->|quoted verbatim| F
+    STAT -.->|verified against| R
+
+    subgraph GCP["Google Cloud"]
+        CR["Cloud Run<br/>ADK agent (Python)"]
+        WEB["Next.js console"]
+    end
+    WEB -->|/api/adk/* proxy| CR
+    CR --- K
 ```
 
 **The model proposes, the code enforces.** `commit_journal_entry` never trusts
@@ -205,3 +202,20 @@ The full workflow, commit-message convention, and pre-commit checks are in
 uv run pytest                        # Python: agent + tax engine
 git switch develop && git switch -c feature/<slice>
 ```
+
+## Licence
+
+**Apache-2.0** — see [`LICENSE`](./LICENSE). The licence covers the source code
+in this repository.
+
+It does **not** relicense the third-party material included for functionality.
+[`NOTICE`](./NOTICE) sets out the scope precisely:
+
+| Item | Status |
+| --- | --- |
+| Application source (Python + Next.js) | Apache-2.0 |
+| KBLI 2020 codes and titles (`statutes/kbli/`) | Factual government data, BPS — not relicensed here |
+| PP 55/2022 statute text (`statutes/`) | Publicly promulgated legislation — cited, not claimed |
+
+See [`docs/regulasi-provenance.md`](./docs/regulasi-provenance.md) for the source
+and verification status of each dataset.
