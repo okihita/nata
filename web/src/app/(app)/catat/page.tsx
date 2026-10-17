@@ -103,13 +103,24 @@ export default function CatatPage() {
               // receipt. Without this, a stationery purchase at a coffee shop
               // was classified as a stationery retailer (47611) rather than a
               // cafe (56303) — the agent can only see what it is told.
+              //
+              // Must NOT assume direction. An earlier version said the receipt
+              // was "only one purchase it made", which biased the agent into
+              // booking a SALES receipt (a cafe's own takings) as an expense:
+              // Beban Konsumsi / Kas instead of Kas / Pendapatan Penjualan.
+              // The schema says "Orang/Usaha: <name>" identifies the business
+              // that issued the slip, so an owner-issued receipt is a sale.
               text:
                 `Here is a receipt photo. Post it to the ledger.` +
                 (business
                   ? ` This business is "${business.name}", a ${business.type} ` +
                     `(entity: ${business.entity}). Use THAT as the business's ` +
                     `activity when classifying its KBLI code — the receipt is ` +
-                    `only one purchase it made, not what the business does.`
+                    `one piece of evidence, not what the business does.` +
+                    ` Decide the direction from the slip itself: if the issuer ` +
+                    `named on it is this business, it is a SALE (Kas/Debit, ` +
+                    `Pendapatan/Credit). If the issuer is a different supplier, ` +
+                    `it is a PURCHASE (Beban-or-Aset/Debit, Kas-or-Utang/Credit).`
                   : ""),
             },
             { inlineData: { mimeType: file.type || "image/png", data: base64 } } as never,
