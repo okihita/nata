@@ -1,10 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { Landmark, Info, ShieldCheck, Sparkles, Loader2, Building2 } from "lucide-react";
+import { Landmark, Info, ShieldCheck, Sparkles, Loader2, Building2, ScanLine } from "lucide-react";
+import Link from "next/link";
 
 import { PageHeader } from "@/components/app-sidebar";
 import { CitationList } from "@/components/citation-list";
+import { EmptyState } from "@/components/empty-state";
 import { Prose } from "@/components/prose";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -95,11 +97,16 @@ export default function PajakPage() {
   const attempted = useRef<number | null>(null);
   useEffect(() => {
     if (!ready || running) return;
+    // Nothing to assess without a ledger. Asking anyway costs a model call and
+    // can only return the tool's "no ledger entries yet" error — which the
+    // screen would then show as a problem, making a brand-new business look
+    // broken on first visit.
+    if (entries.length === 0) return;
     if (readCachedTax(tax.turnover)) return;
     if (attempted.current === tax.turnover) return;
     attempted.current = tax.turnover;
     void runAgent();
-  }, [ready, running, tax.turnover, runAgent]);
+  }, [ready, running, tax.turnover, runAgent, entries.length]);
 
   if (!ready) {
     return (
@@ -107,6 +114,34 @@ export default function PajakPage() {
         <Skeleton className="h-9 w-40" />
         <Skeleton className="h-96" />
       </div>
+    );
+  }
+
+  // A brand-new business has no turnover, so every figure below would be Rp 0
+  // and the agent call would be pointless. Point at the action that fills it
+  // instead, as the other screens do.
+  if (entries.length === 0) {
+    return (
+      <>
+        <PageHeader title={copy.pajak.title} subtitle={copy.pajak.subtitle} />
+        <Card>
+          <CardContent>
+            <EmptyState
+              icon={<Landmark className="size-6" />}
+              title={copy.pajak.emptyTitle}
+              body={copy.pajak.emptyBody}
+              actions={
+                <Button asChild size="sm">
+                  <Link href="/catat">
+                    <ScanLine className="mr-2 size-4" />
+                    {copy.dashboard.actionScan}
+                  </Link>
+                </Button>
+              }
+            />
+          </CardContent>
+        </Card>
+      </>
     );
   }
 

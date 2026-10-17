@@ -293,6 +293,9 @@ export const copy = {
     breakdown: "Rincian perhitungan",
     estimateOnly: "Estimasi",
     exemptionUsage: "Pemakaian kuota bebas pajak",
+    emptyTitle: "Pajak muncul setelah ada catatan",
+    emptyBody:
+      "PPh Final dihitung dari omzet yang tercatat di pembukuan Anda. Catat struk pertama dulu — penjualan atau pengeluaran — lalu pajaknya dihitung otomatis.",
     noQuotaTitle: "Tidak ada kuota bebas pajak",
     noQuotaBody:
       "Badan usaha tidak mendapat pembebasan Rp 500 juta, jadi seluruh omzet dikenai tarif 0,5% sejak rupiah pertama.",
