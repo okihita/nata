@@ -1,0 +1,12 @@
+# Keep the build context small and the image safe.
+# Without this, `COPY . .` would drag in node_modules and build output from the
+# host — slow uploads, and a chance of stale or platform-mismatched binaries.
+node_modules
+.next
+.git
+.env
+.env.*
+!.env.example
+npm-debug.log*
+*.tsbuildinfo
+next-env.d.ts
