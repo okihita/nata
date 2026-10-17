@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "site": "gonata",
+    "public": "web/public",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "run": {
+          "serviceId": "nata-web",
+          "region": "asia-southeast2"
+        }
+      }
+    ]
+  }
+}
