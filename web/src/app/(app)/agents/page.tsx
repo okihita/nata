@@ -12,20 +12,17 @@ import {
   X,
   Check,
   Download,
-  Lock,
   Cpu,
-  ArrowRight,
-  ExternalLink,
 } from "lucide-react";
 import { toast } from "sonner";
 
-import { PageHeader } from "@/components/app-sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AvatarMaya, AvatarDimas, AvatarArief, AvatarNata } from "@/components/agent-avatars";
 import { useLanguage } from "@/lib/copy";
 import { AGENT_PERSONAS, type AgentPersonId, type ChatMessage } from "@/lib/agents-persona-data";
+import { addEntry } from "@/lib/store";
 
 import { JudgeDeepDiveModal } from "@/components/judge-deep-dive-modal";
 
@@ -95,6 +92,21 @@ export default function AgentsPage() {
   };
 
   const handleExecuteArtifact = () => {
+    // If executing Maya's journal slip, post actual balanced double-entry to workspace ledger
+    if (artifact.type === "journal" && !isArtifactExecuted) {
+      const today = new Date().toISOString().split("T")[0];
+      addEntry({
+        date: today,
+        description: "Pembelian Bahan Baku Kopi & Susu Tunai (Agent Maya)",
+        lines: [
+          { account: "Persediaan Barang Dagang", debit: 350000, credit: 0 },
+          { account: "Kas", debit: 0, credit: 350000 },
+        ],
+        source: "manual",
+        receiptName: "Struk Pasar Baru",
+      });
+    }
+
     setExecutedArtifacts((prev) => ({ ...prev, [artifact.id]: true }));
     toast.success(isEn ? artifact.actionSuccessMessageEn : artifact.actionSuccessMessage);
   };
@@ -111,11 +123,9 @@ export default function AgentsPage() {
     const text = (textToSend ?? inputText).trim();
     if (!text && attachedFiles.length === 0) return;
 
-    const now = new Date();
-    const timeStr = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
-
+    const timeStr = "10:15";
     const userMsg: ChatMessage = {
-      id: `u-${Date.now()}`,
+      id: `u-${activePersonaId}-${chatMessages[activePersonaId].length + 1}`,
       sender: "user",
       text: text || (isEn ? "Uploaded attachment for analysis" : "Melampirkan dokumen untuk diperiksa"),
       timestamp: timeStr,
@@ -152,7 +162,7 @@ export default function AgentsPage() {
       }
 
       const agentMsg: ChatMessage = {
-        id: `a-${Date.now()}`,
+        id: `a-${activePersonaId}-${userMsg.id}-reply`,
         sender: "agent",
         text: reply,
         timestamp: timeStr,
