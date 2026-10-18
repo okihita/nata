@@ -828,6 +828,8 @@ export const copyId = {
     mythsSectionSubtitle: "Membongkar kesalahpahaman umum pengusaha UMKM dengan dasar hukum tertulis.",
     mythLabel: "Mitos Umum",
     factLabel: "Fakta Hukum & Regulasi",
+    viewMoreMyths: "Lihat Fakta Menarik Lainnya",
+    viewLessMyths: "Tampilkan Lebih Sedikit",
     myths: {
       myth_pt_threshold: {
         myth: "Bikin PT Perorangan otomatis bebas pajak omzet 500 juta sekaligus melindungi aset pribadi.",
@@ -846,6 +848,24 @@ export const copyId = {
         fact: "Salah kode KBLI bisa menyebabkan rekening merchant QRIS dibekukan, penolakan izin edar BPOM/Dinkes, atau terkena audit verifikasi perizinan berusaha.",
         statuteText:
           "Peraturan BPS No. 2 Tahun 2020: Kode KBLI 5-digit adalah standar klasifikasi baku nasional yang mengikat perizinan berusaha dan pelaporan pajak.",
+      },
+      myth_qris_tax: {
+        myth: "Potongan MDR QRIS 0,3% adalah pajak yang disetor langsung ke kas negara atau kantor pajak (DJP).",
+        fact: "Bukan pajak. Potongan 0,3% Merchant Discount Rate (MDR) adalah bagi hasil jasa penyedia sistem pembayaran (PJP & ASPI) sesuai aturan Bank Indonesia. MDR tidak memotong kewajiban PPh Final usaha Anda.",
+        statuteText:
+          "PADG BI No. 21/18/PADG/2019 & UU HPP: Biaya MDR QRIS adalah beban jasa sistem pembayaran perbankan, bukan penerimaan pajak negara.",
+      },
+      myth_cv_draw: {
+        myth: "Pengambilan uang kas (Prive) pemilik dari CV dikenakan pajak penghasilan dividen lagi.",
+        fact: "Tidak dipajaki lagi. Berdasarkan UU PPh Pasal 4 ayat (3) huruf i, bagian laba yang diterima anggota perseroan komanditer (CV) bukan objek pajak karena laba CV sudah dipajaki di tingkat badan usaha.",
+        statuteText:
+          "UU PPh Pasal 4 ayat (3) huruf i: 'Bagian laba yang diterima atau diperoleh anggota dari perseroan komanditer... dikecualikan dari objek pajak.'",
+      },
+      myth_bpjs_mandatory: {
+        myth: "Usaha kecil dan UMKM wajib membayar paket BPJS Ketenagakerjaan setara korporasi besar.",
+        fact: "PP 37/2021 dan Permenaker No. 5/2021 menyediakan skema khusus pekerja BPU/informal UMKM yang sangat terjangkau, mulai dari Rp 16.800/bulan per orang untuk Jaminan Kecelakaan Kerja dan Kematian.",
+        statuteText:
+          "PP 37/2021 & Permenaker No. 5/2021: Program jaminan sosial ketenagakerjaan bagi pekerja bukan penerima upah (BPU) disesuaikan dengan kemampuan usaha mikro.",
       },
     },
   },

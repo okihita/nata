@@ -823,6 +823,8 @@ export const copyEn = {
     mythsSectionSubtitle: "Debunking common compliance misconceptions with verbatim statutory citations.",
     mythLabel: "Common Myth",
     factLabel: "Legal Reality & Statute",
+    viewMoreMyths: "View More Fun Facts",
+    viewLessMyths: "Show Fewer",
     myths: {
       myth_pt_threshold: {
         myth: "Creating an Individual PT (PT Perorangan) gives you the Rp 500M tax exemption while protecting your personal assets.",
@@ -841,6 +843,24 @@ export const copyEn = {
         fact: "Misclassification can freeze bank merchant accounts, trigger OSS licensing audits, or classify your business under foreign investment negative list restrictions.",
         statuteText:
           "Peraturan BPS No. 2 Tahun 2020: Kode KBLI 5-digit adalah standar klasifikasi baku nasional yang mengikat perizinan berusaha dan pelaporan pajak.",
+      },
+      myth_qris_tax: {
+        myth: "QRIS settlement fees (MDR 0.3%) are an Indonesian tax collected by the tax authority (DJP).",
+        fact: "False. The 0.3% MDR is a payment processing fee paid to acquirers and payment switches regulated by Bank Indonesia. It is not income tax (PPh) and cannot offset your business tax obligations.",
+        statuteText:
+          "PADG BI No. 21/18/PADG/2019 & UU HPP: Biaya MDR QRIS adalah beban jasa sistem pembayaran perbankan, bukan penerimaan pajak negara.",
+      },
+      myth_cv_draw: {
+        myth: "Profit withdrawals (Prive) taken by founders from a CV are taxed again as personal dividend income.",
+        fact: "False. Under Article 4 paragraph (3) letter i of the Indonesian Income Tax Law, profit distributions to CV partners are explicitly non-taxable object income because the CV already paid its corporate tax.",
+        statuteText:
+          "UU PPh Pasal 4 ayat (3) huruf i: 'Bagian laba yang diterima atau diperoleh anggota dari perseroan komanditer... dikecualikan dari objek pajak.'",
+      },
+      myth_bpjs_mandatory: {
+        myth: "Micro businesses (UMKM) are legally required to pay full enterprise-rate BPJS Ketenagakerjaan packages.",
+        fact: "Government Regulation PP 37/2021 provides dedicated affordable social security schemes for micro enterprises (BPU / informal wage workers) starting from just Rp 16,800/month per staff for work injury & death protection.",
+        statuteText:
+          "PP 37/2021 & Permenaker No. 5/2021: Program jaminan sosial ketenagakerjaan bagi pekerja bukan penerima upah (BPU) disesuaikan dengan kemampuan usaha mikro.",
       },
     },
   },

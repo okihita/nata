@@ -175,17 +175,32 @@ export const ACADEMY_LESSONS: AcademyLesson[] = [
 export const MYTH_FACTS: MythFactItem[] = [
   {
     id: "myth_pt_threshold",
-    targetPersona: "persona_b",
+    targetPersona: "all",
     statute: "PP 55/2022 Pasal 60 ayat (2)",
   },
   {
     id: "myth_tax_expense",
-    targetPersona: "persona_a",
+    targetPersona: "all",
     statute: "PP 55/2022 Pasal 57 ayat (1)",
   },
   {
     id: "myth_kbli_arbitrary",
     targetPersona: "all",
     statute: "Peraturan BPS No. 2/2020 (KBLI 2020)",
+  },
+  {
+    id: "myth_qris_tax",
+    targetPersona: "all",
+    statute: "UU HPP & Surat Edaran DJP No. SE-14/PJ/2022",
+  },
+  {
+    id: "myth_cv_draw",
+    targetPersona: "all",
+    statute: "UU PPh Pasal 4 ayat (3) huruf i",
+  },
+  {
+    id: "myth_bpjs_mandatory",
+    targetPersona: "all",
+    statute: "UU No. 24/2011 & PP 37/2021 (Jamsostek UMKM)",
   },
 ];

@@ -8,6 +8,9 @@ import {
   BookOpen,
   Clock,
   ExternalLink,
+  ChevronDown,
+  ChevronUp,
+  Sparkles,
 } from "lucide-react";
 
 import { PageHeader } from "@/components/app-sidebar";
@@ -27,6 +30,9 @@ export default function AcademyPage() {
     "all" | "accounting_101" | "tax_compliance" | "licensing_legal" | "operations_team"
   >("all");
   const [activeLessonId, setActiveLessonId] = useState<string | null>(null);
+  const [showAllMyths, setShowAllMyths] = useState(false);
+
+  const visibleMyths = showAllMyths ? MYTH_FACTS : MYTH_FACTS.slice(0, 3);
 
   // Filter lessons specifically for the Business track (Kuliah Bisnis)
   const businessLessons = useMemo(() => {
@@ -256,38 +262,62 @@ export default function AcademyPage() {
         </div>
       )}
 
-      {/* Myth vs. Fact Flashcards */}
-      <div className="mt-12 space-y-4">
-        <div className="space-y-1">
-          <h3 className="text-sm font-semibold tracking-tight">
-            {copy.academy.mythsSectionTitle}
-          </h3>
-          <p className="text-xs text-muted-foreground">
-            {copy.academy.mythsSectionSubtitle}
-          </p>
+      {/* Fun Facts / Myth vs. Fact Section (Blog Landing Style) */}
+      <div className="mt-12 space-y-5 rounded-2xl border bg-gradient-to-b from-muted/20 to-background p-6">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="flex size-6 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Sparkles className="size-3.5" />
+              </span>
+              <h3 className="text-base font-semibold tracking-tight">
+                {copy.academy.mythsSectionTitle}
+              </h3>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {copy.academy.mythsSectionSubtitle}
+            </p>
+          </div>
+
+          <Button
+            variant="outline"
+            size="sm"
+            className="self-start sm:self-auto gap-1.5 text-xs font-medium cursor-pointer"
+            onClick={() => setShowAllMyths((prev) => !prev)}
+          >
+            {showAllMyths ? copy.academy.viewLessMyths : copy.academy.viewMoreMyths}
+            {showAllMyths ? <ChevronUp className="size-3.5" /> : <ChevronDown className="size-3.5" />}
+          </Button>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
-          {MYTH_FACTS.map((mf) => {
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {visibleMyths.map((mf) => {
             const item = copy.academy.myths[mf.id as keyof typeof copy.academy.myths];
             if (!item) return null;
 
             return (
-              <Card key={mf.id} className="border-border/80 bg-card p-4 space-y-3">
-                <div className="space-y-1">
-                  <span className="text-[10px] font-bold tracking-wider uppercase text-tone-oranye">
-                    ⚠️ {copy.academy.mythLabel}
-                  </span>
-                  <p className="text-xs font-medium text-foreground/85">&ldquo;{item.myth}&rdquo;</p>
+              <Card
+                key={mf.id}
+                className="flex flex-col justify-between border-border/80 bg-card p-4 space-y-3 transition-all hover:border-primary/40 hover:shadow-xs"
+              >
+                <div className="space-y-3">
+                  <div className="space-y-1">
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold tracking-wider uppercase text-tone-oranye">
+                      <span>⚠️</span> {copy.academy.mythLabel}
+                    </span>
+                    <p className="text-xs font-medium text-foreground/90 leading-snug">
+                      &ldquo;{item.myth}&rdquo;
+                    </p>
+                  </div>
+                  <Separator />
+                  <div className="space-y-1">
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold tracking-wider uppercase text-tone-hijau">
+                      <span>✓</span> {copy.academy.factLabel}
+                    </span>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{item.fact}</p>
+                  </div>
                 </div>
-                <Separator />
-                <div className="space-y-1">
-                  <span className="text-[10px] font-bold tracking-wider uppercase text-tone-hijau">
-                    ✓ {copy.academy.factLabel}
-                  </span>
-                  <p className="text-xs text-muted-foreground">{item.fact}</p>
-                </div>
-                <div className="rounded bg-muted/40 p-2 text-[10px] font-mono text-muted-foreground border">
+                <div className="rounded bg-muted/40 p-2 text-[10px] font-mono text-muted-foreground border mt-2">
                   {item.statuteText}
                 </div>
               </Card>
