@@ -863,9 +863,9 @@ export default function RoutinesPage() {
                         </span>
                       </div>
 
-                      <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                        {isEn ? exec.findingSummaryEn : exec.findingSummary}
-                      </p>
+                      <div className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                        <Prose text={isEn ? exec.findingSummaryEn : exec.findingSummary} />
+                      </div>
 
                       <div className="flex items-center justify-end pt-2 border-t border-border/40 mt-2 text-xs">
                         <span className="text-primary font-medium flex items-center gap-0.5">
