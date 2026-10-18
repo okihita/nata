@@ -1,11 +1,17 @@
 # Nata — Web Console
 
-The product UI for **Nata**, an autonomous back-office & compliance engine for
-Indonesian SMBs, built for the **Google Cloud AI Builder Cup 2026**.
+The Canva-simple web console for **Nata** — the 24/7 autonomous business suite that **runs your business admin while you sleep**.
 
-This is a full **dashboard application**, not a single demo screen. It is
-written for **shop owners, not programmers** — no JSON, no tool traces, no
-accounting jargon on the owner-facing surfaces.
+Built for Indonesian MSMEs (warung, kafe, retail, online shops) for the **Google Cloud AI Builder Cup 2026**.
+
+This is a full **business operations suite**, not just an accounting calculator. It is written for **everyday business owners, not accountants or programmers** — **convenience first, compliance second**. No intimidating debit-credit debacles, no raw legal codes without plain-language explanations.
+
+### The 4 Autonomous Bot Staff
+- 🤖 **Akuntan Pribadi** (`/record`): Scans receipts, verifies mathematical balance, commits to SAK EMKM ledgers.
+- 🏛️ **Konsultan Pajak** (`/taxes`): Tracks 0.5% PPh Final and safeguards your Rp 500M personal exemption under PP 55/2022.
+- 🛡️ **Spesialis Legal & KBLI** (`/licensing`): Maps plain words to official 5-digit KBLI 2020 codes and clarifies NIB requirements.
+- ✨ **Manajer Keuangan Digital** (`/agents`): Coordinates all staff workflows atomically 24/7.
+- 🎓 **Kuliah Bisnis / Academy** (`/academy`): Bite-sized interactive business lessons & mythbusters to demystify financial terms.
 
 ## Information architecture
 

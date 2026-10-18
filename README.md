@@ -1,23 +1,20 @@
 # Nata
 
-**Receipt photo → SAK EMKM double-entry journal → PPh Final tax → KBLI 2020
-licensing, each with its statutory citation.**
+**Runs your business admin while you sleep.**  
+*Photo a receipt, talk to a bot, or let your AI staff handle the rest. Autonomous bookkeeping, 0.5% MSME tax defense, and verified licensing — convenience first, statutory compliance under the hood.*
 
-Nata is an autonomous back-office & compliance engine for Indonesian SMBs,
-built for the **Google Cloud AI Builder Cup 2026**.
+Nata is an autonomous 24/7 business suite for Indonesian MSMEs (warung, kafe, retail, online shops), built for the **Google Cloud AI Builder Cup 2026**. Instead of expensive payroll or late-night spreadsheet dread, owners get a dedicated digital back-office team that keeps books balanced and legal filings bank-ready.
 
-Three agents are live, running as one one-way cascade:
+Our multi-agent autonomous team:
 
-| Agent | What it does |
-| --- | --- |
-| **Agent Keuangan** | Reads a receipt image and commits a balanced double-entry journal entry under **SAK EMKM** (the Indonesian financial-accounting standard for micro, small & medium entities). |
-| **Agent Fiskal** | Receives the committed journal, computes the **PPh Final UMKM 0,5%** liability (PP 55/2022) and grounds every figure in an exact Pasal/Ayat citation. |
-| **Agent Regulasi** | Classifies the business's activity into its **KBLI 2020** code and grounds it in the official 5-digit catalogue. |
+| Bot Staff | Role & Everyday Outcome | Compliance Power Under the Hood |
+| --- | --- | --- |
+| 🤖 **Akuntan Pribadi** (`Agent Keuangan`) | Reads receipts & invoices in seconds. Posts balanced ledgers without manual math. | Guaranteed **SAK EMKM** standard compliance; mathematical zero-delta guardrail (`Assets = Liab + Equity`). |
+| 🏛️ **Konsultan Pajak** (`Agent Fiskal`) | Automates monthly tax set-asides and protects your Rp 500M personal exemption. | **PP 55/2022** statutory calculator with verbatim article citations. |
+| 🛡️ **Spesialis Legal** (`Agent Regulasi`) | Turns plain-language business descriptions into verified NIB permits. | Maps against official **KBLI 2020** 1,790-code catalog under OSS RBA. |
+| ✨ **Manajer Keuangan** (`Orchestrator`) | Coordinates the bots behind the scenes so the owner gets peace of mind. | Atomic handoffs between agents, preventing hallucinated or orphan transactions. |
 
-This is a Python [ADK](https://google.github.io/adk-docs/) project with a
-Next.js console. Gemini multimodal parses the receipt; deterministic Python
-tools enforce the accounting identity `Assets = Liabilities + Equity`, do the
-tax arithmetic, and verify classification codes against the shipped catalogue.
+This is a Python [ADK](https://google.github.io/adk-docs/) project with a Canva-simple Next.js console. Gemini multimodal parses raw documents; deterministic Python tools enforce strict accounting integrity, tax arithmetic, and regulatory verification.
 
 > **Branching:** this repo uses a lite git flow (`main` / `develop` /
 > `feature/*`). See [AGENTS.md](./AGENTS.md) before making changes.
