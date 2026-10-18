@@ -20,16 +20,16 @@ export default function OnboardingPage() {
 
   const handleSelectPersona = (persona: "persona_a" | "persona_b") => {
     switchBusiness(DEMO_BUSINESS_PROFILES[persona]);
-    router.push("/dashboard");
+    router.replace("/dashboard");
   };
 
   const handleCreateCustom = () => {
-    router.push("/business");
+    router.replace("/business");
   };
 
   const handleSkip = () => {
     switchBusiness(DEMO_BUSINESS_PROFILES.persona_a);
-    router.push("/dashboard");
+    router.replace("/dashboard");
   };
 
   return (
