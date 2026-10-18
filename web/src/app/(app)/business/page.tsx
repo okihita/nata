@@ -216,12 +216,9 @@ export default function UsahaPage() {
                   </Label>
                   <span className="text-[10px] text-muted-foreground font-mono">PP 55/2022</span>
                 </div>
-                <p className="-mt-1 text-[11px] text-muted-foreground leading-normal">
-                  {copy.usaha.entityHint}
-                </p>
                 <div
                   id="entity-group"
-                  className="grid gap-2"
+                  className="grid grid-cols-1 md:grid-cols-3 gap-2.5"
                   role="radiogroup"
                   aria-label={copy.usaha.entityLabel}
                 >
@@ -237,49 +234,48 @@ export default function UsahaPage() {
                         tabIndex={active ? 0 : -1}
                         onClick={() => setEntity(option.id)}
                         className={cn(
-                          "flex items-start gap-3 rounded-lg border p-3 text-left transition cursor-pointer",
+                          "flex flex-col justify-between rounded-lg border p-3 text-left transition cursor-pointer relative",
                           active
                             ? "border-primary bg-primary/10 shadow-xs"
                             : "hover:bg-muted/50 border-border bg-card",
                         )}
                       >
-                        <span
-                          className={cn(
-                            "mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border",
-                            active ? "border-primary bg-primary" : "border-input",
-                          )}
-                        >
-                          {active && <Check className="size-3 text-primary-foreground" />}
-                        </span>
-                        <span className="min-w-0 flex-1">
-                          <span className="flex flex-wrap items-center gap-2">
-                            <span className="text-xs font-semibold">
+                        <div className="space-y-1.5">
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="text-xs font-semibold line-clamp-1">
                               {copy.entityLabels?.[option.id] ?? option.label}
                             </span>
                             <span
                               className={cn(
-                                "rounded-full px-2 py-0.5 text-[10px] font-medium",
-                                option.exemption
-                                  ? "bg-tone-hijau-bg text-tone-hijau"
-                                  : "bg-muted text-muted-foreground",
+                                "grid size-3.5 shrink-0 place-items-center rounded-full border",
+                                active ? "border-primary bg-primary" : "border-input",
                               )}
                             >
-                              {option.exemption
-                                ? copy.usaha.entityExempt
-                                : copy.usaha.entityTaxed}
+                              {active && <Check className="size-2.5 text-primary-foreground" />}
                             </span>
-                          </span>
-                          <span className="mt-1 block text-[11px] text-muted-foreground">
+                          </div>
+                          <p className="text-[11px] text-muted-foreground leading-snug line-clamp-2">
                             {copy.usaha.entityHints?.[option.id] ?? option.hint}
+                          </p>
+                        </div>
+                        <div className="mt-2.5 pt-2 border-t border-border/50">
+                          <span
+                            className={cn(
+                              "inline-block rounded px-1.5 py-0.5 text-[9px] font-medium tracking-wide uppercase",
+                              option.exemption
+                                ? "bg-tone-hijau-bg text-tone-hijau"
+                                : "bg-muted text-muted-foreground",
+                            )}
+                          >
+                            {option.exemption
+                              ? copy.usaha.entityExempt
+                              : copy.usaha.entityTaxed}
                           </span>
-                        </span>
+                        </div>
                       </button>
                     );
                   })}
                 </div>
-                <p className="text-[10px] text-muted-foreground pt-1">
-                  {copy.usaha.entityCitation}
-                </p>
               </div>
 
               {/* Submit Buttons */}
