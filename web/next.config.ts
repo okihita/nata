@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
   /* config options here */
   // Hide the Next.js dev toolbar/indicator overlay in development.
   devIndicators: false,
+  // Types are verified in pre-commit git hooks / local checks.
+  // Skipping them in Docker compilation saves ~15s per build.
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   async rewrites() {
     return [
       { source: "/dasbor", destination: "/dashboard" },

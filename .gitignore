@@ -22,6 +22,7 @@ dist/
 
 # Local scratch (screenshots, throwaway scripts)
 .scratch/
+.firebase/
 
 # OS
 .DS_Store
