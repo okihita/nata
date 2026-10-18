@@ -50,11 +50,11 @@ export default function GuidePage() {
             >
               <CardHeader className="p-4 pb-2">
                 <div className="flex items-center justify-between gap-2">
-                  <Badge variant="outline" className="text-[10px]">
+                  <Badge variant="outline" className="text-xs">
                     <Compass className="mr-1 size-3 text-primary" />
                     {copy.academy.categories[lesson.category]}
                   </Badge>
-                  <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Clock className="size-3" />
                     <span>
                       {lesson.estimatedMinutes} {copy.academy.minRead}
@@ -71,7 +71,7 @@ export default function GuidePage() {
 
               <CardContent className="p-4 pt-2 space-y-3">
                 {lesson.statuteCitation && (
-                  <div className="rounded border bg-muted/30 px-2 py-1 text-[11px] text-muted-foreground font-mono truncate">
+                  <div className="rounded border bg-muted/30 px-2 py-1 text-xs text-muted-foreground font-mono truncate">
                     {lesson.statuteCitation}
                   </div>
                 )}
@@ -117,7 +117,7 @@ export default function GuidePage() {
           <Card className="max-w-xl w-full max-h-[85vh] flex flex-col shadow-xl border-primary/20">
             <CardHeader className="border-b p-4">
               <div className="flex items-center justify-between gap-2">
-                <Badge variant="outline" className="text-[11px]">
+                <Badge variant="outline" className="text-xs">
                   {copy.academy.categories[activeLesson.category]}
                 </Badge>
                 <Button
