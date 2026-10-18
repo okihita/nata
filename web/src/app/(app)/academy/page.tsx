@@ -141,13 +141,7 @@ export default function AcademyPage() {
                   </CardDescription>
                 </CardHeader>
 
-                <CardContent className="p-4 pt-2 space-y-3">
-                  {lesson.statuteCitation && (
-                    <div className="rounded border bg-muted/30 px-2 py-1 text-xs text-muted-foreground font-mono truncate">
-                      § {lesson.statuteCitation}
-                    </div>
-                  )}
-
+                <CardContent className="p-4 pt-2">
                   <div className="flex items-center justify-between pt-1">
                     <Button
                       variant="secondary"
