@@ -436,6 +436,9 @@ export default function UsahaPage() {
                   disabled={!isEditing}
                   className="font-mono text-xs bg-background disabled:opacity-85 disabled:cursor-not-allowed"
                 />
+                <p className="text-[10px] text-muted-foreground leading-normal">
+                  {copy.usaha.nibExplainer}
+                </p>
               </div>
 
               {/* Verified KBLI Badge */}
