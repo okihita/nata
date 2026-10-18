@@ -14,7 +14,7 @@
  * inherits the brand palette, stays sharp at any DPI, and costs a few KB.
  */
 
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const LINES = [
   { account: "Beban Perlengkapan", debit: "100.000", credit: "—" },
@@ -56,10 +56,12 @@ export function HeroProof() {
         {/* ── the output: the posting it becomes ────────────────────────── */}
         <div className="rounded-xl border bg-card shadow-sm">
           <div className="flex items-center gap-2 border-b bg-muted/40 px-3 py-2">
-            <Check className="size-3.5 text-tone-hijau" />
-            <span className="text-[11px] font-medium">Jurnal tersimpan</span>
+            <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-mono font-medium">
+              23:45 WIB 🌙
+            </span>
+            <span className="text-[11px] font-medium text-foreground">Diproses Otomatis</span>
             <span className="ml-auto rounded-full bg-tone-hijau-bg px-2 py-0.5 text-[10px] font-medium text-tone-hijau">
-              Seimbang
+              ✓ Seimbang
             </span>
           </div>
 

@@ -23,6 +23,8 @@ import {
   ShieldCheck,
   Sparkles,
   Landmark,
+  Bot,
+  GraduationCap,
 } from "lucide-react";
 
 import { HeroProof } from "@/components/hero-proof";
@@ -30,6 +32,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { useLanguage } from "@/lib/language";
+import {
+  AvatarMaya,
+  AvatarDimas,
+  AvatarArief,
+  AvatarNata,
+} from "@/components/agent-avatars";
 
 export default function LandingPage() {
   const { copy } = useLanguage();
@@ -48,12 +56,20 @@ export default function LandingPage() {
           </Link>
           <div className="flex items-center gap-3">
             <nav className="hidden items-center gap-6 text-sm text-muted-foreground sm:flex">
+              <a href="#tim-asisten" className="transition hover:text-foreground flex items-center gap-1.5">
+                <Bot className="size-3.5 text-primary" />
+                <span>{L.navAgents}</span>
+              </a>
               <a href="#cara-kerja" className="transition hover:text-foreground">
                 {L.navHow}
               </a>
               <a href="#kenapa" className="transition hover:text-foreground">
                 {L.navWhy}
               </a>
+              <Link href="/academy" className="transition hover:text-foreground flex items-center gap-1.5">
+                <GraduationCap className="size-3.5 text-primary" />
+                <span>{L.navAcademy}</span>
+              </Link>
             </nav>
             <LanguageSwitcher />
             <Button asChild size="sm">
@@ -116,6 +132,60 @@ export default function LandingPage() {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Autonomous Bot Staff Showcase */}
+      <section id="tim-asisten" className="scroll-mt-16 mx-auto max-w-6xl px-4 py-16 sm:py-24">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border bg-primary/10 text-primary px-3 py-1 text-xs font-medium">
+              <Bot className="size-3.5" />
+              <span>Tim Bisnis Otonom 24/7</span>
+            </div>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+              {L.teamTitle}
+            </h2>
+            <p className="mt-2 text-muted-foreground max-w-2xl text-sm sm:text-base">
+              {L.teamSubtitle}
+            </p>
+          </div>
+          <Button asChild variant="outline" size="sm" className="gap-1.5 self-start sm:self-auto">
+            <Link href="/agents">
+              <span>Buka Ruang Kerja Bot</span>
+              <ArrowRight className="size-3.5" />
+            </Link>
+          </Button>
+        </div>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {L.teamMembers.map((member, idx) => (
+            <Card key={member.name} className="h-full bg-card hover:border-primary/40 transition-colors">
+              <CardContent className="pt-6 flex flex-col h-full">
+                <div className="flex items-center gap-3">
+                  {idx === 0 && <AvatarMaya size={42} />}
+                  {idx === 1 && <AvatarDimas size={42} />}
+                  {idx === 2 && <AvatarArief size={42} />}
+                  {idx === 3 && <AvatarNata size={42} />}
+                  <div>
+                    <h3 className="text-sm font-semibold text-foreground">{member.name}</h3>
+                    <p className="text-xs text-primary font-medium">{member.role}</p>
+                  </div>
+                </div>
+
+                <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
+                  {member.tagline}
+                </p>
+
+                <div className="mt-auto pt-4 border-t border-border/60">
+                  <div className="flex items-start gap-1.5 text-xs text-foreground font-medium">
+                    <Check className="size-3.5 text-emerald-600 mt-0.5 shrink-0" />
+                    <span>{member.benefit}</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </section>
 
