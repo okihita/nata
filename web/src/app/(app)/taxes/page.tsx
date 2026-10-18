@@ -190,7 +190,7 @@ export default function PajakPage() {
               <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                 {individual ? copy.pajak.entityExemptBody : copy.pajak.entityTaxedBody}
               </p>
-              <p className="mt-2 text-[11px] text-muted-foreground">
+              <p className="mt-2 text-xs text-muted-foreground">
                 {copy.entityLabels?.[business.entity] ?? ENTITY_LABEL[business.entity]} · {copy.pajak.entityChangeHint}
               </p>
             </div>
