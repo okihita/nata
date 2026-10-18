@@ -34,7 +34,7 @@ export function MobileTabBar() {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex flex-col items-center gap-1 px-1 py-2.5 text-[11px] transition",
+                  "flex flex-col items-center gap-1 px-1 py-2 text-xs transition",
                   active ? "font-medium text-primary" : "text-muted-foreground",
                 )}
               >

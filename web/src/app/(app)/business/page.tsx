@@ -279,7 +279,7 @@ export default function UsahaPage() {
                       <span className="block text-xs font-semibold">
                         {copy.typeLabels?.[option.id] ?? option.label}
                       </span>
-                      <span className="block text-[11px] text-muted-foreground">
+                      <span className="block text-xs text-muted-foreground">
                         {copy.typeHints?.[option.id] ?? option.hint}
                       </span>
                     </button>
@@ -293,7 +293,7 @@ export default function UsahaPage() {
                   <Label htmlFor="entity-group" className="text-xs font-semibold">
                     {copy.usaha.entityLabel}
                   </Label>
-                  <span className="text-[10px] text-muted-foreground font-mono">PP 55/2022</span>
+                  <span className="text-xs text-muted-foreground font-mono">PP 55/2022</span>
                 </div>
                 <div
                   id="entity-group"
@@ -335,14 +335,14 @@ export default function UsahaPage() {
                               {active && <Check className="size-2.5 text-primary-foreground" />}
                             </span>
                           </div>
-                          <p className="text-[11px] text-muted-foreground leading-snug line-clamp-2">
+                          <p className="text-xs text-muted-foreground leading-snug line-clamp-2">
                             {copy.usaha.entityHints?.[option.id] ?? option.hint}
                           </p>
                         </div>
                         <div className="mt-2.5 pt-2 border-t border-border/50">
                           <span
                             className={cn(
-                              "inline-block rounded px-1.5 py-0.5 text-[9px] font-medium tracking-wide uppercase",
+                              "inline-block rounded px-1.5 py-0.5 text-xs font-medium tracking-wide uppercase",
                               option.exemption
                                 ? "bg-tone-hijau-bg text-tone-hijau"
                                 : "bg-muted text-muted-foreground",
@@ -404,7 +404,7 @@ export default function UsahaPage() {
                   <Label htmlFor="biz-npwp" className="text-xs font-semibold">
                     {copy.usaha.npwpLabel}
                   </Label>
-                  <p className="text-[11px] text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {copy.usaha.npwpMeaning}
                   </p>
                 </div>
@@ -424,7 +424,7 @@ export default function UsahaPage() {
                   <Label htmlFor="biz-nib" className="text-xs font-semibold">
                     {copy.usaha.nibLabel}
                   </Label>
-                  <p className="text-[11px] text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {copy.usaha.nibMeaning}
                   </p>
                 </div>
@@ -436,7 +436,7 @@ export default function UsahaPage() {
                   disabled={!isEditing}
                   className="font-mono text-xs bg-background disabled:opacity-85 disabled:cursor-not-allowed"
                 />
-                <p className="text-[10px] text-muted-foreground leading-normal">
+                <p className="text-xs text-muted-foreground leading-normal">
                   {copy.usaha.nibExplainer}
                 </p>
               </div>
@@ -449,11 +449,11 @@ export default function UsahaPage() {
                     <span className="text-xs font-semibold">{copy.usaha.kbliLabel}</span>
                   </div>
                   {business?.kbliCode ? (
-                    <Badge variant="secondary" className="bg-tone-hijau-bg text-tone-hijau text-[10px]">
+                    <Badge variant="secondary" className="bg-tone-hijau-bg text-tone-hijau text-xs">
                       {copy.perizinan.verified}
                     </Badge>
                   ) : (
-                    <Badge variant="outline" className="text-[10px] text-muted-foreground">
+                    <Badge variant="outline" className="text-xs text-muted-foreground">
                       {copy.usaha.kbliNone}
                     </Badge>
                   )}
@@ -469,7 +469,7 @@ export default function UsahaPage() {
                       </span>
                     </div>
                     {business.kbliHierarchy && (
-                      <p className="text-[10px] text-muted-foreground">
+                      <p className="text-xs text-muted-foreground">
                         {business.kbliHierarchy.map((h) => h.title).join(" → ")}
                       </p>
                     )}
@@ -522,7 +522,7 @@ export default function UsahaPage() {
                           </div>
                           <Badge
                             variant={doc.status === "verified" ? "default" : "secondary"}
-                            className="text-[9px] uppercase font-mono px-1.5 py-0 shrink-0"
+                            className="text-xs uppercase font-mono px-1.5 py-0 shrink-0"
                           >
                             {doc.status === "verified"
                               ? copy.usaha.statusVerified
@@ -532,11 +532,11 @@ export default function UsahaPage() {
                           </Badge>
                         </div>
 
-                        <div className="font-mono text-[11px] text-foreground/90 font-medium">
+                        <div className="font-mono text-xs text-foreground/90 font-medium">
                           {doc.number}
                         </div>
 
-                        <div className="flex flex-wrap items-center justify-between text-[10px] text-muted-foreground pt-1 border-t border-border/60 gap-1">
+                        <div className="flex flex-wrap items-center justify-between text-xs text-muted-foreground pt-1 border-t border-border/60 gap-1">
                           <span className="flex items-center gap-1 truncate">
                             <Building2 className="size-3 shrink-0" />
                             <span className="truncate">{doc.issuer}</span>
@@ -584,18 +584,18 @@ export default function UsahaPage() {
                 key={diff.label}
                 className="rounded-lg border border-border bg-muted/30 p-2.5 space-y-1.5 text-xs"
               >
-                <span className="font-semibold text-muted-foreground block text-[11px]">
+                <span className="font-semibold text-muted-foreground block text-xs">
                   {diff.label}
                 </span>
                 <div className="grid grid-cols-2 gap-2 items-center">
                   <div className="rounded border border-border/70 bg-background/60 p-2 text-foreground/80">
-                    <span className="block text-[9px] uppercase tracking-wider text-muted-foreground font-semibold mb-0.5">
+                    <span className="block text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-0.5">
                       {copy.usaha.beforeLabel}
                     </span>
                     <span className="line-clamp-2 break-all">{diff.before}</span>
                   </div>
                   <div className="rounded border border-primary/40 bg-primary/5 p-2 text-foreground font-medium">
-                    <span className="block text-[9px] uppercase tracking-wider text-primary font-semibold mb-0.5">
+                    <span className="block text-xs uppercase tracking-wider text-primary font-semibold mb-0.5">
                       {copy.usaha.afterLabel}
                     </span>
                     <span className="line-clamp-2 break-all">{diff.after}</span>

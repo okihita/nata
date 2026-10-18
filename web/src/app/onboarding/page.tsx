@@ -78,7 +78,7 @@ export default function OnboardingPage() {
             <div>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <Badge variant="default" className="text-[11px] font-medium">
+                  <Badge variant="default" className="text-xs font-medium">
                     {O.cards.retail.badge}
                   </Badge>
                   <ShoppingBag className="size-5 text-primary" />
@@ -87,7 +87,7 @@ export default function OnboardingPage() {
                 <CardDescription className="text-xs text-foreground/80 font-medium mt-1">
                   {O.cards.retail.archetype}
                 </CardDescription>
-                <p className="text-[11px] text-muted-foreground">{O.cards.retail.entity}</p>
+                <p className="text-xs text-muted-foreground">{O.cards.retail.entity}</p>
               </CardHeader>
               <CardContent className="pt-2">
                 <ul className="space-y-2 text-xs text-muted-foreground">
@@ -116,7 +116,7 @@ export default function OnboardingPage() {
             <div>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <Badge variant="secondary" className="text-[11px] font-medium">
+                  <Badge variant="secondary" className="text-xs font-medium">
                     {O.cards.fnb.badge}
                   </Badge>
                   <Coffee className="size-5 text-muted-foreground" />
@@ -125,7 +125,7 @@ export default function OnboardingPage() {
                 <CardDescription className="text-xs text-foreground/80 font-medium mt-1">
                   {O.cards.fnb.archetype}
                 </CardDescription>
-                <p className="text-[11px] text-muted-foreground">{O.cards.fnb.entity}</p>
+                <p className="text-xs text-muted-foreground">{O.cards.fnb.entity}</p>
               </CardHeader>
               <CardContent className="pt-2">
                 <ul className="space-y-2 text-xs text-muted-foreground">
@@ -155,7 +155,7 @@ export default function OnboardingPage() {
             <div>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <Badge variant="outline" className="text-[11px] font-medium text-muted-foreground">
+                  <Badge variant="outline" className="text-xs font-medium text-muted-foreground">
                     {O.cards.scratch.badge}
                   </Badge>
                   <PlusCircle className="size-5 text-muted-foreground" />
@@ -164,7 +164,7 @@ export default function OnboardingPage() {
                 <CardDescription className="text-xs text-foreground/80 font-medium mt-1">
                   {O.cards.scratch.archetype}
                 </CardDescription>
-                <p className="text-[11px] text-muted-foreground">{O.cards.scratch.entity}</p>
+                <p className="text-xs text-muted-foreground">{O.cards.scratch.entity}</p>
               </CardHeader>
               <CardContent className="pt-2">
                 <ul className="space-y-2 text-xs text-muted-foreground">

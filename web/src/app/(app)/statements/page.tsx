@@ -180,7 +180,7 @@ export default function LaporanPage() {
               <div className="flex flex-col text-left py-0.5">
                 <span className="font-medium">{copy.laporan.allPeriods}</span>
                 {periodMeta.rangeText && (
-                  <span className="text-[10px] text-muted-foreground">{periodMeta.rangeText}</span>
+                  <span className="text-xs text-muted-foreground">{periodMeta.rangeText}</span>
                 )}
               </div>
             </SelectItem>
@@ -208,14 +208,14 @@ export default function LaporanPage() {
               <Printer className="size-4 text-primary" />
               <div className="grid">
                 <span className="text-xs font-semibold">{copy.laporan.exportPdf}</span>
-                <span className="text-[10px] text-muted-foreground">Buka tab cetak / simpan PDF</span>
+                <span className="text-xs text-muted-foreground">Buka tab cetak / simpan PDF</span>
               </div>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleExportCsv} className="gap-2 cursor-pointer">
               <FileText className="size-4 text-emerald-600" />
               <div className="grid">
                 <span className="text-xs font-semibold">{copy.laporan.exportCsv}</span>
-                <span className="text-[10px] text-muted-foreground">Unduh file spreadsheet .csv</span>
+                <span className="text-xs text-muted-foreground">Unduh file spreadsheet .csv</span>
               </div>
             </DropdownMenuItem>
           </DropdownMenuContent>

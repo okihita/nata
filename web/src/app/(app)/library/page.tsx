@@ -173,7 +173,7 @@ export default function LibraryPage() {
             <span className="text-xs font-semibold text-foreground">
               {isEn ? "Evidence Records" : "Daftar Bukti Permanen"}
             </span>
-            <span className="text-[10px] font-mono text-muted-foreground">
+            <span className="text-xs font-mono text-muted-foreground">
               {filteredArtifacts.length} {isEn ? "items" : "arsip"}
             </span>
           </div>
@@ -199,13 +199,13 @@ export default function LibraryPage() {
                   >
                     <div className="flex items-center justify-between gap-1 mb-1.5">
                       <span
-                        className={`text-[10px] font-medium px-1.5 py-0.5 rounded border capitalize ${getCategoryBadge(
+                        className={`text-xs font-medium px-1.5 py-0.5 rounded border capitalize ${getCategoryBadge(
                           item.category
                         )}`}
                       >
                         {item.category}
                       </span>
-                      <span className="text-[10px] font-mono text-muted-foreground">
+                      <span className="text-xs font-mono text-muted-foreground">
                         {item.timestamp}
                       </span>
                     </div>
@@ -214,11 +214,11 @@ export default function LibraryPage() {
                       {isEn ? item.routineTitleEn : item.routineTitle}
                     </h4>
 
-                    <p className="text-[11px] text-muted-foreground line-clamp-2 mt-1 leading-relaxed">
+                    <p className="text-xs text-muted-foreground line-clamp-2 mt-1 leading-relaxed">
                       {isEn ? item.summaryEn : item.summary}
                     </p>
 
-                    <div className="flex items-center justify-between pt-2 mt-2 border-t border-border/40 text-[10px] text-muted-foreground">
+                    <div className="flex items-center justify-between pt-2 mt-2 border-t border-border/40 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1 truncate max-w-[200px]">
                         <ShieldCheck className="size-3 text-primary shrink-0" />
                         <span className="truncate">{item.statute}</span>
@@ -246,11 +246,11 @@ export default function LibraryPage() {
                     <span className="text-xs font-semibold text-foreground">
                       {isEn ? selectedItem.routineTitleEn : selectedItem.routineTitle}
                     </span>
-                    <Badge variant="outline" className="text-[10px] font-mono">
+                    <Badge variant="outline" className="text-xs font-mono">
                       {selectedItem.id}
                     </Badge>
                   </div>
-                  <p className="text-[10px] text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {isEn ? "Audited by" : "Diverifikasi oleh"} {selectedItem.agent.name} (
                     {isEn ? selectedItem.agent.roleEn : selectedItem.agent.role}) &bull;{" "}
                     {selectedItem.timestamp}
@@ -274,7 +274,7 @@ export default function LibraryPage() {
               <div className="p-4 space-y-4 flex-1 overflow-y-auto">
                 {/* Executive Summary Card */}
                 <div className="p-3.5 rounded-xl bg-muted/30 border border-border/60 space-y-1.5">
-                  <span className="text-[10px] font-mono uppercase text-muted-foreground tracking-wider">
+                  <span className="text-xs font-mono uppercase text-muted-foreground tracking-wider">
                     {isEn ? "Autonomous Finding & Legal Provenance" : "Ringkasan Temuan & Audit Otonom"}
                   </span>
                   <p className="text-xs text-foreground font-medium leading-relaxed">
@@ -289,7 +289,7 @@ export default function LibraryPage() {
                     <div className="space-y-3">
                       <div className="grid grid-cols-3 gap-2">
                         <div className="p-2.5 rounded-lg bg-muted/30 border border-border/50 text-center">
-                          <span className="text-[10px] text-muted-foreground">
+                          <span className="text-xs text-muted-foreground">
                             {isEn ? "Available Cash" : "Saldo Kas Tersedia"}
                           </span>
                           <div className="text-xs font-mono font-bold text-foreground mt-0.5">
@@ -297,7 +297,7 @@ export default function LibraryPage() {
                           </div>
                         </div>
                         <div className="p-2.5 rounded-lg bg-muted/30 border border-border/50 text-center">
-                          <span className="text-[10px] text-muted-foreground">
+                          <span className="text-xs text-muted-foreground">
                             {isEn ? "Burn Rate" : "Pengeluaran / Hari"}
                           </span>
                           <div className="text-xs font-mono font-bold text-foreground mt-0.5">
@@ -305,7 +305,7 @@ export default function LibraryPage() {
                           </div>
                         </div>
                         <div className="p-2.5 rounded-lg bg-muted/30 border border-border/50 text-center">
-                          <span className="text-[10px] text-muted-foreground">
+                          <span className="text-xs text-muted-foreground">
                             {isEn ? "Cash Runway" : "Daya Tahan Kas"}
                           </span>
                           <div className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">
@@ -315,7 +315,7 @@ export default function LibraryPage() {
                       </div>
 
                       <div className="space-y-1.5 pt-1">
-                        <span className="text-[10px] text-muted-foreground font-mono uppercase">
+                        <span className="text-xs text-muted-foreground font-mono uppercase">
                           {isEn ? "Account Breakdown" : "Rincian Akun Kas & Setelmen"}
                         </span>
                         {((selectedItem.payload.lineItems as Array<{ label: string; amount: number }>) || []).map(
@@ -346,12 +346,12 @@ export default function LibraryPage() {
                             style={{ width: `${selectedItem.payload.thresholdRatio as number}%` }}
                           />
                         </div>
-                        <span className="text-[10px] text-amber-600 dark:text-amber-400 font-medium">
+                        <span className="text-xs text-amber-600 dark:text-amber-400 font-medium">
                           {String(selectedItem.payload.thresholdRatio)}% {isEn ? "consumed of non-taxable ceiling" : "terpakai dari batas bebas pajak"}
                         </span>
                       </div>
 
-                      <div className="p-2.5 rounded-lg bg-muted/40 text-[11px] text-muted-foreground font-mono leading-relaxed border border-border/50">
+                      <div className="p-2.5 rounded-lg bg-muted/40 text-xs text-muted-foreground font-mono leading-relaxed border border-border/50">
                         {String(selectedItem.payload.statuteCite)}
                       </div>
                     </div>
@@ -362,13 +362,13 @@ export default function LibraryPage() {
                     <div className="space-y-3 text-xs">
                       <div className="grid grid-cols-2 gap-2">
                         <div className="p-2 rounded-lg bg-muted/30 border border-border/50">
-                          <span className="text-[10px] text-muted-foreground">{isEn ? "Bank Mutation Match" : "Setoran Bank"}</span>
+                          <span className="text-xs text-muted-foreground">{isEn ? "Bank Mutation Match" : "Setoran Bank"}</span>
                           <div className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">
                             {idrFull(selectedItem.payload.netDisbursed as number)}
                           </div>
                         </div>
                         <div className="p-2 rounded-lg bg-muted/30 border border-border/50">
-                          <span className="text-[10px] text-muted-foreground">{isEn ? "Platform Admin Fee" : "Biaya Admin"}</span>
+                          <span className="text-xs text-muted-foreground">{isEn ? "Platform Admin Fee" : "Biaya Admin"}</span>
                           <div className="text-xs font-mono font-bold text-muted-foreground mt-0.5">
                             {idrFull(selectedItem.payload.platformFee as number)}
                           </div>
@@ -376,12 +376,12 @@ export default function LibraryPage() {
                       </div>
 
                       <div className="space-y-1 pt-1">
-                        <span className="text-[10px] text-muted-foreground font-mono uppercase">
+                        <span className="text-xs text-muted-foreground font-mono uppercase">
                           {isEn ? "Deterministic Journal Postings" : "Jurnal Otomatis SAK EMKM"}
                         </span>
                         {((selectedItem.payload.journalLines as Array<{ account: string; debit: number; credit: number }>) || []).map(
                           (line, i) => (
-                            <div key={i} className="flex justify-between text-[11px] py-1 border-b border-border/30">
+                            <div key={i} className="flex justify-between text-xs py-1 border-b border-border/30">
                               <span className="text-muted-foreground">{line.account}</span>
                               <span className="font-mono">
                                 {line.debit > 0 ? `D: ${idr(line.debit)}` : `C: ${idr(line.credit)}`}
@@ -402,19 +402,19 @@ export default function LibraryPage() {
                           <div className="font-semibold text-foreground text-xs">
                             {String(selectedItem.payload.kbliCode)} &bull; {String(selectedItem.payload.riskLevel)}
                           </div>
-                          <div className="text-[11px] text-muted-foreground">
+                          <div className="text-xs text-muted-foreground">
                             {String(selectedItem.payload.kbliTitle)}
                           </div>
                         </div>
                       </div>
 
                       <div className="space-y-1.5 pt-1">
-                        <span className="text-[10px] text-muted-foreground font-mono uppercase">
+                        <span className="text-xs text-muted-foreground font-mono uppercase">
                           {isEn ? "OSS Legal Requirements Satisfied" : "Kepatuhan Regulasi OSS Terpenuhi"}
                         </span>
                         {((selectedItem.payload.legalRequirements as Array<{ req: string; status: string }>) || []).map(
                           (r, i) => (
-                            <div key={i} className="flex justify-between text-[11px] py-1 border-b border-border/30">
+                            <div key={i} className="flex justify-between text-xs py-1 border-b border-border/30">
                               <span className="text-muted-foreground">{r.req}</span>
                               <span className="font-medium text-emerald-600 dark:text-emerald-400">{r.status}</span>
                             </div>
@@ -426,7 +426,7 @@ export default function LibraryPage() {
                 </div>
 
                 {/* Grounding & Agent Handoff Footer */}
-                <div className="flex items-center justify-between p-3 rounded-xl bg-muted/30 border border-border/50 text-[11px]">
+                <div className="flex items-center justify-between p-3 rounded-xl bg-muted/30 border border-border/50 text-xs">
                   <span className="flex items-center gap-1.5 text-muted-foreground">
                     <ShieldCheck className="size-3.5 text-primary shrink-0" />
                     <span>{selectedItem.statute}</span>

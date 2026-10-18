@@ -38,7 +38,7 @@ export function JudgeDeepDiveModal({ open, onOpenChange, isEn }: JudgeDeepDiveMo
                 {isEn ? "Google AI Builder Cup — Architecture Inspector" : "Inspeksi Arsitektur — Google AI Builder Cup"}
               </DialogTitle>
             </div>
-            <Badge variant="outline" className="text-[10px] font-mono bg-primary/5 text-primary border-primary/20">
+            <Badge variant="outline" className="text-xs font-mono bg-primary/5 text-primary border-primary/20">
               ADK 2.x + Gemini 3.8 Flash
             </Badge>
           </div>
@@ -57,7 +57,7 @@ export function JudgeDeepDiveModal({ open, onOpenChange, isEn }: JudgeDeepDiveMo
                 <Layers className="size-3.5 text-primary" />
                 1. Multi-Agent Autonomous Cascade
               </span>
-              <span className="text-[10px] font-mono text-muted-foreground">nata_agent/agent.py</span>
+              <span className="text-xs font-mono text-muted-foreground">nata_agent/agent.py</span>
             </div>
             <p className="text-muted-foreground leading-relaxed">
               {isEn
@@ -73,7 +73,7 @@ export function JudgeDeepDiveModal({ open, onOpenChange, isEn }: JudgeDeepDiveMo
                 <Zap className="size-3.5 text-amber-500" />
                 2. Inference & Infrastructure Backbone
               </span>
-              <span className="text-[10px] font-mono text-muted-foreground">Vertex AI Global</span>
+              <span className="text-xs font-mono text-muted-foreground">Vertex AI Global</span>
             </div>
             <p className="text-muted-foreground leading-relaxed">
               {isEn
@@ -89,7 +89,7 @@ export function JudgeDeepDiveModal({ open, onOpenChange, isEn }: JudgeDeepDiveMo
                 <ShieldCheck className="size-3.5 text-emerald-600 dark:text-emerald-400" />
                 3. Deterministic Guardrails (Zero Hallucination)
               </span>
-              <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400">Strict Code Enforcement</span>
+              <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400">Strict Code Enforcement</span>
             </div>
             <p className="text-muted-foreground leading-relaxed">
               {isEn
@@ -105,7 +105,7 @@ export function JudgeDeepDiveModal({ open, onOpenChange, isEn }: JudgeDeepDiveMo
                 <Code2 className="size-3.5 text-blue-500" />
                 4. Statutory In-Context Grounding
               </span>
-              <span className="text-[10px] font-mono text-muted-foreground">1,790 KBLI + SAK EMKM</span>
+              <span className="text-xs font-mono text-muted-foreground">1,790 KBLI + SAK EMKM</span>
             </div>
             <p className="text-muted-foreground leading-relaxed">
               {isEn
@@ -116,7 +116,7 @@ export function JudgeDeepDiveModal({ open, onOpenChange, isEn }: JudgeDeepDiveMo
         </div>
 
         <div className="pt-3 border-t border-border/50 flex items-center justify-between">
-          <span className="text-[11px] text-muted-foreground">
+          <span className="text-xs text-muted-foreground">
             Target: Grand Winner & Best Use of Google Cloud AI
           </span>
           <Button

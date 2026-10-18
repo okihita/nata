@@ -49,7 +49,7 @@ export function PersonaQuickSwitcher() {
           <span className="size-2 rounded-full bg-emerald-500 shrink-0" />
           <div className="grid">
             <span className="text-xs">Persona A: Retail Toko</span>
-            <span className="text-[10px] text-muted-foreground">
+            <span className="text-xs text-muted-foreground">
               {copy.workspaceSwitcher.personaRetailHint}
             </span>
           </div>
@@ -61,7 +61,7 @@ export function PersonaQuickSwitcher() {
           <span className="size-2 rounded-full bg-amber-500 shrink-0" />
           <div className="grid">
             <span className="text-xs">Persona B: PT Seduh Rasa</span>
-            <span className="text-[10px] text-muted-foreground">
+            <span className="text-xs text-muted-foreground">
               {copy.workspaceSwitcher.personaFnbHint}
             </span>
           </div>

@@ -127,8 +127,8 @@ export function AppSidebar() {
                 <GeminiLogo className="size-4" />
               </div>
               <div className="grid leading-tight">
-                <span className="text-[11px] font-semibold text-foreground tracking-tight">Google Gemini</span>
-                <span className="text-[10px] text-muted-foreground">on Google Cloud</span>
+                <span className="text-xs font-semibold text-foreground tracking-tight">Google Gemini</span>
+                <span className="text-xs text-muted-foreground">on Google Cloud</span>
               </div>
             </div>
           </SidebarMenuItem>
