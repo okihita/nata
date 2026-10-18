@@ -23,7 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AvatarNata, AvatarMaya, AvatarDimas, AvatarArief } from "@/components/agent-avatars";
-import { useLanguage } from "@/lib/copy";
+import { useLanguage, copyEn, copyId } from "@/lib/copy";
 import type { AcademyLesson } from "@/lib/academy";
 import type { WalkthroughDeck } from "@/lib/academy-decks";
 
@@ -52,7 +52,7 @@ function DeckModalContent({ lesson }: { lesson: AcademyLesson }) {
   const isEn = locale === "en";
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
-  const deck = getDeckForLesson(lesson.id);
+  const deck = getDeckForLesson(lesson);
   const slides = deck.slides;
   const activeSlide = slides[currentSlideIndex] ?? null;
 
