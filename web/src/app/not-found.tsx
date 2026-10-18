@@ -35,7 +35,7 @@ export default function NotFound() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-2">
             <Button asChild>
-              <Link href="/usaha">
+              <Link href="/dashboard">
                 {copy.notFound.toApp}
                 <ArrowRight className="ml-2 size-4" />
               </Link>

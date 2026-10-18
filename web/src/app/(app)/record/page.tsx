@@ -310,10 +310,10 @@ export default function CatatPage() {
             lines={lines}
             accepted={accepted}
             rejected={rejected}
-            onViewAll={() => router.push("/transaksi")}
+            onViewAll={() => router.push("/transactions")}
           />
-          {run.tax && <TaxCard run={run} onViewTax={() => router.push("/pajak")} />}
-          <KbliCard run={run} onViewPerizinan={() => router.push("/perizinan")} />
+          {run.tax && <TaxCard run={run} onViewTax={() => router.push("/taxes")} />}
+          <KbliCard run={run} onViewPerizinan={() => router.push("/licensing")} />
         </div>
       </div>
     </>

@@ -53,7 +53,7 @@ export default function LandingPage() {
             </a>
           </nav>
           <Button asChild size="sm">
-            <Link href="/usaha">
+            <Link href="/business">
               {L.navStart}
               <ArrowRight className="ml-1 size-4" />
             </Link>
@@ -77,7 +77,7 @@ export default function LandingPage() {
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Button asChild size="lg">
-                <Link href="/usaha">
+                <Link href="/business">
                   {L.heroCta}
                   <ArrowRight className="ml-2 size-4" />
                 </Link>
@@ -213,7 +213,7 @@ export default function LandingPage() {
             </h2>
             <p className="max-w-md text-sm text-muted-foreground">{L.ctaBody}</p>
             <Button asChild size="lg" className="mt-2">
-              <Link href="/usaha">
+              <Link href="/business">
                 {L.ctaButton}
                 <ArrowRight className="ml-2 size-4" />
               </Link>

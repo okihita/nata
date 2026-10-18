@@ -49,31 +49,31 @@ export const NAV: NavGroup[] = [
     key: "summary",
     label: "Ringkasan",
     tone: "hijau",
-    items: [{ href: "/dasbor", key: "dashboard", icon: "LayoutDashboard", mobile: true }],
+    items: [{ href: "/dashboard", key: "dashboard", icon: "LayoutDashboard", mobile: true }],
   },
   {
     key: "operations",
     label: "Operasional",
     tone: "hijau",
     items: [
-      { href: "/catat", key: "catat", icon: "ScanLine", mobile: true },
-      { href: "/transaksi", key: "transaksi", icon: "ReceiptText", mobile: true },
+      { href: "/record", key: "catat", icon: "ScanLine", mobile: true },
+      { href: "/transactions", key: "transaksi", icon: "ReceiptText", mobile: true },
     ],
   },
   {
     key: "master",
     label: "Data Induk",
     tone: "biru",
-    items: [{ href: "/akun", key: "akun", icon: "BookOpen" }],
+    items: [{ href: "/accounts", key: "akun", icon: "BookOpen" }],
   },
   {
     key: "reports",
     label: "Laporan",
     tone: "ungu",
     items: [
-      { href: "/laporan", key: "laporan", icon: "FileBarChart", mobile: true },
-      { href: "/pajak", key: "pajak", icon: "Landmark", mobile: true },
-      { href: "/perizinan", key: "perizinan", icon: "ShieldCheck" },
+      { href: "/statements", key: "laporan", icon: "FileBarChart", mobile: true },
+      { href: "/taxes", key: "pajak", icon: "Landmark", mobile: true },
+      { href: "/licensing", key: "perizinan", icon: "ShieldCheck" },
     ],
   },
   {
@@ -81,8 +81,8 @@ export const NAV: NavGroup[] = [
     label: "Lainnya",
     tone: "oranye",
     items: [
-      { href: "/usaha", key: "usaha", icon: "Store" },
-      { href: "/pengaturan", key: "pengaturan", icon: "Settings" },
+      { href: "/business", key: "usaha", icon: "Store" },
+      { href: "/settings", key: "pengaturan", icon: "Settings" },
     ],
   },
 ];
