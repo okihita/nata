@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Play,
   RotateCcw,
@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/lib/copy";
 import { idr, idrFull } from "@/lib/format";
+import { useWorkspace } from "@/lib/store";
 import {
   DEMO_ROUTINES,
   type AutonomousRoutine,
@@ -32,6 +33,8 @@ import {
 export default function RoutinesPage() {
   const { locale } = useLanguage();
   const isEn = locale === "en";
+  const { business } = useWorkspace();
+  const businessId = business?.id || "default";
 
   const [routines, setRoutines] = useState<AutonomousRoutine[]>(DEMO_ROUTINES);
   const [selectedRoutineId, setSelectedRoutineId] = useState<string>(DEMO_ROUTINES[0].id);
@@ -45,6 +48,26 @@ export default function RoutinesPage() {
   const [newAgent, setNewAgent] = useState<"nata" | "maya" | "dimas" | "arief">("nata");
   const [newCadence, setNewCadence] = useState<RoutineCadence>("daily");
   const [newSchedule, setNewSchedule] = useState("0 8 * * *");
+
+  // Load from persisted Firestore store via API, gracefully falling back
+  useEffect(() => {
+    let active = true;
+    fetch(`/api/routines?businessId=${encodeURIComponent(businessId)}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!active || !data || !Array.isArray(data.routines) || data.routines.length === 0) return;
+        setRoutines(data.routines);
+        setSelectedRoutineId((curr) =>
+          data.routines.some((r: AutonomousRoutine) => r.id === curr) ? curr : data.routines[0].id
+        );
+      })
+      .catch(() => {
+        /* Keep in-memory defaults */
+      });
+    return () => {
+      active = false;
+    };
+  }, [businessId]);
 
   const selectedRoutine = routines.find((r) => r.id === selectedRoutineId) ?? routines[0];
   const selectedExec =
@@ -87,6 +110,18 @@ export default function RoutinesPage() {
               : "Status disinkronkan dengan buku besar usaha.",
             actionTakenEn: "State synchronized with business ledger.",
           };
+          // Persist execution run to Firestore in background
+          fetch("/api/routines", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              action: "record_execution",
+              routineId: id,
+              execution: freshExec,
+              businessId,
+            }),
+          }).catch(() => {});
+
           return {
             ...r,
             lastRunTime: timeStr,
@@ -179,6 +214,19 @@ export default function RoutinesPage() {
     setSelectedExecId(fresh.recentExecutions[0].id);
     setNewTitle("");
     setIsAddModalOpen(false);
+
+    // Persist to backend asynchronously
+    fetch("/api/routines", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "create_routine",
+        businessId: business?.id || "default",
+        routine: fresh,
+      }),
+    }).catch((err) => {
+      console.warn("Offline fallback: routine stored locally in UI state", err);
+    });
   };
 
   return (
