@@ -27,12 +27,15 @@ import { AvatarMaya, AvatarDimas, AvatarArief, AvatarNata } from "@/components/a
 import { useLanguage } from "@/lib/copy";
 import { AGENT_PERSONAS, type AgentPersonId, type ChatMessage } from "@/lib/agents-persona-data";
 
+import { JudgeDeepDiveModal } from "@/components/judge-deep-dive-modal";
+
 export default function AgentsPage() {
   const { locale } = useLanguage();
   const isEn = locale === "en";
 
   // Mas Nata (Chief of Staff) is on top as default
   const [activePersonaId, setActivePersonaId] = useState<AgentPersonId>("nata");
+  const [judgeModalOpen, setJudgeModalOpen] = useState(false);
   const [chatMessages, setChatMessages] = useState<Record<AgentPersonId, ChatMessage[]>>({
     nata: AGENT_PERSONAS.nata.defaultChatHistory,
     maya: AGENT_PERSONAS.maya.defaultChatHistory,
@@ -165,7 +168,7 @@ export default function AgentsPage() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-8.5rem)] lg:h-[calc(100vh-10rem)] overflow-hidden">
-      <div className="shrink-0 mb-3 flex flex-wrap items-baseline justify-between gap-2">
+      <div className="shrink-0 mb-3 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-xl lg:text-2xl font-semibold tracking-tight text-foreground">
             {isEn ? "Digital Finance Team" : "Tim Keuangan Digital"}
@@ -176,7 +179,24 @@ export default function AgentsPage() {
               : "Tim asisten pribadi yang bekerja otomatis merapikan pembukuan, pajak, dan izin usaha Anda."}
           </p>
         </div>
+
+        {/* Discrete Hackathon Judge Inset Pill */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setJudgeModalOpen(true)}
+          className="h-7 px-2.5 text-[11px] font-medium gap-1.5 border-primary/30 hover:border-primary/60 hover:bg-primary/5 text-foreground transition-all"
+        >
+          <span className="size-1.5 rounded-full bg-primary" />
+          <span>{isEn ? "Judge? Inspect Architecture" : "Juri Hackathon? Cek Arsitektur"}</span>
+        </Button>
       </div>
+
+      <JudgeDeepDiveModal
+        open={judgeModalOpen}
+        onOpenChange={setJudgeModalOpen}
+        isEn={isEn}
+      />
 
       {/* 3-PANE WORKSPACE ARCHITECTURE (FIT VIEWPORT EXACTLY) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch flex-1 min-h-0 overflow-hidden">
