@@ -61,9 +61,9 @@ export default function FunFactsPage() {
     <>
       <div className="mb-4">
         <Button asChild variant="ghost" size="sm" className="-ml-2 h-8 text-xs text-muted-foreground hover:text-foreground">
-          <Link href="/academy">
-            <ArrowLeft className="mr-1.5 size-3.5" />
-            {copy.academy.funFactsPage.backToAcademy}
+          <Link href="/academy" className="inline-flex items-center gap-1.5">
+            <ArrowLeft className="size-3.5" />
+            <span>{copy.academy.funFactsPage.backToAcademy.replace(/^[←\s]+/, "")}</span>
           </Link>
         </Button>
       </div>
