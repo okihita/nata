@@ -38,8 +38,22 @@ export default function RoutinesPage() {
   const isEn = locale === "en";
   const { business } = useWorkspace();
   const businessId = business?.id || "default";
+  const storageKey = `nata.routines.v1.${businessId}`;
 
-  const [routines, setRoutines] = useState<AutonomousRoutine[]>(DEMO_ROUTINES);
+  const [routines, setRoutines] = useState<AutonomousRoutine[]>(() => {
+    if (typeof window === "undefined") return DEMO_ROUTINES;
+    try {
+      const cached = localStorage.getItem(`nata.routines.v1.${businessId}`);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch {
+      /* Fallback */
+    }
+    return DEMO_ROUTINES;
+  });
+
   const [selectedRoutineId, setSelectedRoutineId] = useState<string | null>(null);
   const [selectedExecId, setSelectedExecId] = useState<string | null>(null);
   const [activeCadence, setActiveCadence] = useState<RoutineCadence | "all">("all");
@@ -54,17 +68,38 @@ export default function RoutinesPage() {
   const [showArchived, setShowArchived] = useState(false);
   const [masterTab, setMasterTab] = useState<"jobs" | "runs">("jobs");
 
-  // Load from persisted Firestore store via API, gracefully falling back
+  // Keep localStorage synchronized whenever routines change
+  useEffect(() => {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(routines));
+    } catch {
+      /* Ignore quota or private mode */
+    }
+  }, [routines, storageKey]);
+
+  // Revalidate from Firestore API in background without layout flash
   useEffect(() => {
     let active = true;
     fetch(`/api/routines?businessId=${encodeURIComponent(businessId)}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (!active || !data || !Array.isArray(data.routines) || data.routines.length === 0) return;
-        setRoutines(data.routines);
+        setRoutines((prev) => {
+          // Merge to avoid blowing away newly added custom routines not yet confirmed
+          const serverMap = new Map<string, AutonomousRoutine>(
+            data.routines.map((r: AutonomousRoutine) => [r.id, r])
+          );
+          const merged = prev.map((localR) => serverMap.get(localR.id) || localR);
+          data.routines.forEach((serverR: AutonomousRoutine) => {
+            if (!merged.some((m) => m.id === serverR.id)) {
+              merged.push(serverR);
+            }
+          });
+          return merged;
+        });
       })
       .catch(() => {
-        /* Keep in-memory defaults */
+        /* Keep existing cached or default routines */
       });
     return () => {
       active = false;
@@ -150,8 +185,14 @@ export default function RoutinesPage() {
               { label: "Ledger", labelEn: "Ledger", value: "Balanced" },
             ],
             statutoryGrounding: r.statutoryGrounding,
-            artifactType: r.recentExecutions[0].artifactType,
-            artifactPayload: r.recentExecutions[0].artifactPayload,
+            artifactType: r.recentExecutions[0]?.artifactType || "cash_briefing",
+            artifactPayload: r.recentExecutions[0]?.artifactPayload || {
+              cashBalance: 50000000,
+              dailyBurnRate: 1500000,
+              runwayDays: 33,
+              operatingBuffer: "Configured",
+              lineItems: [{ label: "Rekening Operasional", amount: 50000000 }],
+            },
             actionTaken: isEn
               ? "State synchronized with business ledger."
               : "Status disinkronkan dengan buku besar usaha.",
@@ -248,38 +289,12 @@ export default function RoutinesPage() {
       purpose: "Eksekusi otomatis pada server Cloud Run sesuai interval waktu.",
       purposeEn: "Automated execution on Cloud Run server per scheduled interval.",
       statutoryGrounding: "SAK EMKM & PP 55/2022",
-      recentExecutions: [
-        {
-          id: `exec-custom-${Date.now()}`,
-          timestamp: isEn ? "Initial Setup" : "Inisialisasi",
-          status: "success",
-          durationMs: 2400,
-          tokensUsed: 890,
-          findingSummary: isEn
-            ? "Worker initialized and registered with Google Cloud Scheduler."
-            : "Jadwal pekerja berhasil diinisialisasi dan didaftarkan ke Google Cloud Scheduler.",
-          findingSummaryEn: "Worker initialized and registered with Google Cloud Scheduler.",
-          impactMetrics: [
-            { label: "Status", labelEn: "Status", value: "Ready" },
-            { label: "Worker", labelEn: "Worker", value: agentMeta.name },
-            { label: "Cron", labelEn: "Cron", value: computedCron },
-          ],
-          statutoryGrounding: "SAK EMKM & PP 55/2022",
-          artifactType: "cash_briefing",
-          artifactPayload: {
-            cashBalance: 50000000,
-            dailyBurnRate: 1500000,
-            runwayDays: 33,
-            operatingBuffer: "Configured",
-            lineItems: [{ label: "Rekening Operasional", amount: 50000000 }],
-          },
-        },
-      ],
+      recentExecutions: [],
     };
 
     setRoutines((prev) => [fresh, ...prev]);
     setSelectedRoutineId(fresh.id);
-    setSelectedExecId(fresh.recentExecutions[0].id);
+    setSelectedExecId(null);
     setNewTitle("");
     setIsAddModalOpen(false);
 
@@ -579,51 +594,65 @@ export default function RoutinesPage() {
                 <span>{isEn ? "Past Executions" : "Riwayat Eksekusi"}</span>
                 <div className="h-px bg-border/60 flex-1" />
               </div>
-              {selectedRoutine.recentExecutions.map((exec) => {
-                const isSelected = selectedExecId === exec.id;
 
-                return (
-                  <div
-                    key={exec.id}
-                    onClick={() => {
-                      if (isSelected) {
-                        setSelectedExecId(null);
-                      } else {
-                        setSelectedExecId(exec.id);
-                      }
-                    }}
-                    className={`p-3 rounded-lg border cursor-pointer transition-all ${
-                      isSelected
-                        ? "border-primary bg-primary/5 shadow-xs"
-                        : "border-border/50 hover:bg-muted/20"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between text-xs mb-1">
-                      <span className="flex items-center gap-1.5 font-medium text-foreground">
-                        {exec.status === "warning" ? (
-                          <AlertTriangle className="size-3.5 text-amber-500" />
-                        ) : (
-                          <CheckCircle2 className="size-3.5 text-emerald-500" />
-                        )}
-                        <span>{exec.timestamp}</span>
-                      </span>
-                      <span className="text-[10px] font-mono text-muted-foreground">
-                        {(exec.durationMs / 1000).toFixed(1)}s
-                      </span>
+              {selectedRoutine.recentExecutions.length === 0 ? (
+                <div className="p-6 rounded-lg border border-dashed border-border/70 text-center space-y-1.5 text-muted-foreground">
+                  <p className="text-xs font-medium text-foreground">
+                    {isEn ? "No Past Runs Yet" : "Belum Ada Riwayat Eksekusi"}
+                  </p>
+                  <p className="text-[11px] text-muted-foreground max-w-[220px] mx-auto">
+                    {isEn
+                      ? "This worker is freshly registered. Click 'Run Now' above to trigger its initial verification run."
+                      : "Pekerja ini baru didaftarkan. Klik 'Jalankan Sekarang' di atas untuk memicu siklus perdananya."}
+                  </p>
+                </div>
+              ) : (
+                selectedRoutine.recentExecutions.map((exec) => {
+                  const isSelected = selectedExecId === exec.id;
+
+                  return (
+                    <div
+                      key={exec.id}
+                      onClick={() => {
+                        if (isSelected) {
+                          setSelectedExecId(null);
+                        } else {
+                          setSelectedExecId(exec.id);
+                        }
+                      }}
+                      className={`p-3 rounded-lg border cursor-pointer transition-all ${
+                        isSelected
+                          ? "border-primary bg-primary/5 shadow-xs"
+                          : "border-border/50 hover:bg-muted/20"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between text-xs mb-1">
+                        <span className="flex items-center gap-1.5 font-medium text-foreground">
+                          {exec.status === "warning" ? (
+                            <AlertTriangle className="size-3.5 text-amber-500" />
+                          ) : (
+                            <CheckCircle2 className="size-3.5 text-emerald-500" />
+                          )}
+                          <span>{exec.timestamp}</span>
+                        </span>
+                        <span className="text-[10px] font-mono text-muted-foreground">
+                          {(exec.durationMs / 1000).toFixed(1)}s
+                        </span>
+                      </div>
+
+                      <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                        {isEn ? exec.findingSummaryEn : exec.findingSummary}
+                      </p>
+
+                      <div className="flex items-center justify-end pt-2 border-t border-border/40 mt-2 text-[10px]">
+                        <span className="text-primary font-medium flex items-center gap-0.5">
+                          {isEn ? "Inspect" : "Periksa"} <ChevronRight className="size-3" />
+                        </span>
+                      </div>
                     </div>
-
-                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                      {isEn ? exec.findingSummaryEn : exec.findingSummary}
-                    </p>
-
-                    <div className="flex items-center justify-end pt-2 border-t border-border/40 mt-2 text-[10px]">
-                      <span className="text-primary font-medium flex items-center gap-0.5">
-                        {isEn ? "Inspect" : "Periksa"} <ChevronRight className="size-3" />
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })
+              )}
             </div>
           ) : (
             <div className="p-8 flex flex-col items-center justify-center flex-1 text-center space-y-2.5 text-muted-foreground">
