@@ -1,6 +1,6 @@
 [project]
 name = "nata-agent"
-version = "0.8.0"
+version = "0.8.1"
 description = "Nata — autonomous back-office & compliance engine for Indonesian SMBs: receipt → SAK EMKM journal → PPh Final tax → KBLI 2020 licensing, each grounded in its statutory source"
 readme = "README.md"
 license = "Apache-2.0"

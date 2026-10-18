@@ -18,6 +18,14 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: copy.app.metadataTitle,
   description: copy.app.metadataDescription,
+  icons: {
+    icon: [
+      { url: "/favicon.ico?v=0.8.1", sizes: "any" },
+      { url: "/icon.png?v=0.8.1", type: "image/png", sizes: "32x32" },
+    ],
+    shortcut: "/favicon.ico?v=0.8.1",
+    apple: "/icon.png?v=0.8.1",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
