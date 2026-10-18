@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   BookOpen,
   Bot,
+  Clock,
   FileBarChart,
   Landmark,
   LayoutDashboard,
@@ -40,6 +41,7 @@ import { GeminiLogo } from "@/components/gemini-logo";
 export const ICONS: Record<string, LucideIcon> = {
   Bot,
   LayoutDashboard,
+  Clock,
   ScanLine,
   ReceiptText,
   BookOpen,

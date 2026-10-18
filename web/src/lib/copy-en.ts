@@ -78,6 +78,7 @@ export const copyEn = {
     },
     agents: "Agents",
     dashboard: "Dashboard",
+    rutinitas: "Routines",
     catat: "Record Receipt",
     transaksi: "Transactions",
     akun: "Chart of Accounts",
