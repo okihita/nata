@@ -349,7 +349,7 @@ export default function DashboardPage() {
               <div className="h-64 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={series} margin={{ left: 4, right: 8, top: 8, bottom: 0 }} barGap={6}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border" />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border/70" />
                     <XAxis
                       dataKey="month"
                       tickLine={false}
@@ -367,6 +367,7 @@ export default function DashboardPage() {
                       tickFormatter={(v: number) => `${idr(v / 1_000_000)} jt`}
                     />
                     <RTooltip
+                      cursor={{ fill: "var(--muted)", opacity: 0.35, rx: 6 }}
                       formatter={(value) => idrFull(Number(value))}
                       labelFormatter={(m) =>
                         new Date(`${m}-01`).toLocaleDateString("id-ID", {
@@ -375,8 +376,10 @@ export default function DashboardPage() {
                         })
                       }
                       contentStyle={{
-                        borderRadius: 10,
+                        borderRadius: 12,
                         border: "1px solid var(--border)",
+                        backgroundColor: "var(--popover)",
+                        boxShadow: "0 4px 12px -2px rgba(0, 0, 0, 0.08)",
                         fontSize: 12,
                       }}
                     />
@@ -384,13 +387,15 @@ export default function DashboardPage() {
                       dataKey="revenue"
                       name={copy.dashboard.chartRevenue}
                       fill="var(--chart-1)"
-                      radius={[4, 4, 0, 0]}
+                      radius={[5, 5, 0, 0]}
+                      maxBarSize={32}
                     />
                     <Bar
                       dataKey="expense"
                       name={copy.dashboard.chartExpense}
                       fill="var(--chart-2)"
-                      radius={[4, 4, 0, 0]}
+                      radius={[5, 5, 0, 0]}
+                      maxBarSize={32}
                     />
                   </BarChart>
                 </ResponsiveContainer>
@@ -574,9 +579,9 @@ function Metric({
 }) {
   const toneClass =
     tone === "positive"
-      ? "text-emerald-600"
+      ? "text-[var(--chart-1)]"
       : tone === "negative"
-        ? "text-rose-600"
+        ? "text-[var(--chart-2)]"
         : "text-foreground";
   return (
     <Card>
