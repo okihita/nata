@@ -4,25 +4,16 @@ import { useState, useRef, useEffect } from "react";
 import {
   Send,
   Paperclip,
-  CheckCircle2,
-  Sparkles,
   Shield,
   FileText,
   Image as ImageIcon,
   X,
-  Check,
-  Download,
-  Cpu,
 } from "lucide-react";
-import { toast } from "sonner";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AvatarMaya, AvatarDimas, AvatarArief, AvatarNata } from "@/components/agent-avatars";
 import { useLanguage } from "@/lib/copy";
 import { AGENT_PERSONAS, type AgentPersonId, type ChatMessage } from "@/lib/agents-persona-data";
-import { addEntry } from "@/lib/store";
 
 import { JudgeDeepDiveModal } from "@/components/judge-deep-dive-modal";
 
@@ -39,7 +30,6 @@ export default function AgentsPage() {
     dimas: AGENT_PERSONAS.dimas.defaultChatHistory,
     arief: AGENT_PERSONAS.arief.defaultChatHistory,
   });
-  const [executedArtifacts, setExecutedArtifacts] = useState<Record<string, boolean>>({});
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [attachedFiles, setAttachedFiles] = useState<{ name: string; type: "image" | "pdf" | "doc" }[]>([]);
@@ -49,8 +39,6 @@ export default function AgentsPage() {
 
   const persona = AGENT_PERSONAS[activePersonaId];
   const messages = chatMessages[activePersonaId];
-  const artifact = persona.livingArtifact;
-  const isArtifactExecuted = !!executedArtifacts[artifact.id];
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -91,34 +79,6 @@ export default function AgentsPage() {
     setAttachedFiles((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  const handleExecuteArtifact = () => {
-    // If executing Maya's journal slip, post actual balanced double-entry to workspace ledger
-    if (artifact.type === "journal" && !isArtifactExecuted) {
-      const today = new Date().toISOString().split("T")[0];
-      addEntry({
-        date: today,
-        description: "Pembelian Bahan Baku Kopi & Susu Tunai (Agent Maya)",
-        lines: [
-          { account: "Persediaan Barang Dagang", debit: 350000, credit: 0 },
-          { account: "Kas", debit: 0, credit: 350000 },
-        ],
-        source: "manual",
-        receiptName: "Struk Pasar Baru",
-      });
-    }
-
-    setExecutedArtifacts((prev) => ({ ...prev, [artifact.id]: true }));
-    toast.success(isEn ? artifact.actionSuccessMessageEn : artifact.actionSuccessMessage);
-  };
-
-  const handleExportProof = () => {
-    toast.info(
-      isEn
-        ? "Official audit certificate and reasoning trace prepared for export."
-        : "Bukti audit resmi dan jejak penalaran hukum siap diunduh."
-    );
-  };
-
   const handleSendMessage = (textToSend?: string) => {
     const text = (textToSend ?? inputText).trim();
     if (!text && attachedFiles.length === 0) return;
@@ -145,20 +105,20 @@ export default function AgentsPage() {
       let reply = "";
       if (activePersonaId === "nata") {
         reply = isEn
-          ? `All set! I have reviewed "${text || "your attachment"}" and coordinated with Maya, Dimas, and Arief. Everything is verified and balanced in the right panel.`
-          : `Beres kak! Nata sudah koordinasikan "${text || "lampiran Anda"}" ke Mbak Maya, Mas Dimas, dan Pak Arief. Seluruh alur kerja tim sudah sinkron di panel kanan.`;
+          ? `All set! I have reviewed "${text || "your attachment"}" and coordinated with Maya, Dimas, and Arief. Everything is verified and balanced.`
+          : `Beres kak! Nata sudah koordinasikan "${text || "lampiran Anda"}" ke Mbak Maya, Mas Dimas, dan Pak Arief. Seluruh alur kerja tim sudah sinkron dan rapi.`;
       } else if (activePersonaId === "maya") {
         reply = isEn
-          ? `Noted! I have analyzed "${text || "your attachment"}". Debit and credit entries match to the exact rupiah with 0 delta. Check the verified journal on the right.`
-          : `Siap kak! Maya sudah baca pesan "${text || "lampiran Anda"}". Jurnal pembukuan sudah disiapkan dan kedua sisi debit-kredit terbukti pas tanpa selisih. Rinciannya langsung tampil di panel kanan.`;
+          ? `Noted! I have analyzed "${text || "your attachment"}". Debit and credit entries match to the exact rupiah with 0 delta.`
+          : `Siap kak! Maya sudah baca pesan "${text || "lampiran Anda"}". Jurnal pembukuan sudah disiapkan dan kedua sisi debit-kredit terbukti pas tanpa selisih.`;
       } else if (activePersonaId === "dimas") {
         reply = isEn
-          ? `Got it! Under government tax rules, I evaluated "${text || "your numbers"}". Your tax-free band remains protected and your final 0.5% calculation is on the right.`
-          : `Dimas catat kak! Sesuai aturan perpajakan, perhitungan untuk "${text || "data omzet Anda"}" sudah dievaluasi. Hak bebas pajak Rp 500 juta kakak tetap aman dan rinciannya sudah tampil di sebelah kanan.`;
+          ? `Got it! Under government tax rules, I evaluated "${text || "your numbers"}". Your tax-free band remains protected.`
+          : `Dimas catat kak! Sesuai aturan perpajakan, perhitungan untuk "${text || "data omzet Anda"}" sudah dievaluasi. Hak bebas pajak Rp 500 juta kakak tetap aman.`;
       } else {
         reply = isEn
-          ? `Understood! I cross-referenced "${text || "your inquiry"}" with the official government business classification. Your permit checklist is documented on the right.`
-          : `Baik kak! Pak Arief sudah mencocokkan "${text || "pertanyaan Anda"}" dengan klasifikasi resmi pemerintah. Syarat izin usaha kakak sudah siap di panel kanan.`;
+          ? `Understood! I cross-referenced "${text || "your inquiry"}" with the official government business classification.`
+          : `Baik kak! Pak Arief sudah mencocokkan "${text || "pertanyaan Anda"}" dengan klasifikasi izin usaha resmi pemerintah.`;
       }
 
       const agentMsg: ChatMessage = {
@@ -208,10 +168,10 @@ export default function AgentsPage() {
         isEn={isEn}
       />
 
-      {/* 3-PANE WORKSPACE ARCHITECTURE (FIT VIEWPORT EXACTLY) */}
+      {/* 2-PANE WORKSPACE ARCHITECTURE (STAFF LIST + CONVERSATION STREAM) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch flex-1 min-h-0 overflow-hidden">
-        {/* PANE 1: LEFT SUB-SIDEBAR (STAFF LIST) - 3 COLS */}
-        <aside className="lg:col-span-3 flex flex-col gap-3 h-full overflow-hidden">
+        {/* PANE 1: LEFT SUB-SIDEBAR (STAFF LIST) - 4 COLS */}
+        <aside className="lg:col-span-4 xl:col-span-3 flex flex-col gap-3 h-full overflow-hidden">
           <div className="rounded-xl border border-border/70 bg-card p-3 shadow-none flex-1 flex flex-col overflow-hidden">
             <div className="flex items-center justify-between pb-2.5 border-b border-border/50 px-1 shrink-0">
               <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -274,8 +234,8 @@ export default function AgentsPage() {
           </div>
         </aside>
 
-        {/* PANE 2: MIDDLE CONVERSATION STREAM (CHATGPT / GEMINI INPUT BOX) - 5 COLS */}
-        <section className="lg:col-span-5 rounded-xl border border-border/70 bg-card flex flex-col h-full shadow-none overflow-hidden">
+        {/* PANE 2: CONVERSATION STREAM (FULL HEIGHT GEMINI/CHATGPT STYLE) - 8 COLS */}
+        <section className="lg:col-span-8 xl:col-span-9 rounded-xl border border-border/70 bg-card flex flex-col h-full shadow-none overflow-hidden">
           {/* Header */}
           <div className="p-3.5 border-b border-border/60 bg-muted/30 flex items-center justify-between gap-3 shrink-0">
             <div className="flex items-center gap-2.5">
@@ -438,157 +398,6 @@ export default function AgentsPage() {
               </div>
             </div>
           </div>
-        </section>
-
-        {/* PANE 3: RIGHT LIVING AUDIT ARTIFACT & GROUNDING PROOF (JURY-MAXXING CANVAS) - 4 COLS */}
-        <section className="lg:col-span-4 flex flex-col gap-4 h-full overflow-y-auto pr-0.5">
-          {/* Real-Time Actionable Living Artifact */}
-          <Card className="border-border/70 shadow-none shrink-0 border-l-4 border-l-primary">
-            <CardHeader className="py-3 px-4 border-b border-border/40 bg-muted/20">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-primary">
-                  {isEn ? "Living Actionable Artifact" : "Hasil Dokumen Siap Eksekusi"}
-                </span>
-                <Badge variant="outline" className="text-[10px] font-mono bg-background">
-                  {isEn ? artifact.badgeEn : artifact.badge}
-                </Badge>
-              </div>
-              <CardTitle className="text-sm font-semibold mt-1">
-                {isEn ? artifact.titleEn : artifact.title}
-              </CardTitle>
-              <CardDescription className="text-xs">
-                {isEn ? artifact.summaryEn : artifact.summary}
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="p-4 space-y-3.5">
-              {/* Metric Row */}
-              <div className="grid grid-cols-3 gap-2">
-                {artifact.metrics.map((m, idx) => (
-                  <div key={idx} className="p-2 rounded-lg bg-muted/30 border border-border/40 space-y-0.5">
-                    <span className="text-[10px] text-muted-foreground block truncate">{isEn ? m.labelEn : m.label}</span>
-                    <span className="text-xs font-bold font-mono tracking-tight text-foreground block truncate">{m.value}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Breakdown Rows */}
-              <div className="space-y-1.5 text-xs bg-muted/20 p-2.5 rounded-lg border border-border/40">
-                {artifact.breakdown.map((row, idx) => (
-                  <div key={idx} className="flex items-start justify-between py-1 border-b border-border/30 last:border-b-0 gap-2">
-                    <div className="min-w-0">
-                      <span className="font-medium text-foreground text-[11px] block truncate">{isEn ? row.labelEn : row.label}</span>
-                      {row.secondary && (
-                        <span className="text-[10px] text-muted-foreground block truncate">{row.secondary}</span>
-                      )}
-                    </div>
-                    <span className="font-mono font-semibold text-right text-[11px] text-foreground shrink-0">{row.value}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* 1-CLICK DETERMINISTIC POST / EXECUTION BUTTON */}
-              <div className="pt-1">
-                <Button
-                  onClick={handleExecuteArtifact}
-                  disabled={isArtifactExecuted}
-                  className={`w-full text-xs font-semibold h-9 gap-2 transition-all ${
-                    isArtifactExecuted
-                      ? "bg-emerald-600 hover:bg-emerald-600 text-white"
-                      : "bg-primary hover:bg-primary/90 text-primary-foreground"
-                  }`}
-                >
-                  {isArtifactExecuted ? (
-                    <>
-                      <Check className="size-4" />
-                      <span>{isEn ? "Successfully Executed & Posted" : "Telah Berhasil Dibukukan"}</span>
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="size-3.5" />
-                      <span>{isEn ? artifact.actionButtonLabelEn : artifact.actionButtonLabel}</span>
-                    </>
-                  )}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* 3-Tier Grounding Proof Chain & Statute Verification (Google Cloud Explainability) */}
-          <Card className="border-border/70 shadow-none">
-            <CardHeader className="py-2.5 px-4 border-b border-border/40 bg-muted/20 flex flex-row items-center justify-between">
-              <div className="flex items-center gap-1.5">
-                <Cpu className="size-3.5 text-primary" />
-                <CardTitle className="text-xs font-semibold">
-                  {isEn ? "Google Cloud Grounding Proof" : "Bukti Grounding Google Cloud"}
-                </CardTitle>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleExportProof}
-                className="h-6 px-2 text-[10px] gap-1 text-muted-foreground hover:text-foreground"
-              >
-                <Download className="size-3" />
-                <span>{isEn ? "Export Proof" : "Unduh Bukti"}</span>
-              </Button>
-            </CardHeader>
-
-            <CardContent className="p-3.5 space-y-2 text-xs">
-              <div className="p-2.5 rounded-lg border border-border/50 bg-card space-y-1">
-                <span className="text-[10px] font-mono text-muted-foreground uppercase block">Inference Engine</span>
-                <span className="font-mono text-xs font-semibold text-foreground block">
-                  {artifact.groundingProof.model}
-                </span>
-              </div>
-
-              <div className="p-2.5 rounded-lg border border-border/50 bg-card space-y-1">
-                <span className="text-[10px] font-mono text-muted-foreground uppercase block">Guardrail Standard</span>
-                <span className="font-mono text-xs font-medium text-foreground block leading-tight">
-                  {isEn ? artifact.groundingProof.guardrailEn : artifact.groundingProof.guardrail}
-                </span>
-                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono block">
-                  Delta Variance: {artifact.groundingProof.variance}
-                </span>
-              </div>
-
-              <div className="p-2.5 rounded-lg border border-border/50 bg-card space-y-1">
-                <span className="text-[10px] font-mono text-muted-foreground uppercase block">Statutory Grounding</span>
-                <span className="font-mono text-xs font-semibold text-primary block">
-                  {artifact.groundingProof.statute}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Step-by-Step Reasoning Flowchart */}
-          <Card className="border-border/70 shadow-none flex-1">
-            <CardHeader className="py-2.5 px-4 border-b border-border/40">
-              <CardTitle className="text-xs font-semibold">
-                {isEn ? "Audit Reasoning Steps" : "Tahapan Pemeriksaan Logika"}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-3.5">
-              <div className="relative pl-5 space-y-3 before:absolute before:left-2 before:top-1.5 before:bottom-1.5 before:w-0.5 before:bg-border/60">
-                {persona.thinkingFlow.map((step, idx) => (
-                  <div key={idx} className="relative">
-                    <span className="absolute -left-5 top-0.5 grid size-3.5 place-items-center rounded-full bg-emerald-500 text-white ring-2 ring-background text-[9px]">
-                      <CheckCircle2 className="size-2.5" />
-                    </span>
-                    <div className="space-y-0.5">
-                      <p className="text-[11px] font-semibold text-foreground leading-tight">{step.title}</p>
-                      <p className="text-[10px] text-muted-foreground leading-relaxed">{step.detail}</p>
-                      {step.statuteCitation && (
-                        <span className="inline-block text-[10px] text-primary font-mono mt-0.5">
-                          {step.statuteCitation}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </section>
       </div>
     </div>
