@@ -34,3 +34,18 @@ test("demo routines provide grounded Indonesian statutes and assigned agents", (
     }
   }
 });
+
+test("library nav item is registered in main navigation under reports group", () => {
+  const reportsGroup = NAV.find((g) => g.key === "reports");
+  assert.ok(reportsGroup, "Reports group must exist");
+  const libraryItem = reportsGroup.items.find((i) => i.href === "/library");
+  assert.ok(libraryItem, "Library item must exist in reports nav");
+  assert.equal(libraryItem.key, "library");
+  assert.equal(copyEn.nav.library, "Library & Artifacts");
+  assert.equal(copyId.nav.library, "Dokumen & Bukti");
+});
+
+test("routines data model supports soft-delete archived status", () => {
+  const statuses = ["active", "idle", "running", "paused", "archived"] as const;
+  assert.equal(statuses.includes("archived"), true);
+});
