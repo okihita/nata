@@ -15,6 +15,7 @@ import {
   Plus,
   X,
   ChevronDown,
+  CalendarClock,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -183,28 +184,15 @@ export default function RoutinesPage() {
   return (
     <div className="space-y-4">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/60 pb-4">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight text-foreground">
-            {isEn ? "Autonomous Routines" : "Rutinitas Otonom"}
-          </h1>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            {isEn
-              ? "Scheduled background agents that guard your books, tax thresholds, and legal status."
-              : "Jadwal kerja mandiri agen AI yang menjaga pembukuan, ambang pajak, dan legalitas usaha."}
-          </p>
-        </div>
-
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => handleTrigger(selectedRoutine.id)}
-          disabled={runningId !== null}
-          className="text-xs h-8 gap-1.5 self-start sm:self-auto"
-        >
-          <RotateCcw className={`size-3.5 ${runningId ? "animate-spin" : ""}`} />
-          <span>{isEn ? "Trigger Selected Job" : "Jalankan Pekerjaan Ini"}</span>
-        </Button>
+      <div className="border-b border-border/60 pb-4">
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">
+          {isEn ? "Autonomous Routines" : "Rutinitas Otonom"}
+        </h1>
+        <p className="text-xs text-muted-foreground mt-0.5">
+          {isEn
+            ? "Scheduled background agents that guard your books, tax thresholds, and legal status."
+            : "Jadwal kerja mandiri agen AI yang menjaga pembukuan, ambang pajak, dan legalitas usaha."}
+        </p>
       </div>
 
       {/* 3-Pane Cascading Layout */}
@@ -305,25 +293,68 @@ export default function RoutinesPage() {
           <div className="p-3 border-b border-border/60 flex items-center justify-between bg-muted/20">
             <div>
               <span className="text-xs font-semibold text-foreground">
-                {isEn ? "2. Run History" : "2. Riwayat Eksekusi"}
+                {isEn ? "2. Run Timeline" : "2. Garis Waktu Eksekusi"}
               </span>
-              <p className="text-[10px] text-muted-foreground truncate max-w-[200px]">
+              <p className="text-[10px] text-muted-foreground truncate max-w-[220px]">
                 {isEn ? selectedRoutine.titleEn : selectedRoutine.title}
               </p>
             </div>
-            <Button
-              size="sm"
-              variant="ghost"
-              disabled={runningId === selectedRoutine.id}
-              onClick={() => handleTrigger(selectedRoutine.id)}
-              className="h-6 px-2 text-[10px] gap-1"
-            >
-              <Play className="size-2.5 fill-current" />
-              <span>{isEn ? "Trigger" : "Jalankan"}</span>
-            </Button>
+            <span className="text-[10px] font-mono text-muted-foreground">
+              {selectedRoutine.recentExecutions.length} {isEn ? "runs" : "riwayat"}
+            </span>
           </div>
 
           <div className="p-2 space-y-2 flex-1 overflow-y-auto">
+            {/* NEXT SCHEDULED RUN CARD */}
+            <div className="p-3 rounded-xl border border-primary/40 bg-primary/5 space-y-2 shadow-xs">
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-1.5 text-[11px] font-semibold text-primary uppercase tracking-wider">
+                  <CalendarClock className="size-3.5" />
+                  {isEn ? "Next Scheduled Run" : "Jadwal Berikutnya"}
+                </span>
+                <span className="text-[10px] font-mono bg-primary/10 text-primary px-1.5 py-0.5 rounded border border-primary/20">
+                  {selectedRoutine.cronSchedule}
+                </span>
+              </div>
+
+              <div className="text-xs text-foreground/90 font-medium">
+                {isEn ? selectedRoutine.scheduleHumanEn : selectedRoutine.scheduleHuman}
+              </div>
+
+              <p className="text-[11px] text-muted-foreground line-clamp-2 leading-relaxed">
+                {isEn ? selectedRoutine.purposeEn : selectedRoutine.purpose}
+              </p>
+
+              <div className="pt-1 flex items-center justify-between">
+                <span className="text-[10px] text-muted-foreground font-mono">
+                  Cloud Scheduler &bull; Worker: {selectedRoutine.assignedAgent.name}
+                </span>
+                <Button
+                  size="sm"
+                  variant="default"
+                  disabled={runningId === selectedRoutine.id}
+                  onClick={() => handleTrigger(selectedRoutine.id)}
+                  className="h-7 px-2.5 text-xs gap-1.5 shadow-xs"
+                >
+                  {runningId === selectedRoutine.id ? (
+                    <RotateCcw className="size-3 animate-spin" />
+                  ) : (
+                    <Play className="size-3 fill-current" />
+                  )}
+                  <span>
+                    {runningId === selectedRoutine.id
+                      ? (isEn ? "Running…" : "Berjalan…")
+                      : (isEn ? "Run Now" : "Jalankan Sekarang")}
+                  </span>
+                </Button>
+              </div>
+            </div>
+
+            {/* PAST RUNS DIVIDER */}
+            <div className="px-1 pt-1 flex items-center gap-2 text-[10px] uppercase font-mono text-muted-foreground">
+              <span>{isEn ? "Past Executions" : "Riwayat Eksekusi"}</span>
+              <div className="h-px bg-border/60 flex-1" />
+            </div>
             {selectedRoutine.recentExecutions.map((exec) => {
               const isSelected = selectedExecId === exec.id;
 
