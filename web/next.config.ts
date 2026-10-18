@@ -24,6 +24,7 @@ const nextConfig: NextConfig = {
       { source: "/pajak", destination: "/taxes" },
       { source: "/perizinan", destination: "/licensing" },
       { source: "/akademi", destination: "/academy" },
+      { source: "/panduan", destination: "/guide" },
       { source: "/usaha", destination: "/business" },
       { source: "/pengaturan", destination: "/settings" },
     ];

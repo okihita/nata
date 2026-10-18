@@ -19,6 +19,7 @@ export type NavKey =
   | "pajak"
   | "perizinan"
   | "academy"
+  | "platformGuide"
   | "usaha"
   | "pengaturan";
 
@@ -82,9 +83,12 @@ export const NAV: NavGroup[] = [
   },
   {
     key: "learning",
-    label: "Edukasi",
+    label: "Akademi",
     tone: "biru",
-    items: [{ href: "/academy", key: "academy", icon: "GraduationCap" }],
+    items: [
+      { href: "/academy", key: "academy", icon: "GraduationCap" },
+      { href: "/guide", key: "platformGuide", icon: "Compass" },
+    ],
   },
   {
     key: "other",

@@ -14,6 +14,7 @@ import {
   Store,
   Sparkles,
   GraduationCap,
+  Compass,
   type LucideIcon,
 } from "lucide-react";
 
@@ -46,6 +47,7 @@ export const ICONS: Record<string, LucideIcon> = {
   Store,
   Settings,
   GraduationCap,
+  Compass,
 };
 
 export function AppSidebar() {
@@ -87,7 +89,8 @@ export function AppSidebar() {
               <SidebarMenu>
                 {group.items.map((item) => {
                   const Icon = ICONS[item.icon] ?? LayoutDashboard;
-                  const active = pathname.startsWith(item.href);
+                  const itemPath = item.href.split("?")[0];
+                  const active = pathname === itemPath;
                   return (
                     <SidebarMenuItem key={item.href}>
                       <SidebarMenuButton

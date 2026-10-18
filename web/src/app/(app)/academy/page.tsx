@@ -7,8 +7,6 @@ import {
   ArrowRight,
   BookOpen,
   Clock,
-  Scale,
-  Compass,
   ExternalLink,
 } from "lucide-react";
 
@@ -16,21 +14,18 @@ import { PageHeader } from "@/components/app-sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/lib/copy";
 import { useWorkspace } from "@/lib/store";
 import {
   ACADEMY_LESSONS,
   MYTH_FACTS,
-  type AcademyTrack,
 } from "@/lib/academy";
 
 export default function AcademyPage() {
   const { copy } = useLanguage();
   const { business } = useWorkspace();
 
-  const [activeTrack, setActiveTrack] = useState<AcademyTrack>("business");
   const [selectedPersona, setSelectedPersona] = useState<"all" | "persona_a" | "persona_b">("all");
   const [activeLessonId, setActiveLessonId] = useState<string | null>(null);
 
@@ -41,13 +36,14 @@ export default function AcademyPage() {
       ? "persona_a"
       : undefined;
 
-  const filteredLessons = useMemo(() => {
+  // Filter lessons specifically for the Business Complexities track
+  const businessLessons = useMemo(() => {
     return ACADEMY_LESSONS.filter((item) => {
-      if (item.track !== activeTrack) return false;
+      if (item.track !== "business") return false;
       if (selectedPersona === "all") return true;
       return item.targetPersona === "all" || item.targetPersona === selectedPersona;
     });
-  }, [activeTrack, selectedPersona]);
+  }, [selectedPersona]);
 
   const activeLesson = useMemo(() => {
     if (!activeLessonId) return null;
@@ -57,7 +53,7 @@ export default function AcademyPage() {
   return (
     <>
       <PageHeader
-        title={copy.academy.title}
+        title={copy.nav.academy}
         subtitle={copy.academy.subtitle}
       />
 
@@ -109,107 +105,87 @@ export default function AcademyPage() {
         </div>
       </div>
 
-      {/* Main Track Tabs */}
-      <Tabs
-        value={activeTrack}
-        onValueChange={(val) => setActiveTrack(val as AcademyTrack)}
-        className="space-y-6"
-      >
-        <TabsList className="grid h-10 w-full grid-cols-2 max-w-md">
-          <TabsTrigger value="business" className="gap-2 text-xs font-medium">
-            <Scale className="size-4" />
-            {copy.academy.tracks.business}
-          </TabsTrigger>
-          <TabsTrigger value="platform" className="gap-2 text-xs font-medium">
-            <Compass className="size-4" />
-            {copy.academy.tracks.platform}
-          </TabsTrigger>
-        </TabsList>
-
-        <div className="space-y-6">
-          <div className="text-xs text-muted-foreground">
-            {activeTrack === "business"
-              ? copy.academy.tracks.businessDesc
-              : copy.academy.tracks.platformDesc}
-          </div>
-
-          {/* Lesson Cards Grid */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filteredLessons.map((lesson) => {
-              const lessonCopy = copy.academy.lessons[lesson.id as keyof typeof copy.academy.lessons];
-              if (!lessonCopy) return null;
-
-              const isRecommended =
-                activePersonaId && lesson.targetPersona === activePersonaId;
-
-              return (
-                <Card
-                  key={lesson.id}
-                  className={`flex flex-col justify-between transition-all hover:border-primary/50 hover:shadow-xs ${
-                    isRecommended ? "border-primary/40 bg-primary/[0.02]" : ""
-                  }`}
-                >
-                  <CardHeader className="p-4 pb-2">
-                    <div className="flex items-center justify-between gap-2">
-                      <Badge variant="outline" className="text-[10px]">
-                        {copy.academy.categories[lesson.category]}
-                      </Badge>
-                      <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-                        <Clock className="size-3" />
-                        <span>
-                          {lesson.estimatedMinutes} {copy.academy.minRead}
-                        </span>
-                      </div>
-                    </div>
-                    <CardTitle className="pt-2 text-sm leading-snug font-semibold">
-                      {lessonCopy.title}
-                    </CardTitle>
-                    <CardDescription className="text-xs line-clamp-2">
-                      {lessonCopy.summary}
-                    </CardDescription>
-                  </CardHeader>
-
-                  <CardContent className="p-4 pt-2 space-y-3">
-                    {lesson.statuteCitation && (
-                      <div className="rounded border bg-muted/30 px-2 py-1 text-[11px] text-muted-foreground font-mono truncate">
-                        § {lesson.statuteCitation}
-                      </div>
-                    )}
-
-                    <div className="flex items-center justify-between pt-1">
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        className="h-8 text-xs cursor-pointer"
-                        onClick={() => setActiveLessonId(lesson.id)}
-                      >
-                        <BookOpen className="mr-1.5 size-3.5" />
-                        {copy.common.loading ? "Baca Panduan" : "Baca Panduan"}
-                      </Button>
-
-                      {lesson.actionLink && (
-                        <Button
-                          asChild
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 text-xs text-primary hover:text-primary"
-                        >
-                          <Link href={lesson.actionLink.href}>
-                            {copy.academy.actionButtons[lesson.actionLink.labelKey]}
-                            <ArrowRight className="ml-1 size-3" />
-                          </Link>
-                        </Button>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+      {/* Lesson Cards Grid */}
+      <div className="space-y-4">
+        <div className="text-xs text-muted-foreground">
+          {copy.academy.tracks.businessDesc}
         </div>
-      </Tabs>
 
-      {/* Reader Modal / Expandable View */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {businessLessons.map((lesson) => {
+            const lessonCopy = copy.academy.lessons[lesson.id as keyof typeof copy.academy.lessons];
+            if (!lessonCopy) return null;
+
+            const isRecommended =
+              activePersonaId && lesson.targetPersona === activePersonaId;
+
+            return (
+              <Card
+                key={lesson.id}
+                className={`flex flex-col justify-between transition-all hover:border-primary/50 hover:shadow-xs ${
+                  isRecommended ? "border-primary/40 bg-primary/[0.02]" : ""
+                }`}
+              >
+                <CardHeader className="p-4 pb-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <Badge variant="outline" className="text-[10px]">
+                      {copy.academy.categories[lesson.category]}
+                    </Badge>
+                    <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                      <Clock className="size-3" />
+                      <span>
+                        {lesson.estimatedMinutes} {copy.academy.minRead}
+                      </span>
+                    </div>
+                  </div>
+                  <CardTitle className="pt-2 text-sm leading-snug font-semibold">
+                    {lessonCopy.title}
+                  </CardTitle>
+                  <CardDescription className="text-xs text-muted-foreground leading-normal">
+                    {lessonCopy.summary}
+                  </CardDescription>
+                </CardHeader>
+
+                <CardContent className="p-4 pt-2 space-y-3">
+                  {lesson.statuteCitation && (
+                    <div className="rounded border bg-muted/30 px-2 py-1 text-[11px] text-muted-foreground font-mono truncate">
+                      § {lesson.statuteCitation}
+                    </div>
+                  )}
+
+                  <div className="flex items-center justify-between pt-1">
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      className="h-8 text-xs cursor-pointer"
+                      onClick={() => setActiveLessonId(lesson.id)}
+                    >
+                      <BookOpen className="mr-1.5 size-3.5" />
+                      Baca Panduan
+                    </Button>
+
+                    {lesson.actionLink && (
+                      <Button
+                        asChild
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 text-xs text-primary hover:text-primary"
+                      >
+                        <Link href={lesson.actionLink.href}>
+                          {copy.academy.actionButtons[lesson.actionLink.labelKey]}
+                          <ArrowRight className="ml-1 size-3" />
+                        </Link>
+                      </Button>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Reader Modal */}
       {activeLesson && (
         <div
           role="dialog"
@@ -249,7 +225,7 @@ export default function AcademyPage() {
                 }
               </p>
               <div className="rounded-lg border bg-muted/30 p-3 text-xs text-muted-foreground space-y-1">
-                <p className="font-medium text-foreground">💡 Ringkasan Praktis Nata:</p>
+                <p className="font-medium text-foreground">💡 Ringkasan:</p>
                 <p>
                   {
                     copy.academy.lessons[activeLesson.id as keyof typeof copy.academy.lessons]
@@ -282,7 +258,7 @@ export default function AcademyPage() {
         </div>
       )}
 
-      {/* 10/10 Interactive Section: Myth vs. Fact Flashcards */}
+      {/* Myth vs. Fact Flashcards */}
       <div className="mt-12 space-y-4">
         <div className="space-y-1">
           <h3 className="text-sm font-semibold tracking-tight">

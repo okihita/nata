@@ -73,7 +73,7 @@ export const copyEn = {
       operations: "Operations",
       master: "Company & Master Data",
       reports: "Financial Reports",
-      learning: "Learning & Help",
+      learning: "Academy",
       other: "Preferences",
     },
     dashboard: "Dashboard",
@@ -83,7 +83,8 @@ export const copyEn = {
     laporan: "Financial Statements",
     pajak: "Taxes",
     perizinan: "Licensing",
-    academy: "Academy",
+    academy: "Business Complexities",
+    platformGuide: "Platform Guide",
     usaha: "Business Profile",
     pengaturan: "Settings",
   },
@@ -717,16 +718,15 @@ export const copyEn = {
       "The operation timed out. Your records remain safe — please try again in a moment.",
   },
   academy: {
-    title: "Nata Academy & Knowledge Hub",
-    subtitle:
-      "Master the Nata platform and navigate complex Indonesian business laws, tax thresholds, and accounting standards.",
+    title: "Academy",
+    subtitle: "Platform workflows, Indonesian accounting standards (SAK EMKM), and tax rules.",
     badge: "101 to Advanced",
     personaFilter: {
       all: "All Curriculums",
       persona_a: "Retail / Toko (Persona A)",
       persona_b: "F&B / PT Multi-Outlet (Persona B)",
     },
-    filterHint: "Tailored to your active business structure and tax classification.",
+    filterHint: "Tailored to your active business entity.",
     tracks: {
       platform: "Platform Mastery",
       platformDesc: "How to get the most out of Nata's autonomous bookkeeping and multi-agent engine.",
@@ -756,72 +756,62 @@ export const copyEn = {
     },
     lessons: {
       plat_multimodal: {
-        title: "Fast Multi-Modal Recording: Photo, Voice & WhatsApp Text",
-        summary:
-          "Capture transactions instantly without tedious data entry. Voice notes automatically prioritize spoken self-corrections (e.g. '380k... wait, 560k cash').",
+        title: "Fast Multi-Modal Recording",
+        summary: "Record transactions via receipt photo, voice note, or casual text.",
         content:
           "Nata allows business owners to record financial transactions using the method most convenient to them. In addition to clear receipt photos, you can dictate voice notes in colloquial Indonesian or paste unstructured WhatsApp text. The multimodal model extracts line items, quantities, vendors, and payment methods deterministically.",
       },
       plat_trace: {
-        title: "Understanding Agent Cascade: Keuangan -> Fiskal -> Regulasi",
-        summary:
-          "Observe how autonomous agents work in a verifiable one-way chain with strict deterministic mathematical guardrails.",
+        title: "Agent Cascade Verification",
+        summary: "Observe autonomous handoffs: Keuangan -> Fiskal -> Regulasi.",
         content:
           "When you submit a transaction, Agent Keuangan parses the data and commits balanced double-entry lines (Assets = Liabilities + Equity). Once posted, it performs a one-way handoff to Agent Fiskal to compute tax obligations, which in turn hands off to Agent Regulasi to classify the business's official KBLI 2020 code.",
       },
       plat_export: {
-        title: "Exporting SAK EMKM Excel Financial Statements",
-        summary:
-          "Generate professional Income Statements and Balance Sheets formatted specifically for Indonesian accounting and tax offices.",
+        title: "SAK EMKM Excel Exports",
+        summary: "Export income statements and balance sheets formatted for Indonesian tax filing.",
         content:
           "Nata generates exportable reports that adhere to Indonesian standards: semicolon-delimited CSVs, UTF-8 BOM encoding for seamless Microsoft Excel compatibility, and standard Indonesian currency conventions (Rp X.XXX.XXX).",
       },
       biz_cash_separation: {
-        title: "101: Separating Personal and Business Cash Flow",
-        summary:
-          "The number one reason small businesses fail financial audits: mixing owner personal expenses with enterprise operations.",
+        title: "Cash Separation 101",
+        summary: "Prevent audit failures by strictly separating personal and business funds.",
         content:
           "Under SAK EMKM Chapter 2, an enterprise is treated as a separate economic entity from its owner. Paying for groceries or school tuition directly out of the business cash drawer distorts profit margins and creates tax liabilities. Maintain a distinct Cash or Bank account and record owner withdrawals as Drawings (Prive) rather than business operational expenses.",
       },
       biz_tax_threshold: {
-        title: "PP 55/2022: The Rp 500 Million Zero-Tax Band",
-        summary:
-          "How individual sole proprietors (Orang Pribadi) enjoy tax-free status up to Rp 500 million annual gross turnover.",
+        title: "PP 55/2022 Tax Threshold",
+        summary: "Sole proprietors pay 0% PPh Final on the first Rp 500 million annual turnover.",
         content:
           "Under Government Regulation PP 55/2022 Article 60 paragraph (2), individual MSME taxpayers pay 0% PPh Final on their first Rp 500 million in gross turnover within a fiscal tax year. Turnover exceeding Rp 500 million is taxed at a flat 0.5% rate.",
       },
       biz_pt_tax_trap: {
-        title: "The PT Perorangan Tax Trap: Taxed from Rupiah Zero",
-        summary:
-          "Why incorporating an Individual PT (PT Perorangan) forfeits the Rp 500M zero-tax threshold.",
+        title: "The PT Perorangan Tax Trap",
+        summary: "PT Perorangan is a corporate entity taxed 0.5% starting from rupiah zero.",
         content:
           "Many entrepreneurs register a PT Perorangan thinking it carries individual tax benefits. Legally, PT Perorangan is a corporate body (Badan Usaha). Under PP 55/2022, corporate entities do not qualify for the Rp 500M exemption and are taxed 0.5% PPh Final starting from the very first rupiah of revenue.",
       },
       biz_cogs_recipe: {
-        title: "F&B Cost of Goods Sold (COGS) & Recipe Engineering",
-        summary:
-          "Accurately calculate raw material consumption and gross margins across food and drink menu items.",
+        title: "F&B COGS & Recipe Costing",
+        summary: "Calculate raw material consumption and gross margins across food and drink menus.",
         content:
           "In food & beverage businesses, selling price minus ingredient costs equals your gross margin. Small fluctuations in dairy, poultry, or coffee bean prices directly erode operating income. SAK EMKM Chapter 7 mandates recording raw inventory upon purchase and expensing it to COGS (Beban Pokok Penjualan) as batches are consumed.",
       },
       biz_marketplace_recon: {
-        title: "E-Commerce Settlement: Gross Revenue vs Platform Fees",
-        summary:
-          "Avoid reporting net bank payouts as total revenue on Tokopedia, Shopee, and TikTok Shop.",
+        title: "E-Commerce Settlement",
+        summary: "Report gross sales and platform deductions instead of net bank transfers.",
         content:
           "Marketplace escrow payouts already deduct admin commissions, payment fees, and promotional subsidies. Recording only the net cash arriving in your bank account understates your gross turnover, which violates Indonesian tax regulations. Revenue must be posted at gross invoice value, with marketplace deductions recorded as selling expenses.",
       },
       biz_kbli_oss: {
-        title: "KBLI 2020 & Risk-Based Licensing (OSS-RBA)",
-        summary:
-          "Why picking the right 5-digit KBLI code dictates your business license (NIB) and operational inspection level.",
+        title: "KBLI 2020 & Risk-Based Licensing",
+        summary: "Match your 5-digit KBLI code to correct OSS-RBA licensing requirements.",
         content:
           "Government Regulation PP 5/2021 categorizes Indonesian business activities by hazard risk (Low, Medium-Low, Medium-High, High). A low-risk retail shop (KBLI 47725) needs only a basic NIB, whereas an F&B dining establishment (KBLI 56303) requires hygiene certificates and environmental declarations.",
       },
       biz_hiring_payroll: {
-        title: "MSME Employment & Wage Rules (PP 35/2021 & PP 36/2021)",
-        summary:
-          "Legal flexibility for Indonesian micro and small enterprises regarding regional minimum wage (UMR) and employment contracts.",
+        title: "MSME Labor & Wage Rules",
+        summary: "Understand statutory minimum wage exemptions under PP 36/2021.",
         content:
           "Under PP 36/2021 Article 36, micro and small enterprises are legally exempt from provincial/district minimum wage (UMR) mandates, provided agreed wages are at least 50% of the provincial average consumption rate. Fixed-term agreements (PKWT) must still be registered with the Ministry of Manpower.",
       },

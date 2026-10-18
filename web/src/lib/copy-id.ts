@@ -78,7 +78,7 @@ export const copyId = {
       operations: "Operasional",
       master: "Perusahaan & Data Induk",
       reports: "Laporan Keuangan",
-      learning: "Edukasi & Bantuan",
+      learning: "Akademi",
       other: "Preferensi",
     },
     dashboard: "Dasbor",
@@ -88,7 +88,8 @@ export const copyId = {
     laporan: "Laporan Keuangan",
     pajak: "Pajak",
     perizinan: "Perizinan",
-    academy: "Akademi",
+    academy: "Kompleksitas Bisnis",
+    platformGuide: "Panduan Platform",
     usaha: "Profil Usaha",
     pengaturan: "Pengaturan",
   },
@@ -722,16 +723,15 @@ export const copyId = {
       "Prosesnya memakan waktu lebih lama dari biasanya. Catatan Anda tidak berubah — coba lagi sebentar lagi.",
   },
   academy: {
-    title: "Akademi Nata & Pusat Edukasi",
-    subtitle:
-      "Kuasai fitur platform Nata dan pahami kompleksitas hukum bisnis, batasan pajak UMKM, serta standar akuntansi Indonesia.",
+    title: "Akademi",
+    subtitle: "Alur kerja platform, standar akuntansi SAK EMKM, dan aturan pajak UMKM.",
     badge: "101 hingga Mahir",
     personaFilter: {
       all: "Semua Materi",
       persona_a: "Retail / Toko (Persona A)",
       persona_b: "F&B / PT Multi-Outlet (Persona B)",
     },
-    filterHint: "Disesuaikan otomatis dengan bentuk badan usaha dan klasifikasi pajak Anda yang aktif.",
+    filterHint: "Disesuaikan otomatis dengan bentuk badan usaha aktif Anda.",
     tracks: {
       platform: "Panduan Platform",
       platformDesc: "Cara memaksimalkan pembukuan otomatis dan eksekusi multi-agen Nata.",
@@ -761,72 +761,62 @@ export const copyId = {
     },
     lessons: {
       plat_multimodal: {
-        title: "Catat Cepat Multi-Modal: Foto, Suara & Teks WhatsApp",
-        summary:
-          "Rekam transaksi seketika tanpa input formulir manual yang melelahkan. Catatan suara otomatis memprioritaskan koreksi lisan (contoh: '380rb... eh, 560rb tunai').",
+        title: "Catat Cepat Multi-Modal",
+        summary: "Rekam transaksi via foto struk, suara, atau teks santai.",
         content:
           "Nata memungkinkan pemilik usaha mencatat transaksi keuangan dengan metode apa pun yang paling nyaman. Selain foto struk fisik, Anda bisa mendiktekan rekaman suara dalam bahasa sehari-hari atau menempelkan teks percakapan WhatsApp. Model multi-modal mengekstrak rincian barang, jumlah, mitra, dan cara bayar secara deterministik.",
       },
       plat_trace: {
-        title: "Memahami Jejak Agen: Keuangan -> Fiskal -> Regulasi",
-        summary:
-          "Lihat bagaimana agen otonom bekerja dalam rantai searah yang dapat diverifikasi dengan pagar pembatas matematika ketat.",
+        title: "Verifikasi Jejak Multi-Agen",
+        summary: "Amati handoff otonom: Keuangan -> Fiskal -> Regulasi.",
         content:
           "Saat Anda mengirim transaksi, Agent Keuangan membedah data dan mengunci jurnal berimbang (Aset = Kewajiban + Ekuitas). Setelah tercatat, handoff searah diberikan ke Agent Fiskal untuk menghitung kewajiban pajak, lalu ke Agent Regulasi untuk mencocokkan kode resmi KBLI 2020.",
       },
       plat_export: {
-        title: "Mengekspor Laporan Keuangan Excel Sesuai SAK EMKM",
-        summary:
-          "Hasilkan Laporan Laba Rugi dan Neraca profesional yang siap diserahkan ke bank atau kantor pajak Indonesia.",
+        title: "Ekspor Excel SAK EMKM",
+        summary: "Ekspor Laporan Laba Rugi dan Neraca berstandar baku Indonesia.",
         content:
           "Nata menghasilkan laporan ekspor yang mematuhi format Indonesia: file CSV berpemisah titik koma (;), pengkodean UTF-8 BOM agar rapi di Microsoft Excel, dan penulisan nominal rupiah yang baku (Rp X.XXX.XXX).",
       },
       biz_cash_separation: {
-        title: "101: Pemisahan Kas Pribadi vs Kas Usaha",
-        summary:
-          "Penyebab nomor satu UMKM gagal saat audit: mencampur uang dapur dengan arus kas operasional toko.",
+        title: "Pemisahan Kas 101",
+        summary: "Hindari gagal audit dengan memisahkan kas pribadi dan kas toko.",
         content:
           "Berdasarkan SAK EMKM Bab 2, usaha diperlakukan sebagai entitas ekonomi yang terpisah dari pemiliknya. Membayar belanja dapur atau uang sekolah langsung dari laci kasir mengacaukan margin keuntungan dan memicu masalah pajak. Buat rekening bank terpisah dan catat penarikan pribadi pemilik sebagai Prive, bukan beban usaha.",
       },
       biz_tax_threshold: {
-        title: "PP 55/2022: Batas Bebas Pajak Omzet Rp 500 Juta",
-        summary:
-          "Bagaimana pemilik usaha perorangan (Orang Pribadi) berhak atas pembebasan pajak hingga omzet 500 juta setahun.",
+        title: "Batas Bebas Pajak PP 55/2022",
+        summary: "Orang Pribadi bebas pajak 0% atas omzet s.d. Rp 500 juta setahun.",
         content:
           "Menurut Peraturan Pemerintah PP 55/2022 Pasal 60 ayat (2), Wajib Pajak Orang Pribadi UMKM dibebaskan dari PPh Final 0,5% atas peredaran bruto kumulatif hingga Rp 500 juta dalam satu tahun pajak. Omzet di atas 500 juta baru dikenakan tarif flat 0,5%.",
       },
       biz_pt_tax_trap: {
-        title: "Jebakan Pajak PT Perorangan: Kena Pajak dari Rupiah Pertama",
-        summary:
-          "Mengapa mendirikan PT Perorangan menghanguskan fasilitas batas bebas pajak Rp 500 juta.",
+        title: "Jebakan Pajak PT Perorangan",
+        summary: "PT Perorangan berstatus badan hukum dan kena pajak dari rupiah pertama.",
         content:
           "Banyak pengusaha mendirikan PT Perorangan karena biayanya murah, namun tidak menyadari aspek perpajakannya. PT Perorangan berstatus badan hukum (Badan Usaha). Berdasarkan PP 55/2022, badan usaha tidak mendapat pembebasan Rp 500 juta dan wajib membayar PPh Final 0,5% sejak rupiah pertama omzet.",
       },
       biz_cogs_recipe: {
-        title: "HPP Kuliner (F&B) & Rekayasa Menu (Menu Engineering)",
-        summary:
-          "Hitung akurat konsumsi bahan baku dan margin kotor untuk setiap porsi makanan dan minuman.",
+        title: "HPP Kuliner & Rekayasa Menu",
+        summary: "Hitung akurat konsumsi bahan baku dan margin kotor tiap porsi.",
         content:
           "Pada bisnis kuliner, harga jual dikurangi biaya bahan menghasilkan laba kotor. Kenaikan harga susu, ayam, atau biji kopi langsung menggerus margin. SAK EMKM Bab 7 mewajibkan pencatatan persediaan bahan baku saat dibeli dan menjadikannya Beban Pokok Penjualan (HPP) saat porsi terjual.",
       },
       biz_marketplace_recon: {
-        title: "Settlement E-Commerce: Omzet Bruto vs Potongan Biaya Admin",
-        summary:
-          "Jangan hanya mencatat uang bersih transferan bank dari Tokopedia, Shopee, dan TikTok Shop.",
+        title: "Settlement E-Commerce",
+        summary: "Catat omzet bruto dan potongan biaya admin, bukan transferan bersih.",
         content:
           "Pencairan dana e-commerce sudah dipotong komisi admin, biaya gratis ongkir, dan promo platform. Mencatat hanya uang yang masuk ke rekening BCA/Mandiri membuat omzet Anda terlihat lebih kecil dari aslinya, yang berisiko memicu surat teguran pajak (SP2DK). Catat omzet sesuai nilai kotor penjualan, dan catat potongan marketplace sebagai beban operasional.",
       },
       biz_kbli_oss: {
-        title: "KBLI 2020 & Perizinan Berbasis Risiko (OSS-RBA)",
-        summary:
-          "Mengapa salah memilih kode KBLI 5 digit dapat menghambat izin NIB dan sertifikasi usaha Anda.",
+        title: "KBLI 2020 & Perizinan Berbasis Risiko",
+        summary: "Pilih kode KBLI 5 digit yang tepat agar izin NIB OSS terbit lancar.",
         content:
           "Peraturan Pemerintah PP 5/2021 membagi kegiatan usaha berdasarkan tingkat risiko (Rendah, Menengah Rendah, Menengah Tinggi, Tinggi). Toko eceran kosmetik (KBLI 47725) berkategori risiko rendah dan hanya butuh NIB, sedangkan kafe/restoran (KBLI 56303) memerlukan sertifikat standar laik higiene sanitasi.",
       },
       biz_hiring_payroll: {
-        title: "Aturan Penggajian Karyawan UMKM (PP 35/2021 & PP 36/2021)",
-        summary:
-          "Kelonggaran hukum bagi usaha mikro dan kecil terkait aturan upah minimum regional (UMR) dan kontrak kerja.",
+        title: "Aturan Penggajian Karyawan UMKM",
+        summary: "Pahami pengecualian upah minimum (UMR) sesuai PP 36/2021.",
         content:
           "Berdasarkan PP 36/2021 Pasal 36, usaha mikro dan kecil dikecualikan dari kewajiban upah minimum (UMR). Kesepakatan upah antara pemilik dan pekerja diperbolehkan minimal 50% dari rata-rata konsumsi masyarakat tingkat provinsi. Namun, perjanjian kerja waktu tertentu (PKWT) tetap wajib didaftarkan secara transparan.",
       },
