@@ -503,13 +503,13 @@ export default function RoutinesPage() {
           {selectedRoutine ? (
             <div className="p-2 space-y-2 flex-1 overflow-y-auto">
               {/* NEXT SCHEDULED RUN CARD */}
-              <div className="p-3 rounded-xl border border-primary/40 bg-primary/5 space-y-2 shadow-xs">
+              <div className="p-3 rounded-xl border border-border/80 bg-muted/30 space-y-2 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-[11px] font-semibold text-primary uppercase tracking-wider">
-                    <CalendarClock className="size-3.5" />
+                  <span className="flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+                    <CalendarClock className="size-3.5 text-primary" />
                     {isEn ? "Next Scheduled Run" : "Jadwal Berikutnya"}
                   </span>
-                  <span className="text-[10px] font-medium bg-primary/10 text-primary px-2 py-0.5 rounded border border-primary/20">
+                  <span className="text-[10px] font-medium bg-background text-foreground/80 px-2 py-0.5 rounded border border-border/70">
                     {isEn ? selectedRoutine.scheduleHumanEn : selectedRoutine.scheduleHuman}
                   </span>
                 </div>
