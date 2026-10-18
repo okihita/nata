@@ -844,6 +844,7 @@ export const copyEn = {
     statuteGrounded: "Grounded Statute",
     actionButtons: {
       readLesson: "Read Guide",
+      viewWalkthrough: "Visual Tour",
       tryNow: "Try in Nata",
       tryRecordVoice: "Try Voice Recording",
       checkTaxes: "Check Tax Calculations",
@@ -852,16 +853,46 @@ export const copyEn = {
     },
     lessons: {
       plat_multimodal: {
-        title: "Fast Multi-Modal Recording",
-        summary: "Record transactions via receipt photo, voice note, or casual text.",
+        title: "Fast Receipt & Expense Extraction",
+        summary: "Record transactions effortlessly via receipt photo capture or casual text notes.",
         content:
-          "Nata allows business owners to record financial transactions using the method most convenient to them. In addition to clear receipt photos, you can dictate voice notes in colloquial Indonesian or paste unstructured WhatsApp text. The multimodal model extracts line items, quantities, vendors, and payment methods deterministically.",
+          "Nata allows business owners to record financial transactions using the fastest and most practical methods. Snap physical receipt photos, handwritten paper bills, or paste unstructured transaction notes from WhatsApp. Vision & Language AI deterministically extracts line items, quantities, vendors, and payment methods without tedious manual data entry.",
       },
       plat_trace: {
         title: "Agent Cascade Verification",
         summary: "Observe autonomous handoffs: Keuangan -> Fiskal -> Regulasi.",
         content:
           "When you submit a transaction, Agent Keuangan parses the data and commits balanced double-entry lines (Assets = Liabilities + Equity). Once posted, it performs a one-way handoff to Agent Fiskal to compute tax obligations, which in turn hands off to Agent Regulasi to classify the business's official KBLI 2020 code.",
+      },
+      plat_agents: {
+        title: "Autonomous Multi-Agent AI Staff",
+        summary: "Collaborate with 4 AI specialists: Mas Nata, Mbak Maya, Mas Dimas, and Pak Arief.",
+        content:
+          "Run your business operations with an integrated digital AI team in Nata. Mas Nata orchestrates transaction recording and business strategy, Mbak Maya verifies SAK EMKM-compliant double-entry accounting journals, Mas Dimas monitors MSME tax compliance (PP 55/2022) & the Rp 500M exempt band, and Pak Arief ensures legal compliance, OSS NIB, and official KBLI 2020 codes remain valid.",
+      },
+      plat_tax_monitor: {
+        title: "Rp 500M Tax-Free Threshold Monitor",
+        summary: "Track cumulative annual gross turnover against the PP 55/2022 tax-exempt ceiling.",
+        content:
+          "Under Indonesian Government Regulation PP 55/2022 Article 60, individual MSME taxpayers enjoy a 0% Final PPh rate on gross turnover up to Rp 500 million per fiscal year. Nata's Tax Module tracks cumulative revenue in real time, issues timely warnings before you reach the threshold, and computes the 0.5% Final PPh strictly on turnover exceeding Rp 500 million.",
+      },
+      plat_licensing_kbli: {
+        title: "NIB Licensing & KBLI 2020 Validation",
+        summary: "Synchronize day-to-day business activities with official OSS-RBA licensing standards.",
+        content:
+          "Avoid regulatory fines and licensing roadblocks. Nata's Licensing Module matches your operational entries and business description to official 5-digit KBLI 2020 codes from BPS & BKPM, determines your OSS-RBA risk tier (Low, Medium, High), and provides actionable guidance on standard operational certifications.",
+      },
+      plat_routines: {
+        title: "Automated Routines & Tax Reminders",
+        summary: "Automate monthly book closing, cash reconciliation, and statutory tax deadlines.",
+        content:
+          "Maintain accounting discipline with scheduled recurring workflows. Nata Routines automates daily and monthly responsibilities such as cash drawer verifications, marketplace payout reconciliations, 15th-of-the-month Final PPh remittances, and annual tax returns, delegating each routine directly to the designated AI specialist.",
+      },
+      plat_kur_readiness: {
+        title: "Bank Loan & KUR Readiness",
+        summary: "Generate bank-ready SAK EMKM financial statements for credit underwriting.",
+        content:
+          "Maximize your approval odds for People's Business Credit (KUR) and commercial bank loans. Nata automatically compiles the 3 foundational SAK EMKM financial reports: Statement of Financial Position (Balance Sheet), Income Statement (Profit & Loss), and Notes to Financial Statements (CALK), ready to print or export to Excel.",
       },
       plat_export: {
         title: "SAK EMKM Excel Exports",
