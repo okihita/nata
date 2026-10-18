@@ -456,13 +456,24 @@ export default function RoutinesPage() {
                   </h3>
 
                   <div className="flex items-center justify-between pt-1.5 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1">
+                    <span className="flex items-center gap-1.5">
                       {routine.lastRunStatus === "warning" ? (
-                        <span className="size-1.5 rounded-full bg-amber-500" />
+                        <>
+                          <AlertTriangle className="size-3 text-amber-500 shrink-0" />
+                          <span className="text-amber-600 dark:text-amber-400 font-medium">
+                            {isEn ? "Notice" : "Perhatian"}
+                          </span>
+                        </>
                       ) : (
-                        <span className="size-1.5 rounded-full bg-emerald-500" />
+                        <>
+                          <CheckCircle2 className="size-3 text-emerald-500 shrink-0" />
+                          <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                            {isEn ? "Healthy" : "Normal"}
+                          </span>
+                        </>
                       )}
-                      <span>{routine.lastRunTime}</span>
+                      <span className="text-muted-foreground/60">&bull;</span>
+                      <span className="truncate">{routine.lastRunTime}</span>
                     </span>
 
                     {isRunning ? (
