@@ -1,20 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Send,
   Paperclip,
   CheckCircle2,
-  Clock,
   Sparkles,
-  ArrowRight,
   Shield,
-  FileCheck2,
-  Search,
-  Scale,
-  ShieldAlert,
-  ChevronRight,
-  Info,
+  FileText,
+  Image as ImageIcon,
+  X,
+  Upload,
 } from "lucide-react";
 
 import { PageHeader } from "@/components/app-sidebar";
@@ -29,18 +25,27 @@ export default function AgentsPage() {
   const { locale } = useLanguage();
   const isEn = locale === "en";
 
-  const [activePersonaId, setActivePersonaId] = useState<AgentPersonId>("maya");
+  // Mas Nata (Chief of Staff) is on top as default
+  const [activePersonaId, setActivePersonaId] = useState<AgentPersonId>("nata");
   const [chatMessages, setChatMessages] = useState<Record<AgentPersonId, ChatMessage[]>>({
+    nata: AGENT_PERSONAS.nata.defaultChatHistory,
     maya: AGENT_PERSONAS.maya.defaultChatHistory,
     dimas: AGENT_PERSONAS.dimas.defaultChatHistory,
     arief: AGENT_PERSONAS.arief.defaultChatHistory,
-    nata: AGENT_PERSONAS.nata.defaultChatHistory,
   });
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [attachedFiles, setAttachedFiles] = useState<{ name: string; type: "image" | "pdf" | "doc" }[]>([]);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const persona = AGENT_PERSONAS[activePersonaId];
   const messages = chatMessages[activePersonaId];
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isTyping]);
 
   const renderAvatar = (id: AgentPersonId, size: number = 40) => {
     switch (id) {
@@ -56,9 +61,30 @@ export default function AgentsPage() {
     }
   };
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const newAttachments = Array.from(files).map((file) => {
+      const isPdf = file.name.toLowerCase().endsWith(".pdf");
+      const isImg = file.type.startsWith("image/");
+      return {
+        name: file.name,
+        type: isPdf ? ("pdf" as const) : isImg ? ("image" as const) : ("doc" as const),
+      };
+    });
+
+    setAttachedFiles((prev) => [...prev, ...newAttachments]);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const handleRemoveAttachment = (idx: number) => {
+    setAttachedFiles((prev) => prev.filter((_, i) => i !== idx));
+  };
+
   const handleSendMessage = (textToSend?: string) => {
     const text = (textToSend ?? inputText).trim();
-    if (!text) return;
+    if (!text && attachedFiles.length === 0) return;
 
     const now = new Date();
     const timeStr = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
@@ -66,36 +92,38 @@ export default function AgentsPage() {
     const userMsg: ChatMessage = {
       id: `u-${Date.now()}`,
       sender: "user",
-      text,
+      text: text || (isEn ? "Uploaded attachment for analysis" : "Melampirkan dokumen untuk diperiksa"),
       timestamp: timeStr,
+      attachments: attachedFiles.length > 0 ? [...attachedFiles] : undefined,
     };
 
     setChatMessages((prev) => ({
       ...prev,
       [activePersonaId]: [...prev[activePersonaId], userMsg],
     }));
-    if (!textToSend) setInputText("");
 
-    // Simulate smart agent response with typing indicator
+    if (!textToSend) setInputText("");
+    setAttachedFiles([]);
+
     setIsTyping(true);
     setTimeout(() => {
       let reply = "";
-      if (activePersonaId === "maya") {
+      if (activePersonaId === "nata") {
         reply = isEn
-          ? `Noted! I have analyzed "${text}". The transaction is mapped to SAK EMKM canonical accounts and double-entry debits equal credits with 0 delta. Check the right panel for the verified journal.`
-          : `Siap kak! Maya sudah baca pesan "${text}". Jurnal pembukuan sudah Maya siapkan sesuai SAK EMKM dan kedua sisi debit-kredit terbukti pas tanpa selisih. Rinciannya langsung tampil di panel kanan ya kak.`;
+          ? `All set! I have reviewed "${text || "your attachment"}" and coordinated with Maya, Dimas, and Arief. Everything is verified and balanced in the right panel.`
+          : `Beres kak! Nata sudah koordinasikan "${text || "lampiran Anda"}" ke Mbak Maya, Mas Dimas, dan Pak Arief. Seluruh alur kerja tim sudah sinkron di panel kanan.`;
+      } else if (activePersonaId === "maya") {
+        reply = isEn
+          ? `Noted! I have analyzed "${text || "your attachment"}". Debit and credit entries match to the exact rupiah with 0 delta. Check the verified journal on the right.`
+          : `Siap kak! Maya sudah baca pesan "${text || "lampiran Anda"}". Jurnal pembukuan sudah disiapkan dan kedua sisi debit-kredit terbukti pas tanpa selisih. Rinciannya langsung tampil di panel kanan.`;
       } else if (activePersonaId === "dimas") {
         reply = isEn
-          ? `Got it! Under PP 55/2022, I evaluated your query: "${text}". Your tax band remains protected and your final 0.5% liabilities are updated in the right panel.`
-          : `Dimas catat kak! Sesuai PP 55/2022, perhitungan untuk "${text}" sudah Dimas evaluasi. Hak bebas pajak Rp 500 juta kakak tetap aman dan rincian pajaknya sudah diperbarui di panel sebelah kanan.`;
-      } else if (activePersonaId === "arief") {
-        reply = isEn
-          ? `Understood! I cross-referenced "${text}" with the official BPS KBLI 2020 catalogue. Your permit checklist and OSS RBA risk requirements are documented on the right.`
-          : `Baik kak! Pak Arief sudah mencocokkan "${text}" dengan taksonomi resmi KBLI 2020 BPS. Rekomendasi kode dan syarat izin OSS RBA kakak sudah siap di panel kanan ya.`;
+          ? `Got it! Under government tax rules, I evaluated "${text || "your numbers"}". Your tax-free band remains protected and your final 0.5% calculation is on the right.`
+          : `Dimas catat kak! Sesuai aturan perpajakan, perhitungan untuk "${text || "data omzet Anda"}" sudah dievaluasi. Hak bebas pajak Rp 500 juta kakak tetap aman dan rinciannya sudah tampil di sebelah kanan.`;
       } else {
         reply = isEn
-          ? `All set! I have routed "${text}" across Maya, Dimas, and Arief. The coordinated pipeline result has been synthesized on the right.`
-          : `Beres kak! Nata sudah koordinasikan "${text}" ke Mbak Maya, Mas Dimas, dan Pak Arief. Seluruh alur kerja tim sudah sinkron di panel kanan.`;
+          ? `Understood! I cross-referenced "${text || "your inquiry"}" with the official government business classification. Your permit checklist is documented on the right.`
+          : `Baik kak! Pak Arief sudah mencocokkan "${text || "pertanyaan Anda"}" dengan klasifikasi resmi pemerintah. Syarat izin usaha kakak sudah siap di panel kanan.`;
       }
 
       const agentMsg: ChatMessage = {
@@ -114,32 +142,33 @@ export default function AgentsPage() {
   };
 
   return (
-    <>
-      <PageHeader
-        title={isEn ? "Digital Finance Team" : "Tim Keuangan Digital"}
-        subtitle={
-          isEn
-            ? "Chat with your personal staff handling bookkeeping, taxes, and licensing behind the scenes."
-            : "Ngobrol santai dengan tim asisten pribadi Anda untuk urusan pembukuan, pajak, dan izin usaha."
-        }
-        badge={isEn ? "WhatsApp Style" : "Asisten WhatsApp"}
-      />
+    <div className="flex flex-col h-[calc(100vh-6rem)]">
+      <div className="shrink-0 mb-4">
+        <PageHeader
+          title={isEn ? "Digital Finance Team" : "Tim Keuangan Digital"}
+          subtitle={
+            isEn
+              ? "Your personal staff handling bookkeeping, taxes, and licensing behind the scenes."
+              : "Tim asisten pribadi yang bekerja otomatis merapikan pembukuan, pajak, dan izin usaha Anda."
+          }
+        />
+      </div>
 
-      {/* 3-PANE WORKSPACE ARCHITECTURE */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-        {/* PANE 1: LEFT SUB-SIDEBAR (STAFF LIST / CONTACTS) - 3 COLS */}
-        <aside className="lg:col-span-3 space-y-3">
-          <div className="rounded-xl border border-border/70 bg-card p-3 shadow-none">
-            <div className="flex items-center justify-between pb-2.5 border-b border-border/50 px-1">
+      {/* 3-PANE WORKSPACE ARCHITECTURE (FULL HEIGHT) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch flex-1 min-h-0">
+        {/* PANE 1: LEFT SUB-SIDEBAR (STAFF LIST) - 3 COLS */}
+        <aside className="lg:col-span-3 flex flex-col gap-3 h-full overflow-hidden">
+          <div className="rounded-xl border border-border/70 bg-card p-3 shadow-none flex-1 flex flex-col overflow-hidden">
+            <div className="flex items-center justify-between pb-2.5 border-b border-border/50 px-1 shrink-0">
               <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                {isEn ? "Your Staff" : "Daftar Asisten"}
+                {isEn ? "Staff Directory" : "Daftar Asisten"}
               </span>
-              <Badge variant="outline" className="text-[10px] font-mono h-5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30">
-                4 Online
-              </Badge>
+              <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+                4 Aktif
+              </span>
             </div>
 
-            <div className="mt-2 space-y-1.5" role="list">
+            <div className="mt-2 space-y-1.5 overflow-y-auto flex-1 pr-0.5" role="list">
               {(Object.keys(AGENT_PERSONAS) as AgentPersonId[]).map((id) => {
                 const item = AGENT_PERSONAS[id];
                 const isSelected = activePersonaId === id;
@@ -177,23 +206,23 @@ export default function AgentsPage() {
             </div>
           </div>
 
-          {/* Reassurance Banner */}
-          <div className="rounded-xl border border-border/70 bg-muted/20 p-3.5 space-y-1.5 text-xs text-muted-foreground">
+          {/* Peace of Mind Note */}
+          <div className="rounded-xl border border-border/70 bg-muted/20 p-3 shrink-0 text-xs text-muted-foreground space-y-1">
             <div className="flex items-center gap-1.5 text-foreground font-semibold text-xs">
               <Shield className="size-3.5 text-emerald-600 dark:text-emerald-400" />
-              <span>{isEn ? "Safe & Confidential" : "Aman & Rahasia"}</span>
+              <span>{isEn ? "Quietly Automated" : "Bekerja di Belakang Layar"}</span>
             </div>
             <p className="text-[11px] leading-relaxed">
               {isEn
-                ? "All ledger math and legal citations are verified automatically with zero guesswork."
-                : "Semua hitungan debit-kredit dan pasal hukum diverifikasi otomatis tanpa salah hitung."}
+                ? "You focus on sales. Nata takes care of ledger balances and tax math automatically."
+                : "Anda fokus jualan. Nata yang membereskan hitungan pembukuan dan pajaknya."}
             </p>
           </div>
         </aside>
 
-        {/* PANE 2: MIDDLE CONVERSATION STREAM (WHATSAPP CHAT) - 5 COLS */}
-        <section className="lg:col-span-5 rounded-xl border border-border/70 bg-card flex flex-col h-[650px] shadow-none overflow-hidden">
-          {/* Chat Header */}
+        {/* PANE 2: MIDDLE CONVERSATION STREAM (GEMINI / CHATGPT STYLE INPUT) - 5 COLS */}
+        <section className="lg:col-span-5 rounded-xl border border-border/70 bg-card flex flex-col h-full shadow-none overflow-hidden">
+          {/* Header */}
           <div className="p-3.5 border-b border-border/60 bg-muted/30 flex items-center justify-between gap-3 shrink-0">
             <div className="flex items-center gap-2.5">
               <div className="relative">
@@ -207,12 +236,12 @@ export default function AgentsPage() {
                 </p>
               </div>
             </div>
-            <Badge variant="outline" className="text-[10px] font-mono">
+            <span className="text-[11px] text-muted-foreground font-medium">
               {isEn ? persona.titleEn : persona.title}
-            </Badge>
+            </span>
           </div>
 
-          {/* Messages Stream */}
+          {/* Messages Feed */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-muted/10">
             {messages.map((msg) => {
               const isUser = msg.sender === "user";
@@ -228,6 +257,22 @@ export default function AgentsPage() {
                         : "bg-card border border-border/70 text-foreground rounded-bl-xs shadow-none"
                     }`}
                   >
+                    {/* Attachment chips if uploaded */}
+                    {msg.attachments && msg.attachments.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mb-2">
+                        {msg.attachments.map((att, i) => (
+                          <span
+                            key={i}
+                            className={`flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-md font-mono ${
+                              isUser ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-foreground"
+                            }`}
+                          >
+                            {att.type === "image" ? <ImageIcon className="size-3" /> : <FileText className="size-3" />}
+                            <span className="truncate max-w-[120px]">{att.name}</span>
+                          </span>
+                        ))}
+                      </div>
+                    )}
                     <p className="whitespace-pre-wrap">{msg.text}</p>
                     <span
                       className={`block text-[10px] mt-1 text-right ${
@@ -251,9 +296,10 @@ export default function AgentsPage() {
                 </span>
               </div>
             )}
+            <div ref={messagesEndRef} />
           </div>
 
-          {/* Quick Suggested Prompts Chips */}
+          {/* Quick Action Chips */}
           <div className="p-2 border-t border-border/40 bg-card flex gap-1.5 overflow-x-auto shrink-0">
             {persona.suggestedPrompts.map((chip, idx) => (
               <button
@@ -266,48 +312,94 @@ export default function AgentsPage() {
             ))}
           </div>
 
-          {/* Chat Input Bar */}
-          <div className="p-3 border-t border-border/60 bg-card flex items-center gap-2 shrink-0">
+          {/* Gemini / ChatGPT Style Text Input Box */}
+          <div className="p-3 border-t border-border/60 bg-card shrink-0">
             <input
-              type="text"
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSendMessage();
-                }
-              }}
-              placeholder={
-                isEn
-                  ? `Message ${persona.name}…`
-                  : `Ketik pesan atau belanjaan ke ${persona.name}…`
-              }
-              className="flex-1 bg-muted/40 border border-border/60 rounded-lg px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+              multiple
+              accept="image/*,application/pdf"
+              className="hidden"
             />
-            <Button
-              size="sm"
-              onClick={() => handleSendMessage()}
-              disabled={!inputText.trim()}
-              className="h-8 px-3 text-xs gap-1"
-            >
-              <Send className="size-3.5" />
-            </Button>
+
+            <div className="rounded-2xl border border-border/80 bg-muted/20 focus-within:bg-background focus-within:ring-2 focus-within:ring-primary/40 focus-within:border-primary/50 transition-all p-2.5 space-y-2">
+              {/* Attachment Preview Chips */}
+              {attachedFiles.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 pb-1">
+                  {attachedFiles.map((att, idx) => (
+                    <span
+                      key={idx}
+                      className="flex items-center gap-1.5 text-[11px] bg-muted px-2 py-1 rounded-lg border border-border/50 text-foreground"
+                    >
+                      {att.type === "image" ? <ImageIcon className="size-3 text-primary" /> : <FileText className="size-3 text-primary" />}
+                      <span className="truncate max-w-[130px] font-medium">{att.name}</span>
+                      <button
+                        onClick={() => handleRemoveAttachment(idx)}
+                        className="text-muted-foreground hover:text-foreground"
+                      >
+                        <X className="size-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <textarea
+                rows={2}
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
+                placeholder={
+                  isEn
+                    ? `Ask ${persona.name} or upload receipts, invoices, tax files…`
+                    : `Tanya ${persona.name} atau unggah nota, faktur, file pajak…`
+                }
+                className="w-full bg-transparent text-xs text-foreground placeholder:text-muted-foreground focus:outline-none resize-none leading-relaxed"
+              />
+
+              <div className="flex items-center justify-between pt-1 border-t border-border/30">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground gap-1.5 rounded-lg"
+                >
+                  <Paperclip className="size-3.5" />
+                  <span className="text-[11px]">{isEn ? "Attach file / photo" : "Unggah struk / file"}</span>
+                </Button>
+
+                <Button
+                  size="sm"
+                  onClick={() => handleSendMessage()}
+                  disabled={!inputText.trim() && attachedFiles.length === 0}
+                  className="size-7 p-0 rounded-full shrink-0"
+                >
+                  <Send className="size-3.5" />
+                </Button>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* PANE 3: RIGHT EXPLAINABLE RESULT & FLOWCHART (PROVENANCE CANVAS) - 4 COLS */}
-        <section className="lg:col-span-4 space-y-4">
+        {/* PANE 3: RIGHT RESULTS & THINKING FLOWCHART - 4 COLS */}
+        <section className="lg:col-span-4 flex flex-col gap-4 h-full overflow-y-auto">
           {/* Active Verified Result Card */}
-          <Card className="border-border/70 shadow-none">
-            <CardHeader className="py-3.5 px-4 border-b border-border/40 bg-muted/20">
+          <Card className="border-border/70 shadow-none shrink-0">
+            <CardHeader className="py-3 px-4 border-b border-border/40 bg-muted/20">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
                   {isEn ? "Verified Result" : "Hasil Terverifikasi"}
                 </span>
-                <Badge variant="outline" className="text-[10px] font-mono bg-background">
+                <span className="text-[10px] font-medium bg-background px-2 py-0.5 rounded border border-border/60">
                   {persona.activeArtifact.statutePill}
-                </Badge>
+                </span>
               </div>
               <CardTitle className="text-sm font-semibold mt-1">
                 {persona.activeArtifact.title}
@@ -318,8 +410,8 @@ export default function AgentsPage() {
             </CardHeader>
             <CardContent className="p-4 space-y-3">
               <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
-                <span className="text-[10px] font-mono uppercase block">
-                  {isEn ? "Audit Verified State" : "Status Pemeriksaan"}
+                <span className="text-[10px] uppercase font-semibold block">
+                  {isEn ? "Inspection Status" : "Status Pemeriksaan"}
                 </span>
                 <p className="text-base font-bold tracking-tight">
                   {persona.activeArtifact.highlight}
@@ -338,16 +430,16 @@ export default function AgentsPage() {
           </Card>
 
           {/* Explainability Flowchart (Agent Thinking Chain) */}
-          <Card className="border-border/70 shadow-none">
+          <Card className="border-border/70 shadow-none flex-1">
             <CardHeader className="py-3 px-4 border-b border-border/40">
               <div className="flex items-center gap-2">
                 <Sparkles className="size-3.5 text-primary" />
                 <CardTitle className="text-xs font-semibold">
-                  {isEn ? "Agent Thinking Flowchart" : "Bagan Alur Berpikir Asisten"}
+                  {isEn ? "How Your Assistant Verified This" : "Cara Asisten Menghitung Ini"}
                 </CardTitle>
               </div>
               <CardDescription className="text-[11px]">
-                {isEn ? "Explainable verification sequence" : "Transparansi langkah penentuan logika"}
+                {isEn ? "Step-by-step verified reasoning" : "Langkah pemeriksaan otomatis tanpa salah hitung"}
               </CardDescription>
             </CardHeader>
             <CardContent className="p-4">
@@ -361,7 +453,7 @@ export default function AgentsPage() {
                       <p className="text-xs font-semibold text-foreground leading-snug">{step.title}</p>
                       <p className="text-[11px] text-muted-foreground leading-relaxed">{step.detail}</p>
                       {step.statuteCitation && (
-                        <span className="inline-block text-[10px] font-mono text-primary font-medium mt-0.5">
+                        <span className="inline-block text-[10px] text-primary font-medium mt-0.5">
                           {step.statuteCitation}
                         </span>
                       )}
@@ -373,6 +465,6 @@ export default function AgentsPage() {
           </Card>
         </section>
       </div>
-    </>
+    </div>
   );
 }
