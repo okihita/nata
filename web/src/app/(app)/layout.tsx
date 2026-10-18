@@ -3,6 +3,7 @@ import { MobileTabBar } from "@/components/mobile-tab-bar";
 import { OnboardingGate } from "@/components/onboarding-gate";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { WorkspaceSwitcher } from "@/components/workspace-switcher";
+import { PersonaQuickSwitcher } from "@/components/persona-quick-switcher";
 import { LanguageSwitcher } from "@/components/language-switcher";
 
 /**
@@ -23,6 +24,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <SidebarTrigger className="-ml-1" />
           <WorkspaceSwitcher />
           <div className="ml-auto flex items-center gap-2">
+            <PersonaQuickSwitcher />
             <LanguageSwitcher />
           </div>
         </header>

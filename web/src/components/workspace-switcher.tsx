@@ -57,10 +57,6 @@ export function WorkspaceSwitcher() {
               {subtitle}
             </span>
           </span>
-          {/* Hackathon Callout Badge */}
-          <span className="hidden items-center gap-1 rounded border border-primary/30 bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary sm:inline-flex">
-            <span>{copy.workspaceSwitcher.badgeCallout}</span>
-          </span>
           <ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>
