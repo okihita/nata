@@ -215,7 +215,13 @@ export default function AgentsPage() {
         (event) => {
           const partText = event.content?.parts?.map((p) => p.text).filter(Boolean).join("") || "";
           if (partText) {
-            streamedResponse += partText;
+            // ADK final event (partial === false) carries the complete response text.
+            // When streaming is active, appending it would duplicate the message.
+            if (event.partial === false) {
+              streamedResponse = partText;
+            } else {
+              streamedResponse += partText;
+            }
             updateMessages((prev) => ({
               ...prev,
               [activePersonaId]: prev[activePersonaId].map((m) =>
