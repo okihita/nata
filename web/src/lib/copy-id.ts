@@ -56,6 +56,8 @@ export const copyId = {
     syncHeading: "Penyimpanan & Sinkronisasi",
     createNew: "Buat Usaha Baru (Transien)",
     createNewHint: "Uji coba formulir onboarding sendiri",
+    returnToOnboarding: "Kembali ke Onboarding",
+    returnToOnboardingHint: "Ganti persona atau mulai dari awal",
     cloudSave: "Simpan Usaha ke Cloud",
     cloudSaveHint: "Permanenkan data ke Firebase Multi-Tenant",
     cloudAlert: "Fitur Cloud Profile: Siap disinkronkan ke Firebase Firestore saat produksi.",
@@ -374,6 +376,52 @@ export const copyId = {
     subtitle: "Isi data usaha Anda sebentar. Setelah ini, Nata langsung bisa bekerja.",
     submit: "Mulai pakai Nata",
     note: "Data ini hanya tersimpan di perangkat Anda.",
+    backToHome: "Kembali ke Beranda",
+    skipToDemo: "Lewati ke Demo →",
+    badge: "Evaluasi Interaktif",
+    selectorTitle: "Pilih cara Anda memulai Nata",
+    selectorSubtitle:
+      "Jelajahi arketipe usaha siap pakai dengan pembukuan transaksi riil, atau buat profil usaha baru dari awal.",
+    cards: {
+      retail: {
+        badge: "Rekomendasi Evaluasi",
+        title: "Ritel & E-Commerce",
+        archetype: "Persona A · Rona Kirana Beauty",
+        entity: "PT Perorangan · KBLI 47725 (Kosmetik)",
+        features: [
+          "Rekonsiliasi pencairan saldo TikTok & Shopee",
+          "Pemotongan PPh 22 marketplace PMK 37/2025",
+          "Jurnal otomatis rangkap dua persediaan & HPP",
+        ],
+        cta: "Jelajahi Demo Ritel →",
+      },
+      fnb: {
+        badge: "F&B Multi-Outlet",
+        title: "Kafe & Restoran",
+        archetype: "Persona B · Kedai Seduh Nusantara",
+        entity: "Orang Pribadi · KBLI 56303 (Kafe)",
+        features: [
+          "Rekonsiliasi omzet POS & setoran harian QRIS",
+          "Harga pokok resep & invoice pasokan bahan baku",
+          "Perhitungan pajak daerah PBJT jasa boga",
+        ],
+        cta: "Jelajahi Demo F&B →",
+      },
+      scratch: {
+        badge: "Profil Baru",
+        title: "Mulai dari Nol",
+        archetype: "Profil Usaha Sendiri",
+        entity: "Nama usaha & bentuk badan hukum pilihan Anda",
+        features: [
+          "Pencarian resmi katalog KBLI 2020",
+          "Penentuan otomatis status pajak & pembebasan omzet",
+          "Foto struk langsung untuk catat transaksi pertama",
+        ],
+        cta: "Atur Usaha Saya →",
+      },
+    },
+    footnote:
+      "Seluruh arketipe demo menjalankan pembukuan berpasangan deterministik sesuai standar SAK EMKM.",
   },
 
   usaha: {
@@ -487,6 +535,12 @@ export const copyId = {
         body: "Kegiatan usaha Anda dicocokkan ke katalog resmi KBLI 2020, dan kodenya diperiksa sebelum disimpan — bukan dikarang.",
       },
     ],
+    capabilities: {
+      receiptToJournal: "Foto struk → jurnal",
+      sakStatements: "Laporan SAK EMKM",
+      finalTaxArticles: "PPh Final + Pasal",
+      verifiedKbli: "Kode KBLI terverifikasi",
+    },
     ctaTitle: "Mulai pembukuan Anda hari ini",
     ctaBody: "Gratis untuk memulai. Cukup satu usaha, satu ponsel.",
     ctaButton: "Mulai gratis sekarang",

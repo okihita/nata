@@ -124,8 +124,16 @@ export function updateBusiness(patch: Partial<Omit<Business, "id" | "createdAt">
 
 export function switchBusiness(nextBiz: Business): void {
   saveBusiness(nextBiz);
-  const entries = loadLedger(nextBiz.id).entries;
-  emit({ business: nextBiz, entries, ready: true });
+  let loaded = loadLedger(nextBiz.id).entries;
+  if (
+    loaded.length === 0 &&
+    (nextBiz.id === "biz-persona-a" || nextBiz.id === "biz-persona-b")
+  ) {
+    const seeded = seedEntries();
+    saveLedger({ entries: seeded }, nextBiz.id);
+    loaded = seeded;
+  }
+  emit({ business: nextBiz, entries: loaded, ready: true });
 }
 
 export function addEntry(input: {
