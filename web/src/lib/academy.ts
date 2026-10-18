@@ -34,6 +34,7 @@ export interface AcademyLesson {
 
 export interface MythFactItem {
   id: string;
+  category: "tax" | "accounting" | "legal" | "operations";
   targetPersona?: "persona_a" | "persona_b" | "all";
   statute: string;
 }
@@ -175,32 +176,74 @@ export const ACADEMY_LESSONS: AcademyLesson[] = [
 export const MYTH_FACTS: MythFactItem[] = [
   {
     id: "myth_pt_threshold",
+    category: "tax",
     targetPersona: "all",
     statute: "PP 55/2022 Pasal 60 ayat (2)",
   },
   {
     id: "myth_tax_expense",
+    category: "accounting",
     targetPersona: "all",
     statute: "PP 55/2022 Pasal 57 ayat (1)",
   },
   {
     id: "myth_kbli_arbitrary",
+    category: "legal",
     targetPersona: "all",
     statute: "Peraturan BPS No. 2/2020 (KBLI 2020)",
   },
   {
     id: "myth_qris_tax",
+    category: "tax",
     targetPersona: "all",
     statute: "UU HPP & Surat Edaran DJP No. SE-14/PJ/2022",
   },
   {
     id: "myth_cv_draw",
+    category: "tax",
     targetPersona: "all",
     statute: "UU PPh Pasal 4 ayat (3) huruf i",
   },
   {
     id: "myth_bpjs_mandatory",
+    category: "operations",
     targetPersona: "all",
     statute: "UU No. 24/2011 & PP 37/2021 (Jamsostek UMKM)",
+  },
+  {
+    id: "myth_ppn_threshold",
+    category: "tax",
+    targetPersona: "all",
+    statute: "PMK No. 197/PMK.03/2013 & UU HPP",
+  },
+  {
+    id: "myth_invoice_materai",
+    category: "legal",
+    targetPersona: "all",
+    statute: "UU Bea Meterai No. 10/2020 Pasal 3 ayat (2)",
+  },
+  {
+    id: "myth_depreciation",
+    category: "accounting",
+    targetPersona: "all",
+    statute: "SAK EMKM Bab 9 (Aset Tetap & Penyusutan)",
+  },
+  {
+    id: "myth_halal_selfdeclare",
+    category: "legal",
+    targetPersona: "all",
+    statute: "UU No. 33/2014 & PP 39/2021 (Jaminan Produk Halal)",
+  },
+  {
+    id: "myth_freelance_pph21",
+    category: "operations",
+    targetPersona: "all",
+    statute: "PER-16/PJ/2016 & PMK 168/2023 (Tarif Efektif PPh 21)",
+  },
+  {
+    id: "myth_npwp_nik",
+    category: "tax",
+    targetPersona: "all",
+    statute: "PMK No. 112/PMK.03/2022 & PMK 136/2023",
   },
 ];

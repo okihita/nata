@@ -862,6 +862,62 @@ export const copyEn = {
         statuteText:
           "PP 37/2021 & Permenaker No. 5/2021: Program jaminan sosial ketenagakerjaan bagi pekerja bukan penerima upah (BPU) disesuaikan dengan kemampuan usaha mikro.",
       },
+      myth_ppn_threshold: {
+        myth: "Every registered business selling goods must charge 11% or 12% Value Added Tax (PPN) on invoices.",
+        fact: "False. Under PMK 197/2013, only businesses with gross annual turnover exceeding Rp 4.8 billion are required to register as Taxable Enterprises (PKP) and collect PPN. MSMEs below this threshold are exempt from charging PPN.",
+        statuteText:
+          "PMK No. 197/PMK.03/2013 Pasal 1: 'Pengusaha yang melakukan penyerahan BKP dan/atau JKP dengan jumlah peredaran bruto tidak melebihi Rp 4.800.000.000,00 ditetapkan sebagai Pengusaha Kecil.'",
+      },
+      myth_invoice_materai: {
+        myth: "Invoices or receipts without a Rp 10,000 duty stamp (e-Meterai) are legally void and inadmissible.",
+        fact: "False. A duty stamp is a state tax on legal documents, not an agreement validity condition under the Civil Code (Pasal 1320 KUHPer). Non-stamped invoices remain legally valid proof of sale and accounting records.",
+        statuteText:
+          "UU Bea Meterai No. 10 Tahun 2020 Pasal 3 ayat (2): Bea meterai dikenakan pada dokumen bernilai nominal lebih dari Rp 5.000.000, namun ketiadaan meterai tidak membatalkan keabsahan perdata dokumen.",
+      },
+      myth_depreciation: {
+        myth: "Office laptops and shop machinery can be 100% written off as expenses immediately in the month purchased.",
+        fact: "Under SAK EMKM Chapter 9, fixed assets with useful lives over 1 year must be capitalized and depreciated systematically over their productive lifespan to avoid distorting monthly profitability.",
+        statuteText:
+          "SAK EMKM Bab 9 (Aset Tetap): Aset tetap diakui sebesar biaya perolehan dan disusutkan secara garis lurus atau saldo menurun selama masa manfaatnya.",
+      },
+      myth_halal_selfdeclare: {
+        myth: "Halal certification is expensive and takes months of laboratory chemical testing for simple street food stalls.",
+        fact: "Under UU No. 33/2014 & BPJPH regulations, micro and small F&B businesses using known low-risk ingredients qualify for the Free Halal Certification (SEHATI) Self-Declare pathway assisted by registered halal companions.",
+        statuteText:
+          "Keputusan Kepala BPJPH No. 150/2022: Skema sertifikasi halal Self Declare gratis bagi pelaku usaha mikro dan kecil dengan bahan baku berisiko rendah.",
+      },
+      myth_freelance_pph21: {
+        myth: "Paying informal freelancers or daily casual workers has no withholding tax implications for businesses.",
+        fact: "Businesses must report honorariums under Income Tax Article 21 (PPh 21). Under PMK 168/2023, daily wages up to Rp 450,000/day carry 0% withholding, but formal payment slips must still be maintained.",
+        statuteText:
+          "PMK No. 168/2023 Pasal 5 & 12: Pemotongan PPh Pasal 21 atas penghasilan pegawai tidak tetap atau tenaga kerja lepas menggunakan tarif efektif harian/bulanan.",
+      },
+      myth_npwp_nik: {
+        myth: "Having a 16-digit NIK automatically means your bank accounts will be audited and taxed by the tax office.",
+        fact: "Integrating NIK as NPWP simplifies tax administration. Tax liability is triggered strictly by taxable income exceeding Non-Taxable Income (PTKP) or gross sales exceeding Rp 500 million/year, not simply by holding a national ID.",
+        statuteText:
+          "PMK No. 112/PMK.03/2022 jo. PMK 136/2023: Aktivasi NIK sebagai NPWP tidak otomatis menimbulkan kewajiban membayar pajak jika penghasilan di bawah PTKP/ambang batas.",
+      },
+    },
+    funFactsPage: {
+      title: "Business Compliance Fun Facts & Mythbusters",
+      subtitle: "A comprehensive encyclopedia debunking Indonesian tax, accounting (SAK EMKM), labor, and licensing misconceptions with verbatim statutory citations.",
+      badge: "Knowledge Hub",
+      searchPlaceholder: "Search myths, statutes, or keywords (e.g. PT, PPh, QRIS, KBLI, BPJS)...",
+      filterAll: "All Categories",
+      filterTax: "Taxes & PP 55",
+      filterAccounting: "Accounting & SAK",
+      filterLegal: "Licensing & Law",
+      filterOperations: "Team & Labor",
+      backToAcademy: "← Back to Business School",
+      stats: {
+        totalVerified: "Statutory Myths Debunked",
+        groundedInLaw: "Grounded in Regulations",
+        freeForMSMEs: "100% Free Public Knowledge",
+      },
+      noResultsTitle: "No Fun Facts Found",
+      noResultsDesc: "Try searching with different terms or select 'All Categories'.",
+      browseLessonsCta: "Explore Practical Courses in Business School →",
     },
   },
 } as const;

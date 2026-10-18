@@ -8,8 +8,6 @@ import {
   BookOpen,
   Clock,
   ExternalLink,
-  ChevronDown,
-  ChevronUp,
   Sparkles,
 } from "lucide-react";
 
@@ -30,9 +28,6 @@ export default function AcademyPage() {
     "all" | "accounting_101" | "tax_compliance" | "licensing_legal" | "operations_team"
   >("all");
   const [activeLessonId, setActiveLessonId] = useState<string | null>(null);
-  const [showAllMyths, setShowAllMyths] = useState(false);
-
-  const visibleMyths = showAllMyths ? MYTH_FACTS : MYTH_FACTS.slice(0, 3);
 
   // Filter lessons specifically for the Business track (Kuliah Bisnis)
   const businessLessons = useMemo(() => {
@@ -280,18 +275,20 @@ export default function AcademyPage() {
           </div>
 
           <Button
+            asChild
             variant="outline"
             size="sm"
             className="self-start sm:self-auto gap-1.5 text-xs font-medium cursor-pointer"
-            onClick={() => setShowAllMyths((prev) => !prev)}
           >
-            {showAllMyths ? copy.academy.viewLessMyths : copy.academy.viewMoreMyths}
-            {showAllMyths ? <ChevronUp className="size-3.5" /> : <ChevronDown className="size-3.5" />}
+            <Link href="/academy/fun-facts">
+              {copy.academy.viewMoreMyths}
+              <ArrowRight className="size-3.5" />
+            </Link>
           </Button>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {visibleMyths.map((mf) => {
+          {MYTH_FACTS.slice(0, 3).map((mf) => {
             const item = copy.academy.myths[mf.id as keyof typeof copy.academy.myths];
             if (!item) return null;
 

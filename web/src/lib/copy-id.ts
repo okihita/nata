@@ -867,6 +867,62 @@ export const copyId = {
         statuteText:
           "PP 37/2021 & Permenaker No. 5/2021: Program jaminan sosial ketenagakerjaan bagi pekerja bukan penerima upah (BPU) disesuaikan dengan kemampuan usaha mikro.",
       },
+      myth_ppn_threshold: {
+        myth: "Setiap usaha yang jualan barang wajib memungut PPN 11% atau 12% ke pembeli di nota faktur.",
+        fact: "Salah kaprah. Sesuai PMK 197/2013, hanya pengusaha dengan omzet bruto di atas Rp 4,8 miliar setahun yang wajib menjadi Pengusaha Kena Pajak (PKP) dan memungut PPN. UMKM di bawah batas ini bebas dari kewajiban memungut PPN.",
+        statuteText:
+          "PMK No. 197/PMK.03/2013 Pasal 1: 'Pengusaha yang melakukan penyerahan BKP dan/atau JKP dengan jumlah peredaran bruto tidak melebihi Rp 4.800.000.000,00 ditetapkan sebagai Pengusaha Kecil.'",
+      },
+      myth_invoice_materai: {
+        myth: "Nota atau kuitansi tanpa meterai Rp 10.000 dianggap tidak sah di mata hukum dan tidak bisa dicatat akuntansi.",
+        fact: "Salah. Bea meterai adalah pajak atas dokumen perdata, bukan penentu sahnya suatu transaksi (Pasal 1320 KUHPer). Nota tanpa meterai tetap sah sebagai bukti pembukuan dan perdata yang mengikat.",
+        statuteText:
+          "UU Bea Meterai No. 10 Tahun 2020 Pasal 3 ayat (2): Bea meterai dikenakan pada dokumen bernilai nominal lebih dari Rp 5.000.000, namun ketiadaan meterai tidak membatalkan keabsahan perdata dokumen.",
+      },
+      myth_depreciation: {
+        myth: "Beli laptop kantor dan mesin etalase bisa langsung dibebankan 100% sebagai biaya di bulan pembelian.",
+        fact: "Berdasarkan SAK EMKM Bab 9, aset dengan masa manfaat lebih dari 1 tahun wajib dikapitalisasi sebagai aset tetap dan disusutkan bertahap agar tidak merusak perhitungan laba bulanan usaha Anda.",
+        statuteText:
+          "SAK EMKM Bab 9 (Aset Tetap): Aset tetap diakui sebesar biaya perolehan dan disusutkan secara garis lurus atau saldo menurun selama masa manfaatnya.",
+      },
+      myth_halal_selfdeclare: {
+        myth: "Sertifikasi halal UMKM pasti mahal dan butuh uji laboratorium kimia berbulan-bulan untuk warung makan.",
+        fact: "Berdasarkan UU No. 33/2014 & aturan BPJPH, usaha mikro dan kecil kuliner dengan bahan baku yang sudah terjamin halal dapat mengikuti program Sertifikasi Halal Gratis (SEHATI) skema Self-Declare dengan pendamping halal.",
+        statuteText:
+          "Keputusan Kepala BPJPH No. 150/2022: Skema sertifikasi halal Self Declare gratis bagi pelaku usaha mikro dan kecil dengan bahan baku berisiko rendah.",
+      },
+      myth_freelance_pph21: {
+        myth: "Bayar pekerja harian lepas atau freelancer lepas tidak perlu dipikirkan potongan pajaknya.",
+        fact: "Pemberi kerja wajib memperhitungkan PPh Pasal 21. Sesuai PMK 168/2023, upah harian s.d. Rp 450.000 memang tarif potong 0%, namun pencatatan daftar bukti potong tetap wajib diadministrasikan rapi.",
+        statuteText:
+          "PMK No. 168/2023 Pasal 5 & 12: Pemotongan PPh Pasal 21 atas penghasilan pegawai tidak tetap atau tenaga kerja lepas menggunakan tarif efektif harian/bulanan.",
+      },
+      myth_npwp_nik: {
+        myth: "Punya NIK KTP otomatis membuat rekening bank Anda dibekukan dan dikejar tagihan pajak.",
+        fact: "Integrasi NIK menjadi NPWP hanya penyederhanaan data identitas. Kewajiban bayar pajak baru muncul jika penghasilan Anda di atas Penghasilan Tidak Kena Pajak (PTKP) atau omzet usaha di atas Rp 500 juta setahun.",
+        statuteText:
+          "PMK No. 112/PMK.03/2022 jo. PMK 136/2023: Aktivasi NIK sebagai NPWP tidak otomatis menimbulkan kewajiban membayar pajak jika penghasilan di bawah PTKP/ambang batas.",
+      },
+    },
+    funFactsPage: {
+      title: "Ensiklopedia Fakta & Mitos Kepatuhan Usaha",
+      subtitle: "Kumpulan mitos kepatuhan pajak, akuntansi SAK EMKM, ketenagakerjaan, dan perizinan usaha Indonesia yang dibongkar langsung dengan pasal hukum tertulis.",
+      badge: "Pusat Wawasan",
+      searchPlaceholder: "Cari mitos, pasal hukum, atau kata kunci (misal: PT, PPh, QRIS, KBLI, BPJS)...",
+      filterAll: "Semua Kategori",
+      filterTax: "Pajak & PP 55",
+      filterAccounting: "Akuntansi & SAK",
+      filterLegal: "Hukum & Izin",
+      filterOperations: "Tim & Ketenagakerjaan",
+      backToAcademy: "← Kembali ke Kuliah Bisnis",
+      stats: {
+        totalVerified: "Mitos Hukum Dibongkar",
+        groundedInLaw: "Berdasarkan Regulasi Resmi",
+        freeForMSMEs: "100% Edukasi Terbuka UMKM",
+      },
+      noResultsTitle: "Fakta Tidak Ditemukan",
+      noResultsDesc: "Coba gunakan kata kunci pencarian lain atau pilih 'Semua Kategori'.",
+      browseLessonsCta: "Pelajari Materi Praktis di Kuliah Bisnis →",
     },
   },
 } as const;
