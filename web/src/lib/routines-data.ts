@@ -42,8 +42,111 @@ export interface AutonomousRoutine {
   purpose: string;
   purposeEn: string;
   statutoryGrounding: string;
+  prompt?: string;
   recentExecutions: RoutineExecutionRecord[];
 }
+
+export interface RecommendedRoutineTemplate {
+  id: string;
+  title: string;
+  titleEn: string;
+  category: "treasury" | "tax" | "compliance" | "operations";
+  assignedAgent: {
+    id: "nata" | "maya" | "dimas" | "arief";
+    name: string;
+    role: string;
+    roleEn: string;
+  };
+  cadence: RoutineCadence;
+  defaultTime: string;
+  defaultDay?: string;
+  prompt: string;
+  promptEn: string;
+  description: string;
+  descriptionEn: string;
+  statutoryGrounding: string;
+}
+
+export const RECOMMENDED_ROUTINES: RecommendedRoutineTemplate[] = [
+  {
+    id: "rec-jury-live-demo",
+    title: "Demo Juri: Audit Kas & Pembukuan 1-Menit",
+    titleEn: "Jury Demo: Live 1-Minute Cashflow & Ledger Audit",
+    category: "treasury",
+    assignedAgent: {
+      id: "dimas",
+      name: "Mas Dimas",
+      role: "Auditor Pembukuan & Rekonsiliasi",
+      roleEn: "Audit & Ledger Specialist",
+    },
+    cadence: "realtime",
+    defaultTime: "08:00",
+    prompt: "Hitung ulang saldo kas, laba bersih, dan runway dari transaksi terbaru setiap 1 menit. Verifikasi keseimbangan debit dan kredit.",
+    promptEn: "Recompute cashflow balance, net profit, and operational runway across latest transactions every 1 minute. Verify debit and credit equality.",
+    description: "Khusus evaluasi juri: jalankan audit otomatis tiap 60 detik untuk membuktikan agen otonom langsung.",
+    descriptionEn: "Built for judges: triggers an autonomous audit every 60 seconds to prove live background execution.",
+    statutoryGrounding: "SAK EMKM Bab 4: Kas & Persamaan Akuntansi",
+  },
+  {
+    id: "rec-marketplace-recon",
+    title: "Cek Uang Masuk dari Marketplace",
+    titleEn: "Check Marketplace Payouts",
+    category: "treasury",
+    assignedAgent: {
+      id: "dimas",
+      name: "Mas Dimas",
+      role: "Auditor Pembukuan & Rekonsiliasi",
+      roleEn: "Audit & Ledger Specialist",
+    },
+    cadence: "daily",
+    defaultTime: "21:00",
+    prompt: "Cocokkan transfer bank dari Shopee, Tokopedia, dan TikTok Shop dengan hasil jualan hari ini agar tidak ada uang tertahan.",
+    promptEn: "Match incoming bank payouts from Shopee, Tokopedia, and TikTok Shop against today's sales to ensure zero missing funds.",
+    description: "Pastikan transferan dari Shopee, Tokopedia, dan TikTok sudah masuk pas ke rekening.",
+    descriptionEn: "Ensure payouts from Shopee, Tokopedia, and TikTok arrive accurately in your bank.",
+    statutoryGrounding: "SAK EMKM Bab 4: Kas",
+  },
+  {
+    id: "rec-tax-threshold-shield",
+    title: "Jaga Batas Bebas Pajak Rp 500 Juta",
+    titleEn: "Shield Rp 500M Tax-Free Limit",
+    category: "tax",
+    assignedAgent: {
+      id: "maya",
+      name: "Mba Maya",
+      role: "Spesialis Pajak UMKM",
+      roleEn: "Tax Specialist",
+    },
+    cadence: "weekly",
+    defaultTime: "08:00",
+    defaultDay: "1",
+    prompt: "Pantau omzet berjalan sepanjang tahun. Beri tahu jika sudah mendekati Rp 500 juta agar tidak salah bayar pajak.",
+    promptEn: "Monitor cumulative turnover so you only pay 0.5% tax after passing the official Rp 500M exemption.",
+    description: "Kawal omzet usaha agar Anda tidak bayar pajak sebelum batas resmi tercapai.",
+    descriptionEn: "Keep track of annual sales so you never pay taxes prematurely.",
+    statutoryGrounding: "PP 55/2022 Ps. 56",
+  },
+  {
+    id: "rec-promo-margin-guard",
+    title: "Jaga Untung Bersih Waktu Diskon",
+    titleEn: "Protect Profit During Flash Sales",
+    category: "operations",
+    assignedAgent: {
+      id: "nata",
+      name: "Mas Nata",
+      role: "Kepala Tim Keuangan",
+      roleEn: "Chief Financial Lead",
+    },
+    cadence: "weekly",
+    defaultTime: "08:00",
+    defaultDay: "5",
+    prompt: "Cek promo atau diskon toko agar tiap produk tetap menghasilkan untung bersih di atas 35%.",
+    promptEn: "Check campaign discount promotions to make sure each sale keeps a healthy profit margin above 35%.",
+    description: "Cegah boncos waktu pasang promo tanggal kembar atau flash sale.",
+    descriptionEn: "Prevent accidental losses and margin erosion during flash sale campaigns.",
+    statutoryGrounding: "Margin Guard >= 35%",
+  },
+];
 
 export const DEMO_ROUTINES: AutonomousRoutine[] = [
   {
