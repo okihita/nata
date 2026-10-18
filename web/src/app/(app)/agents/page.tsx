@@ -1,44 +1,117 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import {
-  ReceiptText,
-  Landmark,
-  ShieldCheck,
-  Sparkles,
+  Send,
+  Paperclip,
   CheckCircle2,
-  ScanLine,
+  Clock,
+  Sparkles,
   ArrowRight,
   Shield,
-  Clock,
-  Briefcase,
-  HelpCircle,
-  LucideIcon,
+  FileCheck2,
+  Search,
+  Scale,
+  ShieldAlert,
+  ChevronRight,
+  Info,
 } from "lucide-react";
 
 import { PageHeader } from "@/components/app-sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AvatarMaya, AvatarDimas, AvatarArief, AvatarNata } from "@/components/agent-avatars";
 import { useLanguage } from "@/lib/copy";
-import { AGENT_TEAM, type AgentStaffId, type TeamMember } from "@/lib/agents-data";
-
-const STAFF_ICONS: Record<string, LucideIcon> = {
-  ReceiptText,
-  Landmark,
-  ShieldCheck,
-  Sparkles,
-};
+import { AGENT_PERSONAS, type AgentPersonId, type ChatMessage } from "@/lib/agents-persona-data";
 
 export default function AgentsPage() {
   const { locale } = useLanguage();
   const isEn = locale === "en";
 
-  const [selectedStaffId, setSelectedStaffId] = useState<AgentStaffId>("akuntan");
-  const currentStaff = AGENT_TEAM[selectedStaffId];
+  const [activePersonaId, setActivePersonaId] = useState<AgentPersonId>("maya");
+  const [chatMessages, setChatMessages] = useState<Record<AgentPersonId, ChatMessage[]>>({
+    maya: AGENT_PERSONAS.maya.defaultChatHistory,
+    dimas: AGENT_PERSONAS.dimas.defaultChatHistory,
+    arief: AGENT_PERSONAS.arief.defaultChatHistory,
+    nata: AGENT_PERSONAS.nata.defaultChatHistory,
+  });
+  const [inputText, setInputText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
 
-  const CurrentIcon = STAFF_ICONS[currentStaff.avatarIcon] ?? Sparkles;
+  const persona = AGENT_PERSONAS[activePersonaId];
+  const messages = chatMessages[activePersonaId];
+
+  const renderAvatar = (id: AgentPersonId, size: number = 40) => {
+    switch (id) {
+      case "maya":
+        return <AvatarMaya size={size} />;
+      case "dimas":
+        return <AvatarDimas size={size} />;
+      case "arief":
+        return <AvatarArief size={size} />;
+      case "nata":
+      default:
+        return <AvatarNata size={size} />;
+    }
+  };
+
+  const handleSendMessage = (textToSend?: string) => {
+    const text = (textToSend ?? inputText).trim();
+    if (!text) return;
+
+    const now = new Date();
+    const timeStr = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+
+    const userMsg: ChatMessage = {
+      id: `u-${Date.now()}`,
+      sender: "user",
+      text,
+      timestamp: timeStr,
+    };
+
+    setChatMessages((prev) => ({
+      ...prev,
+      [activePersonaId]: [...prev[activePersonaId], userMsg],
+    }));
+    if (!textToSend) setInputText("");
+
+    // Simulate smart agent response with typing indicator
+    setIsTyping(true);
+    setTimeout(() => {
+      let reply = "";
+      if (activePersonaId === "maya") {
+        reply = isEn
+          ? `Noted! I have analyzed "${text}". The transaction is mapped to SAK EMKM canonical accounts and double-entry debits equal credits with 0 delta. Check the right panel for the verified journal.`
+          : `Siap kak! Maya sudah baca pesan "${text}". Jurnal pembukuan sudah Maya siapkan sesuai SAK EMKM dan kedua sisi debit-kredit terbukti pas tanpa selisih. Rinciannya langsung tampil di panel kanan ya kak.`;
+      } else if (activePersonaId === "dimas") {
+        reply = isEn
+          ? `Got it! Under PP 55/2022, I evaluated your query: "${text}". Your tax band remains protected and your final 0.5% liabilities are updated in the right panel.`
+          : `Dimas catat kak! Sesuai PP 55/2022, perhitungan untuk "${text}" sudah Dimas evaluasi. Hak bebas pajak Rp 500 juta kakak tetap aman dan rincian pajaknya sudah diperbarui di panel sebelah kanan.`;
+      } else if (activePersonaId === "arief") {
+        reply = isEn
+          ? `Understood! I cross-referenced "${text}" with the official BPS KBLI 2020 catalogue. Your permit checklist and OSS RBA risk requirements are documented on the right.`
+          : `Baik kak! Pak Arief sudah mencocokkan "${text}" dengan taksonomi resmi KBLI 2020 BPS. Rekomendasi kode dan syarat izin OSS RBA kakak sudah siap di panel kanan ya.`;
+      } else {
+        reply = isEn
+          ? `All set! I have routed "${text}" across Maya, Dimas, and Arief. The coordinated pipeline result has been synthesized on the right.`
+          : `Beres kak! Nata sudah koordinasikan "${text}" ke Mbak Maya, Mas Dimas, dan Pak Arief. Seluruh alur kerja tim sudah sinkron di panel kanan.`;
+      }
+
+      const agentMsg: ChatMessage = {
+        id: `a-${Date.now()}`,
+        sender: "agent",
+        text: reply,
+        timestamp: timeStr,
+      };
+
+      setChatMessages((prev) => ({
+        ...prev,
+        [activePersonaId]: [...prev[activePersonaId], agentMsg],
+      }));
+      setIsTyping(false);
+    }, 600);
+  };
 
   return (
     <>
@@ -46,208 +119,259 @@ export default function AgentsPage() {
         title={isEn ? "Digital Finance Team" : "Tim Keuangan Digital"}
         subtitle={
           isEn
-            ? "Your autonomous staff handling bookkeeping, taxes, and licensing in the background."
-            : "Tim asisten pintar yang bekerja otomatis mengurus pembukuan, pajak, dan izin usaha Anda."
+            ? "Chat with your personal staff handling bookkeeping, taxes, and licensing behind the scenes."
+            : "Ngobrol santai dengan tim asisten pribadi Anda untuk urusan pembukuan, pajak, dan izin usaha."
         }
-        badge={isEn ? "Autonomous Team" : "Asisten Aktif"}
+        badge={isEn ? "WhatsApp Style" : "Asisten WhatsApp"}
       />
 
-      {/* Main Split-Pane Container with Internal Sidebar */}
-      <div className="flex flex-col md:flex-row gap-6 items-start">
-        {/* Left Sub-Sidebar (Master Staff List) */}
-        <aside className="w-full md:w-80 shrink-0 space-y-4">
+      {/* 3-PANE WORKSPACE ARCHITECTURE */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        {/* PANE 1: LEFT SUB-SIDEBAR (STAFF LIST / CONTACTS) - 3 COLS */}
+        <aside className="lg:col-span-3 space-y-3">
           <div className="rounded-xl border border-border/70 bg-card p-3 shadow-none">
-            <div className="flex items-center justify-between pb-2 border-b border-border/50 px-1">
+            <div className="flex items-center justify-between pb-2.5 border-b border-border/50 px-1">
               <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                {isEn ? "Your Digital Team" : "Daftar Tim Asisten"}
+                {isEn ? "Your Staff" : "Daftar Asisten"}
               </span>
               <Badge variant="outline" className="text-[10px] font-mono h-5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30">
-                {isEn ? "4 Ready to Help" : "4 Siap Membantu"}
+                4 Online
               </Badge>
             </div>
 
-            <nav className="mt-2 space-y-2" aria-label="Team staff list">
-              {(Object.keys(AGENT_TEAM) as AgentStaffId[]).map((id) => {
-                const member = AGENT_TEAM[id];
-                const isSelected = selectedStaffId === id;
-                const Icon = STAFF_ICONS[member.avatarIcon] ?? Sparkles;
+            <div className="mt-2 space-y-1.5" role="list">
+              {(Object.keys(AGENT_PERSONAS) as AgentPersonId[]).map((id) => {
+                const item = AGENT_PERSONAS[id];
+                const isSelected = activePersonaId === id;
 
                 return (
                   <button
                     key={id}
-                    onClick={() => setSelectedStaffId(id)}
-                    className={`w-full text-left rounded-lg p-3 transition-colors flex items-start justify-between gap-3 text-sm ${
+                    onClick={() => setActivePersonaId(id)}
+                    className={`w-full text-left rounded-lg p-2.5 transition-colors flex items-center justify-between gap-2.5 ${
                       isSelected
                         ? "bg-primary text-primary-foreground font-medium shadow-none"
                         : "hover:bg-muted text-foreground border border-border/40"
                     }`}
                   >
-                    <div className="flex items-start gap-3 min-w-0">
-                      <span className={`grid size-9 shrink-0 place-items-center rounded-lg mt-0.5 ${
-                        isSelected
-                          ? "bg-primary-foreground/20 text-primary-foreground"
-                          : "bg-muted text-muted-foreground"
-                      }`}>
-                        <Icon className="size-4" />
-                      </span>
-                      <div className="min-w-0 space-y-0.5">
-                        <p className="truncate text-xs font-semibold leading-snug">
-                          {member.name.split(" (")[0]}
-                        </p>
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="relative shrink-0">
+                        {renderAvatar(id, 36)}
+                        <span className="absolute bottom-0 right-0 size-2.5 rounded-full bg-emerald-500 ring-2 ring-background" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="truncate text-xs font-semibold leading-tight">{item.name}</p>
                         <p className={`text-[11px] truncate ${isSelected ? "text-primary-foreground/80" : "text-muted-foreground"}`}>
-                          {isEn ? member.roleEn : member.role}
+                          {isEn ? item.titleEn : item.title}
                         </p>
-                        <span className={`inline-block text-[10px] font-medium px-1.5 py-0.5 rounded ${
-                          isSelected
-                            ? "bg-primary-foreground/20 text-primary-foreground"
-                            : "bg-muted text-muted-foreground"
-                        }`}>
-                          {isEn ? member.badgeEn : member.badge}
-                        </span>
                       </div>
                     </div>
+                    <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded shrink-0 ${
+                      isSelected ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
+                    }`}>
+                      {isEn ? item.badgeEn : item.badge}
+                    </span>
                   </button>
                 );
               })}
-            </nav>
+            </div>
           </div>
 
-          {/* User Value Promise Card */}
-          <div className="rounded-xl border border-border/70 bg-muted/20 p-4 space-y-2.5">
-            <div className="flex items-center gap-2 text-foreground font-semibold text-xs">
-              <Shield className="size-4 text-emerald-600 dark:text-emerald-400" />
-              <span>{isEn ? "The Nata Guarantee" : "Jaminan Kemudahan Nata"}</span>
+          {/* Reassurance Banner */}
+          <div className="rounded-xl border border-border/70 bg-muted/20 p-3.5 space-y-1.5 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1.5 text-foreground font-semibold text-xs">
+              <Shield className="size-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span>{isEn ? "Safe & Confidential" : "Aman & Rahasia"}</span>
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-[11px] leading-relaxed">
               {isEn
-                ? "You focus on selling and growing your business. Nata's specialized staff handles the administrative and accounting math quietly behind the scenes."
-                : "Anda fokus jualan dan membesarkan usaha. Tim pintar Nata yang membereskan hitungan pembukuan, pajak, dan izin usaha di belakang layar."}
+                ? "All ledger math and legal citations are verified automatically with zero guesswork."
+                : "Semua hitungan debit-kredit dan pasal hukum diverifikasi otomatis tanpa salah hitung."}
             </p>
           </div>
         </aside>
 
-        {/* Right Detail Canvas (Staff Profile & Tasks) */}
-        <main className="flex-1 min-w-0 w-full space-y-6">
-          {/* Active Staff Hero Card */}
-          <div className="rounded-xl border border-border/70 bg-card p-6 shadow-none space-y-4">
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div className="flex items-start gap-3.5">
-                <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary border border-primary/20">
-                  <CurrentIcon className="size-6" />
-                </span>
-                <div className="space-y-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="text-lg font-semibold tracking-tight">{currentStaff.name}</h2>
-                    <Badge variant="secondary" className="text-xs font-medium">
-                      {isEn ? currentStaff.badgeEn : currentStaff.badge}
-                    </Badge>
-                  </div>
-                  <p className="text-xs font-medium text-primary">
-                    {isEn ? currentStaff.roleEn : currentStaff.role}
-                  </p>
-                  <p className="text-xs text-muted-foreground pt-0.5">
-                    {isEn ? currentStaff.taglineEn : currentStaff.tagline}
-                  </p>
-                </div>
+        {/* PANE 2: MIDDLE CONVERSATION STREAM (WHATSAPP CHAT) - 5 COLS */}
+        <section className="lg:col-span-5 rounded-xl border border-border/70 bg-card flex flex-col h-[650px] shadow-none overflow-hidden">
+          {/* Chat Header */}
+          <div className="p-3.5 border-b border-border/60 bg-muted/30 flex items-center justify-between gap-3 shrink-0">
+            <div className="flex items-center gap-2.5">
+              <div className="relative">
+                {renderAvatar(activePersonaId, 38)}
+                <span className="absolute bottom-0 right-0 size-2.5 rounded-full bg-emerald-500 ring-2 ring-background" />
               </div>
-
-              <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 text-xs py-1 px-2.5">
-                {isEn ? currentStaff.statusTextEn : currentStaff.statusText}
-              </Badge>
+              <div>
+                <h3 className="text-sm font-semibold leading-tight">{persona.name}</h3>
+                <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+                  {isEn ? persona.statusTextEn : persona.statusText}
+                </p>
+              </div>
             </div>
-
-            {/* Quick Benefits Stats Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-              {currentStaff.stats.map((stat, idx) => (
-                <div
-                  key={idx}
-                  className="rounded-lg border border-border/50 bg-muted/30 p-3 space-y-1"
-                >
-                  <p className="text-[11px] text-muted-foreground">{isEn ? stat.labelEn : stat.label}</p>
-                  <p className="text-sm font-semibold tracking-tight">{stat.value}</p>
-                </div>
-              ))}
-            </div>
+            <Badge variant="outline" className="text-[10px] font-mono">
+              {isEn ? persona.titleEn : persona.title}
+            </Badge>
           </div>
 
-          {/* Section: What This Staff Does For You */}
-          <Card className="border-border/70 shadow-none">
-            <CardHeader className="py-4 px-6 border-b border-border/40">
-              <div className="flex items-center gap-2">
-                <Briefcase className="size-4 text-primary" />
-                <CardTitle className="text-sm font-semibold">
-                  {isEn ? "Tasks Handled Autonomously" : "Tugas yang Dikerjakan Otomatis untuk Anda"}
-                </CardTitle>
-              </div>
-              <CardDescription className="text-xs">
-                {isEn
-                  ? "Every day, this assistant takes these responsibilities off your plate."
-                  : "Setiap hari asisten ini menggantikan tugas rumit berikut agar Anda tidak pusing."}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-6">
-              <ul className="space-y-3">
-                {(isEn ? currentStaff.responsibilitiesEn : currentStaff.responsibilities).map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-3 text-xs leading-relaxed">
-                    <span className="grid size-5 shrink-0 place-items-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 mt-0.5">
-                      <CheckCircle2 className="size-3.5" />
-                    </span>
-                    <span className="text-foreground">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-
-          {/* Section: Peace of Mind & Safety Guardrails */}
-          <Card className="border-border/70 shadow-none">
-            <CardHeader className="py-4 px-6 border-b border-border/40">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="size-4 text-emerald-600 dark:text-emerald-400" />
-                <CardTitle className="text-sm font-semibold">
-                  {isEn ? "Safety Rules & Protection" : "Aturan Keamanan Pembukuan"}
-                </CardTitle>
-              </div>
-              <CardDescription className="text-xs">
-                {isEn
-                  ? "Built-in protection so your business records remain 100% accurate."
-                  : "Perlindungan otomatis agar catatan usaha Anda tetap aman dan bebas kesalahan fatal."}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="space-y-3">
-                {(isEn ? currentStaff.autonomousRulesEn : currentStaff.autonomousRules).map((rule, idx) => (
+          {/* Messages Stream */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-muted/10">
+            {messages.map((msg) => {
+              const isUser = msg.sender === "user";
+              return (
+                <div
+                  key={msg.id}
+                  className={`flex flex-col ${isUser ? "items-end" : "items-start"}`}
+                >
                   <div
-                    key={idx}
-                    className="p-3.5 rounded-lg border border-border/50 bg-muted/20 text-xs leading-relaxed text-foreground"
+                    className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-xs leading-relaxed ${
+                      isUser
+                        ? "bg-primary text-primary-foreground rounded-br-xs"
+                        : "bg-card border border-border/70 text-foreground rounded-bl-xs shadow-none"
+                    }`}
                   >
-                    {rule}
+                    <p className="whitespace-pre-wrap">{msg.text}</p>
+                    <span
+                      className={`block text-[10px] mt-1 text-right ${
+                        isUser ? "text-primary-foreground/70" : "text-muted-foreground"
+                      }`}
+                    >
+                      {msg.timestamp}
+                    </span>
                   </div>
-                ))}
+                </div>
+              );
+            })}
+
+            {isTyping && (
+              <div className="flex items-center gap-2 text-xs text-muted-foreground py-1 px-2">
+                <span className="size-1.5 rounded-full bg-primary animate-bounce" />
+                <span className="size-1.5 rounded-full bg-primary animate-bounce [animation-delay:0.2s]" />
+                <span className="size-1.5 rounded-full bg-primary animate-bounce [animation-delay:0.4s]" />
+                <span className="text-[11px] italic">
+                  {persona.name} {isEn ? "is typing…" : "sedang mengetik…"}
+                </span>
               </div>
-            </CardContent>
-          </Card>
+            )}
+          </div>
 
-          {/* Real Life Example Callout & Quick Action */}
-          <div className="rounded-xl border border-primary/20 bg-primary/5 p-5 space-y-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="space-y-1 max-w-xl">
-              <span className="text-[11px] font-semibold text-primary uppercase tracking-wider">
-                {isEn ? "How to use this assistant" : "Cara Pakai Asisten Ini"}
-              </span>
-              <p className="text-xs text-foreground leading-relaxed">
-                {isEn ? currentStaff.delegationExampleEn : currentStaff.delegationExample}
-              </p>
-            </div>
+          {/* Quick Suggested Prompts Chips */}
+          <div className="p-2 border-t border-border/40 bg-card flex gap-1.5 overflow-x-auto shrink-0">
+            {persona.suggestedPrompts.map((chip, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleSendMessage(chip.prompt)}
+                className="shrink-0 text-[11px] px-2.5 py-1 rounded-full border border-border/60 hover:bg-muted text-foreground transition-colors"
+              >
+                {isEn ? chip.labelEn : chip.label}
+              </button>
+            ))}
+          </div>
 
-            <Button asChild size="sm" className="gap-2 shrink-0 text-xs">
-              <Link href={selectedStaffId === "konsultan_pajak" ? "/taxes" : selectedStaffId === "legal_izin" ? "/licensing" : "/record"}>
-                <ScanLine className="size-3.5" />
-                <span>{isEn ? "Try with Real Receipt" : "Coba Catat Struk"}</span>
-                <ArrowRight className="size-3" />
-              </Link>
+          {/* Chat Input Bar */}
+          <div className="p-3 border-t border-border/60 bg-card flex items-center gap-2 shrink-0">
+            <input
+              type="text"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSendMessage();
+                }
+              }}
+              placeholder={
+                isEn
+                  ? `Message ${persona.name}…`
+                  : `Ketik pesan atau belanjaan ke ${persona.name}…`
+              }
+              className="flex-1 bg-muted/40 border border-border/60 rounded-lg px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+            <Button
+              size="sm"
+              onClick={() => handleSendMessage()}
+              disabled={!inputText.trim()}
+              className="h-8 px-3 text-xs gap-1"
+            >
+              <Send className="size-3.5" />
             </Button>
           </div>
-        </main>
+        </section>
+
+        {/* PANE 3: RIGHT EXPLAINABLE RESULT & FLOWCHART (PROVENANCE CANVAS) - 4 COLS */}
+        <section className="lg:col-span-4 space-y-4">
+          {/* Active Verified Result Card */}
+          <Card className="border-border/70 shadow-none">
+            <CardHeader className="py-3.5 px-4 border-b border-border/40 bg-muted/20">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+                  {isEn ? "Verified Result" : "Hasil Terverifikasi"}
+                </span>
+                <Badge variant="outline" className="text-[10px] font-mono bg-background">
+                  {persona.activeArtifact.statutePill}
+                </Badge>
+              </div>
+              <CardTitle className="text-sm font-semibold mt-1">
+                {persona.activeArtifact.title}
+              </CardTitle>
+              <CardDescription className="text-xs">
+                {persona.activeArtifact.summary}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-4 space-y-3">
+              <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
+                <span className="text-[10px] font-mono uppercase block">
+                  {isEn ? "Audit Verified State" : "Status Pemeriksaan"}
+                </span>
+                <p className="text-base font-bold tracking-tight">
+                  {persona.activeArtifact.highlight}
+                </p>
+              </div>
+
+              <div className="space-y-1.5 text-xs">
+                {persona.activeArtifact.details.map((item, idx) => (
+                  <div key={idx} className="flex items-start justify-between py-1 border-b border-border/30 gap-2">
+                    <span className="text-muted-foreground text-[11px] shrink-0">{item.key}</span>
+                    <span className="font-medium text-foreground text-right text-[11px]">{item.value}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Explainability Flowchart (Agent Thinking Chain) */}
+          <Card className="border-border/70 shadow-none">
+            <CardHeader className="py-3 px-4 border-b border-border/40">
+              <div className="flex items-center gap-2">
+                <Sparkles className="size-3.5 text-primary" />
+                <CardTitle className="text-xs font-semibold">
+                  {isEn ? "Agent Thinking Flowchart" : "Bagan Alur Berpikir Asisten"}
+                </CardTitle>
+              </div>
+              <CardDescription className="text-[11px]">
+                {isEn ? "Explainable verification sequence" : "Transparansi langkah penentuan logika"}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-4">
+              <div className="relative pl-6 space-y-3.5 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-border/60">
+                {persona.thinkingFlow.map((step, idx) => (
+                  <div key={idx} className="relative group">
+                    <span className="absolute -left-6 top-0.5 grid size-4 place-items-center rounded-full bg-emerald-500 text-white ring-4 ring-background text-[10px]">
+                      <CheckCircle2 className="size-3" />
+                    </span>
+                    <div className="space-y-0.5">
+                      <p className="text-xs font-semibold text-foreground leading-snug">{step.title}</p>
+                      <p className="text-[11px] text-muted-foreground leading-relaxed">{step.detail}</p>
+                      {step.statuteCitation && (
+                        <span className="inline-block text-[10px] font-mono text-primary font-medium mt-0.5">
+                          {step.statuteCitation}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </section>
       </div>
     </>
   );
