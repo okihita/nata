@@ -56,21 +56,21 @@ export function HeroProof() {
         {/* ── the output: the posting it becomes ────────────────────────── */}
         <div className="rounded-xl border bg-card shadow-sm">
           <div className="flex items-center gap-2 border-b bg-muted/40 px-3 py-2">
-            <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-mono font-medium">
-              23:45 WIB 🌙
+            <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded font-mono font-medium">
+              23:45 WIB
             </span>
-            <span className="text-[11px] font-medium text-foreground">Diproses Otomatis</span>
-            <span className="ml-auto rounded-full bg-tone-hijau-bg px-2 py-0.5 text-[10px] font-medium text-tone-hijau">
-              ✓ Seimbang
+            <span className="text-xs font-medium text-foreground">Diproses Otomatis</span>
+            <span className="ml-auto rounded-full bg-tone-hijau-bg px-2 py-0.5 text-xs font-medium text-tone-hijau">
+              Seimbang
             </span>
           </div>
 
           <div className="p-3">
-            <p className="text-[11px] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               Pembelian perlengkapan tunai 100.000 (toko ATK)
             </p>
 
-            <table className="mt-2 w-full text-[11px]">
+            <table className="mt-2 w-full text-xs">
               <thead className="text-muted-foreground">
                 <tr>
                   <th className="pb-1 text-left font-medium">Akun</th>
@@ -89,9 +89,9 @@ export function HeroProof() {
               </tbody>
             </table>
 
-            <div className="mt-3 flex items-center justify-between rounded-lg bg-muted/50 px-2.5 py-1.5 text-[10px]">
+            <div className="mt-3 flex items-center justify-between rounded-lg bg-muted/50 px-2.5 py-1.5 text-xs">
               <span className="text-muted-foreground">Aset = Liabilitas + Ekuitas</span>
-              <span className="font-medium text-tone-hijau">✓</span>
+              <span className="font-medium text-tone-hijau font-mono">OK</span>
             </div>
           </div>
         </div>
