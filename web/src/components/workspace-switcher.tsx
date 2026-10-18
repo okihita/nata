@@ -53,7 +53,7 @@ export function WorkspaceSwitcher() {
           */}
           <span className="grid min-w-0 text-left leading-tight">
             <span className="truncate text-sm font-medium">{name}</span>
-            <span className="hidden truncate text-[11px] text-muted-foreground sm:block">
+            <span className="hidden truncate text-xs text-muted-foreground sm:block">
               {subtitle}
             </span>
           </span>
@@ -63,7 +63,7 @@ export function WorkspaceSwitcher() {
       <DropdownMenuContent align="start" className="w-72">
         <div className="flex items-center justify-between px-2 py-1.5">
           <DropdownMenuLabel className="p-0 text-xs font-semibold">{copy.workspaceSwitcher.activeLabel}</DropdownMenuLabel>
-          <span className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-[9px] font-medium text-primary">
+          <span className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-xs font-medium text-primary">
             {business?.id.startsWith("biz-persona-") ? copy.workspaceSwitcher.archetypeBadge : copy.workspaceSwitcher.guestBadge}
           </span>
         </div>
@@ -71,14 +71,14 @@ export function WorkspaceSwitcher() {
           <Store className="size-4 text-primary shrink-0" />
           <div className="grid min-w-0">
             <span className="truncate text-xs font-semibold">{name}</span>
-            <span className="truncate text-[10px] text-muted-foreground">{subtitle}</span>
+            <span className="truncate text-xs text-muted-foreground">{subtitle}</span>
           </div>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
         <div className="px-2 py-1">
-          <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             {copy.workspaceSwitcher.archetypeHeading}
           </p>
         </div>
@@ -89,7 +89,7 @@ export function WorkspaceSwitcher() {
           <span className="size-2 rounded-full bg-emerald-500 shrink-0" />
           <div className="grid">
             <span className="text-xs font-medium">Persona A: Rona Kirana Beauty</span>
-            <span className="text-[10px] text-muted-foreground">{copy.workspaceSwitcher.personaRetailHint}</span>
+            <span className="text-xs text-muted-foreground">{copy.workspaceSwitcher.personaRetailHint}</span>
           </div>
         </DropdownMenuItem>
         <DropdownMenuItem
@@ -99,14 +99,14 @@ export function WorkspaceSwitcher() {
           <span className="size-2 rounded-full bg-amber-500 shrink-0" />
           <div className="grid">
             <span className="text-xs font-medium">Persona B: PT Seduh Rasa</span>
-            <span className="text-[10px] text-muted-foreground">{copy.workspaceSwitcher.personaFnbHint}</span>
+            <span className="text-xs text-muted-foreground">{copy.workspaceSwitcher.personaFnbHint}</span>
           </div>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
         <div className="px-2 py-1">
-          <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             {copy.workspaceSwitcher.syncHeading}
           </p>
         </div>
@@ -115,7 +115,7 @@ export function WorkspaceSwitcher() {
             <Settings className="size-4 text-muted-foreground" />
             <div className="grid">
               <span className="text-xs font-medium">{copy.workspaceSwitcher.createNew}</span>
-              <span className="text-[10px] text-muted-foreground">{copy.workspaceSwitcher.createNewHint}</span>
+              <span className="text-xs text-muted-foreground">{copy.workspaceSwitcher.createNewHint}</span>
             </div>
           </Link>
         </DropdownMenuItem>
@@ -124,7 +124,7 @@ export function WorkspaceSwitcher() {
             <Compass className="size-4 text-muted-foreground" />
             <div className="grid">
               <span className="text-xs font-medium">{copy.workspaceSwitcher.returnToOnboarding}</span>
-              <span className="text-[10px] text-muted-foreground">{copy.workspaceSwitcher.returnToOnboardingHint}</span>
+              <span className="text-xs text-muted-foreground">{copy.workspaceSwitcher.returnToOnboardingHint}</span>
             </div>
           </Link>
         </DropdownMenuItem>
@@ -132,12 +132,12 @@ export function WorkspaceSwitcher() {
           onClick={() => alert(copy.workspaceSwitcher.cloudAlert)}
           className="gap-2 cursor-pointer text-primary focus:text-primary"
         >
-          <span className="grid size-4 place-items-center rounded bg-primary text-[10px] font-bold text-primary-foreground">
+          <span className="grid size-4 place-items-center rounded bg-primary text-xs font-bold text-primary-foreground">
             ↑
           </span>
           <div className="grid">
             <span className="text-xs font-medium">{copy.workspaceSwitcher.cloudSave}</span>
-            <span className="text-[10px] text-muted-foreground">{copy.workspaceSwitcher.cloudSaveHint}</span>
+            <span className="text-xs text-muted-foreground">{copy.workspaceSwitcher.cloudSaveHint}</span>
           </div>
         </DropdownMenuItem>
       </DropdownMenuContent>
