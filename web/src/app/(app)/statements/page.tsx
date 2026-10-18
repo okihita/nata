@@ -56,6 +56,40 @@ export default function LaporanPage() {
     [entries, period],
   );
 
+  // Calculate date span across records for "All Periods"
+  const periodMeta = useMemo(() => {
+    if (periods.length === 0) {
+      return {
+        label: copy.laporan.allPeriods,
+        rangeText: "",
+        monthsCount: 0,
+      };
+    }
+    // periods are sorted newest first, e.g. ["2026-10", "2026-09", "2026-08"]
+    const newest = periods[0];
+    const oldest = periods[periods.length - 1];
+
+    const formatMonth = (p?: string) =>
+      p
+        ? new Date(`${p}-01`).toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
+            month: "short",
+            year: "numeric",
+          })
+        : "";
+
+    const startFormatted = formatMonth(oldest);
+    const endFormatted = formatMonth(newest);
+    const monthsCount = periods.length;
+
+    return {
+      label: copy.laporan.allPeriods,
+      startFormatted,
+      endFormatted,
+      monthsCount,
+      rangeText: copy.laporan.allPeriodsRange(startFormatted, endFormatted, monthsCount),
+    };
+  }, [periods, locale, copy]);
+
   const income = incomeStatement(scoped);
   const bs = balanceSheet(scoped);
 
@@ -98,7 +132,9 @@ export default function LaporanPage() {
 
   const periodLabel =
     period === "all"
-      ? copy.laporan.allPeriods
+      ? periodMeta.rangeText
+        ? `${copy.laporan.allPeriods} (${periodMeta.rangeText})`
+        : copy.laporan.allPeriods
       : new Date(`${period}-01`).toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
           month: "long",
           year: "numeric",
@@ -106,7 +142,7 @@ export default function LaporanPage() {
 
   const handleExportCsv = () => {
     downloadCsv(
-      reportFilename(business?.name ?? copy.app.name, periodLabel),
+      reportFilename(business?.name ?? copy.app.name, period === "all" ? "semua-periode" : periodLabel),
       statementsToCsv(scoped, {
         periodLabel,
         businessName: business?.name ?? copy.app.name,
@@ -132,11 +168,18 @@ export default function LaporanPage() {
     <>
       <PageHeader title={copy.laporan.title} subtitle={copy.laporan.subtitle}>
         <Select value={period} onValueChange={setPeriod}>
-          <SelectTrigger className="w-[13rem]">
+          <SelectTrigger className="w-[17rem]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{copy.laporan.allPeriods}</SelectItem>
+            <SelectItem value="all">
+              <div className="flex flex-col text-left py-0.5">
+                <span className="font-medium">{copy.laporan.allPeriods}</span>
+                {periodMeta.rangeText && (
+                  <span className="text-[10px] text-muted-foreground">{periodMeta.rangeText}</span>
+                )}
+              </div>
+            </SelectItem>
             {periods.map((p) => (
               <SelectItem key={p} value={p}>
                 {new Date(`${p}-01`).toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
@@ -156,7 +199,7 @@ export default function LaporanPage() {
               <ChevronDown className="size-3.5 opacity-60" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-52">
+          <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuItem onClick={handleExportPdf} className="gap-2 cursor-pointer">
               <Printer className="size-4 text-primary" />
               <div className="grid">
@@ -175,9 +218,17 @@ export default function LaporanPage() {
         </DropdownMenu>
       </PageHeader>
 
-      <p className="mb-4 text-sm text-muted-foreground">
-        {copy.laporan.period}: <span className="font-medium text-foreground">{periodLabel}</span>
-      </p>
+      <div className="mb-4 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+        <span>{copy.laporan.period}:</span>
+        <span className="font-semibold text-foreground">
+          {period === "all" ? copy.laporan.allPeriods : periodLabel}
+        </span>
+        {period === "all" && periodMeta.rangeText && (
+          <Badge variant="outline" className="text-xs font-normal bg-muted/40 text-muted-foreground">
+            {periodMeta.rangeText}
+          </Badge>
+        )}
+      </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Laba Rugi */}

@@ -242,7 +242,10 @@ export const copyEn = {
     title: "Financial Statements",
     subtitle: "Compiled automatically from your ledger in compliance with SAK EMKM.",
     selectPeriod: "Period",
-    allPeriods: "All periods",
+    allPeriods: "All Periods",
+    allPeriodsCumulative: "All Recorded Periods (Cumulative)",
+    allPeriodsRange: (start: string, end: string, months: number) =>
+      `${start} – ${end} (${months} ${months === 1 ? "month" : "months"} total)`,
     labaRugi: "Income Statement",
     posisi: "Balance Sheet",
     calk: "Notes to Financial Statements (CALK)",

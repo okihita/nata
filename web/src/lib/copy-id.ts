@@ -247,7 +247,10 @@ export const copyId = {
     title: "Laporan Keuangan",
     subtitle: "Disusun otomatis dari pembukuan Anda, sesuai SAK EMKM.",
     selectPeriod: "Periode",
-    allPeriods: "Semua periode",
+    allPeriods: "Semua Periode",
+    allPeriodsCumulative: "Semua Periode Tercatat (Kumulatif)",
+    allPeriodsRange: (start: string, end: string, months: number) =>
+      `${start} – ${end} (total ${months} bulan)`,
     labaRugi: "Laporan Laba Rugi",
     posisi: "Laporan Posisi Keuangan",
     calk: "Catatan atas Laporan Keuangan",
