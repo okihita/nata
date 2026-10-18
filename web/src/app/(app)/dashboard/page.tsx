@@ -430,7 +430,7 @@ export default function DashboardPage() {
                       <p className="font-medium text-xs text-foreground group-hover:text-primary transition-colors">
                         {todo.title}
                       </p>
-                      <p className="text-[11px] text-muted-foreground truncate">
+                      <p className="text-xs text-muted-foreground truncate">
                         {todo.desc}
                       </p>
                     </div>
@@ -440,7 +440,7 @@ export default function DashboardPage() {
                     {todo.agentId && todo.agentName && (
                       <Link
                         href={`/agents?agent=${todo.agentId}&prompt=${encodeURIComponent(todo.prompt ?? "")}`}
-                        className="inline-flex items-center gap-1 rounded-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 px-2 py-0.5 text-[11px] font-medium transition-colors"
+                        className="inline-flex items-center gap-1 rounded-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 px-2 py-0.5 text-xs font-medium transition-colors"
                         title={copy.dashboard.consultAgent(todo.agentName)}
                       >
                         {todo.agentId === "maya" && <AvatarMaya size={14} />}
@@ -585,7 +585,6 @@ function Metric({
   );
 }
 
-
 /**
  * The three standing facts that decide what the owner owes: business form, its
  * tax treatment, and its KBLI code.
@@ -691,7 +690,7 @@ function ComplianceItem({
       {href && cta && (
         <span
           className={cn(
-            "mt-1 inline-flex items-center gap-0.5 text-[11px] font-medium",
+            "mt-1 inline-flex items-center gap-0.5 text-xs font-medium",
             toneClass,
           )}
         >
