@@ -32,6 +32,7 @@ import { idr, idrFull } from "@/lib/format";
 import { useWorkspace } from "@/lib/store";
 import { summary, loadLedger } from "@/lib/ledger";
 import { executeRoutineWithAdk } from "@/lib/adk";
+import { Prose } from "@/components/prose";
 import {
   DEMO_ROUTINES,
   RECOMMENDED_ROUTINES,
@@ -165,17 +166,23 @@ export default function RoutinesPage() {
     showArchived ? r.status === "archived" : r.status !== "archived"
   );
 
-  const selectedRoutine = selectedRoutineId
-    ? activeRoutines.find((r) => r.id === selectedRoutineId) ?? null
-    : null;
-
-  const selectedExec = selectedRoutine && selectedExecId
-    ? selectedRoutine.recentExecutions.find((e) => e.id === selectedExecId) ?? null
-    : null;
-
   const filteredRoutines = activeRoutines.filter((r) =>
     activeCadence === "all" ? true : r.cadence === activeCadence
   );
+
+  // If no routine is explicitly selected, default to the first available routine
+  const selectedRoutine =
+    (selectedRoutineId ? activeRoutines.find((r) => r.id === selectedRoutineId) : null) ||
+    filteredRoutines[0] ||
+    activeRoutines[0] ||
+    null;
+
+  // If no execution is explicitly selected, default to the most recent execution run
+  const selectedExec = selectedRoutine
+    ? (selectedExecId
+        ? selectedRoutine.recentExecutions.find((e) => e.id === selectedExecId)
+        : selectedRoutine.recentExecutions[0]) ?? null
+    : null;
 
   const handleToggleArchive = (id: string) => {
     const target = routines.find((r) => r.id === id);
@@ -240,6 +247,8 @@ export default function RoutinesPage() {
           }
         }
 
+        const freshExecId = `exec-${Date.now()}`;
+
         setRoutines((prev) =>
           prev.map((r) => {
             if (r.id === id) {
@@ -255,7 +264,7 @@ export default function RoutinesPage() {
               const finalFinding = adkFindingText || defaultFinding;
 
               const freshExec: RoutineExecutionRecord = {
-                id: `exec-${Date.now()}`,
+                id: freshExecId,
                 timestamp: timeStr,
                 status: ledgerSummary.balanced || currentEntries.length === 0 ? "success" : "warning",
                 durationMs,
@@ -327,6 +336,10 @@ export default function RoutinesPage() {
             return r;
           })
         );
+
+        // Auto-select the freshly triggered routine and its newly generated execution run
+        setSelectedRoutineId(id);
+        setSelectedExecId(freshExecId);
       } catch (err) {
         console.error("Failed to execute autonomous routine:", err);
       } finally {
@@ -912,13 +925,13 @@ export default function RoutinesPage() {
           {selectedExec ? (
             <div className="p-4 space-y-4 flex-1 overflow-y-auto">
             {/* Finding Summary Box */}
-            <div className="p-3 rounded-lg bg-muted/40 border border-border/60 space-y-1">
-              <span className="text-xs font-mono uppercase text-muted-foreground">
+            <div className="p-3 rounded-lg bg-muted/40 border border-border/60 space-y-1.5">
+              <span className="text-xs font-mono uppercase text-muted-foreground block">
                 {isEn ? "Autonomous Finding" : "Temuan Mandiri Agen"}
               </span>
-              <p className="text-xs text-foreground leading-relaxed font-medium">
-                {isEn ? selectedExec.findingSummaryEn : selectedExec.findingSummary}
-              </p>
+              <div className="text-xs text-foreground leading-relaxed font-normal">
+                <Prose text={isEn ? selectedExec.findingSummaryEn : selectedExec.findingSummary} />
+              </div>
             </div>
 
             {/* Impact Metric Chips */}
