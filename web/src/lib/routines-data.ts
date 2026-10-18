@@ -1,5 +1,5 @@
 export type RoutineCadence = "daily" | "weekly" | "monthly" | "realtime";
-export type RoutineStatus = "active" | "idle" | "running" | "paused";
+export type RoutineStatus = "active" | "idle" | "running" | "paused" | "archived";
 
 export type RoutineArtifactType = "cash_briefing" | "tax_threshold" | "reconciliation_table" | "kbli_certificate";
 

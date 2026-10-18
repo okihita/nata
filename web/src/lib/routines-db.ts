@@ -144,3 +144,28 @@ export async function recordPersistedExecution(
     return false;
   }
 }
+
+/**
+ * Update routine status (e.g. soft-delete to 'archived', or restore to 'active'/'paused').
+ */
+export async function updateRoutineStatus(
+  routineId: string,
+  status: AutonomousRoutine["status"],
+  businessId = "default"
+): Promise<boolean> {
+  const db = getDb();
+  if (!db) return false;
+
+  try {
+    const routineRef = db
+      .collection("businesses")
+      .doc(businessId)
+      .collection(COLLECTION_NAME)
+      .doc(routineId);
+
+    await routineRef.update({ status });
+    return true;
+  } catch {
+    return false;
+  }
+}

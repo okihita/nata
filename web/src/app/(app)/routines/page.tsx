@@ -16,6 +16,8 @@ import {
   X,
   ChevronDown,
   CalendarClock,
+  Archive,
+  ArchiveRestore,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -49,6 +51,8 @@ export default function RoutinesPage() {
   const [newCadence, setNewCadence] = useState<RoutineCadence>("daily");
   const [newSchedule, setNewSchedule] = useState("0 8 * * *");
 
+  const [showArchived, setShowArchived] = useState(false);
+
   // Load from persisted Firestore store via API, gracefully falling back
   useEffect(() => {
     let active = true;
@@ -69,14 +73,45 @@ export default function RoutinesPage() {
     };
   }, [businessId]);
 
-  const selectedRoutine = routines.find((r) => r.id === selectedRoutineId) ?? routines[0];
-  const selectedExec =
-    selectedRoutine.recentExecutions.find((e) => e.id === selectedExecId) ??
-    selectedRoutine.recentExecutions[0];
+  const activeRoutines = routines.filter((r) =>
+    showArchived ? r.status === "archived" : r.status !== "archived"
+  );
 
-  const filteredRoutines = routines.filter((r) =>
+  const selectedRoutine =
+    activeRoutines.find((r) => r.id === selectedRoutineId) ??
+    activeRoutines[0] ??
+    routines[0];
+
+  const selectedExec =
+    selectedRoutine?.recentExecutions.find((e) => e.id === selectedExecId) ??
+    selectedRoutine?.recentExecutions[0];
+
+  const filteredRoutines = activeRoutines.filter((r) =>
     activeCadence === "all" ? true : r.cadence === activeCadence
   );
+
+  const handleToggleArchive = (id: string) => {
+    const target = routines.find((r) => r.id === id);
+    if (!target) return;
+
+    const nextStatus = target.status === "archived" ? "active" : "archived";
+
+    setRoutines((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, status: nextStatus } : r))
+    );
+
+    // Persist status change asynchronously
+    fetch("/api/routines", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "update_status",
+        routineId: id,
+        status: nextStatus,
+        businessId,
+      }),
+    }).catch(() => {});
+  };
 
   const handleTrigger = async (id: string) => {
     setRunningId(id);
@@ -263,20 +298,35 @@ export default function RoutinesPage() {
           </div>
 
           {/* Quick filter tabs */}
-          <div className="p-2 border-b border-border/40 flex gap-1 text-[11px] bg-muted/10">
-            {(["all", "daily", "weekly"] as const).map((c) => (
-              <button
-                key={c}
-                onClick={() => setActiveCadence(c)}
-                className={`px-2 py-0.5 rounded capitalize ${
-                  activeCadence === c
-                    ? "bg-foreground text-background font-medium"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {c === "all" ? (isEn ? "All" : "Semua") : c === "daily" ? (isEn ? "Daily" : "Harian") : (isEn ? "Weekly" : "Mingguan")}
-              </button>
-            ))}
+          <div className="p-2 border-b border-border/40 flex items-center justify-between text-[11px] bg-muted/10">
+            <div className="flex gap-1">
+              {(["all", "daily", "weekly"] as const).map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setActiveCadence(c)}
+                  className={`px-2 py-0.5 rounded capitalize transition-colors ${
+                    activeCadence === c
+                      ? "bg-foreground text-background font-medium"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {c === "all" ? (isEn ? "All" : "Semua") : c === "daily" ? (isEn ? "Daily" : "Harian") : (isEn ? "Weekly" : "Mingguan")}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => setShowArchived((prev) => !prev)}
+              className={`px-1.5 py-0.5 rounded text-[10px] flex items-center gap-1 transition-colors ${
+                showArchived
+                  ? "bg-amber-500/15 text-amber-700 dark:text-amber-400 font-medium border border-amber-500/30"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              title={isEn ? "Toggle archived jobs" : "Tampilkan jadwal diarsip"}
+            >
+              <Archive className="size-3" />
+              <span>{showArchived ? (isEn ? "Archived" : "Arsip") : (isEn ? "Archived" : "Arsip")}</span>
+            </button>
           </div>
 
           <div className="p-2 space-y-1.5 flex-1 overflow-y-auto">
@@ -373,28 +423,54 @@ export default function RoutinesPage() {
                 {isEn ? selectedRoutine.purposeEn : selectedRoutine.purpose}
               </p>
 
-              <div className="pt-1 flex items-center justify-between">
-                <span className="text-[10px] text-muted-foreground font-mono">
-                  Cloud Scheduler &bull; Worker: {selectedRoutine.assignedAgent.name}
+              <div className="pt-1 flex items-center justify-between gap-2">
+                <span className="text-[10px] text-muted-foreground font-mono truncate">
+                  Worker: {selectedRoutine.assignedAgent.name}
                 </span>
-                <Button
-                  size="sm"
-                  variant="default"
-                  disabled={runningId === selectedRoutine.id}
-                  onClick={() => handleTrigger(selectedRoutine.id)}
-                  className="h-7 px-2.5 text-xs gap-1.5 shadow-xs"
-                >
-                  {runningId === selectedRoutine.id ? (
-                    <RotateCcw className="size-3 animate-spin" />
-                  ) : (
-                    <Play className="size-3 fill-current" />
-                  )}
-                  <span>
-                    {runningId === selectedRoutine.id
-                      ? (isEn ? "Running…" : "Berjalan…")
-                      : (isEn ? "Run Now" : "Jalankan Sekarang")}
-                  </span>
-                </Button>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleToggleArchive(selectedRoutine.id)}
+                    className="h-7 px-2 text-xs gap-1 border-border/80 text-muted-foreground hover:text-foreground"
+                    title={
+                      selectedRoutine.status === "archived"
+                        ? (isEn ? "Restore routine" : "Aktifkan kembali")
+                        : (isEn ? "Archive routine (soft-delete)" : "Arsipkan jadwal (nonaktifkan)")
+                    }
+                  >
+                    {selectedRoutine.status === "archived" ? (
+                      <>
+                        <ArchiveRestore className="size-3 text-emerald-600 dark:text-emerald-400" />
+                        <span>{isEn ? "Restore" : "Pulihkan"}</span>
+                      </>
+                    ) : (
+                      <>
+                        <Archive className="size-3 text-muted-foreground" />
+                        <span>{isEn ? "Archive" : "Arsipkan"}</span>
+                      </>
+                    )}
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    variant="default"
+                    disabled={runningId === selectedRoutine.id || selectedRoutine.status === "archived"}
+                    onClick={() => handleTrigger(selectedRoutine.id)}
+                    className="h-7 px-2.5 text-xs gap-1.5 shadow-xs"
+                  >
+                    {runningId === selectedRoutine.id ? (
+                      <RotateCcw className="size-3 animate-spin" />
+                    ) : (
+                      <Play className="size-3 fill-current" />
+                    )}
+                    <span>
+                      {runningId === selectedRoutine.id
+                        ? (isEn ? "Running…" : "Berjalan…")
+                        : (isEn ? "Run Now" : "Jalankan Sekarang")}
+                    </span>
+                  </Button>
+                </div>
               </div>
             </div>
 
@@ -626,13 +702,22 @@ export default function RoutinesPage() {
                 <span className="truncate">{selectedExec.statutoryGrounding}</span>
               </span>
 
-              <Link
-                href="/agents"
-                className="flex items-center gap-0.5 text-primary hover:underline font-medium shrink-0"
-              >
-                <span>{isEn ? "Consult Agent" : "Konsultasi"}</span>
-                <ArrowUpRight className="size-3" />
-              </Link>
+              <div className="flex items-center gap-3 shrink-0">
+                <Link
+                  href="/library"
+                  className="flex items-center gap-1 text-muted-foreground hover:text-foreground font-medium"
+                >
+                  <Archive className="size-3" />
+                  <span>{isEn ? "Library" : "Arsip Bukti"}</span>
+                </Link>
+                <Link
+                  href="/agents"
+                  className="flex items-center gap-0.5 text-primary hover:underline font-medium"
+                >
+                  <span>{isEn ? "Consult Agent" : "Konsultasi"}</span>
+                  <ArrowUpRight className="size-3" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>

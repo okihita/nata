@@ -3,6 +3,7 @@ import {
   getPersistedRoutines,
   savePersistedRoutine,
   recordPersistedExecution,
+  updateRoutineStatus,
 } from "@/lib/routines-db";
 import type { AutonomousRoutine, RoutineExecutionRecord } from "@/lib/routines-data";
 
@@ -23,12 +24,12 @@ export async function GET(request: Request) {
 
 /**
  * POST /api/routines
- * Persists a new routine or records an execution run.
+ * Persists a new routine, records an execution run, or updates routine status (soft-delete).
  */
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { action, routine, execution, routineId, businessId = "default" } = body;
+    const { action, routine, execution, routineId, status, businessId = "default" } = body;
 
     if (action === "create_routine" && routine) {
       const ok = await savePersistedRoutine(routine as AutonomousRoutine, businessId);
@@ -41,6 +42,11 @@ export async function POST(request: Request) {
         execution as RoutineExecutionRecord,
         businessId
       );
+      return NextResponse.json({ success: ok, mode: ok ? "firestore" : "memory" });
+    }
+
+    if (action === "update_status" && routineId && status) {
+      const ok = await updateRoutineStatus(routineId, status, businessId);
       return NextResponse.json({ success: ok, mode: ok ? "firestore" : "memory" });
     }
 

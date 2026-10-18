@@ -84,6 +84,7 @@ export const copyEn = {
     akun: "Chart of Accounts",
     laporan: "Financial Statements",
     pajak: "Taxes",
+    library: "Library & Artifacts",
     perizinan: "Licensing",
     academy: "Business School",
     platformGuide: "Platform Guide",
