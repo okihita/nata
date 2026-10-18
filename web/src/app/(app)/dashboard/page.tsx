@@ -31,7 +31,6 @@ import {
 
 import { PageHeader } from "@/components/app-sidebar";
 import { EmptyState } from "@/components/empty-state";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -408,15 +407,10 @@ export default function DashboardPage() {
         <Card className="flex flex-col border-border justify-between">
           <div>
             <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-primary" />
-                  <span>{copy.dashboard.todoTitle}</span>
-                </CardTitle>
-                <Badge variant="secondary" className="text-[11px] font-normal">
-                  {copy.dashboard.todoPending(pendingTodos.length)}
-                </Badge>
-              </div>
+              <CardTitle className="text-base flex items-center gap-2">
+                <CheckCircle2 className="size-4 text-primary" />
+                <span>{copy.dashboard.todoTitle}</span>
+              </CardTitle>
               <CardDescription className="text-xs">
                 {copy.dashboard.todoSubtitle}
               </CardDescription>
