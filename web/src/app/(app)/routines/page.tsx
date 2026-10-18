@@ -20,12 +20,6 @@ import {
   type RoutineCadence,
   type RoutineExecutionRecord,
 } from "@/lib/routines-data";
-import {
-  AvatarNata,
-  AvatarMaya,
-  AvatarDimas,
-  AvatarArief,
-} from "@/components/agent-avatars";
 
 export default function RoutinesPage() {
   const { locale } = useLanguage();
@@ -90,16 +84,36 @@ export default function RoutinesPage() {
     setRunningRoutineId(null);
   };
 
-  const getAgentAvatar = (id: string, size = "md") => {
+  const getAgentBadge = (id: string, name: string) => {
     switch (id) {
       case "maya":
-        return <AvatarMaya size={size as never} />;
+        return (
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
+            <span className="size-1.5 rounded-full bg-emerald-500" />
+            {name}
+          </span>
+        );
       case "dimas":
-        return <AvatarDimas size={size as never} />;
+        return (
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-blue-700 dark:text-blue-300 bg-blue-500/10 px-2 py-0.5 rounded-md border border-blue-500/20">
+            <span className="size-1.5 rounded-full bg-blue-500" />
+            {name}
+          </span>
+        );
       case "arief":
-        return <AvatarArief size={size as never} />;
+        return (
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-700 dark:text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">
+            <span className="size-1.5 rounded-full bg-amber-500" />
+            {name}
+          </span>
+        );
       default:
-        return <AvatarNata size={size as never} />;
+        return (
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20">
+            <span className="size-1.5 rounded-full bg-primary" />
+            {name}
+          </span>
+        );
     }
   };
 
@@ -198,40 +212,36 @@ export default function RoutinesPage() {
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-start gap-3">
-                    <div className="shrink-0 mt-0.5">
-                      {getAgentAvatar(routine.assignedAgent.id, "sm")}
+                  <div className="space-y-1.5 flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {getAgentBadge(routine.assignedAgent.id, routine.assignedAgent.name)}
+                      <h3 className="text-sm font-semibold text-foreground truncate">
+                        {isEn ? routine.titleEn : routine.title}
+                      </h3>
+                      {routine.lastRunStatus === "warning" ? (
+                        <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-amber-500/40 text-amber-600 dark:text-amber-400">
+                          Warning
+                        </Badge>
+                      ) : (
+                        <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-emerald-500/40 text-emerald-600 dark:text-emerald-400">
+                          Verified
+                        </Badge>
+                      )}
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-sm font-semibold text-foreground">
-                          {isEn ? routine.titleEn : routine.title}
-                        </h3>
-                        {routine.lastRunStatus === "warning" ? (
-                          <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-amber-500/40 text-amber-600 dark:text-amber-400">
-                            Warning
-                          </Badge>
-                        ) : (
-                          <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-emerald-500/40 text-emerald-600 dark:text-emerald-400">
-                            Verified
-                          </Badge>
-                        )}
-                      </div>
 
-                      <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
-                        {isEn ? routine.descriptionEn : routine.description}
-                      </p>
+                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                      {isEn ? routine.descriptionEn : routine.description}
+                    </p>
 
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2.5 text-[11px] text-muted-foreground">
-                        <span className="flex items-center gap-1 font-mono text-[10px] bg-muted px-1.5 py-0.5 rounded border border-border/50 text-foreground">
-                          <Clock className="size-3 text-primary" />
-                          {routine.cronSchedule}
-                        </span>
-                        <span>&bull;</span>
-                        <span>{isEn ? routine.scheduleHumanEn : routine.scheduleHuman}</span>
-                        <span>&bull;</span>
-                        <span>{routine.assignedAgent.name}</span>
-                      </div>
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-1 text-[11px] text-muted-foreground">
+                      <span className="flex items-center gap-1 font-mono text-[10px] bg-muted px-1.5 py-0.5 rounded border border-border/50 text-foreground">
+                        <Clock className="size-3 text-primary" />
+                        {routine.cronSchedule}
+                      </span>
+                      <span>&bull;</span>
+                      <span>{isEn ? routine.scheduleHumanEn : routine.scheduleHuman}</span>
+                      <span>&bull;</span>
+                      <span className="text-foreground/80">{isEn ? routine.assignedAgent.roleEn : routine.assignedAgent.role}</span>
                     </div>
                   </div>
 
