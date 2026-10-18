@@ -55,8 +55,8 @@ export const NAV: NavGroup[] = [
     tone: "hijau",
     items: [
       { href: "/agents", key: "agents", icon: "Bot", mobile: true },
-      { href: "/dashboard", key: "dashboard", icon: "LayoutDashboard", mobile: true },
       { href: "/routines", key: "rutinitas", icon: "Clock", mobile: true },
+      { href: "/dashboard", key: "dashboard", icon: "LayoutDashboard", mobile: true },
     ],
   },
   {
