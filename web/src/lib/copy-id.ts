@@ -78,6 +78,7 @@ export const copyId = {
       operations: "Operasional",
       master: "Perusahaan & Data Induk",
       reports: "Laporan Keuangan",
+      learning: "Akademi",
       other: "Preferensi",
     },
     dashboard: "Dasbor",
@@ -87,6 +88,8 @@ export const copyId = {
     laporan: "Laporan Keuangan",
     pajak: "Pajak",
     perizinan: "Perizinan",
+    academy: "Kuliah Bisnis",
+    platformGuide: "Panduan Platform",
     usaha: "Profil Usaha",
     pengaturan: "Pengaturan",
   },
@@ -718,5 +721,208 @@ export const copyId = {
       "Layanan sedang sibuk dan belum bisa memproses permintaan ini. Catatan Anda tidak berubah — tunggu sebentar, lalu coba lagi.",
     timeout:
       "Prosesnya memakan waktu lebih lama dari biasanya. Catatan Anda tidak berubah — coba lagi sebentar lagi.",
+  },
+  academy: {
+    title: "Kuliah Bisnis",
+    subtitle: "Wawasan praktis standar akuntansi SAK EMKM, aturan pajak UMKM, dan kepatuhan hukum.",
+    badge: "101 hingga Mahir",
+    categoryFilter: {
+      all: "Semua Topik",
+      accounting_101: "Akuntansi",
+      tax_compliance: "Pajak",
+      licensing_legal: "Perizinan",
+      operations_team: "Karyawan",
+    },
+    filterHint: "Pengetahuan penting untuk seluruh pelaku usaha dan UMKM Indonesia.",
+    tracks: {
+      platform: "Panduan Platform",
+      platformDesc: "Cara memaksimalkan pembukuan otomatis dan eksekusi multi-agen Nata.",
+      business: "Kuliah Bisnis",
+      businessDesc: "Standar akuntansi (SAK EMKM), pajak (PP 55/2022), izin KBLI, dan aturan ketenagakerjaan.",
+    },
+    categories: {
+      platform_basics: "Alur Kerja Platform",
+      accounting_101: "Akuntansi & Arus Kas",
+      tax_compliance: "Kepatuhan Pajak & Jebakan",
+      licensing_legal: "Perizinan & KBLI",
+      operations_team: "Tim & Operasional",
+    },
+    difficultyLabels: {
+      "101": "101 Dasar",
+      intermediate: "Menengah",
+      advanced: "Tingkat Lanjut",
+    },
+    minRead: "menit baca",
+    statuteGrounded: "Dasar Hukum",
+    actionButtons: {
+      readLesson: "Baca Panduan",
+      tryNow: "Coba di Nata",
+      tryRecordVoice: "Coba Rekam Suara",
+      checkTaxes: "Cek Perhitungan Pajak",
+      checkLicensing: "Verifikasi Kode KBLI",
+      viewAccounts: "Lihat Daftar Akun",
+    },
+    lessons: {
+      plat_multimodal: {
+        title: "Catat Cepat Multi-Modal",
+        summary: "Rekam transaksi via foto struk, suara, atau teks santai.",
+        content:
+          "Nata memungkinkan pemilik usaha mencatat transaksi keuangan dengan metode apa pun yang paling nyaman. Selain foto struk fisik, Anda bisa mendiktekan rekaman suara dalam bahasa sehari-hari atau menempelkan teks percakapan WhatsApp. Model multi-modal mengekstrak rincian barang, jumlah, mitra, dan cara bayar secara deterministik.",
+      },
+      plat_trace: {
+        title: "Verifikasi Jejak Multi-Agen",
+        summary: "Amati handoff otonom: Keuangan -> Fiskal -> Regulasi.",
+        content:
+          "Saat Anda mengirim transaksi, Agent Keuangan membedah data dan mengunci jurnal berimbang (Aset = Kewajiban + Ekuitas). Setelah tercatat, handoff searah diberikan ke Agent Fiskal untuk menghitung kewajiban pajak, lalu ke Agent Regulasi untuk mencocokkan kode resmi KBLI 2020.",
+      },
+      plat_export: {
+        title: "Ekspor Excel SAK EMKM",
+        summary: "Ekspor Laporan Laba Rugi dan Neraca berstandar baku Indonesia.",
+        content:
+          "Nata menghasilkan laporan ekspor yang mematuhi format Indonesia: file CSV berpemisah titik koma (;), pengkodean UTF-8 BOM agar rapi di Microsoft Excel, dan penulisan nominal rupiah yang baku (Rp X.XXX.XXX).",
+      },
+      biz_cash_separation: {
+        title: "Pemisahan Kas 101",
+        summary: "Hindari gagal audit dengan memisahkan kas pribadi dan kas toko.",
+        content:
+          "Berdasarkan SAK EMKM Bab 2, usaha diperlakukan sebagai entitas ekonomi yang terpisah dari pemiliknya. Membayar belanja dapur atau uang sekolah langsung dari laci kasir mengacaukan margin keuntungan dan memicu masalah pajak. Buat rekening bank terpisah dan catat penarikan pribadi pemilik sebagai Prive, bukan beban usaha.",
+      },
+      biz_tax_threshold: {
+        title: "Batas Bebas Pajak PP 55/2022",
+        summary: "Orang Pribadi bebas pajak 0% atas omzet s.d. Rp 500 juta setahun.",
+        content:
+          "Menurut Peraturan Pemerintah PP 55/2022 Pasal 60 ayat (2), Wajib Pajak Orang Pribadi UMKM dibebaskan dari PPh Final 0,5% atas peredaran bruto kumulatif hingga Rp 500 juta dalam satu tahun pajak. Omzet di atas 500 juta baru dikenakan tarif flat 0,5%.",
+      },
+      biz_pt_tax_trap: {
+        title: "Jebakan Pajak PT Perorangan",
+        summary: "PT Perorangan berstatus badan hukum dan kena pajak dari rupiah pertama.",
+        content:
+          "Banyak pengusaha mendirikan PT Perorangan karena biayanya murah, namun tidak menyadari aspek perpajakannya. PT Perorangan berstatus badan hukum (Badan Usaha). Berdasarkan PP 55/2022, badan usaha tidak mendapat pembebasan Rp 500 juta dan wajib membayar PPh Final 0,5% sejak rupiah pertama omzet.",
+      },
+      biz_cogs_recipe: {
+        title: "HPP Kuliner & Rekayasa Menu",
+        summary: "Hitung akurat konsumsi bahan baku dan margin kotor tiap porsi.",
+        content:
+          "Pada bisnis kuliner, harga jual dikurangi biaya bahan menghasilkan laba kotor. Kenaikan harga susu, ayam, atau biji kopi langsung menggerus margin. SAK EMKM Bab 7 mewajibkan pencatatan persediaan bahan baku saat dibeli dan menjadikannya Beban Pokok Penjualan (HPP) saat porsi terjual.",
+      },
+      biz_marketplace_recon: {
+        title: "Settlement E-Commerce",
+        summary: "Catat omzet bruto dan potongan biaya admin, bukan transferan bersih.",
+        content:
+          "Pencairan dana e-commerce sudah dipotong komisi admin, biaya gratis ongkir, dan promo platform. Mencatat hanya uang yang masuk ke rekening BCA/Mandiri membuat omzet Anda terlihat lebih kecil dari aslinya, yang berisiko memicu surat teguran pajak (SP2DK). Catat omzet sesuai nilai kotor penjualan, dan catat potongan marketplace sebagai beban operasional.",
+      },
+      biz_kbli_oss: {
+        title: "KBLI 2020 & Perizinan Berbasis Risiko",
+        summary: "Pilih kode KBLI 5 digit yang tepat agar izin NIB OSS terbit lancar.",
+        content:
+          "Peraturan Pemerintah PP 5/2021 membagi kegiatan usaha berdasarkan tingkat risiko (Rendah, Menengah Rendah, Menengah Tinggi, Tinggi). Toko eceran kosmetik (KBLI 47725) berkategori risiko rendah dan hanya butuh NIB, sedangkan kafe/restoran (KBLI 56303) memerlukan sertifikat standar laik higiene sanitasi.",
+      },
+      biz_hiring_payroll: {
+        title: "Aturan Penggajian Karyawan UMKM",
+        summary: "Pahami pengecualian upah minimum (UMR) sesuai PP 36/2021.",
+        content:
+          "Berdasarkan PP 36/2021 Pasal 36, usaha mikro dan kecil dikecualikan dari kewajiban upah minimum (UMR). Kesepakatan upah antara pemilik dan pekerja diperbolehkan minimal 50% dari rata-rata konsumsi masyarakat tingkat provinsi. Namun, perjanjian kerja waktu tertentu (PKWT) tetap wajib didaftarkan secara transparan.",
+      },
+    },
+    mythsSectionTitle: "Mitos vs Fakta Kepatuhan Bisnis Indonesia",
+    mythsSectionSubtitle: "Membongkar kesalahpahaman umum pengusaha UMKM dengan dasar hukum tertulis.",
+    mythLabel: "Mitos Umum",
+    factLabel: "Fakta Hukum & Regulasi",
+    viewMoreMyths: "Lihat Fakta Menarik Lainnya",
+    viewLessMyths: "Tampilkan Lebih Sedikit",
+    myths: {
+      myth_pt_threshold: {
+        myth: "Bikin PT Perorangan otomatis bebas pajak omzet 500 juta sekaligus melindungi aset pribadi.",
+        fact: "Salah kaprah. PT Perorangan adalah entitas Badan Usaha. PP 55/2022 Pasal 60 ayat (2) menegaskan pembebasan 500 juta hanya berlaku untuk Orang Pribadi. PT Perorangan wajib bayar PPh Final 0,5% dari rupiah pertama.",
+        statuteText:
+          "PP 55/2022 Pasal 60 ayat (2): 'Wajib Pajak orang pribadi yang memiliki peredaran bruto tertentu... tidak dikenai Pajak Penghasilan atas bagian peredaran bruto sampai dengan Rp 500.000.000,00 dalam 1 tahun Pajak.'",
+      },
+      myth_tax_expense: {
+        myth: "Karena pakai PPh Final 0,5%, simpan nota belanja operasional tidak ada gunanya karena pajak dihitung dari omzet kotor.",
+        fact: "Sangat berbahaya. Standar SAK EMKM memerlukan catatan seluruh beban untuk menghitung laba bersih riil usaha, mengajukan pinjaman KUR perbankan, dan bersiap saat masa berlaku PPh Final habis (4-7 tahun) lalu wajib pembukuan normal.",
+        statuteText:
+          "SAK EMKM Bab 3 & PP 55/2022 Pasal 59: Skema PPh Final 0,5% memiliki batas waktu maksimal (7 tahun untuk orang pribadi, 3-4 tahun untuk badan), setelah itu wajib pembukuan umum.",
+      },
+      myth_kbli_arbitrary: {
+        myth: "Bisa pilih kode KBLI apa saja di portal OSS yang penting mirip, tidak ada dampaknya.",
+        fact: "Salah kode KBLI bisa menyebabkan rekening merchant QRIS dibekukan, penolakan izin edar BPOM/Dinkes, atau terkena audit verifikasi perizinan berusaha.",
+        statuteText:
+          "Peraturan BPS No. 2 Tahun 2020: Kode KBLI 5-digit adalah standar klasifikasi baku nasional yang mengikat perizinan berusaha dan pelaporan pajak.",
+      },
+      myth_qris_tax: {
+        myth: "Potongan MDR QRIS 0,3% adalah pajak yang disetor langsung ke kas negara atau kantor pajak (DJP).",
+        fact: "Bukan pajak. Potongan 0,3% Merchant Discount Rate (MDR) adalah bagi hasil jasa penyedia sistem pembayaran (PJP & ASPI) sesuai aturan Bank Indonesia. MDR tidak memotong kewajiban PPh Final usaha Anda.",
+        statuteText:
+          "PADG BI No. 21/18/PADG/2019 & UU HPP: Biaya MDR QRIS adalah beban jasa sistem pembayaran perbankan, bukan penerimaan pajak negara.",
+      },
+      myth_cv_draw: {
+        myth: "Pengambilan uang kas (Prive) pemilik dari CV dikenakan pajak penghasilan dividen lagi.",
+        fact: "Tidak dipajaki lagi. Berdasarkan UU PPh Pasal 4 ayat (3) huruf i, bagian laba yang diterima anggota perseroan komanditer (CV) bukan objek pajak karena laba CV sudah dipajaki di tingkat badan usaha.",
+        statuteText:
+          "UU PPh Pasal 4 ayat (3) huruf i: 'Bagian laba yang diterima atau diperoleh anggota dari perseroan komanditer... dikecualikan dari objek pajak.'",
+      },
+      myth_bpjs_mandatory: {
+        myth: "Usaha kecil dan UMKM wajib membayar paket BPJS Ketenagakerjaan setara korporasi besar.",
+        fact: "PP 37/2021 dan Permenaker No. 5/2021 menyediakan skema khusus pekerja BPU/informal UMKM yang sangat terjangkau, mulai dari Rp 16.800/bulan per orang untuk Jaminan Kecelakaan Kerja dan Kematian.",
+        statuteText:
+          "PP 37/2021 & Permenaker No. 5/2021: Program jaminan sosial ketenagakerjaan bagi pekerja bukan penerima upah (BPU) disesuaikan dengan kemampuan usaha mikro.",
+      },
+      myth_ppn_threshold: {
+        myth: "Setiap usaha yang jualan barang wajib memungut PPN 11% atau 12% ke pembeli di nota faktur.",
+        fact: "Salah kaprah. Sesuai PMK 197/2013, hanya pengusaha dengan omzet bruto di atas Rp 4,8 miliar setahun yang wajib menjadi Pengusaha Kena Pajak (PKP) dan memungut PPN. UMKM di bawah batas ini bebas dari kewajiban memungut PPN.",
+        statuteText:
+          "PMK No. 197/PMK.03/2013 Pasal 1: 'Pengusaha yang melakukan penyerahan BKP dan/atau JKP dengan jumlah peredaran bruto tidak melebihi Rp 4.800.000.000,00 ditetapkan sebagai Pengusaha Kecil.'",
+      },
+      myth_invoice_materai: {
+        myth: "Nota atau kuitansi tanpa meterai Rp 10.000 dianggap tidak sah di mata hukum dan tidak bisa dicatat akuntansi.",
+        fact: "Salah. Bea meterai adalah pajak atas dokumen perdata, bukan penentu sahnya suatu transaksi (Pasal 1320 KUHPer). Nota tanpa meterai tetap sah sebagai bukti pembukuan dan perdata yang mengikat.",
+        statuteText:
+          "UU Bea Meterai No. 10 Tahun 2020 Pasal 3 ayat (2): Bea meterai dikenakan pada dokumen bernilai nominal lebih dari Rp 5.000.000, namun ketiadaan meterai tidak membatalkan keabsahan perdata dokumen.",
+      },
+      myth_depreciation: {
+        myth: "Beli laptop kantor dan mesin etalase bisa langsung dibebankan 100% sebagai biaya di bulan pembelian.",
+        fact: "Berdasarkan SAK EMKM Bab 9, aset dengan masa manfaat lebih dari 1 tahun wajib dikapitalisasi sebagai aset tetap dan disusutkan bertahap agar tidak merusak perhitungan laba bulanan usaha Anda.",
+        statuteText:
+          "SAK EMKM Bab 9 (Aset Tetap): Aset tetap diakui sebesar biaya perolehan dan disusutkan secara garis lurus atau saldo menurun selama masa manfaatnya.",
+      },
+      myth_halal_selfdeclare: {
+        myth: "Sertifikasi halal UMKM pasti mahal dan butuh uji laboratorium kimia berbulan-bulan untuk warung makan.",
+        fact: "Berdasarkan UU No. 33/2014 & aturan BPJPH, usaha mikro dan kecil kuliner dengan bahan baku yang sudah terjamin halal dapat mengikuti program Sertifikasi Halal Gratis (SEHATI) skema Self-Declare dengan pendamping halal.",
+        statuteText:
+          "Keputusan Kepala BPJPH No. 150/2022: Skema sertifikasi halal Self Declare gratis bagi pelaku usaha mikro dan kecil dengan bahan baku berisiko rendah.",
+      },
+      myth_freelance_pph21: {
+        myth: "Bayar pekerja harian lepas atau freelancer lepas tidak perlu dipikirkan potongan pajaknya.",
+        fact: "Pemberi kerja wajib memperhitungkan PPh Pasal 21. Sesuai PMK 168/2023, upah harian s.d. Rp 450.000 memang tarif potong 0%, namun pencatatan daftar bukti potong tetap wajib diadministrasikan rapi.",
+        statuteText:
+          "PMK No. 168/2023 Pasal 5 & 12: Pemotongan PPh Pasal 21 atas penghasilan pegawai tidak tetap atau tenaga kerja lepas menggunakan tarif efektif harian/bulanan.",
+      },
+      myth_npwp_nik: {
+        myth: "Punya NIK KTP otomatis membuat rekening bank Anda dibekukan dan dikejar tagihan pajak.",
+        fact: "Integrasi NIK menjadi NPWP hanya penyederhanaan data identitas. Kewajiban bayar pajak baru muncul jika penghasilan Anda di atas Penghasilan Tidak Kena Pajak (PTKP) atau omzet usaha di atas Rp 500 juta setahun.",
+        statuteText:
+          "PMK No. 112/PMK.03/2022 jo. PMK 136/2023: Aktivasi NIK sebagai NPWP tidak otomatis menimbulkan kewajiban membayar pajak jika penghasilan di bawah PTKP/ambang batas.",
+      },
+    },
+    funFactsPage: {
+      title: "Ensiklopedia Fakta & Mitos Kepatuhan Usaha",
+      subtitle: "Kumpulan mitos kepatuhan pajak, akuntansi SAK EMKM, ketenagakerjaan, dan perizinan usaha Indonesia yang dibongkar langsung dengan pasal hukum tertulis.",
+      badge: "Pusat Wawasan",
+      searchPlaceholder: "Cari mitos, pasal hukum, atau kata kunci (misal: PT, PPh, QRIS, KBLI, BPJS)...",
+      filterAll: "Semua Kategori",
+      filterTax: "Pajak & PP 55",
+      filterAccounting: "Akuntansi & SAK",
+      filterLegal: "Hukum & Izin",
+      filterOperations: "Tim & Ketenagakerjaan",
+      backToAcademy: "← Kembali ke Kuliah Bisnis",
+      stats: {
+        totalVerified: "Mitos Hukum Dibongkar",
+        groundedInLaw: "Berdasarkan Regulasi Resmi",
+        freeForMSMEs: "100% Edukasi Terbuka UMKM",
+      },
+      noResultsTitle: "Fakta Tidak Ditemukan",
+      noResultsDesc: "Coba gunakan kata kunci pencarian lain atau pilih 'Semua Kategori'.",
+      browseLessonsCta: "Pelajari Materi Praktis di Kuliah Bisnis →",
+    },
   },
 } as const;
