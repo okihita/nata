@@ -36,3 +36,24 @@ The `/routines` (Indonesian: `/rutinitas`) interface provides:
 - **Zero Glassmorphism:** Opaque, crisp, solid borders and high-contrast surfaces (`bg-card`, `border-border`, solid badges).
 - **Internationalization:** Complete bilingual parity across English (`copy-en.ts`) and Indonesian (`copy-id.ts`).
 - **Deterministic Actionability:** Triggering a routine is interactive; judges can test real agent analysis directly in the browser.
+
+## 5. Architectural Decision Record (ADR): Persistence Strategy
+
+### Context
+Autonomous Routines require persistent storage for routine definitions, cron configurations, execution logs, and heterogeneous agent artifacts (cash briefings, tax threshold sentinels, reconciliation diffs, and licensing certificates). We evaluated whether to adopt Firestore, Cloud SQL (PostgreSQL), or Cloud Pub/Sub + Cloud Tasks for routine state management.
+
+### Decision
+Adopt a **hybrid persistence pattern**:
+1. **Firestore as the Agent Orchestration & State Document Layer:**
+   - **Schema Agility:** Agent-generated execution artifacts (JSON payloads with varying structures per routine type) map naturally to Firestore documents (`/businesses/{businessId}/routines/{routineId}/executions/{execId}`).
+   - **Real-Time Client Sync & Low Latency:** Sub-100ms listener reads and reactive updates for web dashboards during autonomous background executions.
+   - **Offline & Local Development Fallback:** Built-in in-memory fallback pattern allows complete frontend test and demo execution without mandatory cloud emulator overhead.
+2. **Cloud SQL (PostgreSQL) Reserved for the General Ledger Core:**
+   - Enforces ACID transactions, double-entry bookkeeping invariant (`Assets = Liabilities + Equity`), strict foreign keys, and statutory financial reporting queries.
+3. **Execution Driver:**
+   - Google Cloud Scheduler triggers HTTP webhooks on Cloud Run, which fetch routine metadata from Firestore, execute the autonomous agent loop, record execution artifacts back into Firestore, and commit ledger entries to the core database via deterministic guardrails.
+
+### Consequences
+- Document model eliminates rigid SQL migrations for evolving AI agent output payloads.
+- Clear boundary separation: General ledger retains strict ACID relational integrity, while agent orchestration operates on flexible document storage.
+
