@@ -21,8 +21,8 @@ import {
   Compass,
 } from "lucide-react";
 import {
-  Area,
-  AreaChart,
+  Bar,
+  BarChart,
   CartesianGrid,
   ResponsiveContainer,
   Tooltip as RTooltip,
@@ -348,17 +348,7 @@ export default function DashboardPage() {
             ) : (
               <div className="h-64 w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={series} margin={{ left: 4, right: 8, top: 4, bottom: 0 }}>
-                    <defs>
-                      <linearGradient id="rev" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.35} />
-                        <stop offset="95%" stopColor="var(--chart-1)" stopOpacity={0} />
-                      </linearGradient>
-                      <linearGradient id="exp" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="var(--chart-2)" stopOpacity={0.3} />
-                        <stop offset="95%" stopColor="var(--chart-2)" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
+                  <BarChart data={series} margin={{ left: 4, right: 8, top: 8, bottom: 0 }} barGap={6}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border" />
                     <XAxis
                       dataKey="month"
@@ -390,23 +380,19 @@ export default function DashboardPage() {
                         fontSize: 12,
                       }}
                     />
-                    <Area
-                      type="monotone"
+                    <Bar
                       dataKey="revenue"
                       name={copy.dashboard.chartRevenue}
-                      stroke="var(--chart-1)"
-                      fill="url(#rev)"
-                      strokeWidth={2}
+                      fill="var(--chart-1)"
+                      radius={[4, 4, 0, 0]}
                     />
-                    <Area
-                      type="monotone"
+                    <Bar
                       dataKey="expense"
                       name={copy.dashboard.chartExpense}
-                      stroke="var(--chart-2)"
-                      fill="url(#exp)"
-                      strokeWidth={2}
+                      fill="var(--chart-2)"
+                      radius={[4, 4, 0, 0]}
                     />
-                  </AreaChart>
+                  </BarChart>
                 </ResponsiveContainer>
               </div>
             )}
