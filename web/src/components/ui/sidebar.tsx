@@ -25,6 +25,7 @@ import {
 import { PanelLeftIcon } from "lucide-react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
+const SIDEBAR_STORAGE_KEY = "nata.sidebar.expanded.v1"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 const SIDEBAR_WIDTH = "16rem"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
@@ -52,6 +53,27 @@ function useSidebar() {
   return context
 }
 
+function subscribeSidebar(callback: () => void) {
+  window.addEventListener("storage", callback)
+  return () => window.removeEventListener("storage", callback)
+}
+
+function getSidebarSnapshot(): boolean {
+  try {
+    const stored = window.localStorage.getItem(SIDEBAR_STORAGE_KEY)
+    if (stored !== null) {
+      return stored === "true"
+    }
+    const match = document.cookie.match(new RegExp(`(^| )${SIDEBAR_COOKIE_NAME}=([^;]+)`))
+    if (match) {
+      return match[2] === "true"
+    }
+  } catch {
+    // Ignore storage access errors
+  }
+  return true
+}
+
 function SidebarProvider({
   defaultOpen = true,
   open: openProp,
@@ -68,10 +90,16 @@ function SidebarProvider({
   const isMobile = useIsMobile()
   const [openMobile, setOpenMobile] = React.useState(false)
 
-  // This is the internal state of the sidebar.
-  // We use openProp and setOpenProp for control from outside the component.
-  const [_open, _setOpen] = React.useState(defaultOpen)
-  const open = openProp ?? _open
+  // External synchronized store for sidebar state
+  const isClientOpen = React.useSyncExternalStore(
+    subscribeSidebar,
+    getSidebarSnapshot,
+    () => defaultOpen
+  )
+
+  const [_open, _setOpen] = React.useState<boolean | null>(null)
+  const open = openProp ?? (_open !== null ? _open : isClientOpen)
+
   const setOpen = React.useCallback(
     (value: boolean | ((value: boolean) => boolean)) => {
       const openState = typeof value === "function" ? value(open) : value
@@ -81,8 +109,13 @@ function SidebarProvider({
         _setOpen(openState)
       }
 
-      // This sets the cookie to keep the sidebar state.
-      document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+      // Persist to cookie and localStorage
+      try {
+        document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+        window.localStorage.setItem(SIDEBAR_STORAGE_KEY, String(openState))
+      } catch {
+        // Ignore storage access errors
+      }
     },
     [setOpenProp, open]
   )
