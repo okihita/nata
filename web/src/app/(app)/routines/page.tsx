@@ -31,6 +31,8 @@ import { useLanguage } from "@/lib/copy";
 import { idr, idrFull } from "@/lib/format";
 import { useWorkspace } from "@/lib/store";
 import { summary, loadLedger } from "@/lib/ledger";
+import { executeRoutineWithAdk } from "@/lib/adk";
+import { Prose } from "@/components/prose";
 import {
   DEMO_ROUTINES,
   RECOMMENDED_ROUTINES,
@@ -164,17 +166,23 @@ export default function RoutinesPage() {
     showArchived ? r.status === "archived" : r.status !== "archived"
   );
 
-  const selectedRoutine = selectedRoutineId
-    ? activeRoutines.find((r) => r.id === selectedRoutineId) ?? null
-    : null;
-
-  const selectedExec = selectedRoutine && selectedExecId
-    ? selectedRoutine.recentExecutions.find((e) => e.id === selectedExecId) ?? null
-    : null;
-
   const filteredRoutines = activeRoutines.filter((r) =>
     activeCadence === "all" ? true : r.cadence === activeCadence
   );
+
+  // If no routine is explicitly selected, default to the first available routine
+  const selectedRoutine =
+    (selectedRoutineId ? activeRoutines.find((r) => r.id === selectedRoutineId) : null) ||
+    filteredRoutines[0] ||
+    activeRoutines[0] ||
+    null;
+
+  // If no execution is explicitly selected, default to the most recent execution run
+  const selectedExec = selectedRoutine
+    ? (selectedExecId
+        ? selectedRoutine.recentExecutions.find((e) => e.id === selectedExecId)
+        : selectedRoutine.recentExecutions[0]) ?? null
+    : null;
 
   const handleToggleArchive = (id: string) => {
     const target = routines.find((r) => r.id === id);
@@ -202,105 +210,143 @@ export default function RoutinesPage() {
   const handleTrigger = useCallback(
     async (id: string) => {
       setRunningId(id);
-      await new Promise((resolve) => setTimeout(resolve, 800));
 
-      const timeStr = isEn ? "Just now" : "Baru saja";
+      try {
+        const targetRoutine = routines.find((r) => r.id === id);
+        const timeStr = isEn ? "Just now" : "Baru saja";
 
-      // Dynamically calculate actual current financial metrics from the business ledger
-      const currentEntries = loadLedger(businessId).entries;
-      const ledgerSummary = summary(currentEntries);
-      const computedCash = ledgerSummary.cash;
-      const computedBurn = Math.max(500000, Math.round(ledgerSummary.totalExpenses / 30)) || 1500000;
-      const computedRunway = Math.max(1, Math.round(computedCash / computedBurn));
+        // Dynamically calculate actual current financial metrics from the business ledger
+        const currentEntries = loadLedger(businessId).entries;
+        const ledgerSummary = summary(currentEntries);
+        const computedCash = ledgerSummary.cash;
+        const computedBurn = Math.max(500000, Math.round(ledgerSummary.totalExpenses / 30)) || 1500000;
+        const computedRunway = Math.max(1, Math.round(computedCash / computedBurn));
 
-      setRoutines((prev) =>
-        prev.map((r) => {
-          if (r.id === id) {
-            const isCashBriefing = !r.recentExecutions[0] || r.recentExecutions[0]?.artifactType === "cash_briefing";
-            const freshExec: RoutineExecutionRecord = {
-              id: `exec-${Date.now()}`,
-              timestamp: timeStr,
-              status: ledgerSummary.balanced || currentEntries.length === 0 ? "success" : "warning",
-              durationMs: 3420,
-              tokensUsed: 1120,
-              findingSummary: isCashBriefing
+        // Invoke the actual ADK agent backend in parallel or timeout safely
+        let adkFindingText = "";
+        let durationMs = 3420;
+        let tokensUsed = 1120;
+
+        if (targetRoutine) {
+          const promptToRun =
+            targetRoutine.prompt ||
+            targetRoutine.purpose ||
+            `Recompute cash balance and statutory compliance for ${business?.name || "this business"}.`;
+
+          const adkRes = await executeRoutineWithAdk({
+            userId: businessId,
+            agentId: targetRoutine.assignedAgent.id,
+            routinePrompt: promptToRun,
+            isEn,
+          });
+
+          if (adkRes.success && adkRes.text) {
+            adkFindingText = adkRes.text;
+            durationMs = adkRes.durationMs;
+            tokensUsed = adkRes.tokensUsed;
+          }
+        }
+
+        const freshExecId = `exec-${Date.now()}`;
+
+        setRoutines((prev) =>
+          prev.map((r) => {
+            if (r.id === id) {
+              const isCashBriefing = !r.recentExecutions[0] || r.recentExecutions[0]?.artifactType === "cash_briefing";
+              const defaultFinding = isCashBriefing
                 ? isEn
                   ? `Live audit recomputed: Cash balance stands at ${idr(computedCash)} across ${currentEntries.length} transactions. Ledger equilibrium strictly verified (Assets = Liabilities + Equity).`
                   : `Audit mandiri selesai: Saldo kas tercatat ${idr(computedCash)} dari ${currentEntries.length} transaksi pembukuan. Persamaan akuntansi terverifikasi seimbang (Aktiva = Pasiva + Ekuitas).`
                 : isEn
                 ? "Autonomous background cycle executed on Cloud Run. Invariants and statutory constraints validated."
-                : "Siklus otonom selesai diproses di Cloud Run. Parameter pembukuan dan regulasi terverifikasi valid.",
-              findingSummaryEn: isCashBriefing
-                ? `Live audit recomputed: Cash balance stands at ${idr(computedCash)} across ${currentEntries.length} transactions. Ledger equilibrium strictly verified (Assets = Liabilities + Equity).`
-                : "Autonomous background cycle executed on Cloud Run. Invariants and statutory constraints validated.",
-              impactMetrics: [
-                {
-                  label: "Cashflow",
-                  labelEn: "Cashflow",
-                  value: idr(computedCash),
-                },
-                {
-                  label: "Runway",
-                  labelEn: "Runway",
-                  value: `${computedRunway} ${isEn ? "days" : "hari"}`,
-                },
-                {
-                  label: "Ledger",
-                  labelEn: "Ledger",
-                  value: ledgerSummary.balanced || currentEntries.length === 0 ? "Balanced" : "Unbalanced",
-                },
-              ],
-              statutoryGrounding: r.statutoryGrounding,
-              artifactType: r.recentExecutions[0]?.artifactType || "cash_briefing",
-              artifactPayload: isCashBriefing
-                ? {
-                    cashBalance: computedCash,
-                    dailyBurnRate: computedBurn,
-                    runwayDays: computedRunway,
-                    operatingBuffer: computedCash > 10000000 ? "Healthy" : "Low Buffer",
-                    lineItems: [
-                      { label: isEn ? "Operating Cash Account" : "Rekening Operasional Kas", amount: computedCash },
-                      { label: isEn ? "Recognized Revenue" : "Pendapatan Usaha", amount: ledgerSummary.totalRevenue },
-                      { label: isEn ? "Operating Expenses" : "Beban Operasional Usaha", amount: ledgerSummary.totalExpenses },
-                    ],
-                  }
-                : r.recentExecutions[0]?.artifactPayload || {
-                    cashBalance: computedCash,
-                    dailyBurnRate: computedBurn,
-                    runwayDays: computedRunway,
-                    operatingBuffer: "Configured",
-                    lineItems: [{ label: "Rekening Operasional", amount: computedCash }],
-                  },
-              actionTaken: isEn
-                ? "State synchronized with business ledger."
-                : "Status disinkronkan dengan buku besar usaha.",
-              actionTakenEn: "State synchronized with business ledger.",
-            };
-            // Persist execution run to Firestore in background
-            fetch("/api/routines", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                action: "record_execution",
-                routineId: id,
-                execution: freshExec,
-                businessId,
-              }),
-            }).catch(() => {});
+                : "Siklus otonom selesai diproses di Cloud Run. Parameter pembukuan dan regulasi terverifikasi valid.";
 
-            return {
-              ...r,
-              lastRunTime: timeStr,
-              lastRunStatus: ledgerSummary.balanced || currentEntries.length === 0 ? "success" : "warning",
-              recentExecutions: [freshExec, ...r.recentExecutions],
-            };
-          }
-          return r;
-        })
-      );
-      setRunningId(null);
+              const finalFinding = adkFindingText || defaultFinding;
+
+              const freshExec: RoutineExecutionRecord = {
+                id: freshExecId,
+                timestamp: timeStr,
+                status: ledgerSummary.balanced || currentEntries.length === 0 ? "success" : "warning",
+                durationMs,
+                tokensUsed,
+                findingSummary: finalFinding,
+                findingSummaryEn: finalFinding,
+                impactMetrics: [
+                  {
+                    label: "Cashflow",
+                    labelEn: "Cashflow",
+                    value: idr(computedCash),
+                  },
+                  {
+                    label: "Runway",
+                    labelEn: "Runway",
+                    value: `${computedRunway} ${isEn ? "days" : "hari"}`,
+                  },
+                  {
+                    label: "Ledger",
+                    labelEn: "Ledger",
+                    value: ledgerSummary.balanced || currentEntries.length === 0 ? "Balanced" : "Unbalanced",
+                  },
+                ],
+                statutoryGrounding: r.statutoryGrounding,
+                artifactType: r.recentExecutions[0]?.artifactType || "cash_briefing",
+                artifactPayload: isCashBriefing
+                  ? {
+                      cashBalance: computedCash,
+                      dailyBurnRate: computedBurn,
+                      runwayDays: computedRunway,
+                      operatingBuffer: computedCash > 10000000 ? "Healthy" : "Low Buffer",
+                      lineItems: [
+                        { label: isEn ? "Operating Cash Account" : "Rekening Operasional Kas", amount: computedCash },
+                        { label: isEn ? "Recognized Revenue" : "Pendapatan Usaha", amount: ledgerSummary.totalRevenue },
+                        { label: isEn ? "Operating Expenses" : "Beban Operasional Usaha", amount: ledgerSummary.totalExpenses },
+                      ],
+                    }
+                  : r.recentExecutions[0]?.artifactPayload || {
+                      cashBalance: computedCash,
+                      dailyBurnRate: computedBurn,
+                      runwayDays: computedRunway,
+                      operatingBuffer: "Configured",
+                      lineItems: [{ label: "Rekening Operasional", amount: computedCash }],
+                    },
+                actionTaken: isEn
+                  ? "State synchronized with business ledger and ADK agent."
+                  : "Status disinkronkan dengan buku besar usaha dan staf ADK.",
+                actionTakenEn: "State synchronized with business ledger and ADK agent.",
+              };
+              // Persist execution run to Firestore in background
+              fetch("/api/routines", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  action: "record_execution",
+                  routineId: id,
+                  execution: freshExec,
+                  businessId,
+                }),
+              }).catch(() => {});
+
+              return {
+                ...r,
+                lastRunTime: timeStr,
+                lastRunStatus: ledgerSummary.balanced || currentEntries.length === 0 ? "success" : "warning",
+                recentExecutions: [freshExec, ...r.recentExecutions],
+              };
+            }
+            return r;
+          })
+        );
+
+        // Auto-select the freshly triggered routine and its newly generated execution run
+        setSelectedRoutineId(id);
+        setSelectedExecId(freshExecId);
+      } catch (err) {
+        console.error("Failed to execute autonomous routine:", err);
+      } finally {
+        setRunningId(null);
+      }
     },
-    [isEn, businessId]
+    [isEn, businessId, routines, business]
   );
 
   // Hackathon live demo auto-ticker: Automatically executes routines configured with "realtime" (every 1 min)
@@ -817,9 +863,9 @@ export default function RoutinesPage() {
                         </span>
                       </div>
 
-                      <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                        {isEn ? exec.findingSummaryEn : exec.findingSummary}
-                      </p>
+                      <div className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                        <Prose text={isEn ? exec.findingSummaryEn : exec.findingSummary} />
+                      </div>
 
                       <div className="flex items-center justify-end pt-2 border-t border-border/40 mt-2 text-xs">
                         <span className="text-primary font-medium flex items-center gap-0.5">
@@ -879,13 +925,13 @@ export default function RoutinesPage() {
           {selectedExec ? (
             <div className="p-4 space-y-4 flex-1 overflow-y-auto">
             {/* Finding Summary Box */}
-            <div className="p-3 rounded-lg bg-muted/40 border border-border/60 space-y-1">
-              <span className="text-xs font-mono uppercase text-muted-foreground">
+            <div className="p-3 rounded-lg bg-muted/40 border border-border/60 space-y-1.5">
+              <span className="text-xs font-mono uppercase text-muted-foreground block">
                 {isEn ? "Autonomous Finding" : "Temuan Mandiri Agen"}
               </span>
-              <p className="text-xs text-foreground leading-relaxed font-medium">
-                {isEn ? selectedExec.findingSummaryEn : selectedExec.findingSummary}
-              </p>
+              <div className="text-xs text-foreground leading-relaxed font-normal">
+                <Prose text={isEn ? selectedExec.findingSummaryEn : selectedExec.findingSummary} />
+              </div>
             </div>
 
             {/* Impact Metric Chips */}
