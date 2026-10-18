@@ -12,7 +12,8 @@ const sampleEntries: JournalEntry[] = [
       { account: "Kas", debit: 5000000, credit: 0 },
       { account: "Pendapatan Usaha", debit: 0, credit: 5000000 },
     ],
-    source: "nota",
+    source: "ocr",
+    createdAt: "2026-10-16T10:00:00Z",
   },
   {
     id: "entry-02",
@@ -22,7 +23,8 @@ const sampleEntries: JournalEntry[] = [
       { account: "Beban Perlengkapan", debit: 1200000, credit: 0 },
       { account: "Kas", debit: 0, credit: 1200000 },
     ],
-    source: "nota",
+    source: "manual",
+    createdAt: "2026-10-17T11:00:00Z",
   },
 ];
 
