@@ -53,9 +53,9 @@ export function WorkspaceSwitcher() {
               {subtitle}
             </span>
           </span>
-          {/* Tenancy Mode Badge */}
-          <span className="hidden items-center rounded border border-border bg-muted/60 px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground md:inline-flex">
-            {business?.id.startsWith("biz-persona-") ? "DEMO LOKAL" : "TAMU TRANSIEN"}
+          {/* Hackathon Callout Badge */}
+          <span className="hidden items-center gap-1 rounded border border-primary/30 bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary sm:inline-flex">
+            <span>Hackathon: Klik untuk ganti persona</span>
           </span>
           <ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" />
         </Button>
