@@ -51,6 +51,8 @@ export const copyEn = {
     syncHeading: "Storage & Synchronization",
     createNew: "Create New Business (Transient)",
     createNewHint: "Test self-service onboarding flow",
+    returnToOnboarding: "Return to Onboarding",
+    returnToOnboardingHint: "Switch persona or start fresh",
     cloudSave: "Save Business to Cloud",
     cloudSaveHint: "Persist state to Firebase Multi-Tenant",
     cloudAlert: "Cloud Profile Feature: Ready for live sync with Firebase Firestore in production.",
@@ -369,6 +371,52 @@ export const copyEn = {
     subtitle: "Complete your business setup. Nata is ready to work immediately.",
     submit: "Get Started with Nata",
     note: "All business data remains securely stored on your device.",
+    backToHome: "Back to Home",
+    skipToDemo: "Skip to Demo →",
+    badge: "Interactive Evaluation",
+    selectorTitle: "Choose how to experience Nata",
+    selectorSubtitle:
+      "Explore pre-configured business archetypes with real transaction ledgers, or initialize a clean business profile from scratch.",
+    cards: {
+      retail: {
+        badge: "Jury Recommended",
+        title: "Retail & E-Commerce",
+        archetype: "Persona A · Rona Kirana Beauty",
+        entity: "PT Perorangan · KBLI 47725 (Cosmetics)",
+        features: [
+          "TikTok & Shopee settlement reconciliations",
+          "PPh 22 PMK 37/2025 marketplace withholding",
+          "Automated double-entry inventory & COGS journals",
+        ],
+        cta: "Explore Retail Demo →",
+      },
+      fnb: {
+        badge: "Multi-Outlet F&B",
+        title: "Cafe & Restaurant",
+        archetype: "Persona B · Kedai Seduh Nusantara",
+        entity: "Orang Pribadi (Individual) · KBLI 56303 (Cafe)",
+        features: [
+          "POS revenue settlement & QRIS daily receipts",
+          "Recipe costing & raw ingredient supplier invoices",
+          "PBJT municipal hospitality tax calculations",
+        ],
+        cta: "Explore F&B Demo →",
+      },
+      scratch: {
+        badge: "Clean Slate",
+        title: "Start from Scratch",
+        archetype: "Custom Enterprise Profile",
+        entity: "Your chosen business name & tax entity",
+        features: [
+          "Live official KBLI 2020 catalog lookup",
+          "Automatic tax status & exemption determination",
+          "Photograph live receipts to post new transactions",
+        ],
+        cta: "Set Up My Business →",
+      },
+    },
+    footnote:
+      "All demo archetypes execute deterministic double-entry accounting compliant with SAK EMKM.",
   },
 
   usaha: {

@@ -57,7 +57,7 @@ export default function LandingPage() {
             </nav>
             <LanguageSwitcher />
             <Button asChild size="sm">
-              <Link href="/business">
+              <Link href="/onboarding">
                 {L.navStart}
                 <ArrowRight className="ml-1 size-4" />
               </Link>
@@ -82,7 +82,7 @@ export default function LandingPage() {
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Button asChild size="lg">
-                <Link href="/business">
+                <Link href="/onboarding">
                   {L.heroCta}
                   <ArrowRight className="ml-2 size-4" />
                 </Link>
@@ -218,7 +218,7 @@ export default function LandingPage() {
             </h2>
             <p className="max-w-md text-sm text-muted-foreground">{L.ctaBody}</p>
             <Button asChild size="lg" className="mt-2">
-              <Link href="/business">
+              <Link href="/onboarding">
                 {L.ctaButton}
                 <ArrowRight className="ml-2 size-4" />
               </Link>
