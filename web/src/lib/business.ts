@@ -32,6 +32,12 @@ export interface Business {
   type: BusinessType;
   /** Bentuk badan usaha — menentukan perlakuan pajak. */
   entity: EntityType;
+  /** Alamat domisili atau operasional usaha. */
+  address?: string;
+  /** NPWP 16-digit (atau NIK untuk orang pribadi). */
+  npwp?: string;
+  /** Nomor Induk Berusaha (NIB) dari OSS RBA. */
+  nib?: string;
   /**
    * Kode KBLI 2020 yang sudah **diverifikasi** Agent Regulasi terhadap katalog,
    * beserta judul resminya. Ini atribut tetap usaha (seperti NPWP), bukan hasil
@@ -46,6 +52,16 @@ export interface Business {
    * Perizinan.
    */
   kbliHierarchy?: { level: string; code: string; title: string }[];
+  /** Dokumen legalitas dan sertifikasi usaha beserta tanggal & status. */
+  legalDocuments?: {
+    id: string;
+    type: string;
+    number: string;
+    issuer: string;
+    issueDate: string;
+    validUntil?: string;
+    status: "verified" | "active" | "in_review";
+  }[];
   createdAt: string;
 }
 
@@ -70,18 +86,97 @@ export const DEMO_BUSINESS_PROFILES: Record<"persona_a" | "persona_b", Business>
     ownerName: "Kirana",
     type: "toko",
     entity: "orang_pribadi",
+    address: "Jl. Tebet Raya No. 42, Jakarta Selatan, DKI Jakarta 12810",
+    npwp: "31.782.910.4-015.000",
+    nib: "9120003491823",
     kbliCode: "47725",
     kbliTitle: "Perdagangan Eceran Barang Kosmetik Untuk Manusia",
+    kbliHierarchy: [
+      { level: "kategori", code: "G", title: "Perdagangan Besar dan Eceran" },
+      { level: "golongan_pokok", code: "47", title: "Perdagangan Eceran" },
+      { level: "kelompok", code: "47725", title: "Perdagangan Eceran Barang Kosmetik Untuk Manusia" },
+    ],
+    legalDocuments: [
+      {
+        id: "doc-nib-01",
+        type: "Nomor Induk Berusaha (NIB OSS RBA)",
+        number: "9120003491823",
+        issuer: "Kementerian Investasi / BKPM RI",
+        issueDate: "2026-01-15",
+        status: "verified",
+      },
+      {
+        id: "doc-bpom-01",
+        type: "Sertifikasi Distribusi Notifikasi Kosmetik",
+        number: "NA18250109921",
+        issuer: "Badan Pengawas Obat dan Makanan (BPOM)",
+        issueDate: "2026-02-10",
+        validUntil: "2029-02-10",
+        status: "active",
+      },
+      {
+        id: "doc-tax-01",
+        type: "Surat Keterangan Terdaftar (SKT Pajak)",
+        number: "S-1429/WPJ.04/KP.0303/2026",
+        issuer: "KPP Pratama Jakarta Tebet",
+        issueDate: "2026-01-20",
+        status: "verified",
+      },
+    ],
     createdAt: "2026-07-01T00:00:00.000Z",
   },
   persona_b: {
     id: "biz-persona-b",
     name: "PT Seduh Rasa Nusantara",
-    ownerName: "Budi",
+    ownerName: "Budi Santoso",
     type: "kafe",
     entity: "pt_cv",
+    address: "Ruko Graha Boulevard Blok B-12, Gading Serpong, Tangerang, Banten 15810",
+    npwp: "02.491.823.1-411.000",
+    nib: "1283000918231",
     kbliCode: "56303",
     kbliTitle: "Rumah Minum / Kafe",
+    kbliHierarchy: [
+      { level: "kategori", code: "I", title: "Penyediaan Akomodasi dan Makanan Minuman" },
+      { level: "golongan_pokok", code: "56", title: "Penyediaan Makanan dan Minuman" },
+      { level: "kelompok", code: "56303", title: "Rumah Minum / Kafe" },
+    ],
+    legalDocuments: [
+      {
+        id: "doc-ahu-02",
+        type: "SK Pengesahan Pendirian Badan Hukum PT",
+        number: "AHU-0019284.AH.01.01.TAHUN 2025",
+        issuer: "Kementerian Hukum dan HAM RI (Kemenkumham)",
+        issueDate: "2025-11-20",
+        status: "verified",
+      },
+      {
+        id: "doc-nib-02",
+        type: "Nomor Induk Berusaha (NIB OSS RBA)",
+        number: "1283000918231",
+        issuer: "Kementerian Investasi / BKPM RI",
+        issueDate: "2025-12-05",
+        status: "verified",
+      },
+      {
+        id: "doc-slhs-02",
+        type: "Sertifikat Laik Higiene Sanitasi (SLHS)",
+        number: "443.5/0281/Dinkes-Kab/2026",
+        issuer: "Dinas Kesehatan Kabupaten Tangerang",
+        issueDate: "2026-02-14",
+        validUntil: "2029-02-14",
+        status: "active",
+      },
+      {
+        id: "doc-halal-02",
+        type: "Ketetapan Halal Minuman & Makanan Olahan",
+        number: "ID36110001928310226",
+        issuer: "BPJPH Kementerian Agama RI",
+        issueDate: "2026-03-01",
+        validUntil: "2030-03-01",
+        status: "verified",
+      },
+    ],
     createdAt: "2026-07-01T00:00:00.000Z",
   },
 };
@@ -168,9 +263,13 @@ export function loadBusiness(): Business | null {
     // them unconditionally made "no KBLI" indistinguishable from "KBLI cleared"
     // once serialised — `kbliCode: undefined` round-trips as a present-but-empty
     // key, and a cleared code must be *absent* so nothing can read a stale one.
+    if (typeof parsed.address === "string") base.address = parsed.address;
+    if (typeof parsed.npwp === "string") base.npwp = parsed.npwp;
+    if (typeof parsed.nib === "string") base.nib = parsed.nib;
     if (typeof parsed.kbliCode === "string") base.kbliCode = parsed.kbliCode;
     if (typeof parsed.kbliTitle === "string") base.kbliTitle = parsed.kbliTitle;
     if (Array.isArray(parsed.kbliHierarchy)) base.kbliHierarchy = parsed.kbliHierarchy;
+    if (Array.isArray(parsed.legalDocuments)) base.legalDocuments = parsed.legalDocuments;
 
     return base;
   } catch {

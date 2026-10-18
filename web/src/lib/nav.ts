@@ -62,9 +62,13 @@ export const NAV: NavGroup[] = [
   },
   {
     key: "master",
-    label: "Data Induk",
+    label: "Perusahaan",
     tone: "biru",
-    items: [{ href: "/accounts", key: "akun", icon: "BookOpen" }],
+    items: [
+      { href: "/business", key: "usaha", icon: "Store" },
+      { href: "/licensing", key: "perizinan", icon: "ShieldCheck" },
+      { href: "/accounts", key: "akun", icon: "BookOpen" },
+    ],
   },
   {
     key: "reports",
@@ -73,7 +77,6 @@ export const NAV: NavGroup[] = [
     items: [
       { href: "/statements", key: "laporan", icon: "FileBarChart", mobile: true },
       { href: "/taxes", key: "pajak", icon: "Landmark", mobile: true },
-      { href: "/licensing", key: "perizinan", icon: "ShieldCheck" },
     ],
   },
   {
@@ -81,7 +84,6 @@ export const NAV: NavGroup[] = [
     label: "Lainnya",
     tone: "oranye",
     items: [
-      { href: "/business", key: "usaha", icon: "Store" },
       { href: "/settings", key: "pengaturan", icon: "Settings" },
     ],
   },
