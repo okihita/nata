@@ -37,13 +37,19 @@ export default function AgentsPage() {
   const [attachedFiles, setAttachedFiles] = useState<{ name: string; type: "image" | "pdf" | "doc" }[]>([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const persona = AGENT_PERSONAS[activePersonaId];
   const messages = chatMessages[activePersonaId];
 
+  // Smooth autoscroll inside message container without jumping window scroll
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [messages, isTyping]);
 
   const renderAvatar = (id: AgentPersonId, size: number = 40) => {
@@ -128,6 +134,12 @@ export default function AgentsPage() {
         ],
       }));
 
+      // Enforce response language strictly: if user asks in Indonesian or locale is id, respond in Indonesian.
+      const languageInstruction = isEn
+        ? "Please reply in English."
+        : "Jawablah selalu dalam Bahasa Indonesia yang ramah, sopan, dan jelas untuk pelaku UMKM.";
+      const fullPrompt = `${languageInstruction}\n\nPertanyaan/Pesan: ${text || "Tolong periksa lampiran ini."}`;
+
       // Stream response live from ADK
       await streamRun(
         {
@@ -137,7 +149,7 @@ export default function AgentsPage() {
           streaming: true,
           newMessage: {
             role: "user",
-            parts: [{ text: text || "Tolong periksa lampiran ini." }],
+            parts: [{ text: fullPrompt }],
           },
         },
         (event) => {
@@ -311,7 +323,10 @@ export default function AgentsPage() {
           </div>
 
           {/* Messages Feed */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-muted/10">
+          <div
+            ref={scrollContainerRef}
+            className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-muted/10 scroll-smooth"
+          >
             {messages.map((msg) => {
               const isUser = msg.sender === "user";
               return (
@@ -368,7 +383,6 @@ export default function AgentsPage() {
                 </span>
               </div>
             )}
-            <div ref={messagesEndRef} />
           </div>
 
           {/* Quick Action Chips */}
