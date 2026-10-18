@@ -580,7 +580,7 @@ function Metric({
         : "text-foreground";
   return (
     <Card>
-      <CardContent className="pt-6">
+      <CardContent className="p-4 sm:p-5">
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">{label}</span>
           <span className={`${toneClass} opacity-70`}>{icon}</span>
