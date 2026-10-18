@@ -125,7 +125,6 @@ export default function DashboardPage() {
         cta: copy.dashboard.todoTasks.financialStatementLastYear.cta,
         href: "/accounts",
         done: false,
-        priority: "Tinggi",
         agentId: "maya",
         agentName: "Mbak Maya",
         prompt: copy.dashboard.todoTasks.financialStatementLastYear.prompt,
@@ -138,7 +137,6 @@ export default function DashboardPage() {
         cta: copy.dashboard.todoTasks.perizinanDocs.cta,
         href: "/licensing",
         done: Boolean(business?.kbliCode && business?.nib),
-        priority: business?.kbliCode ? "Selesai" : "Penting",
         agentId: "arief",
         agentName: "Pak Arief",
         prompt: copy.dashboard.todoTasks.perizinanDocs.prompt,
@@ -151,7 +149,6 @@ export default function DashboardPage() {
         cta: copy.dashboard.todoTasks.taxThresholdMonitor.cta,
         href: "/taxes",
         done: false,
-        priority: "Normal",
         agentId: "dimas",
         agentName: "Mas Dimas",
         prompt: copy.dashboard.todoTasks.taxThresholdMonitor.prompt,
@@ -164,7 +161,6 @@ export default function DashboardPage() {
         cta: copy.dashboard.todoTasks.monthlyExportPrint.cta,
         href: "/statements",
         done: false,
-        priority: "Rekomendasi",
         agentId: "maya",
         agentName: "Mbak Maya",
         prompt: copy.dashboard.todoTasks.monthlyExportPrint.prompt,
@@ -459,11 +455,6 @@ export default function DashboardPage() {
                         {todo.agentId === "nata" && <AvatarNata size={14} />}
                         <span>{copy.dashboard.consultAgent(todo.agentName)}</span>
                       </Link>
-                    )}
-                    {todo.priority === "Tinggi" && (
-                      <Badge variant="destructive" className="text-[10px] py-0 h-4.5 font-normal">
-                        {todo.priority}
-                      </Badge>
                     )}
                     <Link href={todo.href} className="text-muted-foreground hover:text-foreground">
                       <ChevronRight className="size-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all" />
