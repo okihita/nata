@@ -1,201 +1,177 @@
-export type AgentId = "keuangan" | "fiskal" | "regulasi" | "orchestrator";
+export type AgentStaffId = "akuntan" | "konsultan_pajak" | "legal_izin" | "manajer_keuangan";
 
-export interface AgentMetric {
-  label: string;
-  value: string;
-}
-
-export interface AgentToolDoc {
+export interface TeamMember {
+  id: AgentStaffId;
   name: string;
-  signature: string;
-  description: string;
-  guardrail: string;
+  role: string;
+  roleEn: string;
+  badge: string;
+  badgeEn: string;
+  tagline: string;
+  taglineEn: string;
+  avatarIcon: string;
+  responsibilities: string[];
+  responsibilitiesEn: string[];
+  autonomousRules: string[];
+  autonomousRulesEn: string[];
+  delegationExample: string;
+  delegationExampleEn: string;
+  statusText: string;
+  statusTextEn: string;
+  stats: { label: string; labelEn: string; value: string }[];
 }
 
-export interface AgentConfigMock {
-  id: AgentId;
-  nameKey: "keuangan" | "fiskal" | "regulasi";
-  title: string;
-  category: string;
-  status: "active" | "standby";
-  model: string;
-  version: string;
-  endpoint: string;
-  framework: string;
-  description: string;
-  mandate: string;
-  metrics: AgentMetric[];
-  tools: AgentToolDoc[];
-  samplePayload: string;
-  sampleOutput: string;
-}
-
-export const AGENT_CONFIGS: Record<AgentId, AgentConfigMock> = {
-  keuangan: {
-    id: "keuangan",
-    nameKey: "keuangan",
-    title: "Agent Keuangan (Bookkeeping)",
-    category: "Autonomous Accounting",
-    status: "active",
-    model: "gemini-3.8-flash",
-    version: "ADK 2.x (Multi-Turn)",
-    endpoint: "Vertex AI Global (asia-southeast2 fallback)",
-    framework: "Google Agent Development Kit (ADK)",
-    description: "Multimodal ingestion agent that reads commercial transaction receipts, decomposes item lines, and prepares SAK EMKM compliant double-entry journals.",
-    mandate: "Enforces fundamental accounting identity: Assets = Liabilities + Equity. Postings with non-zero delta are deterministically rejected.",
-    metrics: [
-      { label: "Execution Latency", value: "840 ms avg" },
-      { label: "Deterministic Balance Check", value: "100% Pass" },
-      { label: "Standard Standardized", value: "SAK EMKM DSAK IAI" },
-      { label: "Multimodal Vision", value: "Gemini 3.8 Flash Vision" },
+export const AGENT_TEAM: Record<AgentStaffId, TeamMember> = {
+  akuntan: {
+    id: "akuntan",
+    name: "Akuntan Pribadi (Agent Keuangan)",
+    role: "Pencatatan Pembukuan Otomatis",
+    roleEn: "Automated Bookkeeping Staff",
+    badge: "Pembukuan SAK EMKM",
+    badgeEn: "SAK EMKM Bookkeeper",
+    tagline: "Membaca foto nota & struk, mencatat debit-kredit tanpa salah hitung.",
+    taglineEn: "Reads receipt photos, books double-entry ledgers with zero math errors.",
+    avatarIcon: "ReceiptText",
+    statusText: "Aktif menjaga keseimbangan neraca",
+    statusTextEn: "Actively balancing your ledgers",
+    stats: [
+      { label: "Keseimbangan Buku", labelEn: "Ledger Balance", value: "100% Pas" },
+      { label: "Waktu Pencatatan", labelEn: "Posting Time", value: "< 2 Detik" },
+      { label: "Standar Akuntansi", labelEn: "Accounting Rules", value: "SAK EMKM" },
     ],
-    tools: [
-      {
-        name: "commit_journal_entry",
-        signature: "commit_journal_entry(date, memo, lines: list[JournalLine]) -> str",
-        description: "Deterministic guardrail tool that inspects debit and credit sums, verifies exact zero variance, and writes to SQLite journal store.",
-        guardrail: "Zero-variance assertion. If debits != credits, returns JournalEntryError and stops mutation.",
-      },
-      {
-        name: "read_receipt_metadata",
-        signature: "read_receipt_metadata(image_bytes: bytes) -> ReceiptMetadata",
-        description: "Extracts merchant name, transaction date, tax invoice indicators, and raw line items directly from unstructured receipt photography.",
-        guardrail: "Schema validation via Pydantic model with strict type constraints.",
-      },
+    responsibilities: [
+      "Membaca foto struk belanja, faktur, dan bukti transfer secara otomatis.",
+      "Memilihkan nama akun pembukuan yang tepat (misal: Kas, Beban Perlengkapan, Persediaan).",
+      "Memastikan sisi debit dan kredit selalu seimbang sebelum disimpan ke laporan keuangan.",
     ],
-    samplePayload: `{
-  "action": "ingest_receipt",
-  "merchant": "Toko Bahan Baku Barokah",
-  "total": 350000,
-  "items": [
-    { "name": "Biji Kopi Arabika 2kg", "amount": 250000 },
-    { "name": "Susu UHT Fresh 5L", "amount": 100000 }
-  ]
-}`,
-    sampleOutput: `{
-  "status": "BALANCED_POSTED",
-  "entry_id": "jn_20261018_0942",
-  "lines": [
-    { "account": "Persediaan Barang Dagang", "debit": 350000, "credit": 0 },
-    { "account": "Kas Tunai", "debit": 0, "credit": 350000 }
-  ],
-  "variance": 0,
-  "guardrail_status": "APPROVED"
-}`,
+    responsibilitiesEn: [
+      "Instantly extracts merchant, items, dates, and totals from receipt photos and invoices.",
+      "Maps expenses to canonical accounts (e.g., Cash, Supplies Expense, Inventory).",
+      "Mathematically verifies debits equal credits before saving to your financial statements.",
+    ],
+    autonomousRules: [
+      "Aturan Anti-Selisih: Jika ada selisih nominal satu rupiah pun, transaksi tidak akan dicatat sembarangan melainkan ditandai untuk diperiksa.",
+      "Aturan Tanpa Rumus Rumit: Pemilik usaha tidak perlu mengerti debit-kredit; semua jurnal dibuat otomatis di belakang layar.",
+    ],
+    autonomousRulesEn: [
+      "Zero-Delta Rule: If debits and credits do not match to the exact rupiah, the entry is stopped and flagged for review.",
+      "Zero Accounting Jargon: Business owners do not need to understand debit/credit mechanics; double-entry journals are created autonomously.",
+    ],
+    delegationExample: "Cukup foto struk belanja bahan baku saat belanja, asisten ini yang merapikan pembukuannya sampai jadi laporan neraca.",
+    delegationExampleEn: "Snap a photo of your wholesale ingredients invoice, and this agent logs balanced journals without manual spreadsheets.",
   },
-  fiskal: {
-    id: "fiskal",
-    nameKey: "fiskal",
-    title: "Agent Fiskal (Taxation)",
-    category: "Tax Compliance",
-    status: "active",
-    model: "gemini-3.8-flash",
-    version: "ADK 2.x (Multi-Turn)",
-    endpoint: "Vertex AI Global (asia-southeast2 fallback)",
-    framework: "Google Agent Development Kit (ADK)",
-    description: "Evaluates fiscal obligations under PP 55/2022, UU HPP, and PMK 37/2025. Tracks cumulative gross turnover and calculates PPh Final 0.5% liabilities.",
-    mandate: "Applies statutory exemption bands: Rp 500 million zero-rate threshold for Orang Pribadi, standard 0.5% for PT Perorangan and PT/CV.",
-    metrics: [
-      { label: "Calculation Accuracy", value: "100% Deterministic" },
-      { label: "Statute In-Context", value: "PP 55/2022 & UU HPP" },
-      { label: "Entity Types Supported", value: "3 Forms (OP, PT Perorangan, PT/CV)" },
-      { label: "Tax Rate", value: "0.5% Gross Turnover" },
+  konsultan_pajak: {
+    id: "konsultan_pajak",
+    name: "Konsultan Pajak (Agent Fiskal)",
+    role: "Perhitungan & Batas Pajak UMKM",
+    roleEn: "MSME Tax Specialist",
+    badge: "PPh Final PP 55/2022",
+    badgeEn: "0.5% Final Tax Guard",
+    tagline: "Menghitung PPh Final 0,5% dan melindungi hak bebas pajak Rp 500 juta Anda.",
+    taglineEn: "Calculates 0.5% final income tax and safeguards your Rp 500M tax-free allowance.",
+    avatarIcon: "Landmark",
+    statusText: "Memantau ambang batas omzet",
+    statusTextEn: "Monitoring turnover thresholds",
+    stats: [
+      { label: "Tarif Pajak UMKM", labelEn: "Final Tax Rate", value: "0,5%" },
+      { label: "Bebas Pajak Pribadi", labelEn: "Tax-Free Band", value: "Rp 500 Juta" },
+      { label: "Dasar Hukum", labelEn: "Statutory Basis", value: "PP 55/2022" },
     ],
-    tools: [
-      {
-        name: "compute_pph_final",
-        signature: "compute_pph_final(gross_turnover: int, entity_type: str, cumulative_turnover: int) -> TaxResult",
-        description: "Evaluates statutory turnover bands and calculates precise PPh Final payable, referencing exact statutory articles.",
-        guardrail: "Hardcoded exemption logic. Orang Pribadi below Rp 500M turnover returns 0 liability.",
-      },
+    responsibilities: [
+      "Menghitung kewajiban PPh Final 0,5% setiap bulan dari total omzet usaha Anda.",
+      "Mencatat peredaran bruto kumulatif setahun penuh secara otomatis.",
+      "Memberitahu jika usaha Orang Pribadi Anda masih dalam batas bebas pajak Rp 500.000.000.",
     ],
-    samplePayload: `{
-  "entity_type": "orang_pribadi",
-  "monthly_turnover": 45000000,
-  "cumulative_year_turnover": 380000000
-}`,
-    sampleOutput: `{
-  "tax_liability": 0,
-  "statute_reference": "PP 55/2022 Pasal 57 & 60",
-  "threshold_remaining": 120000000,
-  "explanation": "Peredaran bruto kumulatif belum melampaui batas Rp 500.000.000 untuk Wajib Pajak Orang Pribadi."
-}`,
+    responsibilitiesEn: [
+      "Computes monthly 0.5% PPh Final tax obligations directly from cumulative sales turnover.",
+      "Tracks year-to-date gross turnover against statutory fiscal brackets.",
+      "Automatically applies the Rp 500M tax-free exemption for individual sole proprietors.",
+    ],
+    autonomousRules: [
+      "Perlindungan Batas Bebas Pajak: Omzet di bawah Rp 500 juta per tahun untuk Orang Pribadi dikenakan pajak Rp 0 (bebas pajak).",
+      "Peringatan Tepat Waktu: Mengingatkan batas penyetoran tanggal 15 setiap bulan tanpa perlu menghafal pasal perpajakan.",
+    ],
+    autonomousRulesEn: [
+      "Exemption Guard: Annual turnover under Rp 500M for individual entrepreneurs is taxed at exactly IDR 0.",
+      "Timely Advisory: Tracks monthly payment deadlines (15th of each month) without requiring manual tax calculations.",
+    ],
+    delegationExample: "Setiap ada penjualan masuk, asisten ini langsung menghitung berapa porsi pajak yang harus disisihkan tanpa kejutan denda di akhir tahun.",
+    delegationExampleEn: "As sales roll in, this agent automatically calculates exact tax set-asides so there are zero penalty surprises.",
   },
-  regulasi: {
-    id: "regulasi",
-    nameKey: "regulasi",
-    title: "Agent Regulasi (OSS & KBLI)",
-    category: "Regulatory Licensing",
-    status: "active",
-    model: "gemini-3.8-flash",
-    version: "ADK 2.x (Multi-Turn)",
-    endpoint: "Vertex AI Global (asia-southeast2 fallback)",
-    framework: "Google Agent Development Kit (ADK)",
-    description: "Navigates 1,790 official 5-digit KBLI 2020 classifications and OSS Risk-Based Assessment (RBA) requirements for business permits.",
-    mandate: "Synthesizes statutory licensing prerequisites without external RAG hallucination, grounding decisions directly from verified regulatory catalogues.",
-    metrics: [
-      { label: "KBLI Catalogue Depth", value: "1,790 Official Codes" },
-      { label: "System Standard", value: "OSS RBA PP 5/2021" },
-      { label: "Average Inference", value: "620 ms" },
-      { label: "Grounding Integrity", value: "Zero Unverified Codes" },
+  legal_izin: {
+    id: "legal_izin",
+    name: "Spesialis Izin & Legal (Agent Regulasi)",
+    role: "Panduan NIB & Perizinan Berusaha",
+    roleEn: "Licensing & Compliance Officer",
+    badge: "OSS RBA & KBLI 2020",
+    badgeEn: "OSS RBA Verified",
+    tagline: "Menentukan kode KBLI resmi dan syarat izin OSS RBA sesuai jenis usaha Anda.",
+    taglineEn: "Resolves official 5-digit KBLI codes and operational licensing requirements.",
+    avatarIcon: "ShieldCheck",
+    statusText: "Siap memverifikasi legalitas usaha",
+    statusTextEn: "Ready to verify business legality",
+    stats: [
+      { label: "Katalog KBLI Resmi", labelEn: "KBLI Taxonomy", value: "1.790 Kode" },
+      { label: "Sistem Legalitas", labelEn: "Regulatory System", value: "OSS RBA" },
+      { label: "Tingkat Risiko", labelEn: "Risk Categories", value: "Rendah - Tinggi" },
     ],
-    tools: [
-      {
-        name: "classify_kbli",
-        signature: "classify_kbli(business_description: str, product_types: list[str]) -> list[KBLIClassification]",
-        description: "Analyzes business activity descriptions against BPS KBLI 2020 taxonomy and returns canonical code, risk level, and required permits.",
-        guardrail: "Whitelist validation against offline verified 1,790 code index.",
-      },
+    responsibilities: [
+      "Mencari kode KBLI 5 digit yang paling cocok hanya dari cerita atau deskripsi produk usaha Anda.",
+      "Menjelaskan dokumen izin yang wajib dimiliki (cukup NIB atau butuh sertifikasi tambahan).",
+      "Memastikan izin operasional aman dari risiko penutupan atau denda kepatuhan.",
     ],
-    samplePayload: `{
-  "business_description": "Kedai kopi seduh manual, penjualan espresso, cold brew, dan pastry pendamping",
-  "entity_type": "pt_perorangan"
-}`,
-    sampleOutput: `{
-  "primary_kbli": "56303",
-  "title": "Rumah Minum/Kafe",
-  "risk_level": "Rendah",
-  "licensing_requirement": "NIB (Nomor Induk Berusaha) berlaku sebagai legalitas operasional penuh.",
-  "governing_statute": "PP No. 5 Tahun 2021"
-}`,
+    responsibilitiesEn: [
+      "Maps your plain-language business description into the official 5-digit KBLI 2020 code.",
+      "Clarifies operational permits required under OSS RBA (e.g. NIB vs additional health/safety permits).",
+      "Ensures business legality protects you from compliance penalties or unexpected closures.",
+    ],
+    autonomousRules: [
+      "Pencocokan Resmi: Hanya memilih dari 1.790 kode KBLI resmi BPS, tidak mengarang kode palsu.",
+      "Bahasa Manusia: Menerjemahkan istilah birokrasi perizinan menjadi langkah praktis yang mudah dijalankan pemilik usaha.",
+    ],
+    autonomousRulesEn: [
+      "Official Catalog: Verified against 1,790 official Indonesian BPS codes with zero hallucinated codes.",
+      "Plain Language: Translates complex bureaucratic regulations into clear, step-by-step action items.",
+    ],
+    delegationExample: "Cukup tulis 'Saya jualan kopi susu dan kue basah', asisten ini mencarikan kode KBLI 56303 dan menjelaskan bahwa izin NIB Anda sudah cukup.",
+    delegationExampleEn: "Type 'I sell bottled milk coffee and pastries', and this agent identifies KBLI 56303 and confirms your NIB permit suffices.",
   },
-  orchestrator: {
-    id: "orchestrator",
-    nameKey: "keuangan",
-    title: "Orchestration Pipeline",
-    category: "Autonomous Multi-Hop",
-    status: "active",
-    model: "Cascade Coordinator",
-    version: "ADK Pipeline v1.2",
-    endpoint: "Cloud Run Inter-Service Router",
-    framework: "Deterministic State Machine",
-    description: "Supervises multi-agent sequential handoffs. When an invoice is processed, Keuangan balances the ledger, Fiskal calculates tax, and Regulasi validates compliance.",
-    mandate: "Maintains atomic transactions across autonomous sub-agents, preventing out-of-order execution or desynchronized state.",
-    metrics: [
-      { label: "Handoff Latency", value: "42 ms" },
-      { label: "Pipeline Reliability", value: "99.98%" },
-      { label: "Cascading Steps", value: "3 Coordinated Agents" },
-      { label: "Failure Isolation", value: "Atomic Rollback" },
+  manajer_keuangan: {
+    id: "manajer_keuangan",
+    name: "Manajer Keuangan Digital (Orchestrator)",
+    role: "Koordinasi Seluruh Pekerjaan",
+    roleEn: "Digital CFO Coordinator",
+    badge: "Kerja Otomatis 24/7",
+    badgeEn: "24/7 Automation",
+    tagline: "Menghubungkan pembukuan, pajak, dan izin usaha dalam satu alur kerja mulus.",
+    taglineEn: "Seamlessly links bookkeeping, tax computation, and licensing in one workflow.",
+    avatarIcon: "Sparkles",
+    statusText: "Menghubungkan semua asisten",
+    statusTextEn: "Orchestrating team members",
+    stats: [
+      { label: "Asisten Terkoordinasi", labelEn: "Connected Staff", value: "3 Spesialis" },
+      { label: "Alur Otomatis", labelEn: "Workflow", value: "Foto -> Buku -> Pajak" },
+      { label: "Keamanan Data", labelEn: "Data Safety", value: "Terisolasi" },
     ],
-    tools: [
-      {
-        name: "handoff_agent",
-        signature: "handoff_agent(target_agent: str, context: ExecutionContext) -> PipelineStepResult",
-        description: "Dispatches control between Keuangan, Fiskal, and Regulasi with typed payload verification.",
-        guardrail: "Context immutability check and step deduplication.",
-      },
+    responsibilities: [
+      "Mengarahkan foto struk ke Akuntan, meneruskan omzet ke Konsultan Pajak, dan mengecek izin di Spesialis Legal.",
+      "Mencegah data terduplikasi atau salah urutan.",
+      "Memberikan rangkuman kesehatan keuangan usaha setiap kali ada transaksi baru.",
     ],
-    samplePayload: `{
-  "trigger": "transaction_ingested",
-  "source": "receipt_upload",
-  "pipeline": ["keuangan", "fiskal", "regulasi"]
-}`,
-    sampleOutput: `{
-  "status": "COMPLETED",
-  "step_1": "keuangan -> journal posted (Kas vs Persediaan)",
-  "step_2": "fiskal -> PPh Final 0.5% evaluated (0 IDR under threshold)",
-  "step_3": "regulasi -> KBLI 56303 confirmed",
-  "total_duration_ms": 1420
-}`,
+    responsibilitiesEn: [
+      "Hands receipts to the Bookkeeper, routes revenue to the Tax Specialist, and checks licensing compliance.",
+      "Guarantees atomic, error-free handoffs without duplicate postings.",
+      "Synthesizes an ongoing health summary whenever new transactions occur.",
+    ],
+    autonomousRules: [
+      "Satu Pintu: Pemilik usaha hanya perlu berinteraksi di satu tempat, tim asisten yang bekerja di belakang layar.",
+      "Keamanan Penuh: Data keuangan tidak pernah diubah tanpa verifikasi perhitungan yang sah.",
+    ],
+    autonomousRulesEn: [
+      "Single Touchpoint: You interact with one clear interface while specialized agents collaborate in the background.",
+      "Absolute Integrity: Financial records cannot be mutated without strict deterministic validation.",
+    ],
+    delegationExample: "Begitu Anda mencatat penjualan harian, pembukuan terisi, tabungan pajak dihitung, dan riwayat izin tetap rapi tanpa Anda repot.",
+    delegationExampleEn: "The moment daily sales are recorded, books are balanced, taxes calculated, and permits verified automatically.",
   },
 };

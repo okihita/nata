@@ -1,322 +1,252 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
-  Bot,
-  Cpu,
-  Layers,
-  Network,
+  ReceiptText,
+  Landmark,
   ShieldCheck,
+  Sparkles,
   CheckCircle2,
-  Terminal,
-  Activity,
-  Code2,
-  Sliders,
-  Play,
+  ScanLine,
   ArrowRight,
-  Server,
-  Zap,
+  Shield,
+  Clock,
+  Briefcase,
+  HelpCircle,
+  LucideIcon,
 } from "lucide-react";
 
 import { PageHeader } from "@/components/app-sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLanguage } from "@/lib/copy";
-import { AGENT_CONFIGS, type AgentId } from "@/lib/agents-data";
+import { AGENT_TEAM, type AgentStaffId, type TeamMember } from "@/lib/agents-data";
+
+const STAFF_ICONS: Record<string, LucideIcon> = {
+  ReceiptText,
+  Landmark,
+  ShieldCheck,
+  Sparkles,
+};
 
 export default function AgentsPage() {
-  const { copy } = useLanguage();
-  const [selectedAgentId, setSelectedAgentId] = useState<AgentId>("keuangan");
-  const [activeTab, setActiveTab] = useState<string>("overview");
+  const { locale } = useLanguage();
+  const isEn = locale === "en";
 
-  const currentAgent = AGENT_CONFIGS[selectedAgentId];
+  const [selectedStaffId, setSelectedStaffId] = useState<AgentStaffId>("akuntan");
+  const currentStaff = AGENT_TEAM[selectedStaffId];
 
-  const agentIcons: Record<AgentId, React.ReactNode> = {
-    keuangan: <Bot className="size-4 text-emerald-600 dark:text-emerald-400" />,
-    fiskal: <Cpu className="size-4 text-blue-600 dark:text-blue-400" />,
-    regulasi: <Layers className="size-4 text-purple-600 dark:text-purple-400" />,
-    orchestrator: <Network className="size-4 text-amber-600 dark:text-amber-400" />,
-  };
+  const CurrentIcon = STAFF_ICONS[currentStaff.avatarIcon] ?? Sparkles;
 
   return (
     <>
       <PageHeader
-        title={copy.nav.agents}
-        subtitle="Autonomous Multi-Agent Orchestration & Inspection Console"
-        badge="ADK Multi-Inference"
+        title={isEn ? "Digital Finance Team" : "Tim Keuangan Digital"}
+        subtitle={
+          isEn
+            ? "Your autonomous staff handling bookkeeping, taxes, and licensing in the background."
+            : "Tim asisten pintar yang bekerja otomatis mengurus pembukuan, pajak, dan izin usaha Anda."
+        }
+        badge={isEn ? "Autonomous Team" : "Asisten Aktif"}
       />
 
       {/* Main Split-Pane Container with Internal Sidebar */}
       <div className="flex flex-col md:flex-row gap-6 items-start">
-        {/* Internal Sub-Sidebar (Left Master Pane) */}
-        <aside className="w-full md:w-72 shrink-0 space-y-4">
-          <div className="rounded-lg border border-border/70 bg-card p-3 shadow-none">
+        {/* Left Sub-Sidebar (Master Staff List) */}
+        <aside className="w-full md:w-80 shrink-0 space-y-4">
+          <div className="rounded-xl border border-border/70 bg-card p-3 shadow-none">
             <div className="flex items-center justify-between pb-2 border-b border-border/50 px-1">
               <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Active Agents
+                {isEn ? "Your Digital Team" : "Daftar Tim Asisten"}
               </span>
               <Badge variant="outline" className="text-[10px] font-mono h-5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30">
-                4 Registered
+                {isEn ? "4 Ready to Help" : "4 Siap Membantu"}
               </Badge>
             </div>
 
-            <nav className="mt-2 space-y-1.5" aria-label="Agents list">
-              {(Object.keys(AGENT_CONFIGS) as AgentId[]).map((id) => {
-                const agent = AGENT_CONFIGS[id];
-                const isSelected = selectedAgentId === id;
+            <nav className="mt-2 space-y-2" aria-label="Team staff list">
+              {(Object.keys(AGENT_TEAM) as AgentStaffId[]).map((id) => {
+                const member = AGENT_TEAM[id];
+                const isSelected = selectedStaffId === id;
+                const Icon = STAFF_ICONS[member.avatarIcon] ?? Sparkles;
 
                 return (
                   <button
                     key={id}
-                    onClick={() => setSelectedAgentId(id)}
-                    className={`w-full text-left rounded-md px-3 py-2.5 transition-colors flex items-center justify-between gap-3 text-sm ${
+                    onClick={() => setSelectedStaffId(id)}
+                    className={`w-full text-left rounded-lg p-3 transition-colors flex items-start justify-between gap-3 text-sm ${
                       isSelected
                         ? "bg-primary text-primary-foreground font-medium shadow-none"
-                        : "hover:bg-muted text-foreground"
+                        : "hover:bg-muted text-foreground border border-border/40"
                     }`}
                   >
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <span className={`grid size-7 shrink-0 place-items-center rounded-md ${
-                        isSelected ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted"
+                    <div className="flex items-start gap-3 min-w-0">
+                      <span className={`grid size-9 shrink-0 place-items-center rounded-lg mt-0.5 ${
+                        isSelected
+                          ? "bg-primary-foreground/20 text-primary-foreground"
+                          : "bg-muted text-muted-foreground"
                       }`}>
-                        {agentIcons[id]}
+                        <Icon className="size-4" />
                       </span>
-                      <div className="min-w-0">
-                        <p className="truncate text-xs font-semibold leading-tight">
-                          {id === "keuangan"
-                            ? copy.agents.keuangan
-                            : id === "fiskal"
-                            ? copy.agents.fiskal
-                            : id === "regulasi"
-                            ? copy.agents.regulasi
-                            : "Orchestrator"}
+                      <div className="min-w-0 space-y-0.5">
+                        <p className="truncate text-xs font-semibold leading-snug">
+                          {member.name.split(" (")[0]}
                         </p>
-                        <p className={`text-[10px] truncate ${isSelected ? "text-primary-foreground/80" : "text-muted-foreground"}`}>
-                          {agent.category}
+                        <p className={`text-[11px] truncate ${isSelected ? "text-primary-foreground/80" : "text-muted-foreground"}`}>
+                          {isEn ? member.roleEn : member.role}
                         </p>
+                        <span className={`inline-block text-[10px] font-medium px-1.5 py-0.5 rounded ${
+                          isSelected
+                            ? "bg-primary-foreground/20 text-primary-foreground"
+                            : "bg-muted text-muted-foreground"
+                        }`}>
+                          {isEn ? member.badgeEn : member.badge}
+                        </span>
                       </div>
                     </div>
-                    <span className={`size-1.5 rounded-full shrink-0 ${
-                      agent.status === "active"
-                        ? isSelected
-                          ? "bg-primary-foreground"
-                          : "bg-emerald-500"
-                        : "bg-muted-foreground"
-                    }`} />
                   </button>
                 );
               })}
             </nav>
           </div>
 
-          {/* Infrastructure Health Indicator */}
-          <Card className="border-border/70 shadow-none bg-muted/30">
-            <CardHeader className="p-3 pb-2">
-              <CardTitle className="text-xs font-semibold flex items-center gap-1.5">
-                <Server className="size-3.5 text-muted-foreground" />
-                Inference Gateway
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-3 pt-0 space-y-1.5 text-[11px] text-muted-foreground">
-              <div className="flex justify-between">
-                <span>Model Engine</span>
-                <span className="font-mono text-foreground font-medium">Gemini 3.8 Flash</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Framework</span>
-                <span className="font-mono text-foreground font-medium">Google ADK 2.x</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Deployment</span>
-                <span className="font-mono text-emerald-600 dark:text-emerald-400 font-medium">Cloud Run Ready</span>
-              </div>
-            </CardContent>
-          </Card>
+          {/* User Value Promise Card */}
+          <div className="rounded-xl border border-border/70 bg-muted/20 p-4 space-y-2.5">
+            <div className="flex items-center gap-2 text-foreground font-semibold text-xs">
+              <Shield className="size-4 text-emerald-600 dark:text-emerald-400" />
+              <span>{isEn ? "The Nata Guarantee" : "Jaminan Kemudahan Nata"}</span>
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              {isEn
+                ? "You focus on selling and growing your business. Nata's specialized staff handles the administrative and accounting math quietly behind the scenes."
+                : "Anda fokus jualan dan membesarkan usaha. Tim pintar Nata yang membereskan hitungan pembukuan, pajak, dan izin usaha di belakang layar."}
+            </p>
+          </div>
         </aside>
 
-        {/* Right Detail Canvas Pane */}
+        {/* Right Detail Canvas (Staff Profile & Tasks) */}
         <main className="flex-1 min-w-0 w-full space-y-6">
-          {/* Agent Header Card */}
-          <div className="rounded-lg border border-border/70 bg-card p-5 shadow-none space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <span className="grid size-10 place-items-center rounded-lg bg-primary/10 text-primary border border-primary/20">
-                  {agentIcons[currentAgent.id]}
+          {/* Active Staff Hero Card */}
+          <div className="rounded-xl border border-border/70 bg-card p-6 shadow-none space-y-4">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div className="flex items-start gap-3.5">
+                <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary border border-primary/20">
+                  <CurrentIcon className="size-6" />
                 </span>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-lg font-semibold tracking-tight">{currentAgent.title}</h2>
-                    <Badge variant="secondary" className="text-[10px] font-mono">
-                      {currentAgent.version}
+                <div className="space-y-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h2 className="text-lg font-semibold tracking-tight">{currentStaff.name}</h2>
+                    <Badge variant="secondary" className="text-xs font-medium">
+                      {isEn ? currentStaff.badgeEn : currentStaff.badge}
                     </Badge>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    {currentAgent.category} · {currentAgent.framework}
+                  <p className="text-xs font-medium text-primary">
+                    {isEn ? currentStaff.roleEn : currentStaff.role}
+                  </p>
+                  <p className="text-xs text-muted-foreground pt-0.5">
+                    {isEn ? currentStaff.taglineEn : currentStaff.tagline}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 text-xs">
-                  Operational
-                </Badge>
-              </div>
+              <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 text-xs py-1 px-2.5">
+                {isEn ? currentStaff.statusTextEn : currentStaff.statusText}
+              </Badge>
             </div>
 
-            <p className="text-xs text-muted-foreground leading-relaxed pt-2 border-t border-border/50">
-              {currentAgent.description}
-            </p>
+            {/* Quick Benefits Stats Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+              {currentStaff.stats.map((stat, idx) => (
+                <div
+                  key={idx}
+                  className="rounded-lg border border-border/50 bg-muted/30 p-3 space-y-1"
+                >
+                  <p className="text-[11px] text-muted-foreground">{isEn ? stat.labelEn : stat.label}</p>
+                  <p className="text-sm font-semibold tracking-tight">{stat.value}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Tab Navigation for Detailed Sections */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="bg-muted/60 p-1 border border-border/60">
-              <TabsTrigger value="overview" className="text-xs gap-1.5">
-                <Sliders className="size-3.5" />
-                Overview & Guardrails
-              </TabsTrigger>
-              <TabsTrigger value="tools" className="text-xs gap-1.5">
-                <Code2 className="size-3.5" />
-                Tools & Capabilities ({currentAgent.tools.length})
-              </TabsTrigger>
-              <TabsTrigger value="sandbox" className="text-xs gap-1.5">
-                <Terminal className="size-3.5" />
-                Test Sandbox
-              </TabsTrigger>
-            </TabsList>
+          {/* Section: What This Staff Does For You */}
+          <Card className="border-border/70 shadow-none">
+            <CardHeader className="py-4 px-6 border-b border-border/40">
+              <div className="flex items-center gap-2">
+                <Briefcase className="size-4 text-primary" />
+                <CardTitle className="text-sm font-semibold">
+                  {isEn ? "Tasks Handled Autonomously" : "Tugas yang Dikerjakan Otomatis untuk Anda"}
+                </CardTitle>
+              </div>
+              <CardDescription className="text-xs">
+                {isEn
+                  ? "Every day, this assistant takes these responsibilities off your plate."
+                  : "Setiap hari asisten ini menggantikan tugas rumit berikut agar Anda tidak pusing."}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6">
+              <ul className="space-y-3">
+                {(isEn ? currentStaff.responsibilitiesEn : currentStaff.responsibilities).map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-xs leading-relaxed">
+                    <span className="grid size-5 shrink-0 place-items-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 mt-0.5">
+                      <CheckCircle2 className="size-3.5" />
+                    </span>
+                    <span className="text-foreground">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
 
-            {/* TAB 1: OVERVIEW */}
-            <TabsContent value="overview" className="space-y-5 pt-2">
-              {/* Metrics Grid */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                {currentAgent.metrics.map((metric) => (
+          {/* Section: Peace of Mind & Safety Guardrails */}
+          <Card className="border-border/70 shadow-none">
+            <CardHeader className="py-4 px-6 border-b border-border/40">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="size-4 text-emerald-600 dark:text-emerald-400" />
+                <CardTitle className="text-sm font-semibold">
+                  {isEn ? "Safety Rules & Protection" : "Aturan Keamanan Pembukuan"}
+                </CardTitle>
+              </div>
+              <CardDescription className="text-xs">
+                {isEn
+                  ? "Built-in protection so your business records remain 100% accurate."
+                  : "Perlindungan otomatis agar catatan usaha Anda tetap aman dan bebas kesalahan fatal."}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="space-y-3">
+                {(isEn ? currentStaff.autonomousRulesEn : currentStaff.autonomousRules).map((rule, idx) => (
                   <div
-                    key={metric.label}
-                    className="rounded-lg border border-border/60 bg-card p-3 shadow-none space-y-1"
+                    key={idx}
+                    className="p-3.5 rounded-lg border border-border/50 bg-muted/20 text-xs leading-relaxed text-foreground"
                   >
-                    <p className="text-[11px] text-muted-foreground">{metric.label}</p>
-                    <p className="text-sm font-semibold tracking-tight font-mono">{metric.value}</p>
+                    {rule}
                   </div>
                 ))}
               </div>
+            </CardContent>
+          </Card>
 
-              {/* Guardrails Mandate Card */}
-              <Card className="border-border/70 shadow-none">
-                <CardHeader className="py-4 px-5">
-                  <div className="flex items-center gap-2 text-foreground">
-                    <ShieldCheck className="size-4 text-primary" />
-                    <CardTitle className="text-sm font-semibold">Statutory & Architectural Guardrail</CardTitle>
-                  </div>
-                  <CardDescription className="text-xs mt-1">
-                    Deterministic policy enforced before state mutation.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="px-5 pb-4 pt-0">
-                  <div className="rounded-md bg-muted/40 p-3 text-xs leading-relaxed font-mono border border-border/40">
-                    {currentAgent.mandate}
-                  </div>
-                </CardContent>
-              </Card>
+          {/* Real Life Example Callout & Quick Action */}
+          <div className="rounded-xl border border-primary/20 bg-primary/5 p-5 space-y-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="space-y-1 max-w-xl">
+              <span className="text-[11px] font-semibold text-primary uppercase tracking-wider">
+                {isEn ? "How to use this assistant" : "Cara Pakai Asisten Ini"}
+              </span>
+              <p className="text-xs text-foreground leading-relaxed">
+                {isEn ? currentStaff.delegationExampleEn : currentStaff.delegationExample}
+              </p>
+            </div>
 
-              {/* Runtime Configuration Card */}
-              <Card className="border-border/70 shadow-none">
-                <CardHeader className="py-4 px-5">
-                  <CardTitle className="text-sm font-semibold">Runtime Parameters</CardTitle>
-                </CardHeader>
-                <CardContent className="px-5 pb-4 pt-0">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                    <div className="p-2.5 rounded border border-border/40 bg-muted/20">
-                      <span className="text-muted-foreground block text-[11px]">Inference Model ID</span>
-                      <span className="font-mono font-medium">{currentAgent.model}</span>
-                    </div>
-                    <div className="p-2.5 rounded border border-border/40 bg-muted/20">
-                      <span className="text-muted-foreground block text-[11px]">Primary Endpoint</span>
-                      <span className="font-mono font-medium">{currentAgent.endpoint}</span>
-                    </div>
-                    <div className="p-2.5 rounded border border-border/40 bg-muted/20">
-                      <span className="text-muted-foreground block text-[11px]">Retry Policy</span>
-                      <span className="font-mono font-medium">HttpRetryOptions (4 attempts, exponential)</span>
-                    </div>
-                    <div className="p-2.5 rounded border border-border/40 bg-muted/20">
-                      <span className="text-muted-foreground block text-[11px]">State Machine</span>
-                      <span className="font-mono font-medium">Sequential Non-Blocking Cascade</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            {/* TAB 2: TOOLS & CAPABILITIES */}
-            <TabsContent value="tools" className="space-y-4 pt-2">
-              {currentAgent.tools.map((tool) => (
-                <Card key={tool.name} className="border-border/70 shadow-none">
-                  <CardHeader className="py-3.5 px-5">
-                    <div className="flex items-center justify-between gap-2">
-                      <CardTitle className="text-sm font-mono text-primary font-semibold">
-                        {tool.name}
-                      </CardTitle>
-                      <Badge variant="outline" className="text-[10px] font-mono">
-                        Deterministic Tool
-                      </Badge>
-                    </div>
-                    <p className="text-xs font-mono bg-muted/50 p-2 rounded border border-border/40 text-foreground mt-2">
-                      {tool.signature}
-                    </p>
-                  </CardHeader>
-                  <CardContent className="px-5 pb-4 pt-0 space-y-2 text-xs">
-                    <p className="text-muted-foreground leading-relaxed">{tool.description}</p>
-                    <div className="flex items-start gap-1.5 text-xs text-amber-600 dark:text-amber-400 bg-amber-500/10 p-2 rounded border border-amber-500/20">
-                      <CheckCircle2 className="size-3.5 shrink-0 mt-0.5" />
-                      <span><strong>Guardrail:</strong> {tool.guardrail}</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </TabsContent>
-
-            {/* TAB 3: TEST SANDBOX */}
-            <TabsContent value="sandbox" className="space-y-4 pt-2">
-              <Card className="border-border/70 shadow-none">
-                <CardHeader className="py-4 px-5">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="text-sm font-semibold">Interactive Dry-Run Simulator</CardTitle>
-                      <CardDescription className="text-xs">
-                        Simulate synthetic transaction payload against this agent's validation engine.
-                      </CardDescription>
-                    </div>
-                    <Button size="sm" variant="default" className="text-xs gap-1.5 h-8">
-                      <Play className="size-3" />
-                      Run Simulation
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="px-5 pb-4 pt-0 space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
-                        <Terminal className="size-3.5" /> Sample Request Payload
-                      </span>
-                      <pre className="p-3 rounded-lg bg-stone-900 text-stone-100 dark:bg-stone-950 font-mono text-[11px] overflow-x-auto border border-stone-800">
-                        {currentAgent.samplePayload}
-                      </pre>
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
-                        <Activity className="size-3.5" /> Synthesized Agent Output
-                      </span>
-                      <pre className="p-3 rounded-lg bg-stone-900 text-stone-100 dark:bg-stone-950 font-mono text-[11px] overflow-x-auto border border-stone-800">
-                        {currentAgent.sampleOutput}
-                      </pre>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+            <Button asChild size="sm" className="gap-2 shrink-0 text-xs">
+              <Link href={selectedStaffId === "konsultan_pajak" ? "/taxes" : selectedStaffId === "legal_izin" ? "/licensing" : "/record"}>
+                <ScanLine className="size-3.5" />
+                <span>{isEn ? "Try with Real Receipt" : "Coba Catat Struk"}</span>
+                <ArrowRight className="size-3" />
+              </Link>
+            </Button>
+          </div>
         </main>
       </div>
     </>
