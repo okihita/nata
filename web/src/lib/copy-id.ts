@@ -33,6 +33,13 @@ export const copyId = {
       { label: "Laporan", items: ["laporan", "pajak"] },
       { label: "Lainnya", items: ["usaha", "pengaturan"] },
     ],
+    groupLabels: {
+      summary: "Ringkasan",
+      operations: "Operasional",
+      master: "Data Induk",
+      reports: "Laporan",
+      other: "Lainnya",
+    },
     dashboard: "Dasbor",
     catat: "Catat Struk",
     transaksi: "Transaksi",

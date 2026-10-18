@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Badge } from "@/components/ui/badge";
 import { NAV, TONE_DOT } from "@/lib/nav";
-import { copy } from "@/lib/copy";
+import { useLanguage } from "@/lib/copy";
 
 export const ICONS: Record<string, LucideIcon> = {
   LayoutDashboard,
@@ -49,6 +49,7 @@ export const ICONS: Record<string, LucideIcon> = {
 export function AppSidebar() {
   const pathname = usePathname();
   const { setOpenMobile } = useSidebar();
+  const { copy } = useLanguage();
 
   return (
     <Sidebar collapsible="icon">
@@ -64,7 +65,7 @@ export function AppSidebar() {
                 <div className="grid flex-1 text-left leading-tight">
                   <span className="truncate text-sm font-semibold">{copy.app.name}</span>
                   <span className="truncate text-xs text-muted-foreground">
-                    Pembukuan otomatis
+                    {copy.app.tagline}
                   </span>
                 </div>
               </Link>
@@ -75,10 +76,10 @@ export function AppSidebar() {
 
       <SidebarContent>
         {NAV.map((group) => (
-          <SidebarGroup key={group.label}>
+          <SidebarGroup key={group.key}>
             <SidebarGroupLabel className="gap-1.5">
               <span className={`size-1.5 rounded-full ${TONE_DOT[group.tone]}`} />
-              {group.label}
+              {copy.nav.groupLabels?.[group.key] ?? group.label}
             </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>

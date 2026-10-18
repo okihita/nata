@@ -40,11 +40,12 @@ import { cn } from "@/lib/utils";
 import { useWorkspace } from "@/lib/store";
 import { ENTITY_LABEL, entityHasExemption } from "@/lib/business";
 import { balanceSheet, incomeStatement, monthlyRevenue, taxPosition, trialBalance } from "@/lib/ledger";
-import { copy } from "@/lib/copy";
+import { useLanguage } from "@/lib/copy";
 import { idr, idrFull } from "@/lib/format";
 
 export default function DashboardPage() {
   const { entries, ready, business, loadDemo } = useWorkspace();
+  const { copy } = useLanguage();
   const income = incomeStatement(entries);
   const bs = balanceSheet(entries);
   const series = monthlyRevenue(entries);
@@ -500,6 +501,7 @@ function ComplianceRow({
   business: NonNullable<ReturnType<typeof useWorkspace>["business"]>;
   className?: string;
 }) {
+  const { copy } = useLanguage();
   const exempt = entityHasExemption(business.entity);
   return (
     <Card className={className}>

@@ -28,6 +28,13 @@ export const copyEn = {
       { label: "Reports", items: ["laporan", "pajak"] },
       { label: "Other", items: ["usaha", "pengaturan"] },
     ],
+    groupLabels: {
+      summary: "Overview",
+      operations: "Operations",
+      master: "Master Data",
+      reports: "Reports",
+      other: "Other",
+    },
     dashboard: "Dashboard",
     catat: "Record Receipt",
     transaksi: "Transactions",
