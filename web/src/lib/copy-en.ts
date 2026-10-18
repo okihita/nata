@@ -231,6 +231,11 @@ export const copyEn = {
     emptyTitle: "No accounts in use yet",
     emptyBody:
       "This list populates automatically as transactions are posted — Nata selects matching accounts for each receipt.",
+    positionTitle: "Financial Position (Balance Sheet)",
+    positionSubtitle: "Real accounts: Assets, Liabilities, and Equity",
+    performanceTitle: "Financial Performance (Income Statement)",
+    performanceSubtitle: "Nominal accounts: Revenue and Operating Expenses",
+    activeAccountsCount: (n: number) => `${n} active accounts`,
   },
 
   laporan: {
