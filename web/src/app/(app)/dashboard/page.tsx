@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import {
   ArrowDownRight,
@@ -13,6 +14,11 @@ import {
   Sparkles,
   Wallet,
   Info,
+  CheckCircle2,
+  Calendar,
+  Clock,
+  Printer,
+  Compass,
 } from "lucide-react";
 import {
   Area,
@@ -46,15 +52,29 @@ import { idr, idrFull } from "@/lib/format";
 export default function DashboardPage() {
   const { entries, ready, business, loadDemo } = useWorkspace();
   const { copy } = useLanguage();
-  const income = incomeStatement(entries);
-  const bs = balanceSheet(entries);
+  const [metricScope, setMetricScope] = useState<"this_month" | "all">("this_month");
+
+  // Determine latest active month in the dataset (e.g. "2026-10")
+  const latestMonth = useMemo(() => {
+    if (entries.length === 0) return new Date().toISOString().slice(0, 7);
+    const months = [...new Set(entries.map((e) => e.date.slice(0, 7)))].sort();
+    return months[months.length - 1];
+  }, [entries]);
+
+  // Entries scoped to this month vs all time
+  const thisMonthEntries = useMemo(() => {
+    return entries.filter((e) => e.date.slice(0, 7) === latestMonth);
+  }, [entries, latestMonth]);
+
+  const activeEntries = metricScope === "this_month" ? thisMonthEntries : entries;
+
+  const income = incomeStatement(activeEntries);
+  const bs = balanceSheet(entries); // Balance sheet is always cumulative financial position
   const series = monthlyRevenue(entries);
   const accounts = trialBalance(entries);
   const tax = taxPosition(entries, { individual: entityHasExemption(business?.entity ?? "orang_pribadi") });
 
-  // "Perlu tindakan": plain-language items the owner should look at. This is
-  // the panel the incumbents do worst — an empty state here says the books are
-  // clean rather than showing a blank table.
+  // 2. Action Required & To-Do List (Curated recommendations from AI bots)
   const unpaid = bs.liabilities.filter((l) => l.account.toLowerCase().includes("utang usaha"));
   const unpaidTotal = unpaid.reduce((s, l) => s + l.amount, 0);
   const actions: { id: string; text: string; tone: "info" | "warn"; href: string }[] = [];
@@ -81,6 +101,53 @@ export default function DashboardPage() {
       href: "/taxes",
     });
   }
+
+  // To-Do list items (including financial statement opening balance, NIB docs, tax threshold, export)
+  const todos = useMemo(() => {
+    const list = [
+      {
+        id: "todo-last-year",
+        icon: <Calendar className="size-4 text-amber-600" />,
+        title: copy.dashboard.todoTasks.financialStatementLastYear.title,
+        desc: copy.dashboard.todoTasks.financialStatementLastYear.desc,
+        cta: copy.dashboard.todoTasks.financialStatementLastYear.cta,
+        href: "/accounts",
+        done: false,
+        priority: "Tinggi",
+      },
+      {
+        id: "todo-perizinan",
+        icon: <ShieldCheck className="size-4 text-emerald-600" />,
+        title: copy.dashboard.todoTasks.perizinanDocs.title,
+        desc: copy.dashboard.todoTasks.perizinanDocs.desc,
+        cta: copy.dashboard.todoTasks.perizinanDocs.cta,
+        href: "/licensing",
+        done: Boolean(business?.kbliCode && business?.nib),
+        priority: business?.kbliCode ? "Selesai" : "Penting",
+      },
+      {
+        id: "todo-tax-threshold",
+        icon: <Landmark className="size-4 text-sky-600" />,
+        title: copy.dashboard.todoTasks.taxThresholdMonitor.title,
+        desc: copy.dashboard.todoTasks.taxThresholdMonitor.desc,
+        cta: copy.dashboard.todoTasks.taxThresholdMonitor.cta,
+        href: "/taxes",
+        done: false,
+        priority: "Normal",
+      },
+      {
+        id: "todo-monthly-export",
+        icon: <Printer className="size-4 text-purple-600" />,
+        title: copy.dashboard.todoTasks.monthlyExportPrint.title,
+        desc: copy.dashboard.todoTasks.monthlyExportPrint.desc,
+        cta: copy.dashboard.todoTasks.monthlyExportPrint.cta,
+        href: "/statements",
+        done: false,
+        priority: "Rekomendasi",
+      },
+    ];
+    return list;
+  }, [copy, business]);
   // A badan usaha can owe Rp 0 simply because turnover is zero. Saying "masih di
   // bawah batas bebas pajak" would imply a threshold that does not apply to it,
   // so no tax item is shown at all in that case.
@@ -158,29 +225,56 @@ export default function DashboardPage() {
 
   return (
     <>
-      <PageHeader title={copy.dashboard.title} subtitle={copy.dashboard.subtitle} />
+      {/* Header with Scope Switcher */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">{copy.dashboard.title}</h1>
+          <p className="text-sm text-muted-foreground">{copy.dashboard.subtitle}</p>
+        </div>
+        <div className="flex items-center gap-1.5 self-start sm:self-auto rounded-lg border bg-muted/30 p-1">
+          <Button
+            variant={metricScope === "this_month" ? "default" : "ghost"}
+            size="sm"
+            onClick={() => setMetricScope("this_month")}
+            className="h-7 text-xs font-medium"
+          >
+            {copy.dashboard.toggleViewThisMonth}
+          </Button>
+          <Button
+            variant={metricScope === "all" ? "default" : "ghost"}
+            size="sm"
+            onClick={() => setMetricScope("all")}
+            className="h-7 text-xs font-medium"
+          >
+            {copy.dashboard.toggleViewAllTime}
+          </Button>
+        </div>
+      </div>
 
-      {/* Kartu ringkasan */}
+      {/* 1. Status & Kesehatan Usaha (Business Status & NIB) */}
+      {business && <ComplianceRow business={business} className="mb-6" />}
+
+      {/* 2. Kartu Angka Utama (Number Dashboard) */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Metric
           icon={<ArrowUpRight className="size-4" />}
           label={copy.dashboard.revenue}
           value={idrFull(income.totalRevenue)}
-          hint={copy.dashboard.allTime}
+          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics : copy.dashboard.allTimeMetrics}
           tone="positive"
         />
         <Metric
           icon={<ArrowDownRight className="size-4" />}
           label={copy.dashboard.expenses}
           value={idrFull(income.totalExpenses)}
-          hint={copy.dashboard.allTime}
+          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics : copy.dashboard.allTimeMetrics}
           tone="negative"
         />
         <Metric
           icon={<Wallet className="size-4" />}
           label={copy.dashboard.netIncome}
           value={idrFull(income.netIncome)}
-          hint={copy.dashboard.allTime}
+          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics : copy.dashboard.allTimeMetrics}
           tone={income.netIncome >= 0 ? "positive" : "negative"}
         />
         <Metric
@@ -191,11 +285,6 @@ export default function DashboardPage() {
           tone="neutral"
         />
       </div>
-
-      {/* Status usaha: tiga hal yang menentukan kewajiban pemilik — bentuk
-          usaha, perlakuan pajaknya, dan kode KBLI-nya. Ditampilkan di sini
-          karena inilah layar pertama yang dibuka pemilik. */}
-      {business && <ComplianceRow business={business} className="mt-4" />}
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         {/* Grafik */}
@@ -309,6 +398,66 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
+          {/* 2. Rencana Aksi / To-Do List (Actionable checklist for compliance, bank readiness, licensing) */}
+          <Card className="border-border">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-base flex items-center gap-2">
+                  <CheckCircle2 className="size-4 text-primary" />
+                  <span>{copy.dashboard.todoTitle}</span>
+                </CardTitle>
+                <Badge variant="outline" className="text-[11px] font-normal bg-muted/40">
+                  {todos.filter((t) => t.done).length}/{todos.length} Selesai
+                </Badge>
+              </div>
+              <CardDescription className="text-xs">
+                {copy.dashboard.todoSubtitle}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2.5">
+              {todos.map((todo) => (
+                <div
+                  key={todo.id}
+                  className={cn(
+                    "rounded-lg border p-3 text-xs transition-colors",
+                    todo.done ? "bg-muted/30 border-muted" : "bg-card hover:bg-muted/40 border-border"
+                  )}
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-start gap-2">
+                      <span className="mt-0.5 shrink-0">{todo.icon}</span>
+                      <div>
+                        <p className={cn("font-medium text-foreground", todo.done && "line-through text-muted-foreground")}>
+                          {todo.title}
+                        </p>
+                        <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                          {todo.desc}
+                        </p>
+                      </div>
+                    </div>
+                    <Badge
+                      variant={todo.priority === "Tinggi" ? "destructive" : "secondary"}
+                      className="text-[10px] shrink-0 font-normal py-0 h-5"
+                    >
+                      {todo.priority}
+                    </Badge>
+                  </div>
+                  <div className="mt-2.5 pt-2 border-t border-border/50 flex items-center justify-between">
+                    <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+                      <Clock className="size-3" /> Rekomendasi Bot
+                    </span>
+                    <Button asChild variant="outline" size="sm" className="h-6 text-[11px] px-2 py-0">
+                      <Link href={todo.href}>
+                        {todo.cta}
+                        <ChevronRight className="ml-1 size-3" />
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
           {/* Perlu tindakan */}
           <Card>
             <CardHeader>
@@ -344,10 +493,17 @@ export default function DashboardPage() {
 
           <Card className="border-primary/20 bg-primary/[0.03]">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <Sparkles className="size-4 text-primary" />
-                {copy.dashboard.agentTitle}
-              </CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <Sparkles className="size-4 text-primary" />
+                  {copy.dashboard.agentTitle}
+                </CardTitle>
+                <Button asChild variant="ghost" size="sm" className="h-6 text-xs text-primary px-2">
+                  <Link href="/agents">
+                    Chat Bot <ChevronRight className="size-3" />
+                  </Link>
+                </Button>
+              </div>
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-sm text-muted-foreground">{copy.dashboard.agentBody}</p>
@@ -526,7 +682,7 @@ function ComplianceRow({
       <CardHeader className="pb-3">
         <CardTitle className="text-base">{copy.dashboard.complianceTitle}</CardTitle>
       </CardHeader>
-      <CardContent className="grid gap-4 sm:grid-cols-3">
+      <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <ComplianceItem
           icon={<Building2 className="size-3.5" />}
           label={copy.dashboard.complianceEntity}
@@ -539,7 +695,7 @@ function ComplianceRow({
           tone={exempt ? "ok" : "warn"}
         />
         <ComplianceItem
-          icon={<ShieldCheck className="size-3.5" />}
+          icon={<Compass className="size-3.5" />}
           label={copy.dashboard.complianceKbli}
           value={
             business.kbliCode
@@ -553,6 +709,14 @@ function ComplianceRow({
               : copy.dashboard.complianceKbliCta
           }
           tone={business.kbliCode ? "ok" : "warn"}
+        />
+        <ComplianceItem
+          icon={<ShieldCheck className="size-3.5" />}
+          label={copy.dashboard.complianceNib}
+          value={business.nib ? `${business.nib} (OSS RBA)` : copy.dashboard.complianceNibMissing}
+          href="/business"
+          cta={business.nib ? copy.dashboard.complianceNibReady : copy.dashboard.complianceNibCta}
+          tone={business.nib ? "ok" : "warn"}
         />
       </CardContent>
     </Card>

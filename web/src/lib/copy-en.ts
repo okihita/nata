@@ -156,14 +156,46 @@ export const copyEn = {
     needsKbli: "KBLI classification code not set — required for licensing",
     needsUnpaid: (count: number, amount: string) =>
       `${count} accounts payable outstanding (${amount})`,
-    complianceTitle: "Business Status",
+    complianceTitle: "Business Status & Health",
     complianceEntity: "Legal Entity",
     complianceTax: "Tax Treatment",
     complianceKbli: "KBLI Code",
     complianceKbliNone: "Not set",
     complianceKbliCta: "Select",
     complianceOpen: "View licensing",
+    complianceNib: "NIB Permit",
+    complianceNibReady: "Ready / Registered",
+    complianceNibMissing: "Not submitted",
+    complianceNibCta: "Prepare docs",
     ownerHint: "For business owners — snap a receipt, automation handles the rest.",
+    thisMonthMetrics: "This Month (Oct 2026)",
+    allTimeMetrics: "All-Time Cumulative",
+    toggleViewThisMonth: "This Month",
+    toggleViewAllTime: "All-Time",
+    todoTitle: "Next Steps & Action Plan",
+    todoSubtitle: "Priority tasks recommended by your AI staff for compliance and financing readiness.",
+    todoTasks: {
+      financialStatementLastYear: {
+        title: "Input last year's financial statement (2025)",
+        desc: "Add your opening balance or previous year report so banks (KUR) can see multi-year business growth.",
+        cta: "Add opening balance",
+      },
+      perizinanDocs: {
+        title: "Prepare business license documents (NIB OSS RBA)",
+        desc: "Complete NIB requirements, address verification, and NPWP to legally protect operations from local raids.",
+        cta: "Complete licensing",
+      },
+      taxThresholdMonitor: {
+        title: "Safeguard Rp 500M annual tax-free allowance",
+        desc: "Gross turnover is at Rp 101.75M. You have Rp 398.25M tax-free quota remaining before 0.5% PPh Final applies.",
+        cta: "View tax position",
+      },
+      monthlyExportPrint: {
+        title: "Print SAK EMKM financial statement PDF",
+        desc: "Download or print ready-to-sign monthly profit/loss and balance sheet for stakeholders.",
+        cta: "Export PDF",
+      },
+    },
   },
 
   add: {

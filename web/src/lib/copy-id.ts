@@ -161,14 +161,46 @@ export const copyId = {
     needsKbli: "Kode KBLI belum ditentukan — perlu untuk perizinan",
     needsUnpaid: (count: number, amount: string) =>
       `${count} utang usaha belum dibayar (${amount})`,
-    complianceTitle: "Status usaha Anda",
+    complianceTitle: "Status & Kesehatan Usaha",
     complianceEntity: "Bentuk usaha",
     complianceTax: "Perlakuan pajak",
     complianceKbli: "Kode KBLI",
     complianceKbliNone: "Belum ditentukan",
     complianceKbliCta: "Tentukan",
     complianceOpen: "Lihat perizinan",
+    complianceNib: "Izin NIB",
+    complianceNibReady: "Tercatat / Resmi",
+    complianceNibMissing: "Belum diajukan",
+    complianceNibCta: "Siapkan dokumen",
     ownerHint: "Untuk pemilik usaha — cukup foto struk, sisanya otomatis.",
+    thisMonthMetrics: "Bulan Ini (Okt 2026)",
+    allTimeMetrics: "Total Kumulatif",
+    toggleViewThisMonth: "Bulan Ini",
+    toggleViewAllTime: "Semua",
+    todoTitle: "Rencana Aksi & Hal Perlu Dilakukan",
+    todoSubtitle: "Rekomendasi prioritas dari asisten AI Anda untuk kepatuhan usaha dan kesiapan modal bank (KUR).",
+    todoTasks: {
+      financialStatementLastYear: {
+        title: "Masukkan laporan keuangan tahun lalu (2025)",
+        desc: "Catat saldo awal atau neraca tahun lalu agar bank melihat histori pertumbuhan usaha Anda secara utuh.",
+        cta: "Catat saldo awal",
+      },
+      perizinanDocs: {
+        title: "Siapkan dokumen izin usaha (NIB OSS RBA)",
+        desc: "Lengkapi kelengkapan NIB, verifikasi alamat usaha, dan NPWP agar operasional tenang bebas razia.",
+        cta: "Lengkapi perizinan",
+      },
+      taxThresholdMonitor: {
+        title: "Jaga batas omzet bebas pajak Rp 500 juta",
+        desc: "Omzet saat ini Rp 101,75 Juta. Masih tersisa kuota bebas pajak Rp 398,25 Juta sebelum dikenakan PPh Final 0,5%.",
+        cta: "Cek posisi pajak",
+      },
+      monthlyExportPrint: {
+        title: "Cetak dokumen laporan keuangan SAK EMKM",
+        desc: "Unduh atau cetak dokumen PDF laba rugi dan posisi keuangan resmi untuk arsip atau pengajuan KUR.",
+        cta: "Ekspor PDF",
+      },
+    },
   },
 
   add: {
