@@ -3,7 +3,6 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
-  Compass,
   ArrowRight,
   BookOpen,
   Clock,
@@ -11,7 +10,6 @@ import {
 } from "lucide-react";
 
 import { PageHeader } from "@/components/app-sidebar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/lib/copy";
@@ -50,10 +48,6 @@ export default function GuidePage() {
             >
               <CardHeader className="p-4 pb-2">
                 <div className="flex items-center justify-between gap-2">
-                  <Badge variant="outline" className="text-xs">
-                    <Compass className="mr-1 size-3 text-primary" />
-                    {copy.academy.categories[lesson.category]}
-                  </Badge>
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Clock className="size-3" />
                     <span>
@@ -61,7 +55,7 @@ export default function GuidePage() {
                     </span>
                   </div>
                 </div>
-                <CardTitle className="pt-2 text-sm leading-snug font-semibold">
+                <CardTitle className="pt-1 text-sm leading-snug font-semibold">
                   {lessonCopy.title}
                 </CardTitle>
                 <CardDescription className="text-xs text-muted-foreground leading-normal">
@@ -117,9 +111,12 @@ export default function GuidePage() {
           <Card className="max-w-xl w-full max-h-[85vh] flex flex-col shadow-xl border-primary/20">
             <CardHeader className="border-b p-4">
               <div className="flex items-center justify-between gap-2">
-                <Badge variant="outline" className="text-xs">
-                  {copy.academy.categories[activeLesson.category]}
-                </Badge>
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Clock className="size-3.5" />
+                  <span>
+                    {activeLesson.estimatedMinutes} {copy.academy.minRead}
+                  </span>
+                </div>
                 <Button
                   variant="ghost"
                   size="sm"
