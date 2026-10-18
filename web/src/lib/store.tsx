@@ -98,6 +98,10 @@ export function createBusiness(input: {
   ownerName: string;
   type: Business["type"];
   entity: Business["entity"];
+  address?: string;
+  npwp?: string;
+  nib?: string;
+  legalDocuments?: Business["legalDocuments"];
 }): Business {
   const biz: Business = {
     id: newBusinessId(),
@@ -105,6 +109,10 @@ export function createBusiness(input: {
     ownerName: input.ownerName.trim(),
     type: input.type,
     entity: input.entity,
+    ...(input.address ? { address: input.address.trim() } : {}),
+    ...(input.npwp ? { npwp: input.npwp.trim() } : {}),
+    ...(input.nib ? { nib: input.nib.trim() } : {}),
+    ...(input.legalDocuments ? { legalDocuments: input.legalDocuments } : {}),
     createdAt: new Date().toISOString(),
   };
   saveBusiness(biz);
