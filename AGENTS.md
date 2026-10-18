@@ -43,10 +43,16 @@ one unit rather than a flat run of commits.
 ### Releasing
 
 ```bash
+git switch -c release/<version> develop
+# Bump versions in pyproject.toml and web/package.json
+uv lock                                         # sync uv.lock whenever pyproject.toml changes
+(cd web && pnpm install)                        # sync pnpm-lock.yaml if deps change
+git commit -am "chore(release): bump version to <version>"
 git switch develop && git merge --no-ff release/<version>
 git switch main && git merge --no-ff release/<version>
 git tag -a v<version> -m "Nata v<version>"
 git switch develop && git merge --no-ff main    # back-merge so develop has the tag
+git branch -d release/<version>
 ```
 
 ### Choosing the base branch — the rule that actually bites
