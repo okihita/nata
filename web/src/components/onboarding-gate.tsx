@@ -29,11 +29,23 @@ export function OnboardingGate({ children }: { children: React.ReactNode }) {
   const exempt = EXEMPT.some((p) => pathname.startsWith(p));
   const hasUsable = isUsableBusiness(business);
 
-  // Development & hackathon convenience: if storage has finished reading and
-  // no business has ever been declared, automatically seed Persona A (Rona Kirana)
-  // so developers, judges, and direct page navigations are never blocked with a blank screen.
+  // Development & hackathon convenience: support URL params (?persona=a / ?persona=b)
+  // for judges, pitch links, and automated evaluation bots.
   useEffect(() => {
-    if (ready && !hasUsable && !exempt) {
+    if (typeof window === "undefined" || !ready) return;
+    const params = new URLSearchParams(window.location.search);
+    const p = params.get("persona")?.toLowerCase();
+    if (p === "a" || p === "persona_a" || p === "retail") {
+      switchBusiness(DEMO_BUSINESS_PROFILES.persona_a);
+      return;
+    }
+    if (p === "b" || p === "persona_b" || p === "fnb") {
+      switchBusiness(DEMO_BUSINESS_PROFILES.persona_b);
+      return;
+    }
+
+    // Auto-seed Persona A on cold boot if storage has no business
+    if (!hasUsable && !exempt) {
       switchBusiness(DEMO_BUSINESS_PROFILES.persona_a);
     }
   }, [ready, hasUsable, exempt, switchBusiness]);
