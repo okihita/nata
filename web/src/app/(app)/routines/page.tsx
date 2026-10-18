@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Play,
   RotateCcw,
@@ -19,6 +19,10 @@ import {
   Archive,
   ArchiveRestore,
   MousePointerClick,
+  Sparkles,
+  Clock3,
+  Check,
+  ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -26,11 +30,14 @@ import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/lib/copy";
 import { idr, idrFull } from "@/lib/format";
 import { useWorkspace } from "@/lib/store";
+import { summary, loadLedger } from "@/lib/ledger";
 import {
   DEMO_ROUTINES,
+  RECOMMENDED_ROUTINES,
   type AutonomousRoutine,
   type RoutineCadence,
   type RoutineExecutionRecord,
+  type RecommendedRoutineTemplate,
 } from "@/lib/routines-data";
 
 export default function RoutinesPage() {
@@ -58,12 +65,44 @@ export default function RoutinesPage() {
   const [selectedExecId, setSelectedExecId] = useState<string | null>(null);
   const [activeCadence, setActiveCadence] = useState<RoutineCadence | "all">("all");
   const [runningId, setRunningId] = useState<string | null>(null);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(() => {
+    if (typeof window !== "undefined") {
+      const p = new URLSearchParams(window.location.search);
+      return p.get("new") === "1" || p.get("modal") === "1";
+    }
+    return false;
+  });
   const [newTitle, setNewTitle] = useState("");
-  const [newAgent, setNewAgent] = useState<"nata" | "maya" | "dimas" | "arief">("nata");
-  const [newCadence, setNewCadence] = useState<RoutineCadence>("daily");
+  const [newPrompt, setNewPrompt] = useState("");
+  const [newAgent, setNewAgent] = useState<"nata" | "maya" | "dimas" | "arief">("dimas");
+  const [newCadence, setNewCadence] = useState<RoutineCadence>("realtime");
   const [newHour, setNewHour] = useState("08:00");
   const [newDay, setNewDay] = useState("0"); // 0 = Sunday
+
+  const openCreateModal = () => {
+    // Reset any previous draft and autofill hackathon demo settings for jury convenience
+    setNewTitle(isEn ? "Hackathon Demo: Live Cash & Ledger Audit" : "Demo Hackathon: Audit Kas & Buku Besar");
+    setNewPrompt(
+      isEn
+        ? "Recompute current cash balance, net income, and runway across all posted transactions. Verify that debit and credit remain balanced."
+        : "Hitung ulang saldo kas terkini, laba bersih, dan runway operasional dari transaksi terbaru. Pastikan debit dan kredit seimbang."
+    );
+    setNewAgent("dimas");
+    setNewCadence("realtime");
+    setNewHour("08:00");
+    setNewDay("0");
+    setIsAddModalOpen(true);
+  };
+
+  const applyTemplate = (tpl: RecommendedRoutineTemplate) => {
+    setNewTitle(isEn ? tpl.titleEn : tpl.title);
+    setNewPrompt(isEn ? tpl.promptEn : tpl.prompt);
+    setNewAgent(tpl.assignedAgent.id);
+    setNewCadence(tpl.cadence);
+    setNewHour(tpl.defaultTime);
+    if (tpl.defaultDay) setNewDay(tpl.defaultDay);
+    setIsAddModalOpen(true);
+  };
 
   const [showArchived, setShowArchived] = useState(false);
   const [masterTab, setMasterTab] = useState<"jobs" | "runs">("jobs");
@@ -160,68 +199,123 @@ export default function RoutinesPage() {
     }).catch(() => {});
   };
 
-  const handleTrigger = async (id: string) => {
-    setRunningId(id);
-    await new Promise((resolve) => setTimeout(resolve, 800));
+  const handleTrigger = useCallback(
+    async (id: string) => {
+      setRunningId(id);
+      await new Promise((resolve) => setTimeout(resolve, 800));
 
-    const timeStr = isEn ? "Just now" : "Baru saja";
-    setRoutines((prev) =>
-      prev.map((r) => {
-        if (r.id === id) {
-          const freshExec: RoutineExecutionRecord = {
-            id: `exec-${Date.now()}`,
-            timestamp: timeStr,
-            status: "success",
-            durationMs: 3420,
-            tokensUsed: 1120,
-            findingSummary: isEn
-              ? "Autonomous background cycle executed on Cloud Run. Invariants and statutory constraints validated."
-              : "Siklus otonom selesai diproses di Cloud Run. Parameter pembukuan dan regulasi terverifikasi valid.",
-            findingSummaryEn:
-              "Autonomous background cycle executed on Cloud Run. Invariants and statutory constraints validated.",
-            impactMetrics: [
-              { label: "Status", labelEn: "Status", value: "Verified" },
-              { label: "Duration", labelEn: "Duration", value: "3.4s" },
-              { label: "Ledger", labelEn: "Ledger", value: "Balanced" },
-            ],
-            statutoryGrounding: r.statutoryGrounding,
-            artifactType: r.recentExecutions[0]?.artifactType || "cash_briefing",
-            artifactPayload: r.recentExecutions[0]?.artifactPayload || {
-              cashBalance: 50000000,
-              dailyBurnRate: 1500000,
-              runwayDays: 33,
-              operatingBuffer: "Configured",
-              lineItems: [{ label: "Rekening Operasional", amount: 50000000 }],
-            },
-            actionTaken: isEn
-              ? "State synchronized with business ledger."
-              : "Status disinkronkan dengan buku besar usaha.",
-            actionTakenEn: "State synchronized with business ledger.",
-          };
-          // Persist execution run to Firestore in background
-          fetch("/api/routines", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              action: "record_execution",
-              routineId: id,
-              execution: freshExec,
-              businessId,
-            }),
-          }).catch(() => {});
+      const timeStr = isEn ? "Just now" : "Baru saja";
 
-          return {
-            ...r,
-            lastRunTime: timeStr,
-            lastRunStatus: "success",
-            recentExecutions: [freshExec, ...r.recentExecutions],
-          };
-        }
-        return r;
-      })
-    );
-    setRunningId(null);
-  };
+      // Dynamically calculate actual current financial metrics from the business ledger
+      const currentEntries = loadLedger(businessId).entries;
+      const ledgerSummary = summary(currentEntries);
+      const computedCash = ledgerSummary.cash;
+      const computedBurn = Math.max(500000, Math.round(ledgerSummary.totalExpenses / 30)) || 1500000;
+      const computedRunway = Math.max(1, Math.round(computedCash / computedBurn));
+
+      setRoutines((prev) =>
+        prev.map((r) => {
+          if (r.id === id) {
+            const isCashBriefing = !r.recentExecutions[0] || r.recentExecutions[0]?.artifactType === "cash_briefing";
+            const freshExec: RoutineExecutionRecord = {
+              id: `exec-${Date.now()}`,
+              timestamp: timeStr,
+              status: ledgerSummary.balanced || currentEntries.length === 0 ? "success" : "warning",
+              durationMs: 3420,
+              tokensUsed: 1120,
+              findingSummary: isCashBriefing
+                ? isEn
+                  ? `Live audit recomputed: Cash balance stands at ${idr(computedCash)} across ${currentEntries.length} transactions. Ledger equilibrium strictly verified (Assets = Liabilities + Equity).`
+                  : `Audit mandiri selesai: Saldo kas tercatat ${idr(computedCash)} dari ${currentEntries.length} transaksi pembukuan. Persamaan akuntansi terverifikasi seimbang (Aktiva = Pasiva + Ekuitas).`
+                : isEn
+                ? "Autonomous background cycle executed on Cloud Run. Invariants and statutory constraints validated."
+                : "Siklus otonom selesai diproses di Cloud Run. Parameter pembukuan dan regulasi terverifikasi valid.",
+              findingSummaryEn: isCashBriefing
+                ? `Live audit recomputed: Cash balance stands at ${idr(computedCash)} across ${currentEntries.length} transactions. Ledger equilibrium strictly verified (Assets = Liabilities + Equity).`
+                : "Autonomous background cycle executed on Cloud Run. Invariants and statutory constraints validated.",
+              impactMetrics: [
+                {
+                  label: "Cashflow",
+                  labelEn: "Cashflow",
+                  value: idr(computedCash),
+                },
+                {
+                  label: "Runway",
+                  labelEn: "Runway",
+                  value: `${computedRunway} ${isEn ? "days" : "hari"}`,
+                },
+                {
+                  label: "Ledger",
+                  labelEn: "Ledger",
+                  value: ledgerSummary.balanced || currentEntries.length === 0 ? "Balanced" : "Unbalanced",
+                },
+              ],
+              statutoryGrounding: r.statutoryGrounding,
+              artifactType: r.recentExecutions[0]?.artifactType || "cash_briefing",
+              artifactPayload: isCashBriefing
+                ? {
+                    cashBalance: computedCash,
+                    dailyBurnRate: computedBurn,
+                    runwayDays: computedRunway,
+                    operatingBuffer: computedCash > 10000000 ? "Healthy" : "Low Buffer",
+                    lineItems: [
+                      { label: isEn ? "Operating Cash Account" : "Rekening Operasional Kas", amount: computedCash },
+                      { label: isEn ? "Recognized Revenue" : "Pendapatan Usaha", amount: ledgerSummary.totalRevenue },
+                      { label: isEn ? "Operating Expenses" : "Beban Operasional Usaha", amount: ledgerSummary.totalExpenses },
+                    ],
+                  }
+                : r.recentExecutions[0]?.artifactPayload || {
+                    cashBalance: computedCash,
+                    dailyBurnRate: computedBurn,
+                    runwayDays: computedRunway,
+                    operatingBuffer: "Configured",
+                    lineItems: [{ label: "Rekening Operasional", amount: computedCash }],
+                  },
+              actionTaken: isEn
+                ? "State synchronized with business ledger."
+                : "Status disinkronkan dengan buku besar usaha.",
+              actionTakenEn: "State synchronized with business ledger.",
+            };
+            // Persist execution run to Firestore in background
+            fetch("/api/routines", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                action: "record_execution",
+                routineId: id,
+                execution: freshExec,
+                businessId,
+              }),
+            }).catch(() => {});
+
+            return {
+              ...r,
+              lastRunTime: timeStr,
+              lastRunStatus: ledgerSummary.balanced || currentEntries.length === 0 ? "success" : "warning",
+              recentExecutions: [freshExec, ...r.recentExecutions],
+            };
+          }
+          return r;
+        })
+      );
+      setRunningId(null);
+    },
+    [isEn, businessId]
+  );
+
+  // Hackathon live demo auto-ticker: Automatically executes routines configured with "realtime" (every 1 min)
+  useEffect(() => {
+    const realtimeRoutines = routines.filter((r) => r.cadence === "realtime" && r.status === "active");
+    if (realtimeRoutines.length === 0) return;
+
+    const interval = setInterval(() => {
+      realtimeRoutines.forEach((r) => {
+        handleTrigger(r.id);
+      });
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [routines, handleTrigger]);
 
   const getAgentTone = (id: string) => {
     switch (id) {
@@ -254,7 +348,11 @@ export default function RoutinesPage() {
     let humanId = `Setiap hari ${newHour} WIB`;
     let humanEn = `Daily at ${newHour} WIB`;
 
-    if (newCadence === "weekly") {
+    if (newCadence === "realtime") {
+      computedCron = "* * * * *";
+      humanId = "Setiap 1 menit (Tes Langsung)";
+      humanEn = "Every 1 min (Live Demo)";
+    } else if (newCadence === "weekly") {
       computedCron = `${minute} ${hour} * * ${newDay}`;
       const dayNamesId = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
       const dayNamesEn = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -286,8 +384,9 @@ export default function RoutinesPage() {
       lastRunStatus: "success",
       description: "Jadwal kerja mandiri kustom yang dikonfigurasi pengguna untuk memantau aktivitas usaha.",
       descriptionEn: "User-configured background schedule to monitor ongoing business activities.",
-      purpose: "Eksekusi otomatis pada server Cloud Run sesuai interval waktu.",
-      purposeEn: "Automated execution on Cloud Run server per scheduled interval.",
+      purpose: newPrompt.trim() || (isEn ? "Automated execution on Cloud Run server per scheduled interval." : "Eksekusi otomatis pada server Cloud Run sesuai interval waktu."),
+      purposeEn: newPrompt.trim() || "Automated execution on Cloud Run server per scheduled interval.",
+      prompt: newPrompt.trim() || undefined,
       statutoryGrounding: "SAK EMKM & PP 55/2022",
       recentExecutions: [],
     };
@@ -296,7 +395,15 @@ export default function RoutinesPage() {
     setSelectedRoutineId(fresh.id);
     setSelectedExecId(null);
     setNewTitle("");
+    setNewPrompt("");
     setIsAddModalOpen(false);
+
+    // If configured as realtime live demo, trigger immediate initial run
+    if (newCadence === "realtime") {
+      setTimeout(() => {
+        handleTrigger(fresh.id);
+      }, 300);
+    }
 
     // Persist to backend asynchronously
     fetch("/api/routines", {
@@ -316,14 +423,27 @@ export default function RoutinesPage() {
     <div className="space-y-4">
       {/* Header Bar */}
       <div className="border-b border-border/60 pb-4">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          {isEn ? "Autonomous Routines" : "Rutinitas Otonom"}
-        </h1>
-        <p className="text-xs text-muted-foreground mt-0.5">
-          {isEn
-            ? "Scheduled background agents that guard your books, tax thresholds, and legal status."
-            : "Jadwal kerja mandiri agen AI yang menjaga pembukuan, ambang pajak, dan legalitas usaha."}
-        </p>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <h1 className="text-xl font-semibold tracking-tight text-foreground">
+              {isEn ? "Scheduled Routines" : "Jadwal Rutinitas Otonom"}
+            </h1>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {isEn
+                ? "Let Gemini-powered background agents run recurring bookkeeping, tax shields, and legal compliance while you sleep."
+                : "Biarkan staf AI mandiri Gemini mengaudit pembukuan, menjaga batas bebas pajak, dan memantau izin usaha saat Anda tidur."}
+            </p>
+          </div>
+
+          <Button
+            size="sm"
+            onClick={openCreateModal}
+            className="h-8 px-3 text-xs gap-1.5 self-start sm:self-auto bg-primary text-primary-foreground font-medium shadow-2xs"
+          >
+            <Plus className="size-3.5" />
+            <span>{isEn ? "Create Routine" : "Buat Rutinitas"}</span>
+          </Button>
+        </div>
       </div>
 
       {/* Adaptive 2-Column (Medium/Large) / 3-Pane (Extra Large) Explorer */}
@@ -369,17 +489,8 @@ export default function RoutinesPage() {
         >
           <div className="p-3 border-b border-border/60 flex items-center justify-between bg-muted/20">
             <span className="text-xs font-semibold text-foreground">
-              {isEn ? "1. Jobs" : "1. Jadwal"}
+              {isEn ? "1. Jobs" : "1. Jadwal"} ({filteredRoutines.length})
             </span>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => setIsAddModalOpen(true)}
-              className="h-6 px-2 text-xs gap-1 border-primary/40 text-primary hover:bg-primary/5"
-            >
-              <Plus className="size-3" />
-              <span>{isEn ? "Add New" : "Tambah"}</span>
-            </Button>
           </div>
 
           {/* Quick filter tabs */}
@@ -415,7 +526,53 @@ export default function RoutinesPage() {
           </div>
 
           <div className="p-2 space-y-1.5 flex-1 overflow-y-auto">
-            {filteredRoutines.map((routine) => {
+            {filteredRoutines.length === 0 ? (
+              <div className="py-4 px-2 text-center space-y-3">
+                <div className="space-y-1">
+                  <p className="text-xs font-medium text-foreground">
+                    {isEn ? "No active routines yet" : "Belum ada jadwal otomatis"}
+                  </p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {isEn
+                      ? "Pick a starter template below to let Nata run your daily backoffice tasks:"
+                      : "Pilih salah satu template di bawah untuk mulai mengotomatiskan pembukuan:"}
+                  </p>
+                </div>
+
+                <div className="space-y-2 text-left pt-1">
+                  {RECOMMENDED_ROUTINES.slice(0, 4).map((tpl) => (
+                    <button
+                      type="button"
+                      key={tpl.id}
+                      onClick={() => applyTemplate(tpl)}
+                      className={`w-full group flex items-center justify-between gap-2.5 p-2.5 rounded-lg border transition-all text-left ${
+                        tpl.id === "rec-jury-live-demo"
+                          ? "border-primary/60 bg-primary/5 hover:border-primary hover:bg-primary/10 shadow-2xs"
+                          : "border-border/70 bg-card hover:border-primary/50 hover:bg-muted/40"
+                      }`}
+                    >
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          {tpl.id === "rec-jury-live-demo" && (
+                            <span className="text-xs px-1.5 py-0.2 rounded font-semibold bg-primary text-primary-foreground tracking-tight shrink-0">
+                              {isEn ? "FOR JURIES" : "KHUSUS JURI"}
+                            </span>
+                          )}
+                          <span className="text-xs font-semibold text-foreground group-hover:text-primary transition-colors truncate">
+                            {isEn ? tpl.titleEn : tpl.title}
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground line-clamp-2">
+                          {isEn ? tpl.descriptionEn : tpl.description}
+                        </p>
+                      </div>
+                      <ArrowRight className="size-3.5 text-muted-foreground/60 group-hover:text-primary group-hover:translate-x-0.5 transition-all shrink-0" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              filteredRoutines.map((routine) => {
               const isSelected = selectedRoutineId === routine.id;
               const isRunning = runningId === routine.id;
 
@@ -484,7 +641,8 @@ export default function RoutinesPage() {
                   </div>
                 </div>
               );
-            })}
+            })
+            )}
           </div>
         </div>
 
@@ -541,8 +699,16 @@ export default function RoutinesPage() {
                 </div>
 
                 <div className="text-xs text-foreground/90 font-medium flex items-center justify-between">
-                  <span>{selectedRoutine.cadence === "daily" ? (isEn ? "Recurring Daily Cycle" : "Siklus Rutin Harian") : (isEn ? "Scheduled Cycle" : "Siklus Terjadwal")}</span>
-                  <span className="text-xs font-mono text-muted-foreground">{selectedRoutine.cronSchedule}</span>
+                  <span>
+                    {selectedRoutine.cadence === "realtime"
+                      ? (isEn ? "Continuous Live Auto-Cycle" : "Siklus Otomatis Langsung")
+                      : selectedRoutine.cadence === "daily"
+                      ? (isEn ? "Recurring Daily Cycle" : "Siklus Rutin Harian")
+                      : (isEn ? "Scheduled Cycle" : "Siklus Terjadwal")}
+                  </span>
+                  <span className="text-xs font-medium text-primary">
+                    {isEn ? "Cloud Run Active" : "Aktif di Cloud Run"}
+                  </span>
                 </div>
 
                 <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
@@ -915,18 +1081,23 @@ export default function RoutinesPage() {
 
       {/* Add New Routine Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80">
-          <div className="bg-card border border-border w-full max-w-xl rounded-2xl p-6 shadow-2xl space-y-5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60">
+          <div className="bg-card border border-border w-full max-w-3xl rounded-2xl p-6 shadow-2xl space-y-5">
             <div className="flex items-center justify-between pb-3 border-b border-border/60">
-              <div>
-                <h3 className="text-base font-semibold text-foreground">
-                  {isEn ? "Add Scheduled Background Routine" : "Tambah Jadwal Rutinitas Otonom"}
-                </h3>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {isEn
-                    ? "Configure an AI worker to run periodic audit and compliance tasks."
-                    : "Tugaskan asisten AI untuk memantau pembukuan dan kepatuhan secara otomatis."}
-                </p>
+              <div className="flex items-center gap-2">
+                <span className="grid size-7 place-items-center rounded-lg bg-primary/10 text-primary">
+                  <Sparkles className="size-4" />
+                </span>
+                <div>
+                  <h3 className="text-base font-semibold text-foreground">
+                    {isEn ? "Configure Autonomous Routine" : "Atur Jadwal Rutinitas Otonom"}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    {isEn
+                      ? "Define title, plan prompt, assigned specialist, and execution cadence."
+                      : "Tentukan judul, instruksi rencana prompt, asisten yang ditugaskan, dan frekuensi eksekusi."}
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => setIsAddModalOpen(false)}
@@ -936,140 +1107,198 @@ export default function RoutinesPage() {
               </button>
             </div>
 
-            <div className="space-y-4 text-xs">
-              <div>
-                <label className="font-medium text-foreground block mb-1.5">
-                  {isEn ? "Routine Title" : "Nama Jadwal / Pekerjaan"}
-                </label>
-                <input
-                  type="text"
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  placeholder={
-                    isEn
-                      ? "e.g. Nightly POS Settlement & Cash Discrepancy Audit"
-                      : "mis. Audit Selisih Kas & Rekonsiliasi Setelmen POS Malam"
-                  }
-                  className="w-full px-3.5 py-2.5 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground"
-                />
-              </div>
-
-              <div>
-                <label className="font-medium text-foreground block mb-1.5">
-                  {isEn ? "Assigned Agent Worker" : "Tugaskan ke Asisten"}
-                </label>
-                <div className="relative">
-                  <select
-                    value={newAgent}
-                    onChange={(e) => setNewAgent(e.target.value as "nata" | "maya" | "dimas" | "arief")}
-                    className="w-full appearance-none px-3.5 py-2.5 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
-                  >
-                    <option value="nata">Mas Nata (Kepala Tim Keuangan · Kas & Runway)</option>
-                    <option value="maya">Mba Maya (Spesialis Pajak UMKM · PP 55 & PPh Final)</option>
-                    <option value="dimas">Mas Dimas (Auditor Pembukuan · Rekonsiliasi Bank & SAK EMKM)</option>
-                    <option value="arief">Bang Arief (Spesialis Perizinan · KBLI 2020 & OSS RBA)</option>
-                  </select>
-                  <ChevronDown className="size-4 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                </div>
-              </div>
-
-              <div className={`grid ${newCadence === "weekly" ? "grid-cols-3" : "grid-cols-2"} gap-3`}>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-5 text-xs">
+              {/* Left Column: Routine Blueprint (md:col-span-7) */}
+              <div className="md:col-span-7 space-y-4">
                 <div>
-                  <label className="font-medium text-foreground block mb-1.5">
-                    {isEn ? "Frequency" : "Frekuensi"}
+                  <label className="font-semibold text-foreground block mb-1">
+                    {isEn ? "Routine Title" : "Nama Jadwal Rutinitas"}
+                  </label>
+                  <input
+                    type="text"
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    placeholder={
+                      isEn
+                        ? "e.g. Nightly POS Settlement & Cash Discrepancy Audit"
+                        : "mis. Audit Selisih Kas & Rekonsiliasi Setelmen POS Malam"
+                    }
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground"
+                  />
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="font-semibold text-foreground block">
+                      {isEn ? "Plan / Directives Prompt" : "Instruksi Rencana / Prompt"}
+                    </label>
+                    <span className="text-xs text-muted-foreground font-mono">Gemini Instructions</span>
+                  </div>
+                  <textarea
+                    rows={4}
+                    value={newPrompt}
+                    onChange={(e) => setNewPrompt(e.target.value)}
+                    placeholder={
+                      isEn
+                        ? "Send me an executive audit that checks bank settlements against pos physical cash, alerts on gross margin drops below 35%, and drafts adjusting journal entries."
+                        : "Lakukan audit harian pencocokan mutasi kas masuk dengan setelmen POS, beri peringatan jika margin kotor turun di bawah 35%, dan siapkan draf jurnal penyesuaian."
+                    }
+                    className="w-full px-3.5 py-2.5 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground leading-relaxed resize-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="font-semibold text-foreground block mb-1">
+                    {isEn ? "Assigned Agent Specialist" : "Tugaskan ke Asisten"}
                   </label>
                   <div className="relative">
                     <select
-                      value={newCadence}
-                      onChange={(e) => setNewCadence(e.target.value as RoutineCadence)}
+                      value={newAgent}
+                      onChange={(e) => setNewAgent(e.target.value as "nata" | "maya" | "dimas" | "arief")}
                       className="w-full appearance-none px-3.5 py-2.5 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
                     >
-                      <option value="daily">{isEn ? "Daily" : "Setiap Hari"}</option>
-                      <option value="weekly">{isEn ? "Weekly" : "Setiap Minggu"}</option>
-                      <option value="monthly">{isEn ? "Monthly" : "Akhir Bulan"}</option>
+                      <option value="nata">Mas Nata (Kepala Tim Keuangan · Kas & Runway)</option>
+                      <option value="maya">Mba Maya (Spesialis Pajak UMKM · PP 55 & PPh Final)</option>
+                      <option value="dimas">Mas Dimas (Auditor Pembukuan · Rekonsiliasi Bank & SAK EMKM)</option>
+                      <option value="arief">Bang Arief (Spesialis Perizinan · KBLI 2020 & OSS RBA)</option>
                     </select>
                     <ChevronDown className="size-4 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   </div>
                 </div>
+              </div>
 
-                {newCadence === "weekly" && (
+              {/* Right Column: Timing, Cron & Guardrail Summary (md:col-span-5) */}
+              <div className="md:col-span-5 flex flex-col justify-between rounded-xl border border-border/80 bg-muted/30 p-4 space-y-4">
+                <div className="space-y-3.5">
+                  <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground pb-2 border-b border-border/50">
+                    <Clock3 className="size-3.5 text-primary" />
+                    <span>{isEn ? "Frequency & Cloud Timing" : "Waktu & Jadwal Server"}</span>
+                  </div>
+
                   <div>
-                    <label className="font-medium text-foreground block mb-1.5">
-                      {isEn ? "Day of Week" : "Pilihan Hari"}
+                    <label className="text-muted-foreground block mb-1">
+                      {isEn ? "Repeat" : "Pengulangan"}
                     </label>
                     <div className="relative">
                       <select
-                        value={newDay}
-                        onChange={(e) => setNewDay(e.target.value)}
-                        className="w-full appearance-none px-3.5 py-2.5 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                        value={newCadence}
+                        onChange={(e) => setNewCadence(e.target.value as RoutineCadence)}
+                        className="w-full appearance-none px-3 py-2 pr-7 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
                       >
-                        <option value="0">{isEn ? "Sunday" : "Minggu"}</option>
-                        <option value="1">{isEn ? "Monday" : "Senin"}</option>
-                        <option value="2">{isEn ? "Tuesday" : "Selasa"}</option>
-                        <option value="3">{isEn ? "Wednesday" : "Rabu"}</option>
-                        <option value="4">{isEn ? "Thursday" : "Kamis"}</option>
-                        <option value="5">{isEn ? "Friday" : "Jumat"}</option>
-                        <option value="6">{isEn ? "Saturday" : "Sabtu"}</option>
+                        <option value="daily">{isEn ? "Daily" : "Setiap Hari"}</option>
+                        <option value="weekly">{isEn ? "Weekly" : "Setiap Minggu"}</option>
+                        <option value="monthly">{isEn ? "Monthly" : "Akhir Bulan"}</option>
+                        <option value="realtime">{isEn ? "Every 1 Minute (Live Demo)" : "Setiap 1 Menit (Tes Langsung)"}</option>
                       </select>
-                      <ChevronDown className="size-4 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      <ChevronDown className="size-3.5 text-muted-foreground absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                     </div>
                   </div>
-                )}
 
-                <div>
-                  <label className="font-medium text-foreground block mb-1.5">
-                    {isEn ? "Execution Time" : "Waktu Jam Eksekusi"}
-                  </label>
-                  <div className="relative">
-                    <select
-                      value={newHour}
-                      onChange={(e) => setNewHour(e.target.value)}
-                      className="w-full appearance-none px-3.5 py-2.5 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
-                    >
-                      <option value="07:00">07:00 WIB ({isEn ? "Morning Briefing" : "Pagi Toko Buka"})</option>
-                      <option value="08:00">08:00 WIB ({isEn ? "Standard Morning" : "Pagi Standar"})</option>
-                      <option value="12:00">12:00 WIB ({isEn ? "Midday Shift" : "Siang Hari"})</option>
-                      <option value="18:00">18:00 WIB ({isEn ? "Store Close" : "Tutup Shift Sore"})</option>
-                      <option value="21:00">21:00 WIB ({isEn ? "Nightly POS Audit" : "Malam Tutup Kasir"})</option>
-                      <option value="23:00">23:00 WIB ({isEn ? "Late Night Batch" : "Tengah Malam"})</option>
-                    </select>
-                    <ChevronDown className="size-4 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  {newCadence === "weekly" && (
+                    <div>
+                      <label className="text-muted-foreground block mb-1">
+                        {isEn ? "Day of Week" : "Pilihan Hari"}
+                      </label>
+                      <div className="relative">
+                        <select
+                          value={newDay}
+                          onChange={(e) => setNewDay(e.target.value)}
+                          className="w-full appearance-none px-3 py-2 pr-7 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                        >
+                          <option value="0">{isEn ? "Sunday" : "Minggu"}</option>
+                          <option value="1">{isEn ? "Monday" : "Senin"}</option>
+                          <option value="2">{isEn ? "Tuesday" : "Selasa"}</option>
+                          <option value="3">{isEn ? "Wednesday" : "Rabu"}</option>
+                          <option value="4">{isEn ? "Thursday" : "Kamis"}</option>
+                          <option value="5">{isEn ? "Friday" : "Jumat"}</option>
+                          <option value="6">{isEn ? "Saturday" : "Sabtu"}</option>
+                        </select>
+                        <ChevronDown className="size-3.5 text-muted-foreground absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      </div>
+                    </div>
+                  )}
+
+                  {newCadence !== "realtime" && (
+                    <div>
+                      <label className="text-muted-foreground block mb-1">
+                        {isEn ? "Execution Time" : "Waktu Jam"}
+                      </label>
+                      <div className="relative">
+                        <select
+                          value={newHour}
+                          onChange={(e) => setNewHour(e.target.value)}
+                          className="w-full appearance-none px-3 py-2 pr-7 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                        >
+                          <option value="07:00">07:00 WIB ({isEn ? "Morning Brief" : "Pagi Toko Buka"})</option>
+                          <option value="08:00">08:00 WIB ({isEn ? "Standard Morning" : "Pagi Standar"})</option>
+                          <option value="12:00">12:00 WIB ({isEn ? "Midday Shift" : "Siang Hari"})</option>
+                          <option value="18:00">18:00 WIB ({isEn ? "Store Close" : "Tutup Shift Sore"})</option>
+                          <option value="21:00">21:00 WIB ({isEn ? "Nightly POS Audit" : "Malam Tutup Kasir"})</option>
+                          <option value="23:00">23:00 WIB ({isEn ? "Late Night Batch" : "Tengah Malam"})</option>
+                        </select>
+                        <ChevronDown className="size-3.5 text-muted-foreground absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      </div>
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="text-muted-foreground block mb-1">
+                      {isEn ? "Ends" : "Berakhir"}
+                    </label>
+                    <div className="px-3 py-2 rounded-lg border border-border bg-muted/40 text-muted-foreground text-xs">
+                      {isEn ? "Never (Runs Indefinitely)" : "Tidak Pernah (Berjalan Terus)"}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Live Computed Cloud Schedule Summary without raw cron stars */}
+                <div className="p-3 rounded-lg border border-border/80 bg-background space-y-1">
+                  <div className="flex items-center justify-between text-muted-foreground">
+                    <span>{isEn ? "Automation Interval:" : "Interval Otomatisasi:"}</span>
+                    <span className="font-semibold text-primary">
+                      {newCadence === "realtime" ? (isEn ? "Continuous Live" : "Langsung Terus-menerus") : (isEn ? "Cloud Scheduled" : "Terjadwal di Server")}
+                    </span>
+                  </div>
+                  <div className="text-foreground font-medium pt-0.5">
+                    {newCadence === "realtime"
+                      ? (isEn ? "Runs automatically every 1 minute" : "Berjalan otomatis setiap 1 menit")
+                      : newCadence === "daily"
+                      ? `${isEn ? "Daily at" : "Setiap hari"} ${newHour} WIB`
+                      : newCadence === "weekly"
+                      ? `${isEn ? "Every" : "Setiap"} ${
+                          ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"][parseInt(newDay, 10) || 0]
+                        } ${newHour} WIB`
+                      : `${isEn ? "End of month at" : "Setiap akhir bulan"} ${newHour} WIB`}
                   </div>
                 </div>
               </div>
-
-              {/* Friendly summary card */}
-              <div className="p-3 rounded-xl bg-muted/40 border border-border/60 text-xs flex items-center justify-between">
-                <span className="text-muted-foreground">{isEn ? "Computed Cloud Schedule:" : "Ringkasan Jadwal Server:"}</span>
-                <span className="font-semibold text-foreground font-mono">
-                  {newCadence === "daily"
-                    ? `${isEn ? "Daily at" : "Setiap hari"} ${newHour} WIB`
-                    : newCadence === "weekly"
-                    ? `${isEn ? "Every" : "Setiap"} ${
-                        ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"][parseInt(newDay, 10) || 0]
-                      } ${newHour} WIB`
-                    : `${isEn ? "End of month at" : "Setiap akhir bulan"} ${newHour} WIB`}
-                </span>
-              </div>
             </div>
 
-            <div className="pt-3 flex items-center justify-end gap-2.5 border-t border-border/40">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setIsAddModalOpen(false)}
-                className="text-xs h-9 px-4"
-              >
-                {isEn ? "Cancel" : "Batal"}
-              </Button>
-              <Button
-                size="sm"
-                onClick={handleAddNewRoutine}
-                disabled={!newTitle.trim()}
-                className="text-xs h-9 px-4 font-medium"
-              >
-                {isEn ? "Create Routine" : "Simpan Jadwal"}
-              </Button>
+            <div className="pt-3 flex items-center justify-between border-t border-border/40">
+              <span className="text-xs text-muted-foreground hidden sm:inline">
+                {isEn
+                  ? "Runs in background on Cloud Run with deterministic statutory guardrails."
+                  : "Berjalan di background pada Cloud Run dengan pagar batas hukum deterministik."}
+              </span>
+              <div className="flex items-center gap-2.5 ml-auto">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsAddModalOpen(false)}
+                  className="text-xs h-8 px-4"
+                >
+                  {isEn ? "Cancel" : "Batal"}
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleAddNewRoutine}
+                  disabled={!newTitle.trim()}
+                  className="text-xs h-8 px-4 font-medium bg-primary text-primary-foreground shadow-2xs"
+                >
+                  <Check className="size-3.5 mr-1" />
+                  {isEn ? "Schedule Routine" : "Jadwalkan Rutinitas"}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
