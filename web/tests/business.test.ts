@@ -21,6 +21,7 @@ import {
   ENTITY_LABEL,
   entityHasExemption,
   isUsableBusiness,
+  DEMO_BUSINESS_PROFILES,
 } from "../src/lib/business.ts";
 
 // ── Entity → tax treatment ──────────────────────────────────────────────────
@@ -79,5 +80,26 @@ test("a named business is usable", () => {
       createdAt: "2026-01-01T00:00:00.000Z",
     }),
     true,
+  );
+});
+
+// ── Macro profile & statutory technicalities ────────────────────────────────
+
+test("business profile supports address, npwp, nib, and statutory documents", () => {
+  const pA = DEMO_BUSINESS_PROFILES.persona_a;
+  assert.ok(pA.address, "Persona A must have a domicile address");
+  assert.ok(pA.npwp, "Persona A must have NPWP");
+  assert.ok(pA.nib, "Persona A must have NIB");
+  assert.ok(Array.isArray(pA.legalDocuments), "Persona A must have legal documents array");
+  assert.ok(pA.legalDocuments.length >= 3, "Persona A must include at least 3 statutory instruments");
+
+  const pB = DEMO_BUSINESS_PROFILES.persona_b;
+  assert.ok(pB.address, "Persona B must have a domicile address");
+  assert.ok(pB.npwp, "Persona B must have NPWP");
+  assert.ok(pB.nib, "Persona B must have NIB");
+  assert.ok(Array.isArray(pB.legalDocuments), "Persona B must have legal documents array");
+  assert.ok(
+    pB.legalDocuments.some((doc) => doc.issuer.includes("Kemenkumham")),
+    "Persona B (PT) must carry Kemenkumham corporate deed approval",
   );
 });
