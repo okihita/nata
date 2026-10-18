@@ -200,13 +200,13 @@ export default function AgentsPage() {
         : "Jawablah selalu dalam Bahasa Indonesia yang ramah, sopan, dan jelas untuk pelaku UMKM.";
       const fullPrompt = `${languageInstruction}\n\nPertanyaan/Pesan: ${text || "Tolong periksa lampiran ini."}`;
 
-      // Invoke ADK endpoint with tuned streaming
+      // Invoke ADK endpoint (atomic 5-second response, zero proxy buffer timeouts)
       await streamRun(
         {
           appName,
           userId: demoUid,
           sessionId,
-          streaming: true,
+          streaming: false,
           newMessage: {
             role: "user",
             parts: [{ text: fullPrompt }],
@@ -215,7 +215,13 @@ export default function AgentsPage() {
         (event) => {
           const partText = event.content?.parts?.map((p) => p.text).filter(Boolean).join("") || "";
           if (partText) {
-            streamedResponse += partText;
+            // ADK final event (partial === false) carries the complete response text.
+            // When streaming is active, appending it would duplicate the message.
+            if (event.partial === false) {
+              streamedResponse = partText;
+            } else {
+              streamedResponse += partText;
+            }
             updateMessages((prev) => ({
               ...prev,
               [activePersonaId]: prev[activePersonaId].map((m) =>
