@@ -12,6 +12,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { AvatarMaya, AvatarDimas, AvatarArief, AvatarNata } from "@/components/agent-avatars";
+import { Prose } from "@/components/prose";
 import { useLanguage } from "@/lib/copy";
 import { AGENT_PERSONAS, type AgentPersonId, type ChatMessage } from "@/lib/agents-persona-data";
 import { ensureSession, streamRun } from "@/lib/adk";
@@ -340,7 +341,11 @@ export default function AgentsPage() {
                         ))}
                       </div>
                     )}
-                    <p className="whitespace-pre-wrap">{msg.text}</p>
+                    {isUser ? (
+                      <p className="whitespace-pre-wrap">{msg.text}</p>
+                    ) : (
+                      <Prose text={msg.text} className="text-xs leading-relaxed text-foreground [&_strong]:text-foreground [&_p]:my-1.5 [&_ul]:my-1.5 [&_li]:my-0.5" />
+                    )}
                     <span
                       className={`block text-[10px] mt-1 text-right ${
                         isUser ? "text-primary-foreground/70" : "text-muted-foreground"
