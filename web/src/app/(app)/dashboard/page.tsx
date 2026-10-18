@@ -44,7 +44,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useWorkspace } from "@/lib/store";
 import { ENTITY_LABEL, entityHasExemption } from "@/lib/business";
-import { balanceSheet, incomeStatement, monthlyRevenue, taxPosition, trialBalance } from "@/lib/ledger";
+import { balanceSheet, incomeStatement, monthlyRevenue, taxPosition } from "@/lib/ledger";
 import { useLanguage } from "@/lib/copy";
 import { idr, idrFull } from "@/lib/format";
 
@@ -70,7 +70,6 @@ export default function DashboardPage() {
   const income = incomeStatement(activeEntries);
   const bs = balanceSheet(entries); // Balance sheet is always cumulative financial position
   const series = monthlyRevenue(entries);
-  const accounts = trialBalance(entries);
   const tax = taxPosition(entries, { individual: entityHasExemption(business?.entity ?? "orang_pribadi") });
 
   // 2. Action Required & To-Do List (Curated recommendations from AI bots)
@@ -518,15 +517,6 @@ export default function DashboardPage() {
           )}
         </CardContent>
       </Card>
-
-      {/* Cek cepat: daftar akun terpakai */}
-      <p className="mt-4 text-xs text-muted-foreground">
-        {copy.dashboard.accountsActive(accounts.length)}
-        {" · "}
-        {idr(income.totalRevenue)} {copy.dashboard.revenue.toLowerCase()}
-        {" · "}
-        {idrFull(bs.totalAssets)} {copy.laporan.assets.toLowerCase()}
-      </p>
     </>
   );
 }
