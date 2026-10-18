@@ -404,16 +404,16 @@ export default function RoutinesPage() {
                       : "border-border/50 hover:bg-muted/30"
                   }`}
                 >
-                  <div className="flex items-center justify-between gap-1 mb-1">
+                  <div className="flex items-center justify-between gap-1 mb-1.5">
                     <span
-                      className={`text-[10px] font-medium px-1.5 py-0.2 rounded border ${getAgentTone(
+                      className={`text-[10px] font-medium px-1.5 py-0.5 rounded border ${getAgentTone(
                         routine.assignedAgent.id
                       )}`}
                     >
                       {routine.assignedAgent.name}
                     </span>
-                    <span className="text-[10px] font-mono text-muted-foreground">
-                      {routine.cronSchedule}
+                    <span className="text-[10px] font-medium text-muted-foreground bg-muted/50 px-1.5 py-0.5 rounded border border-border/40">
+                      {isEn ? routine.scheduleHumanEn : routine.scheduleHuman}
                     </span>
                   </div>
 
@@ -471,13 +471,14 @@ export default function RoutinesPage() {
                   <CalendarClock className="size-3.5" />
                   {isEn ? "Next Scheduled Run" : "Jadwal Berikutnya"}
                 </span>
-                <span className="text-[10px] font-mono bg-primary/10 text-primary px-1.5 py-0.5 rounded border border-primary/20">
-                  {selectedRoutine.cronSchedule}
+                <span className="text-[10px] font-medium bg-primary/10 text-primary px-2 py-0.5 rounded border border-primary/20">
+                  {isEn ? selectedRoutine.scheduleHumanEn : selectedRoutine.scheduleHuman}
                 </span>
               </div>
 
-              <div className="text-xs text-foreground/90 font-medium">
-                {isEn ? selectedRoutine.scheduleHumanEn : selectedRoutine.scheduleHuman}
+              <div className="text-xs text-foreground/90 font-medium flex items-center justify-between">
+                <span>{selectedRoutine.cadence === "daily" ? (isEn ? "Recurring Daily Cycle" : "Siklus Rutin Harian") : (isEn ? "Scheduled Cycle" : "Siklus Terjadwal")}</span>
+                <span className="text-[10px] font-mono text-muted-foreground">{selectedRoutine.cronSchedule}</span>
               </div>
 
               <p className="text-[11px] text-muted-foreground line-clamp-2 leading-relaxed">
