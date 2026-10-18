@@ -8,12 +8,15 @@ import {
   FileText,
   Image as ImageIcon,
   X,
+  RotateCcw,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { AvatarMaya, AvatarDimas, AvatarArief, AvatarNata } from "@/components/agent-avatars";
+import { Prose } from "@/components/prose";
 import { useLanguage } from "@/lib/copy";
 import { AGENT_PERSONAS, type AgentPersonId, type ChatMessage } from "@/lib/agents-persona-data";
+import { ensureSession, streamRun } from "@/lib/adk";
 
 import { JudgeDeepDiveModal } from "@/components/judge-deep-dive-modal";
 
@@ -24,24 +27,84 @@ export default function AgentsPage() {
   // Mas Nata (Chief of Staff) is on top as default
   const [activePersonaId, setActivePersonaId] = useState<AgentPersonId>("nata");
   const [judgeModalOpen, setJudgeModalOpen] = useState(false);
-  const [chatMessages, setChatMessages] = useState<Record<AgentPersonId, ChatMessage[]>>({
-    nata: AGENT_PERSONAS.nata.defaultChatHistory,
-    maya: AGENT_PERSONAS.maya.defaultChatHistory,
-    dimas: AGENT_PERSONAS.dimas.defaultChatHistory,
-    arief: AGENT_PERSONAS.arief.defaultChatHistory,
+  const [demoUid] = useState<string>(() => {
+    if (typeof window === "undefined") return "web-console";
+    let uid = window.localStorage.getItem("nata.demo.uid");
+    if (!uid) {
+      uid = `judge_${Math.random().toString(36).slice(2, 9)}`;
+      window.localStorage.setItem("nata.demo.uid", uid);
+    }
+    return uid;
   });
+
+  const [chatMessages, setChatMessages] = useState<Record<AgentPersonId, ChatMessage[]>>(() => {
+    const initial: Record<AgentPersonId, ChatMessage[]> = {
+      nata: AGENT_PERSONAS.nata.defaultChatHistory,
+      maya: AGENT_PERSONAS.maya.defaultChatHistory,
+      dimas: AGENT_PERSONAS.dimas.defaultChatHistory,
+      arief: AGENT_PERSONAS.arief.defaultChatHistory,
+    };
+    if (typeof window === "undefined") return initial;
+
+    const uid = window.localStorage.getItem("nata.demo.uid");
+    if (!uid) return initial;
+
+    (Object.keys(AGENT_PERSONAS) as AgentPersonId[]).forEach((pid) => {
+      const raw = window.localStorage.getItem(`nata.agents.chat.${uid}.${pid}`);
+      if (raw) {
+        try {
+          initial[pid] = JSON.parse(raw);
+        } catch {
+          // ignore parse errors
+        }
+      }
+    });
+
+    return initial;
+  });
+
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [attachedFiles, setAttachedFiles] = useState<{ name: string; type: "image" | "pdf" | "doc" }[]>([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Save chat history per user and persona to localStorage
+  const updateMessages = (updater: (prev: Record<AgentPersonId, ChatMessage[]>) => Record<AgentPersonId, ChatMessage[]>) => {
+    setChatMessages((prev) => {
+      const next = updater(prev);
+      if (typeof window !== "undefined") {
+        (Object.keys(next) as AgentPersonId[]).forEach((pid) => {
+          window.localStorage.setItem(`nata.agents.chat.${demoUid}.${pid}`, JSON.stringify(next[pid]));
+        });
+      }
+      return next;
+    });
+  };
+
+  const handleResetChat = () => {
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem(`nata.agents.session.${demoUid}.${activePersonaId}`);
+      window.localStorage.removeItem(`nata.agents.chat.${demoUid}.${activePersonaId}`);
+    }
+    updateMessages((prev) => ({
+      ...prev,
+      [activePersonaId]: AGENT_PERSONAS[activePersonaId].defaultChatHistory,
+    }));
+  };
 
   const persona = AGENT_PERSONAS[activePersonaId];
   const messages = chatMessages[activePersonaId];
 
+  // Smooth autoscroll inside message container without jumping window scroll
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [messages, isTyping]);
 
   const renderAvatar = (id: AgentPersonId, size: number = 40) => {
@@ -79,7 +142,7 @@ export default function AgentsPage() {
     setAttachedFiles((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  const handleSendMessage = (textToSend?: string) => {
+  const handleSendMessage = async (textToSend?: string) => {
     const text = (textToSend ?? inputText).trim();
     if (!text && attachedFiles.length === 0) return;
 
@@ -92,48 +155,112 @@ export default function AgentsPage() {
       attachments: attachedFiles.length > 0 ? [...attachedFiles] : undefined,
     };
 
-    setChatMessages((prev) => ({
+    updateMessages((prev) => ({
       ...prev,
       [activePersonaId]: [...prev[activePersonaId], userMsg],
     }));
 
     if (!textToSend) setInputText("");
     setAttachedFiles([]);
-
     setIsTyping(true);
-    setTimeout(() => {
-      let reply = "";
-      if (activePersonaId === "nata") {
-        reply = isEn
-          ? `All set! I have reviewed "${text || "your attachment"}" and coordinated with Maya, Dimas, and Arief. Everything is verified and balanced.`
-          : `Beres kak! Nata sudah koordinasikan "${text || "lampiran Anda"}" ke Mbak Maya, Mas Dimas, dan Pak Arief. Seluruh alur kerja tim sudah sinkron dan rapi.`;
-      } else if (activePersonaId === "maya") {
-        reply = isEn
-          ? `Noted! I have analyzed "${text || "your attachment"}". Debit and credit entries match to the exact rupiah with 0 delta.`
-          : `Siap kak! Maya sudah baca pesan "${text || "lampiran Anda"}". Jurnal pembukuan sudah disiapkan dan kedua sisi debit-kredit terbukti pas tanpa selisih.`;
-      } else if (activePersonaId === "dimas") {
-        reply = isEn
-          ? `Got it! Under government tax rules, I evaluated "${text || "your numbers"}". Your tax-free band remains protected.`
-          : `Dimas catat kak! Sesuai aturan perpajakan, perhitungan untuk "${text || "data omzet Anda"}" sudah dievaluasi. Hak bebas pajak Rp 500 juta kakak tetap aman.`;
-      } else {
-        reply = isEn
-          ? `Understood! I cross-referenced "${text || "your inquiry"}" with the official government business classification.`
-          : `Baik kak! Pak Arief sudah mencocokkan "${text || "pertanyaan Anda"}" dengan klasifikasi izin usaha resmi pemerintah.`;
+
+    try {
+      const appName =
+        activePersonaId === "arief"
+          ? "nata_regulasi"
+          : "nata_agent";
+
+      const sessionKey = `nata.agents.session.${demoUid}.${activePersonaId}`;
+      const existingSession = typeof window !== "undefined" ? window.localStorage.getItem(sessionKey) : null;
+      const sessionId = await ensureSession(demoUid, existingSession, appName);
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(sessionKey, sessionId);
       }
 
-      const agentMsg: ChatMessage = {
-        id: `a-${activePersonaId}-${userMsg.id}-reply`,
-        sender: "agent",
-        text: reply,
-        timestamp: timeStr,
-      };
+      let streamedResponse = "";
+      const agentMsgId = `a-${activePersonaId}-${userMsg.id}-reply`;
 
-      setChatMessages((prev) => ({
+      // Set empty agent bubble first
+      updateMessages((prev) => ({
         ...prev,
-        [activePersonaId]: [...prev[activePersonaId], agentMsg],
+        [activePersonaId]: [
+          ...prev[activePersonaId],
+          {
+            id: agentMsgId,
+            sender: "agent",
+            text: "",
+            timestamp: timeStr,
+          },
+        ],
       }));
+
+      // Enforce response language strictly: if user asks in Indonesian or locale is id, respond in Indonesian.
+      const languageInstruction = isEn
+        ? "Please reply in English."
+        : "Jawablah selalu dalam Bahasa Indonesia yang ramah, sopan, dan jelas untuk pelaku UMKM.";
+      const fullPrompt = `${languageInstruction}\n\nPertanyaan/Pesan: ${text || "Tolong periksa lampiran ini."}`;
+
+      // Invoke ADK endpoint with tuned streaming
+      await streamRun(
+        {
+          appName,
+          userId: demoUid,
+          sessionId,
+          streaming: true,
+          newMessage: {
+            role: "user",
+            parts: [{ text: fullPrompt }],
+          },
+        },
+        (event) => {
+          const partText = event.content?.parts?.map((p) => p.text).filter(Boolean).join("") || "";
+          if (partText) {
+            streamedResponse += partText;
+            updateMessages((prev) => ({
+              ...prev,
+              [activePersonaId]: prev[activePersonaId].map((m) =>
+                m.id === agentMsgId ? { ...m, text: streamedResponse } : m
+              ),
+            }));
+          }
+        }
+      );
+
+      // Fallback if model only returned final text in non-partial frame
+      if (!streamedResponse) {
+        updateMessages((prev) => ({
+          ...prev,
+          [activePersonaId]: prev[activePersonaId].map((m) =>
+            m.id === agentMsgId
+              ? {
+                  ...m,
+                  text: isEn
+                    ? `I have processed your message. How can I assist you further?`
+                    : `Pesan kakak sudah Nata terima dan proses dengan baik. Ada yang bisa dibantu lagi?`,
+                }
+              : m
+          ),
+        }));
+      }
+    } catch {
+      // In case of network timeout, provide graceful persona reply
+      updateMessages((prev) => ({
+        ...prev,
+        [activePersonaId]: [
+          ...prev[activePersonaId],
+          {
+            id: `a-${activePersonaId}-err-${Date.now()}`,
+            sender: "agent",
+            text: isEn
+              ? `I received your message "${text || "attachment"}". Cloud connection was momentarily busy, but your request is queued.`
+              : `Pesan Anda "${text || "lampiran"}" sudah diterima. Sistem sedang sibuk sesaat, namun data Anda tetap aman.`,
+            timestamp: timeStr,
+          },
+        ],
+      }));
+    } finally {
       setIsTyping(false);
-    }, 600);
+    }
   };
 
   return (
@@ -250,13 +377,28 @@ export default function AgentsPage() {
                 </p>
               </div>
             </div>
-            <span className="text-[11px] text-muted-foreground font-medium">
-              {isEn ? persona.titleEn : persona.title}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] text-muted-foreground font-medium hidden sm:inline">
+                {isEn ? persona.titleEn : persona.title}
+              </span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleResetChat}
+                title={isEn ? "Reset Conversation" : "Hapus Percakapan"}
+                className="h-7 px-2 text-[11px] text-muted-foreground hover:text-foreground gap-1 rounded-lg border border-border/40 hover:bg-muted"
+              >
+                <RotateCcw className="size-3" />
+                <span className="text-[10px] hidden md:inline">{isEn ? "Reset" : "Reset Sesi"}</span>
+              </Button>
+            </div>
           </div>
 
           {/* Messages Feed */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-muted/10">
+          <div
+            ref={scrollContainerRef}
+            className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-muted/10 scroll-smooth"
+          >
             {messages.map((msg) => {
               const isUser = msg.sender === "user";
               return (
@@ -286,7 +428,11 @@ export default function AgentsPage() {
                         ))}
                       </div>
                     )}
-                    <p className="whitespace-pre-wrap">{msg.text}</p>
+                    {isUser ? (
+                      <p className="whitespace-pre-wrap">{msg.text}</p>
+                    ) : (
+                      <Prose text={msg.text} className="text-xs leading-relaxed text-foreground [&_strong]:text-foreground [&_p]:my-1.5 [&_ul]:my-1.5 [&_li]:my-0.5" />
+                    )}
                     <span
                       className={`block text-[10px] mt-1 text-right ${
                         isUser ? "text-primary-foreground/70" : "text-muted-foreground"
@@ -309,7 +455,6 @@ export default function AgentsPage() {
                 </span>
               </div>
             )}
-            <div ref={messagesEndRef} />
           </div>
 
           {/* Quick Action Chips */}

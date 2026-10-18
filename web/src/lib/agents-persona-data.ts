@@ -94,20 +94,8 @@ export const AGENT_PERSONAS: Record<AgentPersonId, AgentPersonaData> = {
       {
         id: "n1",
         sender: "agent",
-        text: "Selamat sore kak! Nata sudah merangkum seluruh aktivitas bisnis hari ini dari Mbak Maya dan Mas Dimas. Pembukuan seimbang pas, omzet bertambah Rp 2,4 juta, dan porsi pajak aman terlindungi. Ada yang ingin Nata koordinasikan lagi?",
-        timestamp: "16:15",
-      },
-      {
-        id: "n2",
-        sender: "user",
-        text: "Keren Mas Nata! Semua tim bekerja lancar ya. Kalau minggu depan omzet saya naik tembus 50 juta, apakah sistem langsung otomatis update?",
-        timestamp: "16:18",
-      },
-      {
-        id: "n3",
-        sender: "agent",
-        text: "Tentu kak! Begitu struk masuk, Mbak Maya langsung catat ke jurnal, Mas Dimas langsung hitung porsi pajaknya, dan Nata perbarui laporan laba rugi secara real-time. Kakak cukup pantau lewat ponsel. Alur kerja tim bisa kakak lihat di panel sebelah kanan ya.",
-        timestamp: "16:19",
+        text: "Halo kak! Saya Nata, kepala tim keuangan usaha Anda. Saya yang memastikan Maya (pembukuan), Dimas (pajak), dan Arief (izin usaha) berkoordinasi secara otomatis. Ada yang ingin Nata bantu atau periksa hari ini?",
+        timestamp: "10:00",
       },
     ],
     thinkingFlow: [
@@ -201,20 +189,8 @@ export const AGENT_PERSONAS: Record<AgentPersonId, AgentPersonaData> = {
       {
         id: "m1",
         sender: "agent",
-        text: "Halo kak! Saya Maya. Ada nota belanja atau transaksi hari ini? Kirim ke Maya ya, langsung Maya rapikan pembukuannya sampai pas.",
-        timestamp: "09:12",
-      },
-      {
-        id: "m2",
-        sender: "user",
-        text: "Halo Mbak Maya, tadi saya belanja bahan baku: Biji kopi arabika 250rb dan susu segar 100rb, total 350.000 bayar tunai dari kas toko.",
-        timestamp: "09:14",
-      },
-      {
-        id: "m3",
-        sender: "agent",
-        text: "Siap kak, sudah Maya susun jurnalnya! Transaksi Rp 350.000 masuk ke Persediaan Bahan (Debit) dan mengurangi Kas Tunai (Kredit). Sisi Debit dan Kredit seimbang pas tanpa selisih 1 rupiah pun. Kakak bisa klik tombol di panel kanan untuk langsung membukukannya ke buku besar ya.",
-        timestamp: "09:14",
+        text: "Halo kak! Saya Maya. Ada nota belanja, faktur, atau transaksi baru hari ini? Kirim ke Maya ya, langsung Maya rapikan pembukuannya sampai seimbang pas.",
+        timestamp: "10:00",
       },
     ],
     thinkingFlow: [
@@ -306,20 +282,8 @@ export const AGENT_PERSONAS: Record<AgentPersonId, AgentPersonaData> = {
       {
         id: "d1",
         sender: "agent",
-        text: "Halo kak! Saya Dimas. Omzet bulan ini sudah masuk ke sistem pembukuan. Mau Dimas hitungkan setoran pajaknya?",
-        timestamp: "10:05",
-      },
-      {
-        id: "d2",
-        sender: "user",
-        text: "Halo Mas Dimas, omzet bulan ini sekitar Rp 42 juta. Usaha saya terdaftar perorangan, apakah sudah harus setor pajak?",
-        timestamp: "10:08",
-      },
-      {
-        id: "d3",
-        sender: "agent",
-        text: "Kabar gembira kak! Karena usaha kakak berbentuk Orang Pribadi dan total omzet kumulatif tahun ini baru Rp 280 juta (di bawah batas Rp 500 juta), pajak bulan ini Rp 0 alias BEBAS PAJAK sesuai PP 55/2022. Lembar bukti resminya sudah Dimas terbitkan di sebelah kanan ya.",
-        timestamp: "10:09",
+        text: "Halo kak! Saya Dimas. Ada data omzet atau pertanyaan perpajakan UMKM (PPh Final 0,5% PP 55/2022)? Tanyakan ke Dimas ya.",
+        timestamp: "10:00",
       },
     ],
     thinkingFlow: [
@@ -413,20 +377,8 @@ export const AGENT_PERSONAS: Record<AgentPersonId, AgentPersonaData> = {
       {
         id: "a1",
         sender: "agent",
-        text: "Halo kak, salam kenal. Sedang merencanakan buka usaha atau mau melengkapi izin? Ceritakan jualan apa saja, biar Pak Arief carikan kodenya.",
-        timestamp: "11:20",
-      },
-      {
-        id: "a2",
-        sender: "user",
-        text: "Pak Arief, saya mau buka kedai kopi santai di garasi rumah, ada meja kursi buat nongkrong, jual kopi susu, espresso, sama cemilan kentang goreng.",
-        timestamp: "11:22",
-      },
-      {
-        id: "a3",
-        sender: "agent",
-        text: "Pilihan pas kak! Berdasarkan klasifikasi resmi pemerintah, usaha kakak masuk ke KBLI 56303 (Rumah Minum/Kafe). Tingkat risikonya tergolong Rendah, artinya kakak CUKUP memiliki Nomor Induk Berusaha (NIB) saja. NIB ini sudah otomatis berlaku sebagai izin operasional resmi. Sertifikat kelayakannya sudah Pak Arief siapkan di panel kanan ya.",
-        timestamp: "11:23",
+        text: "Halo kak, salam kenal. Sedang merencanakan buka usaha atau mau melengkapi izin KBLI OSS? Ceritakan jualan apa saja, biar Pak Arief carikan kodenya.",
+        timestamp: "10:00",
       },
     ],
     thinkingFlow: [
