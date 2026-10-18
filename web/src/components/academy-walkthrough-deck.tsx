@@ -18,7 +18,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -81,82 +80,76 @@ function DeckModalContent({ lesson }: { lesson: AcademyLesson }) {
   const lessonCopy = copy.academy.lessons[lesson.id as keyof typeof copy.academy.lessons];
 
   return (
-    <DialogContent className="max-w-3xl overflow-hidden p-0 gap-0 border-border/80 shadow-2xl bg-card">
-        {/* Modal Header */}
-        <DialogHeader className="p-4 sm:p-5 border-b bg-muted/20">
-          <div className="flex items-center justify-between gap-3">
+    <DialogContent className="max-w-4xl w-[94vw] p-0 gap-0 border-border/80 shadow-2xl bg-card overflow-hidden">
+      {/* 16:9 Aspect Ratio Presentation Stage */}
+      <div className="relative w-full aspect-video flex flex-col bg-background select-none">
+        {/* Presentation Slide Header / Ribbon */}
+        <div className="px-5 py-3 border-b bg-muted/20 flex items-center justify-between gap-3 shrink-0">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="grid size-6 place-items-center rounded bg-primary/10 text-primary shrink-0">
+              <Sparkles className="size-3.5" />
+            </span>
+            <DialogTitle className="text-xs font-semibold text-foreground truncate">
+              {deck.title[isEn ? "en" : "id"]}
+            </DialogTitle>
+            <DialogDescription className="text-xs text-muted-foreground hidden sm:inline truncate m-0">
+              · {deck.subtitle[isEn ? "en" : "id"]}
+            </DialogDescription>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <Badge variant="outline" className="text-xs font-mono bg-muted/50 border-border/70">
+              {currentSlideIndex + 1} / {totalSlides}
+            </Badge>
+          </div>
+        </div>
+
+        {/* Slide Canvas: 2-Column Split (Left: Content & Takeaways, Right: Live Visual Mockup) */}
+        <div className="flex-1 p-5 sm:p-6 grid grid-cols-1 md:grid-cols-12 gap-5 items-center overflow-hidden">
+          {/* Left Column (5 cols): Slide narrative */}
+          <div className="md:col-span-5 flex flex-col justify-center space-y-3">
             <div className="flex items-center gap-2">
-              <span className="grid size-7 place-items-center rounded-lg bg-primary/10 text-primary">
-                <Sparkles className="size-4" />
-              </span>
-              <div>
-                <DialogTitle className="text-base font-semibold leading-tight text-foreground">
-                  {deck.title[isEn ? "en" : "id"]}
-                </DialogTitle>
-                <DialogDescription className="text-xs text-muted-foreground mt-0.5">
-                  {deck.subtitle[isEn ? "en" : "id"]}
-                </DialogDescription>
-              </div>
-            </div>
-
-            {/* Slide counter indicator */}
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted border text-xs font-medium text-muted-foreground">
-              <span>{currentSlideIndex + 1}</span>
-              <span>/</span>
-              <span>{slides.length}</span>
-            </div>
-          </div>
-        </DialogHeader>
-
-        {/* Visual Mockup & Walkthrough Canvas */}
-        <div className="p-4 sm:p-6 space-y-4">
-          {/* Interactive Screen Mockup Box */}
-          <div className="relative rounded-xl border bg-muted/10 p-4 sm:p-5 min-h-[280px] sm:min-h-[300px] flex flex-col justify-center overflow-hidden">
-            {activeSlide?.renderVisual ? (
-              activeSlide.renderVisual()
-            ) : (
-              <DefaultFallbackVisual isEn={isEn} lessonTitle={lessonCopy?.title ?? ""} />
-            )}
-          </div>
-
-          {/* Slide Description & Key Takeaway */}
-          <div className="space-y-2 pt-1">
-            <div className="flex items-center justify-between gap-2">
               <Badge variant="outline" className="text-xs bg-primary/5 text-primary border-primary/20">
                 {activeSlide?.badge[isEn ? "en" : "id"]}
               </Badge>
-              {lesson.statuteCitation && (
-                <span className="text-xs font-mono text-muted-foreground truncate max-w-[260px] sm:max-w-md">
-                  {lesson.statuteCitation}
-                </span>
-              )}
             </div>
 
-            <h3 className="text-sm sm:text-base font-semibold text-foreground">
+            <h2 className="text-base sm:text-lg font-bold tracking-tight text-foreground leading-snug">
               {activeSlide?.title[isEn ? "en" : "id"]}
-            </h3>
+            </h2>
 
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
               {activeSlide?.description[isEn ? "en" : "id"]}
             </p>
 
             {activeSlide?.highlight && (
-              <div className="rounded-lg border bg-tone-hijau-bg/40 border-tone-hijau/20 px-3 py-2 text-xs text-foreground flex items-start gap-2">
-                <CheckCircle2 className="size-3.5 text-tone-hijau shrink-0 mt-0.5" />
-                <span>{activeSlide.highlight[isEn ? "en" : "id"]}</span>
+              <div className="rounded-lg border bg-tone-hijau-bg/40 border-tone-hijau/20 px-3 py-2 text-xs text-foreground flex items-start gap-2 shadow-2xs">
+                <CheckCircle2 className="size-4 text-tone-hijau shrink-0 mt-0.5" />
+                <span className="leading-snug">{activeSlide.highlight[isEn ? "en" : "id"]}</span>
               </div>
             )}
           </div>
+
+          {/* Right Column (7 cols): Visual Screen Stage */}
+          <div className="md:col-span-7 h-full flex flex-col justify-center">
+            <div className="relative rounded-xl border bg-muted/15 p-4 sm:p-5 shadow-xs border-border/70 flex flex-col justify-center overflow-hidden">
+              {activeSlide?.renderVisual ? (
+                activeSlide.renderVisual()
+              ) : (
+                <DefaultFallbackVisual isEn={isEn} lessonTitle={lessonCopy?.title ?? ""} />
+              )}
+            </div>
+          </div>
         </div>
 
-        {/* Navigation & Action Footer */}
-        <div className="p-4 border-t bg-muted/10 flex items-center justify-between gap-3">
-          {/* Stepper Dots & Arrow Controls */}
-          <div className="flex items-center gap-1.5 sm:gap-2">
+        {/* Presentation Slide Footer / Presenter Bar */}
+        <div className="px-5 py-2.5 border-t bg-muted/20 flex items-center justify-between gap-3 shrink-0">
+          {/* Slide Navigation Controls */}
+          <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
-              className="h-8 w-8 p-0"
+              className="h-7 w-7 p-0 cursor-pointer"
               onClick={handlePrev}
               disabled={currentSlideIndex === 0}
               aria-label="Previous Slide"
@@ -165,15 +158,15 @@ function DeckModalContent({ lesson }: { lesson: AcademyLesson }) {
             </Button>
 
             {/* Stepper Dots */}
-            <div className="flex items-center gap-1 px-1">
+            <div className="flex items-center gap-1.5 px-1.5">
               {slides.map((_, idx) => (
                 <button
                   key={idx}
                   type="button"
                   onClick={() => setCurrentSlideIndex(idx)}
-                  className={`size-2 rounded-full transition-all ${
+                  className={`size-2 rounded-full transition-all cursor-pointer ${
                     idx === currentSlideIndex
-                      ? "w-5 bg-primary"
+                      ? "w-6 bg-primary"
                       : "bg-muted-foreground/30 hover:bg-muted-foreground/60"
                   }`}
                   aria-label={`Go to slide ${idx + 1}`}
@@ -184,28 +177,29 @@ function DeckModalContent({ lesson }: { lesson: AcademyLesson }) {
             <Button
               variant="outline"
               size="sm"
-              className="h-8 w-8 p-0"
+              className="h-7 w-7 p-0 cursor-pointer"
               onClick={handleNext}
-              disabled={currentSlideIndex === slides.length - 1}
+              disabled={currentSlideIndex === totalSlides - 1}
               aria-label="Next Slide"
             >
               <ChevronRight className="size-4" />
             </Button>
           </div>
 
-          {/* Action Links */}
+          {/* Direct Handoff CTA */}
           <div className="flex items-center gap-2">
             {lesson.actionLink && (
-              <Button asChild size="sm" className="h-8 text-xs gap-1.5 shadow-xs">
+              <Button asChild size="sm" className="h-7 text-xs gap-1.5 shadow-xs cursor-pointer">
                 <Link href={lesson.actionLink.href}>
                   <span>{copy.academy.actionButtons[lesson.actionLink.labelKey]}</span>
-                  <ArrowRight className="size-3.5" />
+                  <ArrowRight className="size-3" />
                 </Link>
               </Button>
             )}
           </div>
         </div>
-      </DialogContent>
+      </div>
+    </DialogContent>
   );
 }
 
