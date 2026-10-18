@@ -282,6 +282,15 @@ export const copyId = {
     exportPdf: "Ekspor PDF (Siap Cetak)",
     exported: "Laporan diekspor sebagai CSV.",
     exportedPdf: "Membuka dokumen PDF laporan siap cetak…",
+    learnTerms: "Pelajari Istilah SAK EMKM",
+    learnTermsHint: "Pahami standar akuntansi SAK EMKM & aturan CALK di Kuliah Bisnis",
+    calkBannerTitle: "Bingung dengan istilah akuntansi di atas? Pelajari intisarinya:",
+    calkPills: {
+      accrual: "Metode Akrual",
+      depreciation: "Penyusutan Aset",
+      taxFinal: "PPh Final 0,5%",
+      fullAcademy: "Buka Kuliah Bisnis",
+    },
     emptyTitle: "Laporan muncul setelah ada catatan",
     emptyBody:
       "Laporan keuangan disusun dari pembukuan Anda. Catat struk pertama dulu, lalu laporan ini akan terisi sendiri.",

@@ -10,6 +10,10 @@ import {
   FileText,
   Printer,
   ChevronDown,
+  GraduationCap,
+  BookOpen,
+  Sparkles,
+  ArrowUpRight,
 } from "lucide-react";
 
 import Link from "next/link";
@@ -334,14 +338,55 @@ export default function LaporanPage() {
             </CardTitle>
             <CardDescription>{copy.laporan.calkIntro}</CardDescription>
           </div>
-          <Badge variant="secondary">SAK EMKM</Badge>
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="secondary">SAK EMKM</Badge>
+            <Button asChild variant="outline" size="sm" className="gap-1.5 h-8 text-xs font-medium">
+              <Link href="/academy?category=accounting_101" title={copy.laporan.learnTermsHint}>
+                <GraduationCap className="size-3.5 text-primary" />
+                <span>{copy.laporan.learnTerms}</span>
+              </Link>
+            </Button>
+          </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
           <ul className="list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
             {copy.laporan.calkPoints.map((point) => (
               <li key={point}>{point}</li>
             ))}
           </ul>
+
+          <div className="rounded-lg border bg-muted/30 p-3 sm:p-4">
+            <div className="flex items-center gap-1.5 text-xs font-medium text-foreground">
+              <Sparkles className="size-3.5 text-primary" />
+              <span>{copy.laporan.calkBannerTitle}</span>
+            </div>
+            <div className="mt-2.5 flex flex-wrap gap-2">
+              <Button asChild variant="secondary" size="sm" className="h-7 text-xs gap-1 font-normal bg-background/80 hover:bg-background border">
+                <Link href="/academy?category=accounting_101">
+                  <BookOpen className="size-3 text-primary" />
+                  <span>{copy.laporan.calkPills.accrual}</span>
+                </Link>
+              </Button>
+              <Button asChild variant="secondary" size="sm" className="h-7 text-xs gap-1 font-normal bg-background/80 hover:bg-background border">
+                <Link href="/academy/fun-facts">
+                  <span>💡</span>
+                  <span>{copy.laporan.calkPills.depreciation}</span>
+                </Link>
+              </Button>
+              <Button asChild variant="secondary" size="sm" className="h-7 text-xs gap-1 font-normal bg-background/80 hover:bg-background border">
+                <Link href="/academy?category=tax_compliance">
+                  <span>🏛️</span>
+                  <span>{copy.laporan.calkPills.taxFinal}</span>
+                </Link>
+              </Button>
+              <Button asChild variant="ghost" size="sm" className="h-7 text-xs gap-1 font-normal text-muted-foreground hover:text-foreground">
+                <Link href="/academy">
+                  <span>{copy.laporan.calkPills.fullAcademy}</span>
+                  <ArrowUpRight className="size-3" />
+                </Link>
+              </Button>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </>

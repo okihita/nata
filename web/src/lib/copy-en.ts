@@ -277,6 +277,15 @@ export const copyEn = {
     exportPdf: "Export PDF (Printable)",
     exported: "Statement exported as CSV.",
     exportedPdf: "Opening printable financial statement PDF…",
+    learnTerms: "Learn SAK EMKM Terms",
+    learnTermsHint: "Master SAK EMKM accounting standards & CALK rules in Business School",
+    calkBannerTitle: "Unsure about these accounting terms? Learn the essentials:",
+    calkPills: {
+      accrual: "Accrual Accounting",
+      depreciation: "Asset Depreciation",
+      taxFinal: "0.5% Final Tax",
+      fullAcademy: "Open Business School",
+    },
     emptyTitle: "Statements will appear once records exist",
     emptyBody:
       "Financial statements are generated from your general ledger. Record your first receipt to generate statements automatically.",
