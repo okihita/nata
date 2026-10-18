@@ -53,6 +53,7 @@ export default function RoutinesPage() {
   const [newDay, setNewDay] = useState("0"); // 0 = Sunday
 
   const [showArchived, setShowArchived] = useState(false);
+  const [masterTab, setMasterTab] = useState<"jobs" | "runs">("jobs");
 
   // Load from persisted Firestore store via API, gracefully falling back
   useEffect(() => {
@@ -300,10 +301,44 @@ export default function RoutinesPage() {
         </p>
       </div>
 
-      {/* 3-Pane Cascading Layout */}
+      {/* Adaptive 2-Column (Medium/Large) / 3-Pane (Extra Large) Explorer */}
+      {/* On < xl screens, show a clean segmented switcher between Jobs and Timeline */}
+      <div className="flex xl:hidden items-center justify-between p-1.5 rounded-lg border border-border/70 bg-card mb-2">
+        <div className="flex items-center gap-1 text-xs">
+          <button
+            onClick={() => setMasterTab("jobs")}
+            className={`px-3 py-1 rounded-md font-medium transition-colors ${
+              masterTab === "jobs"
+                ? "bg-foreground text-background"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {isEn ? "1. Jobs List" : "1. Daftar Jadwal"} ({filteredRoutines.length})
+          </button>
+          <button
+            onClick={() => setMasterTab("runs")}
+            className={`px-3 py-1 rounded-md font-medium transition-colors ${
+              masterTab === "runs"
+                ? "bg-foreground text-background"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {isEn ? "2. Run Timeline" : "2. Garis Waktu"} ({selectedRoutine.recentExecutions.length})
+          </button>
+        </div>
+
+        <span className="text-[11px] font-medium text-foreground truncate max-w-[200px] px-2">
+          {isEn ? selectedRoutine.titleEn : selectedRoutine.title}
+        </span>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 items-stretch min-h-[580px]">
-        {/* PANE 1: Jobs List (3 cols / 25%) */}
-        <div className="lg:col-span-3 flex flex-col rounded-xl border border-border/70 bg-card overflow-hidden">
+        {/* PANE 1: Jobs List (lg:col-span-5 xl:col-span-3) */}
+        <div
+          className={`flex flex-col rounded-xl border border-border/70 bg-card overflow-hidden ${
+            masterTab === "jobs" ? "flex" : "hidden xl:flex"
+          } lg:col-span-5 xl:col-span-3`}
+        >
           <div className="p-3 border-b border-border/60 flex items-center justify-between bg-muted/20">
             <span className="text-xs font-semibold text-foreground">
               {isEn ? "1. Jobs" : "1. Jadwal"}
@@ -408,8 +443,12 @@ export default function RoutinesPage() {
           </div>
         </div>
 
-        {/* PANE 2: Historical Runs (3 cols / 25%) */}
-        <div className="lg:col-span-4 flex flex-col rounded-xl border border-border/70 bg-card overflow-hidden">
+        {/* PANE 2: Historical Runs (lg:col-span-5 xl:col-span-4) */}
+        <div
+          className={`flex flex-col rounded-xl border border-border/70 bg-card overflow-hidden ${
+            masterTab === "runs" ? "flex" : "hidden xl:flex"
+          } lg:col-span-5 xl:col-span-4`}
+        >
           <div className="p-3 border-b border-border/60 flex items-center justify-between bg-muted/20">
             <div>
               <span className="text-xs font-semibold text-foreground">
@@ -543,8 +582,8 @@ export default function RoutinesPage() {
           </div>
         </div>
 
-        {/* PANE 3: Result & Artifact Canvas (5 cols / 50%) */}
-        <div className="lg:col-span-5 flex flex-col rounded-xl border border-border/70 bg-card overflow-hidden">
+        {/* PANE 3: Result & Artifact Canvas (lg:col-span-7 xl:col-span-5) */}
+        <div className="lg:col-span-7 xl:col-span-5 flex flex-col rounded-xl border border-border/70 bg-card overflow-hidden">
           <div className="p-3 border-b border-border/60 flex items-center justify-between bg-muted/20">
             <div className="flex items-center gap-1.5">
               <FileCheck2 className="size-3.5 text-primary" />
