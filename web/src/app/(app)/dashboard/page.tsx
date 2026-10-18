@@ -251,10 +251,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* 1. Status & Kesehatan Usaha (Business Status & NIB) */}
-      {business && <ComplianceRow business={business} className="mb-6" />}
-
-      {/* 2. Kartu Angka Utama (Number Dashboard) */}
+      {/* Number Dashboard */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Metric
           icon={<ArrowUpRight className="size-4" />}
