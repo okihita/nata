@@ -83,6 +83,7 @@ export const copyId = {
     },
     agents: "Agen",
     dashboard: "Dasbor",
+    rutinitas: "Rutinitas",
     catat: "Catat Struk",
     transaksi: "Transaksi",
     akun: "Daftar Akun",

@@ -13,6 +13,7 @@
 export type NavKey =
   | "agents"
   | "dashboard"
+  | "rutinitas"
   | "catat"
   | "transaksi"
   | "akun"
@@ -55,6 +56,7 @@ export const NAV: NavGroup[] = [
     items: [
       { href: "/agents", key: "agents", icon: "Bot", mobile: true },
       { href: "/dashboard", key: "dashboard", icon: "LayoutDashboard", mobile: true },
+      { href: "/routines", key: "rutinitas", icon: "Clock", mobile: true },
     ],
   },
   {
