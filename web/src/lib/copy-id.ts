@@ -236,6 +236,11 @@ export const copyId = {
     emptyTitle: "Belum ada akun yang dipakai",
     emptyBody:
       "Daftar ini terisi sendiri begitu Anda mencatat transaksi — Nata memilih akun yang sesuai untuk tiap struk.",
+    positionTitle: "Posisi Keuangan (Neraca)",
+    positionSubtitle: "Akun riil: Aset, Liabilitas, dan Ekuitas",
+    performanceTitle: "Kinerja Keuangan (Laba Rugi)",
+    performanceSubtitle: "Akun nominal: Pendapatan dan Beban Operasional",
+    activeAccountsCount: (n: number) => `${n} akun aktif dipakai`,
   },
 
   laporan: {
