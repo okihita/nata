@@ -14,6 +14,7 @@ import {
   Building2,
   Calendar,
   Check,
+  Edit3,
   FileCheck2,
   FileText,
   MapPin,
@@ -34,6 +35,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
@@ -51,6 +60,10 @@ export default function UsahaPage() {
   const router = useRouter();
   const { business, ready, createBusiness, updateBusiness } = useWorkspace();
   const { copy } = useLanguage();
+
+  const isOnboarding = ready && business == null;
+  const [isEditing, setIsEditing] = useState(isOnboarding);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const [edited, setEdited] = useState<
     Partial<{
@@ -80,17 +93,59 @@ export default function UsahaPage() {
   const setNpwp = (value: string) => setEdited((s) => ({ ...s, npwp: value }));
   const setNib = (value: string) => setEdited((s) => ({ ...s, nib: value }));
 
-  const isOnboarding = ready && business == null;
   const canSubmit = name.trim().length > 0;
 
-  function submit() {
+  // Track differences between current business state and edited values
+  const diffs: { label: string; before: string; after: string }[] = [];
+  if (business) {
+    if (name.trim() !== business.name) {
+      diffs.push({ label: copy.usaha.nameLabel, before: business.name, after: name.trim() });
+    }
+    if (ownerName.trim() !== (business.ownerName ?? "")) {
+      diffs.push({ label: copy.usaha.ownerLabel, before: business.ownerName || "-", after: ownerName.trim() || "-" });
+    }
+    if (address.trim() !== (business.address ?? "")) {
+      diffs.push({ label: copy.usaha.addressLabel, before: business.address || "-", after: address.trim() || "-" });
+    }
+    if (type !== business.type) {
+      diffs.push({
+        label: copy.usaha.typeLabel,
+        before: copy.typeLabels?.[business.type] ?? business.type,
+        after: copy.typeLabels?.[type] ?? type,
+      });
+    }
+    if (entity !== business.entity) {
+      diffs.push({
+        label: copy.usaha.entityLabel,
+        before: copy.entityLabels?.[business.entity] ?? business.entity,
+        after: copy.entityLabels?.[entity] ?? entity,
+      });
+    }
+    if (npwp.trim() !== (business.npwp ?? "")) {
+      diffs.push({ label: copy.usaha.npwpLabel, before: business.npwp || "-", after: npwp.trim() || "-" });
+    }
+    if (nib.trim() !== (business.nib ?? "")) {
+      diffs.push({ label: copy.usaha.nibLabel, before: business.nib || "-", after: nib.trim() || "-" });
+    }
+  }
+
+  function handleSaveClick() {
     if (!canSubmit) return;
     if (isOnboarding) {
       createBusiness({ name, ownerName, type, entity, address, npwp, nib });
       router.push("/record");
       return;
     }
+    if (diffs.length === 0) {
+      setIsEditing(false);
+      setEdited({});
+      return;
+    }
+    setShowConfirm(true);
+  }
 
+  function confirmSave() {
+    setShowConfirm(false);
     const typeChanged = business != null && business.type !== type;
     updateBusiness({
       name,
@@ -110,7 +165,13 @@ export default function UsahaPage() {
     }
     if (typeChanged) clearRegulasiCache();
     toast.success(copy.common.save);
-    router.push("/dashboard");
+    setIsEditing(false);
+    setEdited({});
+  }
+
+  function cancelEditing() {
+    setIsEditing(false);
+    setEdited({});
   }
 
   const legalDocs = business?.legalDocuments ?? [];
@@ -120,7 +181,20 @@ export default function UsahaPage() {
       <PageHeader
         title={isOnboarding ? copy.onboarding.title : copy.nav.usaha}
         subtitle={isOnboarding ? copy.onboarding.subtitle : copy.usaha.subtitle}
-      />
+      >
+        {!isOnboarding && !isEditing && (
+          <Button
+            type="button"
+            onClick={() => setIsEditing(true)}
+            size="sm"
+            variant="outline"
+            className="gap-1.5"
+          >
+            <Edit3 className="size-3.5" />
+            {copy.usaha.editButton}
+          </Button>
+        )}
+      </PageHeader>
 
       <div className="grid gap-6 lg:grid-cols-12 items-start pb-12">
         {/* ── Left Column: Macro Business Profile (Span 7) ──────────────────── */}
@@ -145,8 +219,9 @@ export default function UsahaPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="PT Seduh Rasa Nusantara"
+                  disabled={!isEditing}
                   autoFocus={isOnboarding}
-                  className="bg-background"
+                  className="bg-background disabled:opacity-85 disabled:cursor-not-allowed"
                 />
               </div>
 
@@ -160,7 +235,8 @@ export default function UsahaPage() {
                     value={ownerName}
                     onChange={(e) => setOwnerName(e.target.value)}
                     placeholder={copy.usaha.ownerPlaceholder}
-                    className="bg-background"
+                    disabled={!isEditing}
+                    className="bg-background disabled:opacity-85 disabled:cursor-not-allowed"
                   />
                 </div>
                 <div className="grid gap-2">
@@ -175,7 +251,8 @@ export default function UsahaPage() {
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder={copy.usaha.addressPlaceholder}
-                    className="bg-background"
+                    disabled={!isEditing}
+                    className="bg-background disabled:opacity-85 disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
@@ -188,10 +265,12 @@ export default function UsahaPage() {
                     <button
                       key={option.id}
                       type="button"
+                      disabled={!isEditing}
                       onClick={() => setType(option.id)}
                       aria-pressed={type === option.id}
                       className={cn(
-                        "rounded-lg border p-2.5 text-left transition cursor-pointer",
+                        "rounded-lg border p-2.5 text-left transition",
+                        isEditing ? "cursor-pointer" : "cursor-not-allowed opacity-85",
                         type === option.id
                           ? "border-primary bg-primary/10 shadow-xs"
                           : "hover:bg-muted/50 border-border bg-card",
@@ -230,11 +309,13 @@ export default function UsahaPage() {
                         id={`entity-${option.id}`}
                         type="button"
                         role="radio"
+                        disabled={!isEditing}
                         aria-checked={active}
                         tabIndex={active ? 0 : -1}
                         onClick={() => setEntity(option.id)}
                         className={cn(
-                          "flex flex-col justify-between rounded-lg border p-3 text-left transition cursor-pointer relative",
+                          "flex flex-col justify-between rounded-lg border p-3 text-left transition relative",
+                          isEditing ? "cursor-pointer" : "cursor-not-allowed opacity-85",
                           active
                             ? "border-primary bg-primary/10 shadow-xs"
                             : "hover:bg-muted/50 border-border bg-card",
@@ -279,14 +360,26 @@ export default function UsahaPage() {
               </div>
 
               {/* Submit Buttons */}
-              <div className="flex items-center gap-3 pt-3 border-t">
-                <Button onClick={submit} disabled={!canSubmit} size="default">
-                  {isOnboarding ? copy.onboarding.submit : copy.common.save}
-                </Button>
-                {isOnboarding && (
-                  <p className="text-xs text-muted-foreground">{copy.onboarding.note}</p>
-                )}
-              </div>
+              {isEditing && (
+                <div className="flex items-center gap-3 pt-3 border-t">
+                  <Button onClick={handleSaveClick} disabled={!canSubmit} size="default">
+                    {isOnboarding ? copy.onboarding.submit : copy.usaha.saveChanges}
+                  </Button>
+                  {!isOnboarding && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={cancelEditing}
+                      size="default"
+                    >
+                      {copy.usaha.cancelEdit}
+                    </Button>
+                  )}
+                  {isOnboarding && (
+                    <p className="text-xs text-muted-foreground">{copy.onboarding.note}</p>
+                  )}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -315,7 +408,8 @@ export default function UsahaPage() {
                   value={npwp}
                   onChange={(e) => setNpwp(e.target.value)}
                   placeholder={copy.usaha.npwpPlaceholder}
-                  className="font-mono text-xs bg-background"
+                  disabled={!isEditing}
+                  className="font-mono text-xs bg-background disabled:opacity-85 disabled:cursor-not-allowed"
                 />
               </div>
 
@@ -329,7 +423,8 @@ export default function UsahaPage() {
                   value={nib}
                   onChange={(e) => setNib(e.target.value)}
                   placeholder={copy.usaha.nibPlaceholder}
-                  className="font-mono text-xs bg-background"
+                  disabled={!isEditing}
+                  className="font-mono text-xs bg-background disabled:opacity-85 disabled:cursor-not-allowed"
                 />
               </div>
 
@@ -453,6 +548,67 @@ export default function UsahaPage() {
           </Card>
         </div>
       </div>
+
+      {/* ── Before vs After Confirmation Dialog ─────────────────────────── */}
+      <Dialog open={showConfirm} onOpenChange={setShowConfirm}>
+        <DialogContent className="max-w-md sm:max-w-lg bg-card border-border">
+          <DialogHeader className="pb-2">
+            <DialogTitle className="text-base font-semibold">
+              {copy.usaha.confirmTitle}
+            </DialogTitle>
+            <DialogDescription className="text-xs">
+              {copy.usaha.confirmDescription}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-2.5 my-2 max-h-[60vh] overflow-y-auto pr-1">
+            {diffs.map((diff) => (
+              <div
+                key={diff.label}
+                className="rounded-lg border border-border bg-muted/30 p-2.5 space-y-1.5 text-xs"
+              >
+                <span className="font-semibold text-muted-foreground block text-[11px]">
+                  {diff.label}
+                </span>
+                <div className="grid grid-cols-2 gap-2 items-center">
+                  <div className="rounded border border-border/70 bg-background/60 p-2 text-foreground/80">
+                    <span className="block text-[9px] uppercase tracking-wider text-muted-foreground font-semibold mb-0.5">
+                      {copy.usaha.beforeLabel}
+                    </span>
+                    <span className="line-clamp-2 break-all">{diff.before}</span>
+                  </div>
+                  <div className="rounded border border-primary/40 bg-primary/5 p-2 text-foreground font-medium">
+                    <span className="block text-[9px] uppercase tracking-wider text-primary font-semibold mb-0.5">
+                      {copy.usaha.afterLabel}
+                    </span>
+                    <span className="line-clamp-2 break-all">{diff.after}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <DialogFooter className="pt-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setShowConfirm(false)}
+            >
+              {copy.usaha.cancelEdit}
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              onClick={confirmSave}
+              className="gap-1.5"
+            >
+              <Check className="size-3.5" />
+              {copy.usaha.confirmAction}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

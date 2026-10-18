@@ -466,6 +466,15 @@ export const copyEn = {
     statusActive: "Active",
     statusInReview: "In Review",
     emptyDocs: "No documents added yet. Select a demo persona or add licenses.",
+    editButton: "Edit Profile",
+    cancelEdit: "Cancel",
+    saveChanges: "Save Changes",
+    confirmTitle: "Confirm Profile Changes",
+    confirmDescription: "Review the modifications below before updating your business profile.",
+    beforeLabel: "Current",
+    afterLabel: "New",
+    noChanges: "No changes detected.",
+    confirmAction: "Confirm and Save",
   },
 
   // ── Landing page ──────────────────────────────────────────────────────────

@@ -471,6 +471,15 @@ export const copyId = {
     statusActive: "Aktif",
     statusInReview: "Proses",
     emptyDocs: "Belum ada dokumen. Pilih persona demo atau lengkapi di Perizinan.",
+    editButton: "Ubah Profil",
+    cancelEdit: "Batal",
+    saveChanges: "Simpan Perubahan",
+    confirmTitle: "Konfirmasi Perubahan Profil",
+    confirmDescription: "Periksa kembali ringkasan perubahan data usaha Anda sebelum disimpan.",
+    beforeLabel: "Sebelumnya",
+    afterLabel: "Baru",
+    noChanges: "Tidak ada perubahan yang terdeteksi.",
+    confirmAction: "Konfirmasi & Simpan",
   },
 
   // ── Halaman muka (landing) ────────────────────────────────────────────────
