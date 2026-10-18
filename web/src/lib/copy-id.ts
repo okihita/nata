@@ -857,16 +857,46 @@ export const copyId = {
     },
     lessons: {
       plat_multimodal: {
-        title: "Catat Cepat Multi-Modal",
-        summary: "Rekam transaksi via foto struk, suara, atau teks santai.",
+        title: "Pencatatan Cepat & Ekstraksi Struk",
+        summary: "Catat pengeluaran dan pemasukan otomatis lewat foto struk atau teks santai.",
         content:
-          "Nata memungkinkan pemilik usaha mencatat transaksi keuangan dengan metode apa pun yang paling nyaman. Selain foto struk fisik, Anda bisa mendiktekan rekaman suara dalam bahasa sehari-hari atau menempelkan teks percakapan WhatsApp. Model multi-modal mengekstrak rincian barang, jumlah, mitra, dan cara bayar secara deterministik.",
+          "Nata memungkinkan pemilik usaha mencatat transaksi keuangan dengan metode paling cepat dan praktis. Ambil foto struk belanjaan, nota manual pasar, atau tempelkan catatan percakapan transaksi dari WhatsApp. Vision & Language AI mengekstrak rincian barang, kuantitas, vendor/rekanan, dan metode pembayaran secara deterministik tanpa perlu input manual yang melelahkan.",
       },
       plat_trace: {
         title: "Verifikasi Jejak Multi-Agen",
         summary: "Amati handoff otonom: Keuangan -> Fiskal -> Regulasi.",
         content:
           "Saat Anda mengirim transaksi, Agent Keuangan membedah data dan mengunci jurnal berimbang (Aset = Kewajiban + Ekuitas). Setelah tercatat, handoff searah diberikan ke Agent Fiskal untuk menghitung kewajiban pajak, lalu ke Agent Regulasi untuk mencocokkan kode resmi KBLI 2020.",
+      },
+      plat_agents: {
+        title: "Staf Digital Multi-Agen Otonom",
+        summary: "Kolaborasi 4 spesialis AI: Mas Nata, Mbak Maya, Mas Dimas, dan Pak Arief.",
+        content:
+          "Kelola operasional bisnis Anda dengan tim spesialis AI terintegrasi di Nata. Mas Nata mengorkestrasi pencatatan dan strategi bisnis, Mbak Maya memverifikasi jurnal akuntansi berpasangan berstandar SAK EMKM, Mas Dimas mengawal kepatuhan pajak UMKM (PP 55/2022) & batas PTKP 500 juta, serta Pak Arief memastikan legalitas usaha, NIB OSS, dan kode KBLI 2020 selalu valid.",
+      },
+      plat_tax_monitor: {
+        title: "Pemantau Batas Bebas Pajak 500 Juta",
+        summary: "Pantau omzet kumulatif tahun berjalan terhadap ambang bebas pajak PP 55/2022.",
+        content:
+          "Berdasarkan PP 55/2022 Pasal 60, Wajib Pajak Orang Pribadi UMKM menikmati tarif PPh Final 0% hingga omzet Rp 500 juta per tahun pajak. Modul Pajak Nata melacak omzet bruto kumulatif secara real-time, memberi peringatan dini sebelum batas terlampaui, dan menghitung otomatis PPh Final 0,5% hanya atas selisih omzet di atas Rp 500 juta.",
+      },
+      plat_licensing_kbli: {
+        title: "Validasi Perizinan NIB & KBLI 2020",
+        summary: "Sinkronisasi kegiatan operasional nyata dengan standar perizinan OSS-RBA.",
+        content:
+          "Hindari risiko sanksi administratif dan kendala izin usaha. Modul Perizinan Nata mencocokkan transaksi dan deskripsi usaha Anda ke 5 digit kode KBLI 2020 resmi dari BPS dan BKPM, mengidentifikasi tingkat risiko usaha (Rendah, Menengah, Tinggi) pada sistem OSS-RBA, serta memandu persyaratan sertifikasi standar yang dibutuhkan.",
+      },
+      plat_routines: {
+        title: "Pusat Rutinitas & Pengingat Pajak",
+        summary: "Otomasi jadwal tutup buku bulanan, rekonsiliasi kas, dan setor pajak.",
+        content:
+          "Jaga konsistensi pembukuan dengan alur kerja terjadwal. Fitur Rutinitas Nata mengotomasi tugas harian dan bulanan seperti verifikasi saldo kas/bank, rekonsiliasi pendapatan marketplace, penyetoran PPh Final tiap tanggal 15, serta pelaporan SPT Masa dengan pendelegasian langsung ke agen spesialis terkait.",
+      },
+      plat_kur_readiness: {
+        title: "Kesiapan Pengajuan Pinjaman Modal (KUR)",
+        summary: "Siapkan laporan keuangan standar SAK EMKM untuk persetujuan kredit perbankan.",
+        content:
+          "Tingkatkan rasio persetujuan pengajuan Kredit Usaha Rakyat (KUR) dan pembiayaan bank. Nata menyusun otomatis 3 pilar laporan keuangan SAK EMKM: Laporan Posisi Keuangan (Neraca), Laporan Laba Rugi, dan Catatan atas Laporan Keuangan (CALK) yang dapat langsung dicetak atau diekspor ke Excel sesuai standar analis kredit bank.",
       },
       plat_export: {
         title: "Ekspor Excel SAK EMKM",
