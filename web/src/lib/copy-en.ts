@@ -270,7 +270,10 @@ export const copyEn = {
       "Income tax is calculated under the MSME Final Income Tax scheme at 0.5% of gross turnover.",
     ],
     export: "Export",
+    exportCsv: "Export CSV (Excel)",
+    exportPdf: "Export PDF (Printable)",
     exported: "Statement exported as CSV.",
+    exportedPdf: "Opening printable financial statement PDF…",
     emptyTitle: "Statements will appear once records exist",
     emptyBody:
       "Financial statements are generated from your general ledger. Record your first receipt to generate statements automatically.",

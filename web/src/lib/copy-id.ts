@@ -275,7 +275,10 @@ export const copyId = {
       "Pajak penghasilan menggunakan skema PPh Final UMKM 0,5% dari peredaran bruto.",
     ],
     export: "Ekspor",
+    exportCsv: "Ekspor CSV (Excel)",
+    exportPdf: "Ekspor PDF (Siap Cetak)",
     exported: "Laporan diekspor sebagai CSV.",
+    exportedPdf: "Membuka dokumen PDF laporan siap cetak…",
     emptyTitle: "Laporan muncul setelah ada catatan",
     emptyBody:
       "Laporan keuangan disusun dari pembukuan Anda. Catat struk pertama dulu, lalu laporan ini akan terisi sendiri.",

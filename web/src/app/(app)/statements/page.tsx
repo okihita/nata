@@ -1,7 +1,14 @@
-"use client";
-
 import { useMemo, useState } from "react";
-import { FileBarChart, ShieldCheck, ShieldAlert, ScanLine, Download } from "lucide-react";
+import {
+  FileBarChart,
+  ShieldCheck,
+  ShieldAlert,
+  ScanLine,
+  Download,
+  FileText,
+  Printer,
+  ChevronDown,
+} from "lucide-react";
 
 import Link from "next/link";
 
@@ -18,15 +25,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useWorkspace } from "@/lib/store";
 import { balanceSheet, incomeStatement, type JournalEntry } from "@/lib/ledger";
 import { downloadCsv, reportFilename, statementsToCsv } from "@/lib/export-csv";
-import { copy } from "@/lib/copy";
+import { openStatementPdfInNewTab } from "@/lib/statement-pdf";
+import { useLanguage } from "@/lib/copy";
 import { idrFull } from "@/lib/format";
 import { toast } from "sonner";
 
 export default function LaporanPage() {
   const { entries, ready, business } = useWorkspace();
+  const { copy, locale } = useLanguage();
   const [period, setPeriod] = useState("all");
 
   const periods = useMemo(() => {
@@ -82,7 +97,34 @@ export default function LaporanPage() {
   const periodLabel =
     period === "all"
       ? copy.laporan.allPeriods
-      : new Date(`${period}-01`).toLocaleDateString("id-ID", { month: "long", year: "numeric" });
+      : new Date(`${period}-01`).toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
+          month: "long",
+          year: "numeric",
+        });
+
+  const handleExportCsv = () => {
+    downloadCsv(
+      reportFilename(business?.name ?? copy.app.name, periodLabel),
+      statementsToCsv(scoped, {
+        periodLabel,
+        businessName: business?.name ?? copy.app.name,
+      }),
+    );
+    toast.success(copy.laporan.exported);
+  };
+
+  const handleExportPdf = () => {
+    openStatementPdfInNewTab(scoped, {
+      businessName: business?.name ?? copy.app.name,
+      businessAddress: business?.address,
+      npwp: business?.npwp,
+      nib: business?.nib,
+      periodLabel,
+      calkPoints: copy.laporan.calkPoints,
+      locale,
+    });
+    toast.success(copy.laporan.exportedPdf);
+  };
 
   return (
     <>
@@ -95,7 +137,7 @@ export default function LaporanPage() {
             <SelectItem value="all">{copy.laporan.allPeriods}</SelectItem>
             {periods.map((p) => (
               <SelectItem key={p} value={p}>
-                {new Date(`${p}-01`).toLocaleDateString("id-ID", {
+                {new Date(`${p}-01`).toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
                   month: "long",
                   year: "numeric",
                 })}
@@ -103,23 +145,32 @@ export default function LaporanPage() {
             ))}
           </SelectContent>
         </Select>
-        <Button
-          variant="outline"
-          onClick={() => {
-            downloadCsv(
-              reportFilename(business?.name ?? copy.app.name, periodLabel),
-              statementsToCsv(scoped, {
-                periodLabel,
-                businessName: business?.name ?? copy.app.name,
-              }),
-            );
-            toast.success(copy.laporan.exported);
-          }}
-          disabled={scoped.length === 0}
-        >
-          <Download className="mr-2 size-4" />
-          {copy.laporan.export}
-        </Button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" disabled={scoped.length === 0} className="gap-1.5 font-medium">
+              <Download className="size-4" />
+              <span>{copy.laporan.export}</span>
+              <ChevronDown className="size-3.5 opacity-60" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-52">
+            <DropdownMenuItem onClick={handleExportPdf} className="gap-2 cursor-pointer">
+              <Printer className="size-4 text-primary" />
+              <div className="grid">
+                <span className="text-xs font-semibold">{copy.laporan.exportPdf}</span>
+                <span className="text-[10px] text-muted-foreground">Buka tab cetak / simpan PDF</span>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleExportCsv} className="gap-2 cursor-pointer">
+              <FileText className="size-4 text-emerald-600" />
+              <div className="grid">
+                <span className="text-xs font-semibold">{copy.laporan.exportCsv}</span>
+                <span className="text-[10px] text-muted-foreground">Unduh file spreadsheet .csv</span>
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </PageHeader>
 
       <p className="mb-4 text-sm text-muted-foreground">
