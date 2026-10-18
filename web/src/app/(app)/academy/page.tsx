@@ -213,9 +213,13 @@ export default function AcademyPage() {
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-xs p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-xs p-4 cursor-pointer"
+          onClick={() => setActiveLessonId(null)}
         >
-          <Card className="max-w-xl w-full max-h-[85vh] flex flex-col shadow-xl border-primary/20">
+          <Card
+            className="max-w-xl w-full max-h-[85vh] flex flex-col shadow-xl border-primary/20 cursor-default"
+            onClick={(e) => e.stopPropagation()}
+          >
             <CardHeader className="border-b p-4">
               <div className="flex items-center justify-between gap-2">
                 <Badge variant="outline" className="text-xs">
