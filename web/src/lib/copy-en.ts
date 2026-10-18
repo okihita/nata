@@ -76,6 +76,7 @@ export const copyEn = {
       learning: "Academy",
       other: "Preferences",
     },
+    agents: "Agents",
     dashboard: "Dashboard",
     catat: "Record Receipt",
     transaksi: "Transactions",

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BookOpen,
+  Bot,
   FileBarChart,
   Landmark,
   LayoutDashboard,
@@ -37,6 +38,7 @@ import { useLanguage } from "@/lib/copy";
 import { GeminiLogo } from "@/components/gemini-logo";
 
 export const ICONS: Record<string, LucideIcon> = {
+  Bot,
   LayoutDashboard,
   ScanLine,
   ReceiptText,

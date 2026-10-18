@@ -81,6 +81,7 @@ export const copyId = {
       learning: "Akademi",
       other: "Preferensi",
     },
+    agents: "Agen",
     dashboard: "Dasbor",
     catat: "Catat Struk",
     transaksi: "Transaksi",
