@@ -5,9 +5,7 @@ import Link from "next/link";
 import {
   GraduationCap,
   ArrowRight,
-  BookOpen,
   Clock,
-  ExternalLink,
   Sparkles,
   Play,
 } from "lucide-react";
@@ -30,7 +28,6 @@ export default function AcademyPage() {
   const [selectedCategory, setSelectedCategory] = useState<
     "all" | "accounting_101" | "tax_compliance" | "licensing_legal" | "operations_team"
   >("all");
-  const [activeLessonId, setActiveLessonId] = useState<string | null>(null);
   const [activeDeckLesson, setActiveDeckLesson] = useState<AcademyLesson | null>(null);
 
   // Filter lessons specifically for the Business track (Kuliah Bisnis)
@@ -41,11 +38,6 @@ export default function AcademyPage() {
       return item.category === selectedCategory;
     });
   }, [selectedCategory]);
-
-  const activeLesson = useMemo(() => {
-    if (!activeLessonId) return null;
-    return ACADEMY_LESSONS.find((l) => l.id === activeLessonId) ?? null;
-  }, [activeLessonId]);
 
   return (
     <>
@@ -157,26 +149,15 @@ export default function AcademyPage() {
                   )}
 
                   <div className="flex items-center justify-between pt-1">
-                    <div className="flex items-center gap-1.5">
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        className="h-8 text-xs cursor-pointer font-medium"
-                        onClick={() => setActiveDeckLesson(lesson)}
-                      >
-                        <Play className="mr-1.5 size-3.5 fill-primary text-primary" />
-                        {copy.academy.actionButtons.viewWalkthrough}
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 text-xs cursor-pointer text-muted-foreground hover:text-foreground"
-                        onClick={() => setActiveLessonId(lesson.id)}
-                      >
-                        <BookOpen className="mr-1.5 size-3.5" />
-                        {copy.academy.actionButtons.readLesson}
-                      </Button>
-                    </div>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      className="h-8 text-xs cursor-pointer font-medium"
+                      onClick={() => setActiveDeckLesson(lesson)}
+                    >
+                      <Play className="mr-1.5 size-3.5 fill-primary text-primary" />
+                      {copy.academy.actionButtons.viewWalkthrough}
+                    </Button>
 
                     {lesson.actionLink && (
                       <Button
@@ -207,83 +188,6 @@ export default function AcademyPage() {
           if (!isOpen) setActiveDeckLesson(null);
         }}
       />
-
-      {/* Reader Modal */}
-      {activeLesson && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-xs p-4 cursor-pointer"
-          onClick={() => setActiveLessonId(null)}
-        >
-          <Card
-            className="max-w-xl w-full max-h-[85vh] flex flex-col shadow-xl border-primary/20 cursor-default"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <CardHeader className="border-b p-4">
-              <div className="flex items-center justify-between gap-2">
-                <Badge variant="outline" className="text-xs">
-                  {copy.academy.categories[activeLesson.category]} ·{" "}
-                  {copy.academy.difficultyLabels[activeLesson.difficulty]}
-                </Badge>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-7 px-2 text-xs"
-                  onClick={() => setActiveLessonId(null)}
-                >
-                  ✕
-                </Button>
-              </div>
-              <CardTitle className="pt-2 text-base font-semibold">
-                {copy.academy.lessons[activeLesson.id as keyof typeof copy.academy.lessons]?.title}
-              </CardTitle>
-              {activeLesson.statuteCitation && (
-                <CardDescription className="font-mono text-xs text-primary">
-                  {copy.academy.statuteGrounded}: {activeLesson.statuteCitation}
-                </CardDescription>
-              )}
-            </CardHeader>
-            <CardContent className="overflow-y-auto p-5 text-sm leading-relaxed space-y-4">
-              <p className="text-foreground/90">
-                {
-                  copy.academy.lessons[activeLesson.id as keyof typeof copy.academy.lessons]
-                    ?.content
-                }
-              </p>
-              <div className="rounded-lg border bg-muted/30 p-3 text-xs text-muted-foreground space-y-1">
-                <p className="font-medium text-foreground">💡 Ringkasan:</p>
-                <p>
-                  {
-                    copy.academy.lessons[activeLesson.id as keyof typeof copy.academy.lessons]
-                      ?.summary
-                  }
-                </p>
-              </div>
-            </CardContent>
-            <div className="border-t p-4 flex items-center justify-between bg-muted/10">
-              {activeLesson.actionLink ? (
-                <Button asChild size="sm" className="gap-1.5 text-xs">
-                  <Link href={activeLesson.actionLink.href}>
-                    {copy.academy.actionButtons[activeLesson.actionLink.labelKey]}
-                    <ExternalLink className="size-3.5" />
-                  </Link>
-                </Button>
-              ) : (
-                <div />
-              )}
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-xs"
-                onClick={() => setActiveLessonId(null)}
-              >
-                {copy.common.close}
-              </Button>
-            </div>
-          </Card>
-        </div>
-      )}
 
       {/* Fun Facts / Myth vs. Fact Section (Blog Landing Style) */}
       <div className="mt-12 space-y-5 rounded-2xl border bg-gradient-to-b from-muted/20 to-background p-6">

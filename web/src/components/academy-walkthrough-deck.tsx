@@ -205,14 +205,14 @@ function DeckModalContent({ lesson }: { lesson: AcademyLesson }) {
 
 // ── Built-in Walkthrough Decks ──────────────────────────────────────────────
 
-function getDeckForLesson(lessonId: string): WalkthroughDeck {
-  switch (lessonId) {
+function getDeckForLesson(lesson: AcademyLesson): WalkthroughDeck {
+  switch (lesson.id) {
     case "plat_agents":
       return AGENTS_WALKTHROUGH_DECK;
     case "plat_multimodal":
       return MULTIMODAL_WALKTHROUGH_DECK;
     default:
-      return createGenericWalkthroughDeck(lessonId);
+      return createGenericWalkthroughDeck(lesson);
   }
 }
 
@@ -594,66 +594,102 @@ const MULTIMODAL_WALKTHROUGH_DECK: WalkthroughDeck = {
   ],
 };
 
-/**
- * Generic Fallback Deck for other lessons
- */
-function createGenericWalkthroughDeck(lessonId: string): WalkthroughDeck {
+function createGenericWalkthroughDeck(lesson: AcademyLesson): WalkthroughDeck {
+  const en = copyEn.academy.lessons[lesson.id as keyof typeof copyEn.academy.lessons];
+  const id = copyId.academy.lessons[lesson.id as keyof typeof copyId.academy.lessons];
+
+  const titleId = id?.title ?? "Panduan Platform Nata";
+  const titleEn = en?.title ?? "Nata Platform Guide";
+  const summaryId = id?.summary ?? "Pelajari standar operasional dan alur otomasi Nata.";
+  const summaryEn = en?.summary ?? "Master Nata's operational standards and automated workflows.";
+  const contentId = id?.content ?? "";
+  const contentEn = en?.content ?? "";
+
   return {
-    lessonId,
+    lessonId: lesson.id,
     title: {
-      id: "Panduan Fitur & Alur Kerja Nata",
-      en: "Feature Walkthrough & Workflow Guide",
+      id: titleId,
+      en: titleEn,
     },
     subtitle: {
-      id: "Langkah demi langkah memahami kemampuan platform Nata",
-      en: "Step-by-step walkthrough of Nata platform capabilities",
+      id: summaryId,
+      en: summaryEn,
     },
     slides: [
       {
-        id: "slide_1",
+        id: "slide_overview",
         badge: {
-          id: "Langkah 1: Inisiasi",
-          en: "Step 1: Initiation",
+          id: "Langkah 1: Konsep & Standar",
+          en: "Step 1: Core Grounding",
         },
         title: {
-          id: "Pahami Dasar & Aturan Kepatuhan",
-          en: "Understand the Statutory Grounding",
+          id: titleId,
+          en: titleEn,
         },
         description: {
-          id: "Nata dibangun berbasis standar baku Indonesia: SAK EMKM untuk akuntansi, PP 55/2022 untuk perpajakan, dan OSS-RBA untuk legalitas perizinan.",
-          en: "Nata is grounded in Indonesian statutory standards: SAK EMKM for bookkeeping, PP 55/2022 for taxation, and OSS-RBA for licensing.",
+          id: contentId || summaryId,
+          en: contentEn || summaryEn,
         },
+        highlight: lesson.statuteCitation
+          ? {
+              id: `Dasar Hukum & Kepatuhan: ${lesson.statuteCitation}`,
+              en: `Grounded Regulation: ${lesson.statuteCitation}`,
+            }
+          : undefined,
         renderVisual: () => (
-          <div className="rounded-lg border bg-card p-4 text-center space-y-2">
-            <FileCheck2 className="size-8 mx-auto text-primary" />
-            <span className="text-xs font-semibold block text-foreground">Standar Baku Kepatuhan</span>
-            <span className="text-xs text-muted-foreground block">
-              Menjaga usaha dari salah hitung pajak dan risiko audit
-            </span>
+          <div className="space-y-3 p-2">
+            <div className="rounded-xl border bg-card p-4 text-center space-y-2 shadow-2xs">
+              <FileCheck2 className="size-8 mx-auto text-primary" />
+              <span className="text-xs md:text-sm font-semibold block text-foreground">{titleId}</span>
+              <span className="text-xs text-muted-foreground block max-w-sm mx-auto leading-relaxed">
+                {summaryId}
+              </span>
+            </div>
+            {lesson.statuteCitation && (
+              <div className="p-2.5 rounded-lg border bg-muted/30 font-mono text-xs text-muted-foreground text-center">
+                § {lesson.statuteCitation}
+              </div>
+            )}
           </div>
         ),
       },
       {
-        id: "slide_2",
+        id: "slide_execution",
         badge: {
-          id: "Langkah 2: Eksekusi",
-          en: "Step 2: Execution",
+          id: "Langkah 2: Otomasi di Nata",
+          en: "Step 2: Platform Execution",
         },
         title: {
-          id: "Otomasi Tanpa Hambatan",
-          en: "Seamless Automation",
+          id: "Terapkan Langsung di Pembukuan Anda",
+          en: "Instant Integration in Your Ledger",
         },
         description: {
-          id: "Gunakan fitur langsung dari menu navigasi. Semua hasil kalkulasi diperbarui seketika dan tersinkronisasi di dashboard.",
-          en: "Execute features directly from the navigation menu. Calculations sync immediately across the entire dashboard.",
+          id: "Fitur ini terintegrasi penuh ke dalam dashboard, laporan keuangan SAK EMKM, dan modul pajak. Seluruh data disinkronkan secara real-time.",
+          en: "This feature is fully wired into your live dashboard, SAK EMKM statements, and tax monitor with atomic state synchronization.",
+        },
+        highlight: {
+          id: "Klik tombol aksi di kanan bawah untuk langsung membuka simulator atau modul terkait.",
+          en: "Click the action button at bottom-right to test this live in the simulator.",
         },
         renderVisual: () => (
-          <div className="rounded-lg border bg-card p-4 text-center space-y-2">
-            <TrendingUp className="size-8 mx-auto text-tone-hijau" />
-            <span className="text-xs font-semibold block text-foreground">Sinkronisasi Real-Time</span>
-            <span className="text-xs text-muted-foreground block">
-              Laporan laba rugi dan posisi keuangan selalu terkini
-            </span>
+          <div className="space-y-3 p-2">
+            <div className="rounded-xl border bg-card p-4 text-center space-y-2 shadow-2xs">
+              <TrendingUp className="size-8 mx-auto text-tone-hijau" />
+              <span className="text-xs md:text-sm font-semibold block text-foreground">Sinkronisasi Real-Time</span>
+              <span className="text-xs text-muted-foreground block max-w-sm mx-auto leading-relaxed">
+                Kalkulasi otomatis tanpa perlu rekonsiliasi manual yang melelahkan
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-center text-xs">
+              <div className="p-2 rounded-lg border bg-card/60">
+                <span className="text-muted-foreground block">Format Baku</span>
+                <span className="font-semibold text-foreground">SAK EMKM</span>
+              </div>
+              <div className="p-2 rounded-lg border bg-card/60">
+                <span className="text-muted-foreground block">Status Kepatuhan</span>
+                <span className="font-semibold text-tone-hijau">Terverifikasi</span>
+              </div>
+            </div>
           </div>
         ),
       },
