@@ -7,8 +7,6 @@ const nextConfig: NextConfig = {
   // node_modules tree and the whole source checkout at runtime.
   output: "standalone",
   /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
   // Hide the Next.js dev toolbar/indicator overlay in development.
   devIndicators: false,
   turbopack: {
