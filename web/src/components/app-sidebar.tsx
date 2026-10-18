@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   Store,
   Sparkles,
+  GraduationCap,
   type LucideIcon,
 } from "lucide-react";
 
@@ -44,6 +45,7 @@ export const ICONS: Record<string, LucideIcon> = {
   ShieldCheck,
   Store,
   Settings,
+  GraduationCap,
 };
 
 export function AppSidebar() {

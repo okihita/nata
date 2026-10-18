@@ -73,6 +73,7 @@ export const copyEn = {
       operations: "Operations",
       master: "Company & Master Data",
       reports: "Financial Reports",
+      learning: "Learning & Help",
       other: "Preferences",
     },
     dashboard: "Dashboard",
@@ -82,6 +83,7 @@ export const copyEn = {
     laporan: "Financial Statements",
     pajak: "Taxes",
     perizinan: "Licensing",
+    academy: "Academy",
     usaha: "Business Profile",
     pengaturan: "Settings",
   },
@@ -713,5 +715,140 @@ export const copyEn = {
       "The service is currently busy. Your records remain safe — please wait a moment and retry.",
     timeout:
       "The operation timed out. Your records remain safe — please try again in a moment.",
+  },
+  academy: {
+    title: "Nata Academy & Knowledge Hub",
+    subtitle:
+      "Master the Nata platform and navigate complex Indonesian business laws, tax thresholds, and accounting standards.",
+    badge: "101 to Advanced",
+    personaFilter: {
+      all: "All Curriculums",
+      persona_a: "Retail / Toko (Persona A)",
+      persona_b: "F&B / PT Multi-Outlet (Persona B)",
+    },
+    filterHint: "Tailored to your active business structure and tax classification.",
+    tracks: {
+      platform: "Platform Mastery",
+      platformDesc: "How to get the most out of Nata's autonomous bookkeeping and multi-agent engine.",
+      business: "Business Complexities & Compliance",
+      businessDesc: "Indonesian accounting (SAK EMKM), tax (PP 55/2022), KBLI licensing, and hiring.",
+    },
+    categories: {
+      platform_basics: "Platform Workflows",
+      accounting_101: "Accounting & Cash Flow",
+      tax_compliance: "Tax Compliance & Pitfalls",
+      licensing_legal: "Licensing & KBLI",
+      operations_team: "Team & Operations",
+    },
+    difficultyLabels: {
+      "101": "101 Fundamentals",
+      intermediate: "Intermediate",
+      advanced: "Advanced",
+    },
+    minRead: "min read",
+    statuteGrounded: "Grounded Statute",
+    actionButtons: {
+      tryNow: "Try in Nata",
+      tryRecordVoice: "Try Voice Recording",
+      checkTaxes: "Check Tax Calculations",
+      checkLicensing: "Verify KBLI Code",
+      viewAccounts: "View Chart of Accounts",
+    },
+    lessons: {
+      plat_multimodal: {
+        title: "Fast Multi-Modal Recording: Photo, Voice & WhatsApp Text",
+        summary:
+          "Capture transactions instantly without tedious data entry. Voice notes automatically prioritize spoken self-corrections (e.g. '380k... wait, 560k cash').",
+        content:
+          "Nata allows business owners to record financial transactions using the method most convenient to them. In addition to clear receipt photos, you can dictate voice notes in colloquial Indonesian or paste unstructured WhatsApp text. The multimodal model extracts line items, quantities, vendors, and payment methods deterministically.",
+      },
+      plat_trace: {
+        title: "Understanding Agent Cascade: Keuangan -> Fiskal -> Regulasi",
+        summary:
+          "Observe how autonomous agents work in a verifiable one-way chain with strict deterministic mathematical guardrails.",
+        content:
+          "When you submit a transaction, Agent Keuangan parses the data and commits balanced double-entry lines (Assets = Liabilities + Equity). Once posted, it performs a one-way handoff to Agent Fiskal to compute tax obligations, which in turn hands off to Agent Regulasi to classify the business's official KBLI 2020 code.",
+      },
+      plat_export: {
+        title: "Exporting SAK EMKM Excel Financial Statements",
+        summary:
+          "Generate professional Income Statements and Balance Sheets formatted specifically for Indonesian accounting and tax offices.",
+        content:
+          "Nata generates exportable reports that adhere to Indonesian standards: semicolon-delimited CSVs, UTF-8 BOM encoding for seamless Microsoft Excel compatibility, and standard Indonesian currency conventions (Rp X.XXX.XXX).",
+      },
+      biz_cash_separation: {
+        title: "101: Separating Personal and Business Cash Flow",
+        summary:
+          "The number one reason small businesses fail financial audits: mixing owner personal expenses with enterprise operations.",
+        content:
+          "Under SAK EMKM Chapter 2, an enterprise is treated as a separate economic entity from its owner. Paying for groceries or school tuition directly out of the business cash drawer distorts profit margins and creates tax liabilities. Maintain a distinct Cash or Bank account and record owner withdrawals as Drawings (Prive) rather than business operational expenses.",
+      },
+      biz_tax_threshold: {
+        title: "PP 55/2022: The Rp 500 Million Zero-Tax Band",
+        summary:
+          "How individual sole proprietors (Orang Pribadi) enjoy tax-free status up to Rp 500 million annual gross turnover.",
+        content:
+          "Under Government Regulation PP 55/2022 Article 60 paragraph (2), individual MSME taxpayers pay 0% PPh Final on their first Rp 500 million in gross turnover within a fiscal tax year. Turnover exceeding Rp 500 million is taxed at a flat 0.5% rate.",
+      },
+      biz_pt_tax_trap: {
+        title: "The PT Perorangan Tax Trap: Taxed from Rupiah Zero",
+        summary:
+          "Why incorporating an Individual PT (PT Perorangan) forfeits the Rp 500M zero-tax threshold.",
+        content:
+          "Many entrepreneurs register a PT Perorangan thinking it carries individual tax benefits. Legally, PT Perorangan is a corporate body (Badan Usaha). Under PP 55/2022, corporate entities do not qualify for the Rp 500M exemption and are taxed 0.5% PPh Final starting from the very first rupiah of revenue.",
+      },
+      biz_cogs_recipe: {
+        title: "F&B Cost of Goods Sold (COGS) & Recipe Engineering",
+        summary:
+          "Accurately calculate raw material consumption and gross margins across food and drink menu items.",
+        content:
+          "In food & beverage businesses, selling price minus ingredient costs equals your gross margin. Small fluctuations in dairy, poultry, or coffee bean prices directly erode operating income. SAK EMKM Chapter 7 mandates recording raw inventory upon purchase and expensing it to COGS (Beban Pokok Penjualan) as batches are consumed.",
+      },
+      biz_marketplace_recon: {
+        title: "E-Commerce Settlement: Gross Revenue vs Platform Fees",
+        summary:
+          "Avoid reporting net bank payouts as total revenue on Tokopedia, Shopee, and TikTok Shop.",
+        content:
+          "Marketplace escrow payouts already deduct admin commissions, payment fees, and promotional subsidies. Recording only the net cash arriving in your bank account understates your gross turnover, which violates Indonesian tax regulations. Revenue must be posted at gross invoice value, with marketplace deductions recorded as selling expenses.",
+      },
+      biz_kbli_oss: {
+        title: "KBLI 2020 & Risk-Based Licensing (OSS-RBA)",
+        summary:
+          "Why picking the right 5-digit KBLI code dictates your business license (NIB) and operational inspection level.",
+        content:
+          "Government Regulation PP 5/2021 categorizes Indonesian business activities by hazard risk (Low, Medium-Low, Medium-High, High). A low-risk retail shop (KBLI 47725) needs only a basic NIB, whereas an F&B dining establishment (KBLI 56303) requires hygiene certificates and environmental declarations.",
+      },
+      biz_hiring_payroll: {
+        title: "MSME Employment & Wage Rules (PP 35/2021 & PP 36/2021)",
+        summary:
+          "Legal flexibility for Indonesian micro and small enterprises regarding regional minimum wage (UMR) and employment contracts.",
+        content:
+          "Under PP 36/2021 Article 36, micro and small enterprises are legally exempt from provincial/district minimum wage (UMR) mandates, provided agreed wages are at least 50% of the provincial average consumption rate. Fixed-term agreements (PKWT) must still be registered with the Ministry of Manpower.",
+      },
+    },
+    mythsSectionTitle: "Indonesian Business & Tax: Myth vs Fact",
+    mythsSectionSubtitle: "Debunking common compliance misconceptions with verbatim statutory citations.",
+    mythLabel: "Common Myth",
+    factLabel: "Legal Reality & Statute",
+    myths: {
+      myth_pt_threshold: {
+        myth: "Creating an Individual PT (PT Perorangan) gives you the Rp 500M tax exemption while protecting your personal assets.",
+        fact: "False. PT Perorangan is a corporate entity (Badan Usaha). PP 55/2022 Article 60 paragraph (2) explicitly restricts the Rp 500M exemption to Orang Pribadi. PT Perorangan pays 0.5% PPh Final starting from rupiah 0.",
+        statuteText:
+          "PP 55/2022 Pasal 60 ayat (2): 'Wajib Pajak orang pribadi yang memiliki peredaran bruto tertentu... tidak dikenai Pajak Penghasilan atas bagian peredaran bruto sampai dengan Rp 500.000.000,00 dalam 1 tahun Pajak.'",
+      },
+      myth_tax_expense: {
+        myth: "Under PPh Final UMKM 0.5%, collecting operational expense receipts is useless because taxes are based purely on gross revenue.",
+        fact: "Dangerous misconception. SAK EMKM financial statements require complete expense accounting to compute true net operating profit, apply for bank credit facilities, and prepare for mandatory general tax regime transitions after 4-7 years.",
+        statuteText:
+          "SAK EMKM Bab 3 & PP 55/2022 Pasal 59: Skema PPh Final 0,5% memiliki batas waktu maksimal (7 tahun untuk orang pribadi, 3-4 tahun untuk badan), setelah itu wajib pembukuan umum.",
+      },
+      myth_kbli_arbitrary: {
+        myth: "You can pick any KBLI code that sounds close on the OSS portal without business impact.",
+        fact: "Misclassification can freeze bank merchant accounts, trigger OSS licensing audits, or classify your business under foreign investment negative list restrictions.",
+        statuteText:
+          "Peraturan BPS No. 2 Tahun 2020: Kode KBLI 5-digit adalah standar klasifikasi baku nasional yang mengikat perizinan berusaha dan pelaporan pajak.",
+      },
+    },
   },
 } as const;
