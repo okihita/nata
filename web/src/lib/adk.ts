@@ -127,11 +127,12 @@ export async function ensureSession(
   userId: string,
   existing?: string | null,
   appName: string = APP_NAME,
+  signal?: AbortSignal,
 ): Promise<string> {
   if (existing) {
     const probe = await fetch(
       `${ADK_BASE}/apps/${appName}/users/${userId}/sessions/${existing}`,
-      { cache: "no-store" },
+      { cache: "no-store", signal },
     );
     if (probe.ok) return existing;
   }
@@ -140,6 +141,7 @@ export async function ensureSession(
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: "{}",
+    signal,
   });
   if (!res.ok) {
     throw new Error(`Could not create session (HTTP ${res.status}). Is the ADK server running?`);
@@ -198,5 +200,109 @@ export async function streamRun(
       }
       boundary = buffer.indexOf("\n\n");
     }
+  }
+}
+
+/**
+ * Execute an autonomous routine directly against the ADK backend.
+ * Returns the agent's textual output, token count, and duration.
+ * Safeguarded with AbortController timeout to prevent UI hangs.
+ */
+export async function executeRoutineWithAdk(params: {
+  userId: string;
+  agentId: "nata" | "maya" | "dimas" | "arief";
+  routinePrompt: string;
+  isEn: boolean;
+  timeoutMs?: number;
+  signal?: AbortSignal;
+}): Promise<{
+  text: string;
+  tokensUsed: number;
+  durationMs: number;
+  success: boolean;
+}> {
+  const start = Date.now();
+  const appName = params.agentId === "arief" ? "nata_regulasi" : APP_NAME;
+  const timeoutMs = params.timeoutMs ?? 15000;
+  const sessionKey = `nata.routine.session.${params.userId}.${params.agentId}`;
+
+  const timeoutController = new AbortController();
+  const timer = setTimeout(() => {
+    timeoutController.abort(new Error(`Routine execution timed out after ${timeoutMs}ms`));
+  }, timeoutMs);
+
+  const combinedSignal = params.signal
+    ? AbortSignal.any
+      ? AbortSignal.any([params.signal, timeoutController.signal])
+      : timeoutController.signal
+    : timeoutController.signal;
+
+  try {
+    const existing = typeof window !== "undefined" ? window.localStorage.getItem(sessionKey) : null;
+    const sessionId = await ensureSession(params.userId, existing, appName, combinedSignal);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(sessionKey, sessionId);
+    }
+
+    const languageInstruction = params.isEn
+      ? "Execute this scheduled background routine and produce an executive audit finding in English. Be concise, rigorous, and state statutory compliance."
+      : "Jalankan rutinitas otonom terjadwal ini dan hasilkan ringkasan audit mandiri dalam Bahasa Indonesia yang ringkas, objektif, dan berbasis regulasi.";
+
+    const prompt = `${languageInstruction}\n\n[Jadwal Otonom / Scheduled Routine]:\n${params.routinePrompt}`;
+
+    let reply = "";
+    let totalTokens = 1120;
+
+    await streamRun(
+      {
+        appName,
+        userId: params.userId,
+        sessionId,
+        streaming: false,
+        newMessage: {
+          role: "user",
+          parts: [{ text: prompt }],
+        },
+      },
+      (event) => {
+        if (event.usageMetadata?.totalTokenCount) {
+          totalTokens = event.usageMetadata.totalTokenCount;
+        }
+        const partText = event.content?.parts?.map((p) => p.text).filter(Boolean).join("") || "";
+        if (partText) {
+          if (event.partial === false) {
+            reply = partText;
+          } else {
+            reply += partText;
+          }
+        }
+      },
+      combinedSignal
+    );
+
+    const durationMs = Date.now() - start;
+    return {
+      text: reply.trim(),
+      tokensUsed: totalTokens,
+      durationMs,
+      success: reply.length > 0,
+    };
+  } catch {
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.removeItem(sessionKey);
+      } catch {
+        /* ignore storage error */
+      }
+    }
+    const durationMs = Date.now() - start;
+    return {
+      text: "",
+      tokensUsed: 1120,
+      durationMs,
+      success: false,
+    };
+  } finally {
+    clearTimeout(timer);
   }
 }

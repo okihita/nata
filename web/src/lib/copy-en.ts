@@ -659,11 +659,55 @@ export const copyEn = {
         body: "Operations mapped directly to the official KBLI 2020 catalog and verified before committing — preventing hallucinations.",
       },
     ],
+    routinesTitle: "Autonomous Routines Without Manual Friction",
+    routinesSubtitle: "Schedule daily, weekly, and month-end automated jobs. Bots run them in the background while you sleep.",
+    routinesItems: [
+      {
+        title: "07:00 AM Daily Morning Brief",
+        cadence: "Daily · 07:00 WIB",
+        body: "Yesterday's cash flow, marketplace payouts, and urgent to-dos prepared by Chief of Staff.",
+      },
+      {
+        title: "Omnichannel Marketplace Reconciliation",
+        cadence: "Daily · 23:30 WIB",
+        body: "Automated matching of bank statement inflows with Shopee, TikTok Shop, and offline POS QRIS sales.",
+      },
+      {
+        title: "Final Tax Threshold Sentinel",
+        cadence: "Weekly · Monday",
+        body: "Tax Specialist actively monitors the Rp 500M annual tax-free revenue quota (PP 55/2022) to avoid surprise liabilities.",
+      },
+      {
+        title: "Month-End Close & SAK EMKM Reports",
+        cadence: "Monthly · 1st of Month",
+        body: "Automated 6-node balance sheet and profit-and-loss closing with downloadable bank-ready PDF statements.",
+      },
+    ],
+    approvalGateTitle: "The Approval Gate: You Always Hold the Keys",
+    approvalGateSubtitle: "Bots propose and prepare with full autonomy, but funds never move and tax filings are never submitted without your explicit approval.",
+    approvalPoints: [
+      {
+        title: "High-Stakes Transaction Authorization",
+        body: "Major payouts, supplier transfers, and tax payments require a single verified click from the business owner.",
+      },
+      {
+        title: "Transparent Legal Backing & Audit Trail",
+        body: "Every draft references exact statutory articles (UU HPP, PP 55/2022, KBLI 2020) and shows full agent deliberation.",
+      },
+      {
+        title: "Instant Archiving to Verified Library",
+        body: "Approved artifacts are automatically filed into the official Library as verifiable proof of compliance.",
+      },
+    ],
     capabilities: {
       receiptToJournal: "Receipt photo → journal",
       sakStatements: "SAK EMKM statements",
       finalTaxArticles: "0.5% Final Tax + Statutory Articles",
       verifiedKbli: "Verified KBLI 2020 codes",
+      routinesSchedule: "Autonomous 24/7 routines",
+      approvalGate: "Human approval gate",
+      bankKurReady: "Bank loan (KUR) readiness",
+      omnichannelRec: "Shopee & TikTok reconciliation",
     },
     ctaTitle: "Sleep peacefully while Nata manages your books",
     ctaBody: "Free to start. One business, one phone, zero headaches.",
@@ -844,6 +888,7 @@ export const copyEn = {
     statuteGrounded: "Grounded Statute",
     actionButtons: {
       readLesson: "Read Guide",
+      viewWalkthrough: "Visual Tour",
       tryNow: "Try in Nata",
       tryRecordVoice: "Try Voice Recording",
       checkTaxes: "Check Tax Calculations",
@@ -852,16 +897,46 @@ export const copyEn = {
     },
     lessons: {
       plat_multimodal: {
-        title: "Fast Multi-Modal Recording",
-        summary: "Record transactions via receipt photo, voice note, or casual text.",
+        title: "Fast Receipt & Expense Extraction",
+        summary: "Record transactions effortlessly via receipt photo capture or casual text notes.",
         content:
-          "Nata allows business owners to record financial transactions using the method most convenient to them. In addition to clear receipt photos, you can dictate voice notes in colloquial Indonesian or paste unstructured WhatsApp text. The multimodal model extracts line items, quantities, vendors, and payment methods deterministically.",
+          "Nata allows business owners to record financial transactions using the fastest and most practical methods. Snap physical receipt photos, handwritten paper bills, or paste unstructured transaction notes from WhatsApp. Vision & Language AI deterministically extracts line items, quantities, vendors, and payment methods without tedious manual data entry.",
       },
       plat_trace: {
         title: "Agent Cascade Verification",
         summary: "Observe autonomous handoffs: Keuangan -> Fiskal -> Regulasi.",
         content:
           "When you submit a transaction, Agent Keuangan parses the data and commits balanced double-entry lines (Assets = Liabilities + Equity). Once posted, it performs a one-way handoff to Agent Fiskal to compute tax obligations, which in turn hands off to Agent Regulasi to classify the business's official KBLI 2020 code.",
+      },
+      plat_agents: {
+        title: "Autonomous Multi-Agent AI Staff",
+        summary: "Collaborate with 4 AI specialists: Mas Nata, Mbak Maya, Mas Dimas, and Pak Arief.",
+        content:
+          "Run your business operations with an integrated digital AI team in Nata. Mas Nata orchestrates transaction recording and business strategy, Mbak Maya verifies SAK EMKM-compliant double-entry accounting journals, Mas Dimas monitors MSME tax compliance (PP 55/2022) & the Rp 500M exempt band, and Pak Arief ensures legal compliance, OSS NIB, and official KBLI 2020 codes remain valid.",
+      },
+      plat_tax_monitor: {
+        title: "Rp 500M Tax-Free Threshold Monitor",
+        summary: "Track cumulative annual gross turnover against the PP 55/2022 tax-exempt ceiling.",
+        content:
+          "Under Indonesian Government Regulation PP 55/2022 Article 60, individual MSME taxpayers enjoy a 0% Final PPh rate on gross turnover up to Rp 500 million per fiscal year. Nata's Tax Module tracks cumulative revenue in real time, issues timely warnings before you reach the threshold, and computes the 0.5% Final PPh strictly on turnover exceeding Rp 500 million.",
+      },
+      plat_licensing_kbli: {
+        title: "NIB Licensing & KBLI 2020 Validation",
+        summary: "Synchronize day-to-day business activities with official OSS-RBA licensing standards.",
+        content:
+          "Avoid regulatory fines and licensing roadblocks. Nata's Licensing Module matches your operational entries and business description to official 5-digit KBLI 2020 codes from BPS & BKPM, determines your OSS-RBA risk tier (Low, Medium, High), and provides actionable guidance on standard operational certifications.",
+      },
+      plat_routines: {
+        title: "Automated Routines & Tax Reminders",
+        summary: "Automate monthly book closing, cash reconciliation, and statutory tax deadlines.",
+        content:
+          "Maintain accounting discipline with scheduled recurring workflows. Nata Routines automates daily and monthly responsibilities such as cash drawer verifications, marketplace payout reconciliations, 15th-of-the-month Final PPh remittances, and annual tax returns, delegating each routine directly to the designated AI specialist.",
+      },
+      plat_kur_readiness: {
+        title: "Bank Loan & KUR Readiness",
+        summary: "Generate bank-ready SAK EMKM financial statements for credit underwriting.",
+        content:
+          "Maximize your approval odds for People's Business Credit (KUR) and commercial bank loans. Nata automatically compiles the 3 foundational SAK EMKM financial reports: Statement of Financial Position (Balance Sheet), Income Statement (Profit & Loss), and Notes to Financial Statements (CALK), ready to print or export to Excel.",
       },
       plat_export: {
         title: "SAK EMKM Excel Exports",
@@ -1012,5 +1087,47 @@ export const copyEn = {
       noResultsDesc: "Try searching with different terms or select 'All Categories'.",
       browseLessonsCta: "Explore Practical Courses in Business School →",
     },
+  },
+  approvals: {
+    badge: "Approval Gate",
+    pendingCount: "Action Pending",
+    pendingCountPlural: "Actions Pending",
+    noPending: "Zero Pending Approvals",
+    noPendingDesc: "All agent actions have been authorized. Your business is running deterministically.",
+    dialogTitle: "Agent Approval Gate",
+    dialogDesc: "Autonomous AI agents propose actions. As the business owner, you hold absolute authority to approve or reject them.",
+    approveBtn: "Approve Action",
+    rejectBtn: "Reject",
+    approvedBadge: "Approved",
+    rejectedBadge: "Rejected",
+    pendingBadge: "Awaiting Your Sign-off",
+    impactLabel: "Financial / Risk Impact",
+    citationLabel: "Regulatory Guardrail",
+    toastApproved: "Action approved and queued for execution.",
+    toastRejected: "Action rejected. Agent instructed to halt.",
+  },
+  routineBuilder: {
+    heroTitle: "Scheduled Routines",
+    heroDesc: "Let Gemini-powered autonomous agents run recurring bookkeeping, tax shields, and legal compliance while you sleep.",
+    describeTaskPlaceholder: "Describe a recurring task (e.g. Daily night POS cash audit, weekly tax threshold monitor)...",
+    quickAddBtn: "Create Routine",
+    suggestedHeading: "Recommended Automations",
+    suggestedSubheading: "Pre-grounded Indonesian compliance routines. Click to load and schedule instantly.",
+    planPromptLabel: "Prompt / Instructions to Agent",
+    planPromptPlaceholder: "Explain precisely what the agent should inspect, calculate, or alert on each cycle...",
+    cronLabel: "Cron Schedule",
+    computedScheduleLabel: "Computed Schedule",
+    repeatLabel: "Frequency",
+    timeLabel: "Time",
+    dayLabel: "Day",
+    endsLabel: "Ends",
+    endsNever: "Never",
+    agentLabel: "Assigned Agent Specialist",
+    titleLabel: "Routine Title",
+    titlePlaceholder: "e.g. Nightly POS Settlement & Cash Discrepancy Audit",
+    useTemplateBtn: "Use Routine",
+    previewSideHeader: "Routine Blueprint",
+    previewSideDesc: "Configure timing, prompt directives, and agent role.",
+    disclaimer: "Scheduled routines execute autonomously on Cloud Run with deterministic statutory guardrails.",
   },
 } as const;
