@@ -145,6 +145,7 @@ export const copyEn = {
     agentBody:
       "Every receipt is parsed automatically, mapped to the correct ledger accounts, and validated for double-entry balance.",
     chartTitle: "Monthly revenue & expenses",
+    chartSubtitle: "Trend comparison over past months",
     chartRevenue: "Revenue",
     chartExpense: "Expenses",
     balanced: "Balanced books",

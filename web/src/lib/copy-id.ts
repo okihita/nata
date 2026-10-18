@@ -150,6 +150,7 @@ export const copyId = {
     agentBody:
       "Setiap struk dibaca otomatis, dicatat ke akun yang tepat, dan diperiksa agar kedua sisinya selalu seimbang.",
     chartTitle: "Pendapatan & beban per bulan",
+    chartSubtitle: "Perbandingan tren beberapa bulan terakhir",
     chartRevenue: "Pendapatan",
     chartExpense: "Beban",
     balanced: "Pembukuan seimbang",

@@ -283,14 +283,61 @@ export default function DashboardPage() {
         />
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        {/* Grafik */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="text-base">{copy.dashboard.chartTitle}</CardTitle>
-            <CardDescription>{business?.name ?? copy.app.name}</CardDescription>
+      {/* Quick Actions Bar */}
+      <div className="mt-6 flex flex-wrap items-center gap-2.5">
+        <span className="text-xs font-medium text-muted-foreground mr-1 hidden sm:inline">
+          {copy.dashboard.quickActions}:
+        </span>
+        <Button asChild size="sm" className="h-8 gap-1.5 text-xs">
+          <Link href="/record">
+            <ScanLine className="size-3.5" />
+            {copy.dashboard.actionScan}
+          </Link>
+        </Button>
+        <Button asChild variant="outline" size="sm" className="h-8 gap-1.5 text-xs">
+          <Link href="/statements">
+            <FileBarChart className="size-3.5" />
+            {copy.dashboard.actionReport}
+          </Link>
+        </Button>
+        <Button asChild variant="outline" size="sm" className="h-8 gap-1.5 text-xs">
+          <Link href="/taxes">
+            <Landmark className="size-3.5" />
+            {copy.dashboard.actionTax}
+          </Link>
+        </Button>
+        <Button asChild variant="ghost" size="sm" className="h-8 gap-1.5 text-xs ml-auto text-primary">
+          <Link href="/agents">
+            <Sparkles className="size-3.5" />
+            <span>Chat AI Assistant</span>
+            <ChevronRight className="size-3" />
+          </Link>
+        </Button>
+      </div>
+
+      {/* Main Grid: Balanced 1:1 (or 7:5) for Monthly Trends and Action Plan */}
+      <div className="mt-4 grid gap-6 lg:grid-cols-2">
+        {/* Trend Chart (Compact & High-Signal) */}
+        <Card className="flex flex-col justify-between">
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-base">{copy.dashboard.chartTitle}</CardTitle>
+                <CardDescription className="text-xs">{copy.dashboard.chartSubtitle ?? (business?.name ?? copy.app.name)}</CardDescription>
+              </div>
+              <div className="flex items-center gap-3 text-xs">
+                <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                  <span className="size-2 rounded-full bg-[var(--chart-1)]" />
+                  {copy.dashboard.chartRevenue}
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                  <span className="size-2 rounded-full bg-[var(--chart-2)]" />
+                  {copy.dashboard.chartExpense}
+                </span>
+              </div>
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-2">
             {series.length === 0 ? (
               <EmptyState
                 compact
@@ -300,225 +347,164 @@ export default function DashboardPage() {
               />
             ) : (
               <div className="h-64 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={series} margin={{ left: 4, right: 8, top: 4, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="rev" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.35} />
-                      <stop offset="95%" stopColor="var(--chart-1)" stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="exp" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="var(--chart-2)" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="var(--chart-2)" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border" />
-                  <XAxis
-                    dataKey="month"
-                    tickLine={false}
-                    axisLine={false}
-                    fontSize={12}
-                    tickFormatter={(m: string) =>
-                      new Date(`${m}-01`).toLocaleDateString("id-ID", { month: "short" })
-                    }
-                  />
-                  <YAxis
-                    tickLine={false}
-                    axisLine={false}
-                    fontSize={12}
-                    width={64}
-                    tickFormatter={(v: number) => `${idr(v / 1_000_000)} jt`}
-                  />
-                  <RTooltip
-                    formatter={(value) => idrFull(Number(value))}
-                    labelFormatter={(m) =>
-                      new Date(`${m}-01`).toLocaleDateString("id-ID", {
-                        month: "long",
-                        year: "numeric",
-                      })
-                    }
-                    contentStyle={{
-                      borderRadius: 10,
-                      border: "1px solid var(--border)",
-                      fontSize: 12,
-                    }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="revenue"
-                    name={copy.dashboard.chartRevenue}
-                    stroke="var(--chart-1)"
-                    fill="url(#rev)"
-                    strokeWidth={2}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="expense"
-                    name={copy.dashboard.chartExpense}
-                    stroke="var(--chart-2)"
-                    fill="url(#exp)"
-                    strokeWidth={2}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={series} margin={{ left: 4, right: 8, top: 4, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="rev" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.35} />
+                        <stop offset="95%" stopColor="var(--chart-1)" stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient id="exp" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="var(--chart-2)" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="var(--chart-2)" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border" />
+                    <XAxis
+                      dataKey="month"
+                      tickLine={false}
+                      axisLine={false}
+                      fontSize={12}
+                      tickFormatter={(m: string) =>
+                        new Date(`${m}-01`).toLocaleDateString("id-ID", { month: "short" })
+                      }
+                    />
+                    <YAxis
+                      tickLine={false}
+                      axisLine={false}
+                      fontSize={12}
+                      width={64}
+                      tickFormatter={(v: number) => `${idr(v / 1_000_000)} jt`}
+                    />
+                    <RTooltip
+                      formatter={(value) => idrFull(Number(value))}
+                      labelFormatter={(m) =>
+                        new Date(`${m}-01`).toLocaleDateString("id-ID", {
+                          month: "long",
+                          year: "numeric",
+                        })
+                      }
+                      contentStyle={{
+                        borderRadius: 10,
+                        border: "1px solid var(--border)",
+                        fontSize: 12,
+                      }}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="revenue"
+                      name={copy.dashboard.chartRevenue}
+                      stroke="var(--chart-1)"
+                      fill="url(#rev)"
+                      strokeWidth={2}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="expense"
+                      name={copy.dashboard.chartExpense}
+                      stroke="var(--chart-2)"
+                      fill="url(#exp)"
+                      strokeWidth={2}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+          </CardContent>
+          <div className="px-6 pb-4 pt-2 border-t border-border/50 flex items-center justify-between text-xs text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <ShieldCheck className="size-3.5 text-emerald-600" />
+              <span>{copy.dashboard.balanced}:</span>
+              <span className="font-medium text-foreground">{bs.balanced ? "Seimbang" : "Periksa"}</span>
+            </span>
+            <Button asChild variant="ghost" size="sm" className="h-6 text-xs px-1.5">
+              <Link href="/statements">
+                {copy.dashboard.actionReport} <ChevronRight className="size-3 ml-0.5" />
+              </Link>
+            </Button>
+          </div>
+        </Card>
+
+        {/* Action Plan & Priority Checklist */}
+        <Card className="flex flex-col border-border">
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base flex items-center gap-2">
+                <CheckCircle2 className="size-4 text-primary" />
+                <span>{copy.dashboard.todoTitle}</span>
+              </CardTitle>
+              <Badge variant="outline" className="text-[11px] font-normal bg-muted/40">
+                {todos.filter((t) => t.done).length}/{todos.length} Selesai
+              </Badge>
             </div>
+            <CardDescription className="text-xs">
+              {copy.dashboard.todoSubtitle}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2.5 flex-1">
+            {todos.map((todo) => (
+              <div
+                key={todo.id}
+                className={cn(
+                  "rounded-lg border p-3 text-xs transition-colors",
+                  todo.done ? "bg-muted/30 border-muted" : "bg-card hover:bg-muted/40 border-border"
+                )}
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-start gap-2">
+                    <span className="mt-0.5 shrink-0">{todo.icon}</span>
+                    <div>
+                      <p className={cn("font-medium text-foreground", todo.done && "line-through text-muted-foreground")}>
+                        {todo.title}
+                      </p>
+                      <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                        {todo.desc}
+                      </p>
+                    </div>
+                  </div>
+                  <Badge
+                    variant={todo.priority === "Tinggi" ? "destructive" : "secondary"}
+                    className="text-[10px] shrink-0 font-normal py-0 h-5"
+                  >
+                    {todo.priority}
+                  </Badge>
+                </div>
+                <div className="mt-2.5 pt-2 border-t border-border/50 flex items-center justify-between">
+                  <span className="text-[10px] text-muted-foreground flex items-center gap-1">
+                    <Clock className="size-3" /> Rekomendasi Bot
+                  </span>
+                  <Button asChild variant="outline" size="sm" className="h-6 text-[11px] px-2 py-0">
+                    <Link href={todo.href}>
+                      {todo.cta}
+                      <ChevronRight className="ml-1 size-3" />
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            ))}
+
+            {/* Optional Alert Item if any outstanding action exists */}
+            {actions.length > 0 && (
+              <div className="pt-1">
+                {actions.map((action) => (
+                  <Link
+                    key={action.id}
+                    href={action.href}
+                    className="flex items-start gap-2 rounded-lg border px-3 py-2 text-xs transition hover:bg-muted/50 bg-muted/20"
+                  >
+                    <Info
+                      className={cn(
+                        "mt-0.5 size-3.5 shrink-0",
+                        action.tone === "warn" ? "text-amber-600" : "text-sky-600",
+                      )}
+                    />
+                    <span>{action.text}</span>
+                  </Link>
+                ))}
+              </div>
             )}
           </CardContent>
         </Card>
-
-        {/* Aksi cepat + agentik */}
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">{copy.dashboard.quickActions}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <QuickAction
-                href="/record"
-                icon={<ScanLine className="size-4" />}
-                label={copy.dashboard.actionScan}
-                hint={copy.dashboard.actionScanHint}
-                primary
-              />
-              <QuickAction
-                href="/statements"
-                icon={<FileBarChart className="size-4" />}
-                label={copy.dashboard.actionReport}
-                hint={copy.dashboard.actionReportHint}
-              />
-              <QuickAction
-                href="/taxes"
-                icon={<Landmark className="size-4" />}
-                label={copy.dashboard.actionTax}
-                hint={copy.dashboard.actionTaxHint}
-              />
-            </CardContent>
-          </Card>
-
-          {/* 2. Rencana Aksi / To-Do List (Actionable checklist for compliance, bank readiness, licensing) */}
-          <Card className="border-border">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-primary" />
-                  <span>{copy.dashboard.todoTitle}</span>
-                </CardTitle>
-                <Badge variant="outline" className="text-[11px] font-normal bg-muted/40">
-                  {todos.filter((t) => t.done).length}/{todos.length} Selesai
-                </Badge>
-              </div>
-              <CardDescription className="text-xs">
-                {copy.dashboard.todoSubtitle}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2.5">
-              {todos.map((todo) => (
-                <div
-                  key={todo.id}
-                  className={cn(
-                    "rounded-lg border p-3 text-xs transition-colors",
-                    todo.done ? "bg-muted/30 border-muted" : "bg-card hover:bg-muted/40 border-border"
-                  )}
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-start gap-2">
-                      <span className="mt-0.5 shrink-0">{todo.icon}</span>
-                      <div>
-                        <p className={cn("font-medium text-foreground", todo.done && "line-through text-muted-foreground")}>
-                          {todo.title}
-                        </p>
-                        <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
-                          {todo.desc}
-                        </p>
-                      </div>
-                    </div>
-                    <Badge
-                      variant={todo.priority === "Tinggi" ? "destructive" : "secondary"}
-                      className="text-[10px] shrink-0 font-normal py-0 h-5"
-                    >
-                      {todo.priority}
-                    </Badge>
-                  </div>
-                  <div className="mt-2.5 pt-2 border-t border-border/50 flex items-center justify-between">
-                    <span className="text-[10px] text-muted-foreground flex items-center gap-1">
-                      <Clock className="size-3" /> Rekomendasi Bot
-                    </span>
-                    <Button asChild variant="outline" size="sm" className="h-6 text-[11px] px-2 py-0">
-                      <Link href={todo.href}>
-                        {todo.cta}
-                        <ChevronRight className="ml-1 size-3" />
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-
-          {/* Perlu tindakan */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">{copy.dashboard.needsAction}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {actions.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                  {copy.dashboard.needsActionEmpty}
-                </p>
-              ) : (
-                <ul className="space-y-2">
-                  {actions.map((action) => (
-                    <li key={action.id}>
-                      <Link
-                        href={action.href}
-                        className="flex items-start gap-2 rounded-lg border px-3 py-2 text-sm transition hover:bg-muted/50"
-                      >
-                        <Info
-                          className={cn(
-                            "mt-0.5 size-3.5 shrink-0",
-                            action.tone === "warn" ? "text-amber-600" : "text-sky-600",
-                          )}
-                        />
-                        <span>{action.text}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </CardContent>
-          </Card>
-
-          <Card className="border-primary/20 bg-primary/[0.03]">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2 text-base">
-                  <Sparkles className="size-4 text-primary" />
-                  {copy.dashboard.agentTitle}
-                </CardTitle>
-                <Button asChild variant="ghost" size="sm" className="h-6 text-xs text-primary px-2">
-                  <Link href="/agents">
-                    Chat Bot <ChevronRight className="size-3" />
-                  </Link>
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <p className="text-sm text-muted-foreground">{copy.dashboard.agentBody}</p>
-              <div className="flex items-center gap-2 rounded-lg border bg-background px-3 py-2 text-xs">
-                <ShieldCheck className="size-3.5 text-emerald-600" />
-                <span className="font-medium">{copy.dashboard.balanced}</span>
-                <span className="text-muted-foreground">· {copy.dashboard.balancedHint}</span>
-                {bs.balanced ? (
-                  <Badge className="ml-auto bg-emerald-600 text-white hover:bg-emerald-600">✓</Badge>
-                ) : (
-                  <Badge variant="destructive" className="ml-auto">
-                    ✕
-                  </Badge>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
 
       {/* Aktivitas terakhir */}
@@ -622,39 +608,6 @@ function Metric({
   );
 }
 
-function QuickAction({
-  href,
-  icon,
-  label,
-  hint,
-  primary,
-}: {
-  href: string;
-  icon: React.ReactNode;
-  label: string;
-  hint: string;
-  primary?: boolean;
-}) {
-  return (
-    <Button
-      asChild
-      variant={primary ? "default" : "outline"}
-      className="h-auto w-full justify-start gap-3 py-2.5"
-    >
-      <Link href={href}>
-        {icon}
-        <div className="grid text-left">
-          <span className="text-sm font-medium">{label}</span>
-          <span
-            className={`text-[11px] font-normal ${primary ? "text-primary-foreground/70" : "text-muted-foreground"}`}
-          >
-            {hint}
-          </span>
-        </div>
-      </Link>
-    </Button>
-  );
-}
 
 /**
  * The three standing facts that decide what the owner owes: business form, its
