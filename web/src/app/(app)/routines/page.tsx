@@ -49,7 +49,8 @@ export default function RoutinesPage() {
   const [newTitle, setNewTitle] = useState("");
   const [newAgent, setNewAgent] = useState<"nata" | "maya" | "dimas" | "arief">("nata");
   const [newCadence, setNewCadence] = useState<RoutineCadence>("daily");
-  const [newSchedule, setNewSchedule] = useState("0 8 * * *");
+  const [newHour, setNewHour] = useState("08:00");
+  const [newDay, setNewDay] = useState("0"); // 0 = Sunday
 
   const [showArchived, setShowArchived] = useState(false);
 
@@ -193,6 +194,27 @@ export default function RoutinesPage() {
       arief: { name: "Bang Arief", role: "Spesialis Perizinan & KBLI", roleEn: "Licensing Specialist" },
     }[newAgent];
 
+    const [hourStr, minStr] = newHour.split(":");
+    const hour = parseInt(hourStr, 10);
+    const minute = parseInt(minStr, 10) || 0;
+
+    let computedCron = `${minute} ${hour} * * *`;
+    let humanId = `Setiap hari ${newHour} WIB`;
+    let humanEn = `Daily at ${newHour} WIB`;
+
+    if (newCadence === "weekly") {
+      computedCron = `${minute} ${hour} * * ${newDay}`;
+      const dayNamesId = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      const dayNamesEn = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const dayIdx = parseInt(newDay, 10) || 0;
+      humanId = `Setiap ${dayNamesId[dayIdx]} ${newHour} WIB`;
+      humanEn = `Every ${dayNamesEn[dayIdx]} at ${newHour} WIB`;
+    } else if (newCadence === "monthly") {
+      computedCron = `${minute} ${hour} 28-31 * *`;
+      humanId = `Setiap akhir bulan ${newHour} WIB`;
+      humanEn = `End of month at ${newHour} WIB`;
+    }
+
     const newId = `rtn-custom-${Date.now()}`;
     const fresh: AutonomousRoutine = {
       id: newId,
@@ -203,9 +225,9 @@ export default function RoutinesPage() {
         id: newAgent,
         ...agentMeta,
       },
-      cronSchedule: newSchedule,
-      scheduleHuman: newSchedule === "0 8 * * *" ? "Setiap hari 08:00 WIB" : "Sesuai jadwal",
-      scheduleHumanEn: newSchedule === "0 8 * * *" ? "Daily at 08:00 WIB" : "Custom schedule",
+      cronSchedule: computedCron,
+      scheduleHuman: humanId,
+      scheduleHumanEn: humanEn,
       cadence: newCadence,
       status: "active",
       lastRunTime: isEn ? "Scheduled" : "Terjadwal",
@@ -229,7 +251,7 @@ export default function RoutinesPage() {
           impactMetrics: [
             { label: "Status", labelEn: "Status", value: "Ready" },
             { label: "Worker", labelEn: "Worker", value: agentMeta.name },
-            { label: "Cron", labelEn: "Cron", value: newSchedule },
+            { label: "Cron", labelEn: "Cron", value: computedCron },
           ],
           statutoryGrounding: "SAK EMKM & PP 55/2022",
           artifactType: "cash_briefing",
@@ -776,10 +798,10 @@ export default function RoutinesPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
+              <div className={`grid ${newCadence === "weekly" ? "grid-cols-3" : "grid-cols-2"} gap-2`}>
                 <div>
                   <label className="font-medium text-foreground block mb-1">
-                    {isEn ? "Cadence" : "Frekuensi"}
+                    {isEn ? "Frequency" : "Frekuensi"}
                   </label>
                   <div className="relative">
                     <select
@@ -787,26 +809,72 @@ export default function RoutinesPage() {
                       onChange={(e) => setNewCadence(e.target.value as RoutineCadence)}
                       className="w-full appearance-none px-3 py-2 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
                     >
-                      <option value="daily">{isEn ? "Daily" : "Harian"}</option>
-                      <option value="weekly">{isEn ? "Weekly" : "Mingguan"}</option>
-                      <option value="monthly">{isEn ? "Monthly" : "Bulanan"}</option>
+                      <option value="daily">{isEn ? "Daily" : "Setiap Hari"}</option>
+                      <option value="weekly">{isEn ? "Weekly" : "Setiap Minggu"}</option>
+                      <option value="monthly">{isEn ? "Monthly" : "Akhir Bulan"}</option>
                     </select>
                     <ChevronDown className="size-3.5 text-muted-foreground absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                   </div>
                 </div>
 
+                {newCadence === "weekly" && (
+                  <div>
+                    <label className="font-medium text-foreground block mb-1">
+                      {isEn ? "Day" : "Hari"}
+                    </label>
+                    <div className="relative">
+                      <select
+                        value={newDay}
+                        onChange={(e) => setNewDay(e.target.value)}
+                        className="w-full appearance-none px-3 py-2 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                      >
+                        <option value="0">{isEn ? "Sunday" : "Minggu"}</option>
+                        <option value="1">{isEn ? "Monday" : "Senin"}</option>
+                        <option value="2">{isEn ? "Tuesday" : "Selasa"}</option>
+                        <option value="3">{isEn ? "Wednesday" : "Rabu"}</option>
+                        <option value="4">{isEn ? "Thursday" : "Kamis"}</option>
+                        <option value="5">{isEn ? "Friday" : "Jumat"}</option>
+                        <option value="6">{isEn ? "Saturday" : "Sabtu"}</option>
+                      </select>
+                      <ChevronDown className="size-3.5 text-muted-foreground absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    </div>
+                  </div>
+                )}
+
                 <div>
                   <label className="font-medium text-foreground block mb-1">
-                    {isEn ? "Cron Expression" : "Jadwal Cron"}
+                    {isEn ? "Execution Time" : "Waktu Jam"}
                   </label>
-                  <input
-                    type="text"
-                    value={newSchedule}
-                    onChange={(e) => setNewSchedule(e.target.value)}
-                    placeholder="0 8 * * *"
-                    className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs font-mono focus:outline-none focus:ring-1 focus:ring-primary"
-                  />
+                  <div className="relative">
+                    <select
+                      value={newHour}
+                      onChange={(e) => setNewHour(e.target.value)}
+                      className="w-full appearance-none px-3 py-2 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                    >
+                      <option value="07:00">07:00 WIB ({isEn ? "Morning Briefing" : "Pagi Toko Buka"})</option>
+                      <option value="08:00">08:00 WIB ({isEn ? "Standard Morning" : "Pagi Standar"})</option>
+                      <option value="12:00">12:00 WIB ({isEn ? "Midday Shift" : "Siang Hari"})</option>
+                      <option value="18:00">18:00 WIB ({isEn ? "Store Close" : "Tutup Shift Sore"})</option>
+                      <option value="21:00">21:00 WIB ({isEn ? "Nightly POS Audit" : "Malam Tutup Kasir"})</option>
+                      <option value="23:00">23:00 WIB ({isEn ? "Late Night Batch" : "Tengah Malam"})</option>
+                    </select>
+                    <ChevronDown className="size-3.5 text-muted-foreground absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  </div>
                 </div>
+              </div>
+
+              {/* Friendly preview pill */}
+              <div className="p-2 rounded-lg bg-muted/40 border border-border/50 text-[11px] text-muted-foreground flex items-center justify-between">
+                <span>{isEn ? "Auto-Scheduled Rule:" : "Ringkasan Jadwal:"}</span>
+                <span className="font-semibold text-foreground">
+                  {newCadence === "daily"
+                    ? `${isEn ? "Daily at" : "Setiap hari"} ${newHour} WIB`
+                    : newCadence === "weekly"
+                    ? `${isEn ? "Every" : "Setiap"} ${
+                        ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"][parseInt(newDay, 10) || 0]
+                      } ${newHour} WIB`
+                    : `${isEn ? "End of month at" : "Setiap akhir bulan"} ${newHour} WIB`}
+                </span>
               </div>
             </div>
 
