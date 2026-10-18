@@ -185,12 +185,6 @@ export default function RoutinesPage() {
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/60 pb-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">
-              <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              {isEn ? "4 Autonomous Workers Active" : "4 Jadwal Otomatis Aktif"}
-            </span>
-          </div>
           <h1 className="text-xl font-semibold tracking-tight text-foreground">
             {isEn ? "Autonomous Routines" : "Rutinitas Otonom"}
           </h1>
