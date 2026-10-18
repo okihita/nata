@@ -487,6 +487,12 @@ export const copyId = {
         body: "Kegiatan usaha Anda dicocokkan ke katalog resmi KBLI 2020, dan kodenya diperiksa sebelum disimpan — bukan dikarang.",
       },
     ],
+    capabilities: {
+      receiptToJournal: "Foto struk → jurnal",
+      sakStatements: "Laporan SAK EMKM",
+      finalTaxArticles: "PPh Final + Pasal",
+      verifiedKbli: "Kode KBLI terverifikasi",
+    },
     ctaTitle: "Mulai pembukuan Anda hari ini",
     ctaBody: "Gratis untuk memulai. Cukup satu usaha, satu ponsel.",
     ctaButton: "Mulai gratis sekarang",

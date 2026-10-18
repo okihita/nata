@@ -482,6 +482,12 @@ export const copyEn = {
         body: "Operations mapped directly to the official KBLI 2020 catalog and verified before committing — preventing hallucinations.",
       },
     ],
+    capabilities: {
+      receiptToJournal: "Receipt photo → journal",
+      sakStatements: "SAK EMKM statements",
+      finalTaxArticles: "0.5% Final Tax + Statutory Articles",
+      verifiedKbli: "Verified KBLI 2020 codes",
+    },
     ctaTitle: "Start automated bookkeeping today",
     ctaBody: "Free to start. One business, one phone.",
     ctaButton: "Get Started Free",
