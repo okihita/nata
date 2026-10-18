@@ -20,7 +20,7 @@ import { useWorkspace } from "@/lib/store";
 import { isUsableBusiness, DEMO_BUSINESS_PROFILES } from "@/lib/business";
 
 /** Routes that remain reachable before a business exists. */
-const EXEMPT = ["/usaha"];
+const EXEMPT = ["/business"];
 
 export function OnboardingGate({ children }: { children: React.ReactNode }) {
   const { business, ready, switchBusiness } = useWorkspace();

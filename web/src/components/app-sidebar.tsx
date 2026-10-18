@@ -58,7 +58,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href="/dasbor" onClick={() => setOpenMobile(false)}>
+              <Link href="/dashboard" onClick={() => setOpenMobile(false)}>
                 <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-primary text-sm font-semibold text-primary-foreground">
                   ◈
                 </span>

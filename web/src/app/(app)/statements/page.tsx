@@ -66,7 +66,7 @@ export default function LaporanPage() {
               body={copy.laporan.emptyBody}
               actions={
                 <Button asChild size="sm">
-                  <Link href="/catat">
+                  <Link href="/record">
                     <ScanLine className="mr-2 size-4" />
                     {copy.dashboard.actionScan}
                   </Link>
