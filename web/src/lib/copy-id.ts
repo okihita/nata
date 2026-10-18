@@ -664,11 +664,55 @@ export const copyId = {
         body: "Kegiatan usaha Anda dicocokkan ke katalog resmi KBLI 2020, dan kodenya diperiksa sebelum disimpan — bukan dikarang.",
       },
     ],
+    routinesTitle: "Rutinitas Otonom Tanpa Intervensi Manual",
+    routinesSubtitle: "Jadwalkan rutinitas harian, mingguan, dan akhir bulan. Bot mengeksekusi otomatis saat Anda tidur.",
+    routinesItems: [
+      {
+        title: "Briefing Pagi Jam 07:00",
+        cadence: "Harian · 07:00 WIB",
+        body: "Rekap ringkas arus kas kemarin, penjualan marketplace, dan tugas prioritas langsung dikompilasi Mas Nata.",
+      },
+      {
+        title: "Rekonsiliasi Omnichannel Marketplace",
+        cadence: "Harian · 23:30 WIB",
+        body: "Pencocokan mutasi bank otomatis dengan settlement Shopee, TikTok Shop, dan QRIS toko offline.",
+      },
+      {
+        title: "Pemantauan Ambang Batas PPh Final",
+        cadence: "Mingguan · Senin",
+        body: "Agent Fiskal memonitor kuota omzet bebas pajak Rp 500 juta (PP 55/2022) agar terhindar dari denda mendadak.",
+      },
+      {
+        title: "Tutup Buku & Laporan SAK EMKM",
+        cadence: "Bulanan · Tanggal 1",
+        body: "Penyusunan neraca dan laba rugi 6-node otomatis siap cetak PDF untuk pengajuan KUR modal bank.",
+      },
+    ],
+    approvalGateTitle: "Gerbang Persetujuan: Anda Selalu Memegang Kendali",
+    approvalGateSubtitle: "Bot bekerja mandiri, namun uang tidak pernah keluar dan SPT pajak tidak pernah terlapor tanpa persetujuan eksplisit Anda.",
+    approvalPoints: [
+      {
+        title: "Otorisasi Transaksi Bernilai Tinggi",
+        body: "Pengeluaran besar, transfer suplier, dan pembayaran pajak wajib disetujui satu klik oleh pemilik usaha.",
+      },
+      {
+        title: "Bukti Hukum & Audit Trail Terbuka",
+        body: "Setiap draf disertai kutipan pasal hukum (UU HPP, PP 55/2022, KBLI 2020) dan riwayat pertimbangan bot.",
+      },
+      {
+        title: "Arsip Dokumen Otomatis ke Pustaka",
+        body: "Dokumen yang disetujui langsung terbit ke Pustaka resmi sebagai bukti kepatuhan fiskal dan hukum.",
+      },
+    ],
     capabilities: {
       receiptToJournal: "Foto struk → jurnal",
       sakStatements: "Laporan SAK EMKM",
       finalTaxArticles: "PPh Final + Pasal",
       verifiedKbli: "Kode KBLI terverifikasi",
+      routinesSchedule: "Rutinitas otonom 24/7",
+      approvalGate: "Gerbang persetujuan",
+      bankKurReady: "Siap modal KUR bank",
+      omnichannelRec: "Rekonsiliasi Shopee/TikTok",
     },
     ctaTitle: "Tidur nyenyak, biarkan Nata yang beresin pembukuan Anda",
     ctaBody: "Gratis untuk memulai. Cukup satu usaha, satu ponsel, tanpa repot.",

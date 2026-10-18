@@ -659,11 +659,55 @@ export const copyEn = {
         body: "Operations mapped directly to the official KBLI 2020 catalog and verified before committing — preventing hallucinations.",
       },
     ],
+    routinesTitle: "Autonomous Routines Without Manual Friction",
+    routinesSubtitle: "Schedule daily, weekly, and month-end automated jobs. Bots run them in the background while you sleep.",
+    routinesItems: [
+      {
+        title: "07:00 AM Daily Morning Brief",
+        cadence: "Daily · 07:00 WIB",
+        body: "Yesterday's cash flow, marketplace payouts, and urgent to-dos prepared by Chief of Staff.",
+      },
+      {
+        title: "Omnichannel Marketplace Reconciliation",
+        cadence: "Daily · 23:30 WIB",
+        body: "Automated matching of bank statement inflows with Shopee, TikTok Shop, and offline POS QRIS sales.",
+      },
+      {
+        title: "Final Tax Threshold Sentinel",
+        cadence: "Weekly · Monday",
+        body: "Tax Specialist actively monitors the Rp 500M annual tax-free revenue quota (PP 55/2022) to avoid surprise liabilities.",
+      },
+      {
+        title: "Month-End Close & SAK EMKM Reports",
+        cadence: "Monthly · 1st of Month",
+        body: "Automated 6-node balance sheet and profit-and-loss closing with downloadable bank-ready PDF statements.",
+      },
+    ],
+    approvalGateTitle: "The Approval Gate: You Always Hold the Keys",
+    approvalGateSubtitle: "Bots propose and prepare with full autonomy, but funds never move and tax filings are never submitted without your explicit approval.",
+    approvalPoints: [
+      {
+        title: "High-Stakes Transaction Authorization",
+        body: "Major payouts, supplier transfers, and tax payments require a single verified click from the business owner.",
+      },
+      {
+        title: "Transparent Legal Backing & Audit Trail",
+        body: "Every draft references exact statutory articles (UU HPP, PP 55/2022, KBLI 2020) and shows full agent deliberation.",
+      },
+      {
+        title: "Instant Archiving to Verified Library",
+        body: "Approved artifacts are automatically filed into the official Library as verifiable proof of compliance.",
+      },
+    ],
     capabilities: {
       receiptToJournal: "Receipt photo → journal",
       sakStatements: "SAK EMKM statements",
       finalTaxArticles: "0.5% Final Tax + Statutory Articles",
       verifiedKbli: "Verified KBLI 2020 codes",
+      routinesSchedule: "Autonomous 24/7 routines",
+      approvalGate: "Human approval gate",
+      bankKurReady: "Bank loan (KUR) readiness",
+      omnichannelRec: "Shopee & TikTok reconciliation",
     },
     ctaTitle: "Sleep peacefully while Nata manages your books",
     ctaBody: "Free to start. One business, one phone, zero headaches.",
