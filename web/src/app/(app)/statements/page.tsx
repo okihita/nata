@@ -1,7 +1,20 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { FileBarChart, ShieldCheck, ShieldAlert, ScanLine, Download } from "lucide-react";
+import {
+  FileBarChart,
+  ShieldCheck,
+  ShieldAlert,
+  ScanLine,
+  Download,
+  FileText,
+  Printer,
+  ChevronDown,
+  GraduationCap,
+  BookOpen,
+  Sparkles,
+  ArrowUpRight,
+} from "lucide-react";
 
 import Link from "next/link";
 
@@ -18,15 +31,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useWorkspace } from "@/lib/store";
 import { balanceSheet, incomeStatement, type JournalEntry } from "@/lib/ledger";
 import { downloadCsv, reportFilename, statementsToCsv } from "@/lib/export-csv";
-import { copy } from "@/lib/copy";
+import { openStatementPdfInNewTab } from "@/lib/statement-pdf";
+import { useLanguage } from "@/lib/copy";
 import { idrFull } from "@/lib/format";
 import { toast } from "sonner";
 
 export default function LaporanPage() {
   const { entries, ready, business } = useWorkspace();
+  const { copy, locale } = useLanguage();
   const [period, setPeriod] = useState("all");
 
   const periods = useMemo(() => {
@@ -38,6 +59,40 @@ export default function LaporanPage() {
     () => (period === "all" ? entries : entries.filter((e) => e.date.startsWith(period))),
     [entries, period],
   );
+
+  // Calculate date span across records for "All Periods"
+  const periodMeta = useMemo(() => {
+    if (periods.length === 0) {
+      return {
+        label: copy.laporan.allPeriods,
+        rangeText: "",
+        monthsCount: 0,
+      };
+    }
+    // periods are sorted newest first, e.g. ["2026-10", "2026-09", "2026-08"]
+    const newest = periods[0];
+    const oldest = periods[periods.length - 1];
+
+    const formatMonth = (p?: string) =>
+      p
+        ? new Date(`${p}-01`).toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
+            month: "short",
+            year: "numeric",
+          })
+        : "";
+
+    const startFormatted = formatMonth(oldest);
+    const endFormatted = formatMonth(newest);
+    const monthsCount = periods.length;
+
+    return {
+      label: copy.laporan.allPeriods,
+      startFormatted,
+      endFormatted,
+      monthsCount,
+      rangeText: copy.laporan.allPeriodsRange(startFormatted, endFormatted, monthsCount),
+    };
+  }, [periods, locale, copy]);
 
   const income = incomeStatement(scoped);
   const bs = balanceSheet(scoped);
@@ -81,21 +136,57 @@ export default function LaporanPage() {
 
   const periodLabel =
     period === "all"
-      ? copy.laporan.allPeriods
-      : new Date(`${period}-01`).toLocaleDateString("id-ID", { month: "long", year: "numeric" });
+      ? periodMeta.rangeText
+        ? `${copy.laporan.allPeriods} (${periodMeta.rangeText})`
+        : copy.laporan.allPeriods
+      : new Date(`${period}-01`).toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
+          month: "long",
+          year: "numeric",
+        });
+
+  const handleExportCsv = () => {
+    downloadCsv(
+      reportFilename(business?.name ?? copy.app.name, period === "all" ? "semua-periode" : periodLabel),
+      statementsToCsv(scoped, {
+        periodLabel,
+        businessName: business?.name ?? copy.app.name,
+      }),
+    );
+    toast.success(copy.laporan.exported);
+  };
+
+  const handleExportPdf = () => {
+    openStatementPdfInNewTab(scoped, {
+      businessName: business?.name ?? copy.app.name,
+      businessAddress: business?.address,
+      npwp: business?.npwp,
+      nib: business?.nib,
+      periodLabel,
+      calkPoints: copy.laporan.calkPoints,
+      locale,
+    });
+    toast.success(copy.laporan.exportedPdf);
+  };
 
   return (
     <>
       <PageHeader title={copy.laporan.title} subtitle={copy.laporan.subtitle}>
         <Select value={period} onValueChange={setPeriod}>
-          <SelectTrigger className="w-[13rem]">
+          <SelectTrigger className="w-[17rem]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">{copy.laporan.allPeriods}</SelectItem>
+            <SelectItem value="all">
+              <div className="flex flex-col text-left py-0.5">
+                <span className="font-medium">{copy.laporan.allPeriods}</span>
+                {periodMeta.rangeText && (
+                  <span className="text-[10px] text-muted-foreground">{periodMeta.rangeText}</span>
+                )}
+              </div>
+            </SelectItem>
             {periods.map((p) => (
               <SelectItem key={p} value={p}>
-                {new Date(`${p}-01`).toLocaleDateString("id-ID", {
+                {new Date(`${p}-01`).toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
                   month: "long",
                   year: "numeric",
                 })}
@@ -103,28 +194,45 @@ export default function LaporanPage() {
             ))}
           </SelectContent>
         </Select>
-        <Button
-          variant="outline"
-          onClick={() => {
-            downloadCsv(
-              reportFilename(business?.name ?? copy.app.name, periodLabel),
-              statementsToCsv(scoped, {
-                periodLabel,
-                businessName: business?.name ?? copy.app.name,
-              }),
-            );
-            toast.success(copy.laporan.exported);
-          }}
-          disabled={scoped.length === 0}
-        >
-          <Download className="mr-2 size-4" />
-          {copy.laporan.export}
-        </Button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" disabled={scoped.length === 0} className="gap-1.5 font-medium">
+              <Download className="size-4" />
+              <span>{copy.laporan.export}</span>
+              <ChevronDown className="size-3.5 opacity-60" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuItem onClick={handleExportPdf} className="gap-2 cursor-pointer">
+              <Printer className="size-4 text-primary" />
+              <div className="grid">
+                <span className="text-xs font-semibold">{copy.laporan.exportPdf}</span>
+                <span className="text-[10px] text-muted-foreground">Buka tab cetak / simpan PDF</span>
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleExportCsv} className="gap-2 cursor-pointer">
+              <FileText className="size-4 text-emerald-600" />
+              <div className="grid">
+                <span className="text-xs font-semibold">{copy.laporan.exportCsv}</span>
+                <span className="text-[10px] text-muted-foreground">Unduh file spreadsheet .csv</span>
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </PageHeader>
 
-      <p className="mb-4 text-sm text-muted-foreground">
-        {copy.laporan.period}: <span className="font-medium text-foreground">{periodLabel}</span>
-      </p>
+      <div className="mb-4 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+        <span>{copy.laporan.period}:</span>
+        <span className="font-semibold text-foreground">
+          {period === "all" ? copy.laporan.allPeriods : periodLabel}
+        </span>
+        {period === "all" && periodMeta.rangeText && (
+          <Badge variant="outline" className="text-xs font-normal bg-muted/40 text-muted-foreground">
+            {periodMeta.rangeText}
+          </Badge>
+        )}
+      </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Laba Rugi */}
@@ -230,14 +338,55 @@ export default function LaporanPage() {
             </CardTitle>
             <CardDescription>{copy.laporan.calkIntro}</CardDescription>
           </div>
-          <Badge variant="secondary">SAK EMKM</Badge>
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="secondary">SAK EMKM</Badge>
+            <Button asChild variant="outline" size="sm" className="gap-1.5 h-8 text-xs font-medium">
+              <Link href="/academy?category=accounting_101" title={copy.laporan.learnTermsHint}>
+                <GraduationCap className="size-3.5 text-primary" />
+                <span>{copy.laporan.learnTerms}</span>
+              </Link>
+            </Button>
+          </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
           <ul className="list-disc space-y-1.5 pl-5 text-sm text-muted-foreground">
             {copy.laporan.calkPoints.map((point) => (
               <li key={point}>{point}</li>
             ))}
           </ul>
+
+          <div className="rounded-lg border bg-muted/30 p-3 sm:p-4">
+            <div className="flex items-center gap-1.5 text-xs font-medium text-foreground">
+              <Sparkles className="size-3.5 text-primary" />
+              <span>{copy.laporan.calkBannerTitle}</span>
+            </div>
+            <div className="mt-2.5 flex flex-wrap gap-2">
+              <Button asChild variant="secondary" size="sm" className="h-7 text-xs gap-1 font-normal bg-background/80 hover:bg-background border">
+                <Link href="/academy?category=accounting_101">
+                  <BookOpen className="size-3 text-primary" />
+                  <span>{copy.laporan.calkPills.accrual}</span>
+                </Link>
+              </Button>
+              <Button asChild variant="secondary" size="sm" className="h-7 text-xs gap-1 font-normal bg-background/80 hover:bg-background border">
+                <Link href="/academy/fun-facts">
+                  <span>💡</span>
+                  <span>{copy.laporan.calkPills.depreciation}</span>
+                </Link>
+              </Button>
+              <Button asChild variant="secondary" size="sm" className="h-7 text-xs gap-1 font-normal bg-background/80 hover:bg-background border">
+                <Link href="/academy?category=tax_compliance">
+                  <span>🏛️</span>
+                  <span>{copy.laporan.calkPills.taxFinal}</span>
+                </Link>
+              </Button>
+              <Button asChild variant="ghost" size="sm" className="h-7 text-xs gap-1 font-normal text-muted-foreground hover:text-foreground">
+                <Link href="/academy">
+                  <span>{copy.laporan.calkPills.fullAcademy}</span>
+                  <ArrowUpRight className="size-3" />
+                </Link>
+              </Button>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </>
