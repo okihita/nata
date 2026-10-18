@@ -355,7 +355,7 @@ export default function RoutinesPage() {
           </button>
         </div>
 
-        <span className="text-[11px] font-medium text-foreground truncate max-w-[200px] px-2">
+        <span className="text-xs font-medium text-foreground truncate max-w-[200px] px-2">
           {selectedRoutine ? (isEn ? selectedRoutine.titleEn : selectedRoutine.title) : (isEn ? "No job selected" : "Pilih jadwal")}
         </span>
       </div>
@@ -375,7 +375,7 @@ export default function RoutinesPage() {
               size="sm"
               variant="outline"
               onClick={() => setIsAddModalOpen(true)}
-              className="h-6 px-2 text-[10px] gap-1 border-primary/40 text-primary hover:bg-primary/5"
+              className="h-6 px-2 text-xs gap-1 border-primary/40 text-primary hover:bg-primary/5"
             >
               <Plus className="size-3" />
               <span>{isEn ? "Add New" : "Tambah"}</span>
@@ -383,7 +383,7 @@ export default function RoutinesPage() {
           </div>
 
           {/* Quick filter tabs */}
-          <div className="p-2 border-b border-border/40 flex items-center justify-between text-[11px] bg-muted/10">
+          <div className="p-2 border-b border-border/40 flex items-center justify-between text-xs bg-muted/10">
             <div className="flex gap-1">
               {(["all", "daily", "weekly"] as const).map((c) => (
                 <button
@@ -402,7 +402,7 @@ export default function RoutinesPage() {
 
             <button
               onClick={() => setShowArchived((prev) => !prev)}
-              className={`px-1.5 py-0.5 rounded text-[10px] flex items-center gap-1 transition-colors ${
+              className={`px-1.5 py-0.5 rounded text-xs flex items-center gap-1 transition-colors ${
                 showArchived
                   ? "bg-amber-500/15 text-amber-700 dark:text-amber-400 font-medium border border-amber-500/30"
                   : "text-muted-foreground hover:text-foreground"
@@ -440,13 +440,13 @@ export default function RoutinesPage() {
                 >
                   <div className="flex items-center justify-between gap-1 mb-1.5">
                     <span
-                      className={`text-[10px] font-medium px-1.5 py-0.5 rounded border ${getAgentTone(
+                      className={`text-xs font-medium px-1.5 py-0.5 rounded border ${getAgentTone(
                         routine.assignedAgent.id
                       )}`}
                     >
                       {routine.assignedAgent.name}
                     </span>
-                    <span className="text-[10px] font-medium text-muted-foreground bg-muted/50 px-1.5 py-0.5 rounded border border-border/40">
+                    <span className="text-xs font-medium text-muted-foreground bg-muted/50 px-1.5 py-0.5 rounded border border-border/40">
                       {isEn ? routine.scheduleHumanEn : routine.scheduleHuman}
                     </span>
                   </div>
@@ -455,7 +455,7 @@ export default function RoutinesPage() {
                     {isEn ? routine.titleEn : routine.title}
                   </h3>
 
-                  <div className="flex items-center justify-between pt-1.5 text-[10px] text-muted-foreground">
+                  <div className="flex items-center justify-between pt-1.5 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
                       {routine.lastRunStatus === "warning" ? (
                         <span className="size-1.5 rounded-full bg-amber-500" />
@@ -488,7 +488,7 @@ export default function RoutinesPage() {
               <span className="text-xs font-semibold text-foreground">
                 {isEn ? "2. Run Timeline" : "2. Garis Waktu Eksekusi"}
               </span>
-              <p className="text-[10px] text-muted-foreground truncate max-w-[220px]">
+              <p className="text-xs text-muted-foreground truncate max-w-[220px]">
                 {selectedRoutine
                   ? (isEn ? selectedRoutine.titleEn : selectedRoutine.title)
                   : (isEn ? "Select a job from pane 1" : "Pilih jadwal dari panel 1")}
@@ -496,7 +496,7 @@ export default function RoutinesPage() {
             </div>
             {selectedRoutine && (
               <div className="flex items-center gap-1.5">
-                <span className="text-[10px] font-mono text-muted-foreground">
+                <span className="text-xs font-mono text-muted-foreground">
                   {selectedRoutine.recentExecutions.length} {isEn ? "runs" : "riwayat"}
                 </span>
                 <button
@@ -520,26 +520,26 @@ export default function RoutinesPage() {
               {/* NEXT SCHEDULED RUN CARD */}
               <div className="p-3 rounded-xl border border-border/80 bg-muted/30 space-y-2 shadow-xs">
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
+                  <span className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                     <CalendarClock className="size-3.5 text-primary" />
                     {isEn ? "Next Scheduled Run" : "Jadwal Berikutnya"}
                   </span>
-                  <span className="text-[10px] font-medium bg-background text-foreground/80 px-2 py-0.5 rounded border border-border/70">
+                  <span className="text-xs font-medium bg-background text-foreground/80 px-2 py-0.5 rounded border border-border/70">
                     {isEn ? selectedRoutine.scheduleHumanEn : selectedRoutine.scheduleHuman}
                   </span>
                 </div>
 
                 <div className="text-xs text-foreground/90 font-medium flex items-center justify-between">
                   <span>{selectedRoutine.cadence === "daily" ? (isEn ? "Recurring Daily Cycle" : "Siklus Rutin Harian") : (isEn ? "Scheduled Cycle" : "Siklus Terjadwal")}</span>
-                  <span className="text-[10px] font-mono text-muted-foreground">{selectedRoutine.cronSchedule}</span>
+                  <span className="text-xs font-mono text-muted-foreground">{selectedRoutine.cronSchedule}</span>
                 </div>
 
-                <p className="text-[11px] text-muted-foreground line-clamp-2 leading-relaxed">
+                <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
                   {isEn ? selectedRoutine.purposeEn : selectedRoutine.purpose}
                 </p>
 
                 <div className="pt-1 flex items-center justify-between gap-2">
-                  <span className="text-[10px] text-muted-foreground font-mono truncate">
+                  <span className="text-xs text-muted-foreground font-mono truncate">
                     Worker: {selectedRoutine.assignedAgent.name}
                   </span>
                   <div className="flex items-center gap-1.5 shrink-0">
@@ -590,7 +590,7 @@ export default function RoutinesPage() {
               </div>
 
               {/* PAST RUNS DIVIDER */}
-              <div className="px-1 pt-1 flex items-center gap-2 text-[10px] uppercase font-mono text-muted-foreground">
+              <div className="px-1 pt-1 flex items-center gap-2 text-xs uppercase font-mono text-muted-foreground">
                 <span>{isEn ? "Past Executions" : "Riwayat Eksekusi"}</span>
                 <div className="h-px bg-border/60 flex-1" />
               </div>
@@ -600,7 +600,7 @@ export default function RoutinesPage() {
                   <p className="text-xs font-medium text-foreground">
                     {isEn ? "No Past Runs Yet" : "Belum Ada Riwayat Eksekusi"}
                   </p>
-                  <p className="text-[11px] text-muted-foreground max-w-[220px] mx-auto">
+                  <p className="text-xs text-muted-foreground max-w-[220px] mx-auto">
                     {isEn
                       ? "This worker is freshly registered. Click 'Run Now' above to trigger its initial verification run."
                       : "Pekerja ini baru didaftarkan. Klik 'Jalankan Sekarang' di atas untuk memicu siklus perdananya."}
@@ -635,7 +635,7 @@ export default function RoutinesPage() {
                           )}
                           <span>{exec.timestamp}</span>
                         </span>
-                        <span className="text-[10px] font-mono text-muted-foreground">
+                        <span className="text-xs font-mono text-muted-foreground">
                           {(exec.durationMs / 1000).toFixed(1)}s
                         </span>
                       </div>
@@ -644,7 +644,7 @@ export default function RoutinesPage() {
                         {isEn ? exec.findingSummaryEn : exec.findingSummary}
                       </p>
 
-                      <div className="flex items-center justify-end pt-2 border-t border-border/40 mt-2 text-[10px]">
+                      <div className="flex items-center justify-end pt-2 border-t border-border/40 mt-2 text-xs">
                         <span className="text-primary font-medium flex items-center gap-0.5">
                           {isEn ? "Inspect" : "Periksa"} <ChevronRight className="size-3" />
                         </span>
@@ -661,7 +661,7 @@ export default function RoutinesPage() {
                 <p className="text-xs font-semibold text-foreground">
                   {isEn ? "No Job Selected" : "Belum Ada Jadwal Dipilih"}
                 </p>
-                <p className="text-[11px] text-muted-foreground max-w-[220px]">
+                <p className="text-xs text-muted-foreground max-w-[220px]">
                   {isEn
                     ? "Click any autonomous job in Pane 1 to inspect its schedule and past execution runs."
                     : "Pilih salah satu jadwal di Panel 1 untuk memeriksa siklus dan riwayat pekerjaannya."}
@@ -683,7 +683,7 @@ export default function RoutinesPage() {
 
             {selectedExec && (
               <div className="flex items-center gap-1.5">
-                <Badge variant="outline" className="text-[10px] font-mono">
+                <Badge variant="outline" className="text-xs font-mono">
                   {selectedExec.id}
                 </Badge>
                 <button
@@ -703,7 +703,7 @@ export default function RoutinesPage() {
             <div className="p-4 space-y-4 flex-1 overflow-y-auto">
             {/* Finding Summary Box */}
             <div className="p-3 rounded-lg bg-muted/40 border border-border/60 space-y-1">
-              <span className="text-[10px] font-mono uppercase text-muted-foreground">
+              <span className="text-xs font-mono uppercase text-muted-foreground">
                 {isEn ? "Autonomous Finding" : "Temuan Mandiri Agen"}
               </span>
               <p className="text-xs text-foreground leading-relaxed font-medium">
@@ -715,7 +715,7 @@ export default function RoutinesPage() {
             <div className="grid grid-cols-3 gap-2">
               {selectedExec.impactMetrics.map((m, idx) => (
                 <div key={idx} className="p-2 rounded-lg bg-background border border-border/70 text-center">
-                  <div className="text-[10px] text-muted-foreground truncate">
+                  <div className="text-xs text-muted-foreground truncate">
                     {isEn ? m.labelEn : m.label}
                   </div>
                   <div className="text-xs font-semibold text-foreground mt-0.5 truncate">
@@ -732,7 +732,7 @@ export default function RoutinesPage() {
                   <Table className="size-3.5 text-primary" />
                   {isEn ? "Generated Proof Document" : "Dokumen Hasil Verifikasi"}
                 </span>
-                <span className="text-[10px] font-mono text-muted-foreground">
+                <span className="text-xs font-mono text-muted-foreground">
                   {selectedExec.artifactType}
                 </span>
               </div>
@@ -751,12 +751,12 @@ export default function RoutinesPage() {
                     </span>
                   </div>
                   <div className="space-y-1 pt-1">
-                    <span className="text-[10px] text-muted-foreground font-mono uppercase">
+                    <span className="text-xs text-muted-foreground font-mono uppercase">
                       {isEn ? "Reconciled Accounts" : "Akun Terverifikasi"}
                     </span>
                     {((selectedExec.artifactPayload.lineItems as Array<{ label: string; amount: number }>) || []).map(
                       (item, i) => (
-                        <div key={i} className="flex justify-between text-[11px] py-0.5">
+                        <div key={i} className="flex justify-between text-xs py-0.5">
                           <span className="text-muted-foreground">{item.label}</span>
                           <span className="font-mono">{idr(item.amount)}</span>
                         </div>
@@ -783,7 +783,7 @@ export default function RoutinesPage() {
                       {String(selectedExec.artifactPayload.percentConsumed)}% (Warning Tier)
                     </span>
                   </div>
-                  <div className="p-2 rounded bg-muted/40 text-[11px] text-muted-foreground font-mono leading-relaxed">
+                  <div className="p-2 rounded bg-muted/40 text-xs text-muted-foreground font-mono leading-relaxed">
                     {String(selectedExec.artifactPayload.statuteCite)}
                   </div>
                 </div>
@@ -811,12 +811,12 @@ export default function RoutinesPage() {
                     </span>
                   </div>
                   <div className="space-y-1 pt-1">
-                    <span className="text-[10px] text-muted-foreground font-mono uppercase">
+                    <span className="text-xs text-muted-foreground font-mono uppercase">
                       {isEn ? "Auto-Balanced Posting Lines" : "Jurnal Penyesuaian SAK EMKM"}
                     </span>
                     {((selectedExec.artifactPayload.journalLines as Array<{ account: string; debit: number; credit: number }>) || []).map(
                       (line, i) => (
-                        <div key={i} className="flex justify-between text-[11px] py-0.5">
+                        <div key={i} className="flex justify-between text-xs py-0.5">
                           <span className="text-muted-foreground truncate max-w-[200px]">{line.account}</span>
                           <span className="font-mono">
                             {line.debit > 0 ? `D: ${idr(line.debit)}` : `C: ${idr(line.credit)}`}
@@ -837,18 +837,18 @@ export default function RoutinesPage() {
                       <div className="font-semibold text-foreground">
                         {String(selectedExec.artifactPayload.kbliCode)} &bull; {String(selectedExec.artifactPayload.riskLevel)}
                       </div>
-                      <div className="text-[11px] text-muted-foreground line-clamp-1">
+                      <div className="text-xs text-muted-foreground line-clamp-1">
                         {String(selectedExec.artifactPayload.kbliTitle)}
                       </div>
                     </div>
                   </div>
                   <div className="space-y-1 pt-1">
-                    <span className="text-[10px] text-muted-foreground font-mono uppercase">
+                    <span className="text-xs text-muted-foreground font-mono uppercase">
                       {isEn ? "OSS Statutory Requirements" : "Kepatuhan Regulasi OSS"}
                     </span>
                     {((selectedExec.artifactPayload.legalRequirements as Array<{ req: string; status: string }>) || []).map(
                       (r, i) => (
-                        <div key={i} className="flex justify-between text-[11px] py-0.5">
+                        <div key={i} className="flex justify-between text-xs py-0.5">
                           <span className="text-muted-foreground">{r.req}</span>
                           <span className="font-medium text-emerald-600 dark:text-emerald-400">{r.status}</span>
                         </div>
@@ -860,7 +860,7 @@ export default function RoutinesPage() {
             </div>
 
             {/* Statutory Grounding Box */}
-            <div className="flex items-center justify-between p-2.5 rounded-lg bg-muted/30 border border-border/50 text-[11px]">
+            <div className="flex items-center justify-between p-2.5 rounded-lg bg-muted/30 border border-border/50 text-xs">
               <span className="flex items-center gap-1.5 text-muted-foreground">
                 <ShieldCheck className="size-3.5 text-primary shrink-0" />
                 <span className="truncate">{selectedExec.statutoryGrounding}</span>
@@ -891,7 +891,7 @@ export default function RoutinesPage() {
               <p className="text-xs font-semibold text-foreground">
                 {isEn ? "No Run Selected" : "Belum Ada Riwayat Dipilih"}
               </p>
-              <p className="text-[11px] text-muted-foreground max-w-[260px]">
+              <p className="text-xs text-muted-foreground max-w-[260px]">
                 {isEn
                   ? "Select an execution run from the timeline in Pane 2 to inspect its autonomous findings, impact metrics, and statutory proof."
                   : "Pilih salah satu riwayat eksekusi di Panel 2 untuk memeriksa temuan mandiri, metrik dampak, dan bukti regulasi."}

@@ -35,7 +35,7 @@ export function HeroProof() {
         <figure className="overflow-hidden rounded-xl border bg-card shadow-sm">
           <div className="flex items-center gap-1.5 border-b bg-muted/40 px-3 py-2">
             <span className="size-2 rounded-full bg-primary/30" />
-            <span className="text-[11px] text-muted-foreground">struk.jpg</span>
+            <span className="text-xs text-muted-foreground">struk.jpg</span>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
