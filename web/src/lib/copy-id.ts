@@ -755,6 +755,7 @@ export const copyId = {
     minRead: "menit baca",
     statuteGrounded: "Dasar Hukum",
     actionButtons: {
+      readLesson: "Baca Panduan",
       tryNow: "Coba di Nata",
       tryRecordVoice: "Coba Rekam Suara",
       checkTaxes: "Cek Perhitungan Pajak",

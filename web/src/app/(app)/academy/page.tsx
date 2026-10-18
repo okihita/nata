@@ -159,7 +159,7 @@ export default function AcademyPage() {
                       onClick={() => setActiveLessonId(lesson.id)}
                     >
                       <BookOpen className="mr-1.5 size-3.5" />
-                      Baca Panduan
+                      {copy.academy.actionButtons.readLesson}
                     </Button>
 
                     {lesson.actionLink && (

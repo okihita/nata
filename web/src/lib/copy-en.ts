@@ -750,6 +750,7 @@ export const copyEn = {
     minRead: "min read",
     statuteGrounded: "Grounded Statute",
     actionButtons: {
+      readLesson: "Read Guide",
       tryNow: "Try in Nata",
       tryRecordVoice: "Try Voice Recording",
       checkTaxes: "Check Tax Calculations",
