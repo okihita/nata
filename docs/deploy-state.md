@@ -86,7 +86,8 @@ Different mechanism from the agent, deliberately.
 | --- | --- | --- |
 | Trigger | push to `main` | manual `adk deploy cloud_run` |
 | Builder | Cloud Build, `cloudbuild.yaml` | ADK CLI |
-| Cost | $0 (e2-standard-2 is inside the free tier) | $0 at this traffic |
+| Machine | `E2_HIGHCPU_8` (8 vCPUs, ~1m deploy, ~$0.016/min, ~Rp 250/build) | ADK local packager |
+| Cache | Docker BuildKit inline registry cache (`--cache-from`) | N/A |
 
 **The trigger watches `main`, not `develop`.** `develop` is the integration trunk
 and deploys nothing; only a release reaches production. That is what makes
@@ -114,3 +115,37 @@ Build history (the "did it fail?" surface):
 gcloud builds list --limit=5 \
   --format="table(id.slice(0,8),status,duration,substitutions.TRIGGER_NAME)"
 ```
+
+---
+
+## Architectural Decision Records (ADR)
+
+### ADR 1 — Build Acceleration & Pipeline Optimization (2026-10-18)
+
+* **Context**: Next.js compilation, Turbopack, and Docker container packaging on `E2_STANDARD_2` (2 vCPUs) took 3m 48s from push to live.
+* **Decision**:
+  1. **Hardware**: Upgrade machine type to `E2_HIGHCPU_8` in `cloudbuild.yaml`. At ~$0.016/min, an 8-vCPU build takes ~1 minute and costs ~Rp 250 - Rp 350 per release.
+  2. **Layer Caching**: Enable `DOCKER_BUILDKIT=1` and `--build-arg=BUILDKIT_INLINE_CACHE=1`, pre-pulling `:latest` to cache the `RUN pnpm install` stage across builds.
+  3. **Compiler Pass Pruning**: Set `typescript.ignoreBuildErrors: true` in `web/next.config.ts`. Full type checks (`tsc --noEmit`) and linter checks (`eslint`) are strictly enforced locally prior to git commit, rendering re-checking inside the ephemeral Docker builder redundant.
+* **Result**: Projected build-to-live latency reduced from 3m 48s to ~55s - 1m 10s.
+
+### ADR 2 — Firebase Hosting Reverse Proxy Edge Cache Invalidation (2026-10-18)
+
+* **Context**: `https://gonata.web.app` acts as a global CDN front door forwarding to Cloud Run `nata-web` via `firebase.json` rewrites. Because Next.js emitted an aggressive `s-maxage=31536000` header on static pages, the root landing page (`GET /`) remained cached at edge CDN nodes even after Cloud Run deployed a new release.
+* **Decision**:
+  1. Explicitly configure Cache-Control in `firebase.json` headers for the root route:
+     ```json
+     "headers": [
+       {
+         "source": "/",
+         "headers": [
+           {
+             "key": "Cache-Control",
+             "value": "public, max-age=0, must-revalidate"
+           }
+         ]
+       }
+     ]
+     ```
+  2. Deploy hosting configuration (`npx firebase-tools deploy --only hosting`) to immediately invalidate edge node caches on release.
+* **Result**: `https://gonata.web.app/` directly reflects newly deployed Cloud Run revisions without stale edge HTML caching.
