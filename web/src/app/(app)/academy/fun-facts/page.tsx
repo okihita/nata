@@ -92,19 +92,19 @@ export default function FunFactsPage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <div className="rounded-xl border bg-background/90 p-3 text-center shadow-2xs">
               <div className="text-xl font-bold text-primary font-mono">{MYTH_FACTS.length}+</div>
-              <div className="text-[10px] text-muted-foreground mt-0.5">
+              <div className="text-xs text-muted-foreground mt-0.5">
                 {copy.academy.funFactsPage.stats.totalVerified}
               </div>
             </div>
             <div className="rounded-xl border bg-background/90 p-3 text-center shadow-2xs">
               <div className="text-xl font-bold text-tone-hijau font-mono">100%</div>
-              <div className="text-[10px] text-muted-foreground mt-0.5">
+              <div className="text-xs text-muted-foreground mt-0.5">
                 {copy.academy.funFactsPage.stats.groundedInLaw}
               </div>
             </div>
             <div className="col-span-2 sm:col-span-1 rounded-xl border bg-background/90 p-3 text-center shadow-2xs">
               <div className="text-xl font-bold text-foreground font-mono">SAK EMKM</div>
-              <div className="text-[10px] text-muted-foreground mt-0.5">
+              <div className="text-xs text-muted-foreground mt-0.5">
                 {copy.academy.funFactsPage.stats.freeForMSMEs}
               </div>
             </div>
@@ -202,18 +202,18 @@ export default function FunFactsPage() {
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between gap-2">
-                    <Badge variant="outline" className="text-[10px] capitalize gap-1 font-normal">
+                    <Badge variant="outline" className="text-xs capitalize gap-1 font-normal">
                       <IconComp className="size-3 text-muted-foreground" />
                       {mf.category}
                     </Badge>
-                    <span className="text-[10px] font-mono text-muted-foreground">
+                    <span className="text-xs font-mono text-muted-foreground">
                       #{mf.id.replace("myth_", "")}
                     </span>
                   </div>
 
                   <div className="space-y-1">
-                    <span className="inline-flex items-center gap-1 text-[10px] font-bold tracking-wider uppercase text-tone-oranye">
-                      <span>⚠️</span> {copy.academy.mythLabel}
+                    <span className="inline-flex items-center gap-1 text-xs font-bold tracking-wider uppercase text-tone-oranye">
+                      <span>!</span> {copy.academy.mythLabel}
                     </span>
                     <p className="text-xs font-medium text-foreground/90 leading-snug">
                       &ldquo;{item.myth}&rdquo;
@@ -223,14 +223,14 @@ export default function FunFactsPage() {
                   <Separator />
 
                   <div className="space-y-1">
-                    <span className="inline-flex items-center gap-1 text-[10px] font-bold tracking-wider uppercase text-tone-hijau">
+                    <span className="inline-flex items-center gap-1 text-xs font-bold tracking-wider uppercase text-tone-hijau">
                       <span>✓</span> {copy.academy.factLabel}
                     </span>
                     <p className="text-xs text-muted-foreground leading-relaxed">{item.fact}</p>
                   </div>
                 </div>
 
-                <div className="rounded bg-muted/40 p-2.5 text-[10px] font-mono text-muted-foreground border mt-2">
+                <div className="rounded bg-muted/40 p-2.5 text-xs font-mono text-muted-foreground border mt-2">
                   {item.statuteText}
                 </div>
               </Card>
