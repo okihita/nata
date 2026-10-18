@@ -512,7 +512,7 @@ function ComplianceRow({
         <ComplianceItem
           icon={<Building2 className="size-3.5" />}
           label={copy.dashboard.complianceEntity}
-          value={ENTITY_LABEL[business.entity]}
+          value={copy.entityLabels?.[business.entity] ?? ENTITY_LABEL[business.entity]}
         />
         <ComplianceItem
           icon={<Landmark className="size-3.5" />}

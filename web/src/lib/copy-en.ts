@@ -20,6 +20,44 @@ export const copyEn = {
     workspaceType: "Micro enterprise · Jakarta",
   },
 
+  entityLabels: {
+    orang_pribadi: "Sole Proprietorship",
+    pt_perorangan: "Individual Limited Liability (PT Perorangan)",
+    pt_cv: "Corporation / Partnership (PT / CV)",
+  },
+
+  typeLabels: {
+    warung: "Kiosk",
+    toko: "Retail Store",
+    kafe: "Cafe / Restaurant",
+    jasa: "Services",
+    lainnya: "Business",
+  },
+
+  typeHints: {
+    warung: "Ready-to-serve food & beverages",
+    toko: "Merchandise, grocery, retail",
+    kafe: "Coffee shop, cafe, dining",
+    jasa: "Professional services, maintenance, consulting",
+    lainnya: "Other enterprise",
+  },
+
+  workspaceSwitcher: {
+    badgeCallout: "Hackathon: Click to switch persona",
+    activeLabel: "Active Business",
+    archetypeBadge: "Hackathon Archetype",
+    guestBadge: "Local / Guest",
+    archetypeHeading: "Select Instant Archetype (Jury & Evaluation)",
+    syncHeading: "Storage & Synchronization",
+    createNew: "Create New Business (Transient)",
+    createNewHint: "Test self-service onboarding flow",
+    cloudSave: "Save Business to Cloud",
+    cloudSaveHint: "Persist state to Firebase Multi-Tenant",
+    cloudAlert: "Cloud Profile Feature: Ready for live sync with Firebase Firestore in production.",
+    personaRetailHint: "Retail & E-Commerce (Shopee/TikTok)",
+    personaFnbHint: "F&B Multi-Outlet (POS & Resto)",
+  },
+
   // ── Main navigation ────────────────────────────────────────────────────────
   nav: {
     groups: [
@@ -349,6 +387,11 @@ export const copyEn = {
     entityTaxed: "Taxable from Rp 0",
     entityCitation:
       "Legal basis: PP 55/2022 Article 60 paragraph (2) — Rp 500 million exemption applies exclusively to individual taxpayers.",
+    entityHints: {
+      orang_pribadi: "Individual enterprise. Turnover up to Rp 500 million is tax-exempt.",
+      pt_perorangan: "Single-member limited liability company. No Rp 500 million tax exemption.",
+      pt_cv: "Corporate entity or commercial partnership. No tax exemption.",
+    },
     kbliLabel: "KBLI 2020 Code",
     kbliNone: "Not set",
     kbliNoneHint: "Configure in the Licensing section.",

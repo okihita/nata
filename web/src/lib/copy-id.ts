@@ -25,6 +25,44 @@ export const copyId = {
     workspaceType: "Usaha mikro · Jakarta",
   },
 
+  entityLabels: {
+    orang_pribadi: "Orang pribadi",
+    pt_perorangan: "PT Perorangan",
+    pt_cv: "PT / CV / koperasi",
+  },
+
+  typeLabels: {
+    warung: "Warung",
+    toko: "Toko",
+    kafe: "Kafe / Restoran",
+    jasa: "Jasa",
+    lainnya: "Usaha",
+  },
+
+  typeHints: {
+    warung: "Makanan & minuman siap saji",
+    toko: "Barang dagangan, kelontong, retail",
+    kafe: "Kedai, kafe, rumah makan",
+    jasa: "Layanan, perbaikan, konsultan",
+    lainnya: "Usaha lain",
+  },
+
+  workspaceSwitcher: {
+    badgeCallout: "Hackathon: Klik untuk ganti persona",
+    activeLabel: "Usaha Aktif",
+    archetypeBadge: "Arketipe Hackathon",
+    guestBadge: "Lokal / Tamu",
+    archetypeHeading: "Pilih Arketipe Instan (Juri & Bot)",
+    syncHeading: "Penyimpanan & Sinkronisasi",
+    createNew: "Buat Usaha Baru (Transien)",
+    createNewHint: "Uji coba formulir onboarding sendiri",
+    cloudSave: "Simpan Usaha ke Cloud",
+    cloudSaveHint: "Permanenkan data ke Firebase Multi-Tenant",
+    cloudAlert: "Fitur Cloud Profile: Siap disinkronkan ke Firebase Firestore saat produksi.",
+    personaRetailHint: "Retail & E-Commerce (Shopee/TikTok)",
+    personaFnbHint: "F&B Multi-Outlet (POS & Resto)",
+  },
+
   // ── Navigasi utama ────────────────────────────────────────────────────────
   nav: {
     groups: [
@@ -354,6 +392,11 @@ export const copyId = {
     entityTaxed: "Kena pajak dari Rp 0",
     entityCitation:
       "Dasar hukum: PP 55/2022 Pasal 60 ayat (2) — pembebasan Rp 500 juta hanya untuk Wajib Pajak orang pribadi.",
+    entityHints: {
+      orang_pribadi: "Usaha milik pribadi. Omzet sampai Rp 500 juta bebas pajak.",
+      pt_perorangan: "Perseroan terbatas milik satu orang. Tanpa pembebasan Rp 500 juta.",
+      pt_cv: "Badan usaha bermitra atau berbadan hukum. Tanpa pembebasan.",
+    },
     kbliLabel: "Kode KBLI 2020",
     kbliNone: "Belum ditentukan",
     kbliNoneHint: "Tentukan di halaman Perizinan.",

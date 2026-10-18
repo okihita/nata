@@ -53,12 +53,13 @@ import {
   subscribeRegulasi,
   verifyRegulasiCode,
 } from "@/lib/agent-regulasi";
-import { copy } from "@/lib/copy";
+import { useLanguage } from "@/lib/copy";
 import { describeAgentError } from "@/lib/agent-errors";
 import { cn } from "@/lib/utils";
 
 export default function PerizinanPage() {
   const { business, ready, updateBusiness } = useWorkspace();
+  const { copy } = useLanguage();
   const cached = useSyncExternalStore(
     subscribeRegulasi,
     getRegulasiSnapshot,
@@ -138,7 +139,7 @@ export default function PerizinanPage() {
         setRunning(false);
       }
     },
-    [cached, updateBusiness],
+    [cached, copy.perizinan, updateBusiness],
   );
 
   if (!ready) {
@@ -221,8 +222,8 @@ export default function PerizinanPage() {
                 <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
                   <Building2 className="size-3.5" />
                   <span>
-                    {business.name} · {TYPE_LABEL[business.type]} ·{" "}
-                    {ENTITY_LABEL[business.entity]}
+                    {business.name} · {copy.typeLabels?.[business.type] ?? TYPE_LABEL[business.type]} ·{" "}
+                    {copy.entityLabels?.[business.entity] ?? ENTITY_LABEL[business.entity]}
                   </span>
                 </div>
               )}

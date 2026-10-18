@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useWorkspace } from "@/lib/store";
-import { copy } from "@/lib/copy";
+import { useLanguage } from "@/lib/copy";
 import { TYPE_LABEL, ENTITY_LABEL, DEMO_BUSINESS_PROFILES } from "@/lib/business";
 
 /**
@@ -24,10 +24,14 @@ import { TYPE_LABEL, ENTITY_LABEL, DEMO_BUSINESS_PROFILES } from "@/lib/business
  */
 export function WorkspaceSwitcher() {
   const { business, switchBusiness } = useWorkspace();
+  const { copy } = useLanguage();
+
+  const typeLabel = business ? (copy.typeLabels?.[business.type] ?? TYPE_LABEL[business.type]) : "";
+  const entityLabel = business ? (copy.entityLabels?.[business.entity] ?? ENTITY_LABEL[business.entity]) : "";
 
   const name = business?.name ?? copy.app.name;
   const subtitle = business
-    ? `${TYPE_LABEL[business.type]} · ${ENTITY_LABEL[business.entity]}`
+    ? `${typeLabel} · ${entityLabel}`
     : copy.app.workspaceType;
 
   return (
@@ -55,16 +59,16 @@ export function WorkspaceSwitcher() {
           </span>
           {/* Hackathon Callout Badge */}
           <span className="hidden items-center gap-1 rounded border border-primary/30 bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary sm:inline-flex">
-            <span>Hackathon: Klik untuk ganti persona</span>
+            <span>{copy.workspaceSwitcher.badgeCallout}</span>
           </span>
           <ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-72">
         <div className="flex items-center justify-between px-2 py-1.5">
-          <DropdownMenuLabel className="p-0 text-xs font-semibold">Usaha Aktif</DropdownMenuLabel>
+          <DropdownMenuLabel className="p-0 text-xs font-semibold">{copy.workspaceSwitcher.activeLabel}</DropdownMenuLabel>
           <span className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-[9px] font-medium text-primary">
-            {business?.id.startsWith("biz-persona-") ? "Arketipe Hackathon" : "Lokal / Tamu"}
+            {business?.id.startsWith("biz-persona-") ? copy.workspaceSwitcher.archetypeBadge : copy.workspaceSwitcher.guestBadge}
           </span>
         </div>
         <DropdownMenuItem className="gap-2 bg-muted/40 font-medium">
@@ -79,7 +83,7 @@ export function WorkspaceSwitcher() {
 
         <div className="px-2 py-1">
           <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-            Pilih Arketipe Instan (Juri & Bot)
+            {copy.workspaceSwitcher.archetypeHeading}
           </p>
         </div>
         <DropdownMenuItem
@@ -89,7 +93,7 @@ export function WorkspaceSwitcher() {
           <span className="size-2 rounded-full bg-emerald-500 shrink-0" />
           <div className="grid">
             <span className="text-xs font-medium">Persona A: Rona Kirana Beauty</span>
-            <span className="text-[10px] text-muted-foreground">Retail & E-Commerce (Shopee/TikTok)</span>
+            <span className="text-[10px] text-muted-foreground">{copy.workspaceSwitcher.personaRetailHint}</span>
           </div>
         </DropdownMenuItem>
         <DropdownMenuItem
@@ -99,7 +103,7 @@ export function WorkspaceSwitcher() {
           <span className="size-2 rounded-full bg-amber-500 shrink-0" />
           <div className="grid">
             <span className="text-xs font-medium">Persona B: PT Seduh Rasa</span>
-            <span className="text-[10px] text-muted-foreground">F&B Multi-Outlet (POS & Resto)</span>
+            <span className="text-[10px] text-muted-foreground">{copy.workspaceSwitcher.personaFnbHint}</span>
           </div>
         </DropdownMenuItem>
 
@@ -107,28 +111,28 @@ export function WorkspaceSwitcher() {
 
         <div className="px-2 py-1">
           <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-            Penyimpanan & Sinkronisasi
+            {copy.workspaceSwitcher.syncHeading}
           </p>
         </div>
         <DropdownMenuItem asChild className="gap-2">
           <Link href="/usaha">
             <Settings className="size-4 text-muted-foreground" />
             <div className="grid">
-              <span className="text-xs font-medium">Buat Usaha Baru (Transien)</span>
-              <span className="text-[10px] text-muted-foreground">Uji coba formulir onboarding sendiri</span>
+              <span className="text-xs font-medium">{copy.workspaceSwitcher.createNew}</span>
+              <span className="text-[10px] text-muted-foreground">{copy.workspaceSwitcher.createNewHint}</span>
             </div>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => alert("Fitur Cloud Profile: Siap disinkronkan ke Firebase Firestore saat produksi.")}
+          onClick={() => alert(copy.workspaceSwitcher.cloudAlert)}
           className="gap-2 cursor-pointer text-primary focus:text-primary"
         >
           <span className="grid size-4 place-items-center rounded bg-primary text-[10px] font-bold text-primary-foreground">
             ↑
           </span>
           <div className="grid">
-            <span className="text-xs font-medium">Simpan Usaha ke Cloud</span>
-            <span className="text-[10px] text-muted-foreground">Permanenkan data ke Firebase Multi-Tenant</span>
+            <span className="text-xs font-medium">{copy.workspaceSwitcher.cloudSave}</span>
+            <span className="text-[10px] text-muted-foreground">{copy.workspaceSwitcher.cloudSaveHint}</span>
           </div>
         </DropdownMenuItem>
       </DropdownMenuContent>
