@@ -11,18 +11,17 @@ import {
   Landmark,
   ScanLine,
   ShieldCheck,
-  Sparkles,
   Wallet,
   Info,
   CheckCircle2,
   Calendar,
-  Clock,
   Printer,
   Compass,
 } from "lucide-react";
+import { AvatarMaya, AvatarDimas, AvatarArief, AvatarNata } from "@/components/agent-avatars";
 import {
-  Area,
-  AreaChart,
+  Bar,
+  BarChart,
   CartesianGrid,
   ResponsiveContainer,
   Tooltip as RTooltip,
@@ -32,7 +31,6 @@ import {
 
 import { PageHeader } from "@/components/app-sidebar";
 import { EmptyState } from "@/components/empty-state";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -45,13 +43,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useWorkspace } from "@/lib/store";
 import { ENTITY_LABEL, entityHasExemption } from "@/lib/business";
-import { balanceSheet, incomeStatement, monthlyRevenue, taxPosition, trialBalance } from "@/lib/ledger";
+import { balanceSheet, incomeStatement, monthlyRevenue, taxPosition } from "@/lib/ledger";
 import { useLanguage } from "@/lib/copy";
 import { idr, idrFull } from "@/lib/format";
 
 export default function DashboardPage() {
   const { entries, ready, business, loadDemo } = useWorkspace();
-  const { copy } = useLanguage();
+  const { copy, locale } = useLanguage();
   const [metricScope, setMetricScope] = useState<"this_month" | "all">("this_month");
 
   // Determine latest active month in the dataset (e.g. "2026-10")
@@ -60,6 +58,20 @@ export default function DashboardPage() {
     const months = [...new Set(entries.map((e) => e.date.slice(0, 7)))].sort();
     return months[months.length - 1];
   }, [entries]);
+
+  // Formatted exact month/year label (e.g. "Okt 2026" / "Oct 2026")
+  const formattedMonthLabel = useMemo(() => {
+    try {
+      const [year, month] = latestMonth.split("-").map(Number);
+      const date = new Date(year, (month || 1) - 1, 1);
+      return date.toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
+        month: "short",
+        year: "numeric",
+      });
+    } catch {
+      return latestMonth;
+    }
+  }, [latestMonth, locale]);
 
   // Entries scoped to this month vs all time
   const thisMonthEntries = useMemo(() => {
@@ -71,7 +83,6 @@ export default function DashboardPage() {
   const income = incomeStatement(activeEntries);
   const bs = balanceSheet(entries); // Balance sheet is always cumulative financial position
   const series = monthlyRevenue(entries);
-  const accounts = trialBalance(entries);
   const tax = taxPosition(entries, { individual: entityHasExemption(business?.entity ?? "orang_pribadi") });
 
   // 2. Action Required & To-Do List (Curated recommendations from AI bots)
@@ -113,7 +124,9 @@ export default function DashboardPage() {
         cta: copy.dashboard.todoTasks.financialStatementLastYear.cta,
         href: "/accounts",
         done: false,
-        priority: "Tinggi",
+        agentId: "maya",
+        agentName: "Mbak Maya",
+        prompt: copy.dashboard.todoTasks.financialStatementLastYear.prompt,
       },
       {
         id: "todo-perizinan",
@@ -123,7 +136,9 @@ export default function DashboardPage() {
         cta: copy.dashboard.todoTasks.perizinanDocs.cta,
         href: "/licensing",
         done: Boolean(business?.kbliCode && business?.nib),
-        priority: business?.kbliCode ? "Selesai" : "Penting",
+        agentId: "arief",
+        agentName: "Pak Arief",
+        prompt: copy.dashboard.todoTasks.perizinanDocs.prompt,
       },
       {
         id: "todo-tax-threshold",
@@ -133,7 +148,9 @@ export default function DashboardPage() {
         cta: copy.dashboard.todoTasks.taxThresholdMonitor.cta,
         href: "/taxes",
         done: false,
-        priority: "Normal",
+        agentId: "dimas",
+        agentName: "Mas Dimas",
+        prompt: copy.dashboard.todoTasks.taxThresholdMonitor.prompt,
       },
       {
         id: "todo-monthly-export",
@@ -143,14 +160,16 @@ export default function DashboardPage() {
         cta: copy.dashboard.todoTasks.monthlyExportPrint.cta,
         href: "/statements",
         done: false,
-        priority: "Rekomendasi",
+        agentId: "maya",
+        agentName: "Mbak Maya",
+        prompt: copy.dashboard.todoTasks.monthlyExportPrint.prompt,
       },
     ];
     return list;
   }, [copy, business]);
-  // A badan usaha can owe Rp 0 simply because turnover is zero. Saying "masih di
-  // bawah batas bebas pajak" would imply a threshold that does not apply to it,
-  // so no tax item is shown at all in that case.
+
+  const pendingTodos = useMemo(() => todos.filter((t) => !t.done), [todos]);
+  const completedTodos = useMemo(() => todos.filter((t) => t.done), [todos]);
 
   if (!ready) {
     return (
@@ -238,7 +257,7 @@ export default function DashboardPage() {
             onClick={() => setMetricScope("this_month")}
             className="h-7 text-xs font-medium"
           >
-            {copy.dashboard.toggleViewThisMonth}
+            {copy.dashboard.toggleViewThisMonth(formattedMonthLabel)}
           </Button>
           <Button
             variant={metricScope === "all" ? "default" : "ghost"}
@@ -257,21 +276,21 @@ export default function DashboardPage() {
           icon={<ArrowUpRight className="size-4" />}
           label={copy.dashboard.revenue}
           value={idrFull(income.totalRevenue)}
-          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics : copy.dashboard.allTimeMetrics}
+          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics(formattedMonthLabel) : copy.dashboard.allTimeMetrics}
           tone="positive"
         />
         <Metric
           icon={<ArrowDownRight className="size-4" />}
           label={copy.dashboard.expenses}
           value={idrFull(income.totalExpenses)}
-          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics : copy.dashboard.allTimeMetrics}
+          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics(formattedMonthLabel) : copy.dashboard.allTimeMetrics}
           tone="negative"
         />
         <Metric
           icon={<Wallet className="size-4" />}
           label={copy.dashboard.netIncome}
           value={idrFull(income.netIncome)}
-          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics : copy.dashboard.allTimeMetrics}
+          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics(formattedMonthLabel) : copy.dashboard.allTimeMetrics}
           tone={income.netIncome >= 0 ? "positive" : "negative"}
         />
         <Metric
@@ -283,14 +302,29 @@ export default function DashboardPage() {
         />
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        {/* Grafik */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="text-base">{copy.dashboard.chartTitle}</CardTitle>
-            <CardDescription>{business?.name ?? copy.app.name}</CardDescription>
+      {/* Main Grid: Balanced 1:1 for Monthly Trends and Action Plan */}
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        {/* Trend Chart (Compact & High-Signal) */}
+        <Card className="flex flex-col justify-between">
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-base">{copy.dashboard.chartTitle}</CardTitle>
+                <CardDescription className="text-xs">{copy.dashboard.chartSubtitle ?? (business?.name ?? copy.app.name)}</CardDescription>
+              </div>
+              <div className="flex items-center gap-3 text-xs">
+                <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                  <span className="size-2 rounded-full bg-[var(--chart-1)]" />
+                  {copy.dashboard.chartRevenue}
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                  <span className="size-2 rounded-full bg-[var(--chart-2)]" />
+                  {copy.dashboard.chartExpense}
+                </span>
+              </div>
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-2">
             {series.length === 0 ? (
               <EmptyState
                 compact
@@ -300,225 +334,163 @@ export default function DashboardPage() {
               />
             ) : (
               <div className="h-64 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={series} margin={{ left: 4, right: 8, top: 4, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="rev" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.35} />
-                      <stop offset="95%" stopColor="var(--chart-1)" stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="exp" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="var(--chart-2)" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="var(--chart-2)" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border" />
-                  <XAxis
-                    dataKey="month"
-                    tickLine={false}
-                    axisLine={false}
-                    fontSize={12}
-                    tickFormatter={(m: string) =>
-                      new Date(`${m}-01`).toLocaleDateString("id-ID", { month: "short" })
-                    }
-                  />
-                  <YAxis
-                    tickLine={false}
-                    axisLine={false}
-                    fontSize={12}
-                    width={64}
-                    tickFormatter={(v: number) => `${idr(v / 1_000_000)} jt`}
-                  />
-                  <RTooltip
-                    formatter={(value) => idrFull(Number(value))}
-                    labelFormatter={(m) =>
-                      new Date(`${m}-01`).toLocaleDateString("id-ID", {
-                        month: "long",
-                        year: "numeric",
-                      })
-                    }
-                    contentStyle={{
-                      borderRadius: 10,
-                      border: "1px solid var(--border)",
-                      fontSize: 12,
-                    }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="revenue"
-                    name={copy.dashboard.chartRevenue}
-                    stroke="var(--chart-1)"
-                    fill="url(#rev)"
-                    strokeWidth={2}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="expense"
-                    name={copy.dashboard.chartExpense}
-                    stroke="var(--chart-2)"
-                    fill="url(#exp)"
-                    strokeWidth={2}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={series} margin={{ left: 4, right: 8, top: 8, bottom: 0 }} barGap={6}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border/70" />
+                    <XAxis
+                      dataKey="month"
+                      tickLine={false}
+                      axisLine={false}
+                      fontSize={12}
+                      tickFormatter={(m: string) =>
+                        new Date(`${m}-01`).toLocaleDateString("id-ID", { month: "short" })
+                      }
+                    />
+                    <YAxis
+                      tickLine={false}
+                      axisLine={false}
+                      fontSize={12}
+                      width={64}
+                      tickFormatter={(v: number) => `${idr(v / 1_000_000)} jt`}
+                    />
+                    <RTooltip
+                      cursor={{ fill: "var(--muted)", opacity: 0.35, rx: 6 }}
+                      formatter={(value) => idrFull(Number(value))}
+                      labelFormatter={(m) =>
+                        new Date(`${m}-01`).toLocaleDateString("id-ID", {
+                          month: "long",
+                          year: "numeric",
+                        })
+                      }
+                      contentStyle={{
+                        borderRadius: 12,
+                        border: "1px solid var(--border)",
+                        backgroundColor: "var(--popover)",
+                        boxShadow: "0 4px 12px -2px rgba(0, 0, 0, 0.08)",
+                        fontSize: 12,
+                      }}
+                    />
+                    <Bar
+                      dataKey="revenue"
+                      name={copy.dashboard.chartRevenue}
+                      fill="var(--chart-1)"
+                      radius={[5, 5, 0, 0]}
+                      maxBarSize={32}
+                    />
+                    <Bar
+                      dataKey="expense"
+                      name={copy.dashboard.chartExpense}
+                      fill="var(--chart-2)"
+                      radius={[5, 5, 0, 0]}
+                      maxBarSize={32}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             )}
           </CardContent>
+          <div className="px-6 pb-4 pt-2 border-t border-border/50 flex items-center justify-between text-xs text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <ShieldCheck className="size-3.5 text-emerald-600" />
+              <span>{copy.dashboard.balanced}:</span>
+              <span className="font-medium text-foreground">{bs.balanced ? "Seimbang" : "Periksa"}</span>
+            </span>
+            <Button asChild variant="ghost" size="sm" className="h-6 text-xs px-1.5">
+              <Link href="/statements">
+                {copy.dashboard.actionReport} <ChevronRight className="size-3 ml-0.5" />
+              </Link>
+            </Button>
+          </div>
         </Card>
 
-        {/* Aksi cepat + agentik */}
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">{copy.dashboard.quickActions}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <QuickAction
-                href="/record"
-                icon={<ScanLine className="size-4" />}
-                label={copy.dashboard.actionScan}
-                hint={copy.dashboard.actionScanHint}
-                primary
-              />
-              <QuickAction
-                href="/statements"
-                icon={<FileBarChart className="size-4" />}
-                label={copy.dashboard.actionReport}
-                hint={copy.dashboard.actionReportHint}
-              />
-              <QuickAction
-                href="/taxes"
-                icon={<Landmark className="size-4" />}
-                label={copy.dashboard.actionTax}
-                hint={copy.dashboard.actionTaxHint}
-              />
-            </CardContent>
-          </Card>
-
-          {/* 2. Rencana Aksi / To-Do List (Actionable checklist for compliance, bank readiness, licensing) */}
-          <Card className="border-border">
+        {/* Action Plan & Priority Checklist */}
+        <Card className="flex flex-col border-border justify-between">
+          <div>
             <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <CheckCircle2 className="size-4 text-primary" />
-                  <span>{copy.dashboard.todoTitle}</span>
-                </CardTitle>
-                <Badge variant="outline" className="text-[11px] font-normal bg-muted/40">
-                  {todos.filter((t) => t.done).length}/{todos.length} Selesai
-                </Badge>
-              </div>
+              <CardTitle className="text-base flex items-center gap-2">
+                <CheckCircle2 className="size-4 text-primary" />
+                <span>{copy.dashboard.todoTitle}</span>
+              </CardTitle>
               <CardDescription className="text-xs">
                 {copy.dashboard.todoSubtitle}
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2.5">
-              {todos.map((todo) => (
+            <CardContent className="space-y-1.5 p-4 pt-0">
+              {pendingTodos.map((todo) => (
                 <div
                   key={todo.id}
-                  className={cn(
-                    "rounded-lg border p-3 text-xs transition-colors",
-                    todo.done ? "bg-muted/30 border-muted" : "bg-card hover:bg-muted/40 border-border"
-                  )}
+                  className="group flex flex-col sm:flex-row sm:items-center justify-between rounded-lg p-2.5 transition-colors hover:bg-muted/50 border border-transparent hover:border-border gap-2"
                 >
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-start gap-2">
-                      <span className="mt-0.5 shrink-0">{todo.icon}</span>
-                      <div>
-                        <p className={cn("font-medium text-foreground", todo.done && "line-through text-muted-foreground")}>
-                          {todo.title}
-                        </p>
-                        <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
-                          {todo.desc}
-                        </p>
-                      </div>
+                  <Link
+                    href={todo.href}
+                    className="flex items-start gap-2.5 min-w-0 pr-2 flex-1"
+                  >
+                    <span className="mt-0.5 shrink-0">{todo.icon}</span>
+                    <div className="min-w-0">
+                      <p className="font-medium text-xs text-foreground group-hover:text-primary transition-colors">
+                        {todo.title}
+                      </p>
+                      <p className="text-[11px] text-muted-foreground truncate">
+                        {todo.desc}
+                      </p>
                     </div>
-                    <Badge
-                      variant={todo.priority === "Tinggi" ? "destructive" : "secondary"}
-                      className="text-[10px] shrink-0 font-normal py-0 h-5"
-                    >
-                      {todo.priority}
-                    </Badge>
-                  </div>
-                  <div className="mt-2.5 pt-2 border-t border-border/50 flex items-center justify-between">
-                    <span className="text-[10px] text-muted-foreground flex items-center gap-1">
-                      <Clock className="size-3" /> Rekomendasi Bot
-                    </span>
-                    <Button asChild variant="outline" size="sm" className="h-6 text-[11px] px-2 py-0">
-                      <Link href={todo.href}>
-                        {todo.cta}
-                        <ChevronRight className="ml-1 size-3" />
+                  </Link>
+
+                  <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                    {todo.agentId && todo.agentName && (
+                      <Link
+                        href={`/agents?agent=${todo.agentId}&prompt=${encodeURIComponent(todo.prompt ?? "")}`}
+                        className="inline-flex items-center gap-1 rounded-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 px-2 py-0.5 text-[11px] font-medium transition-colors"
+                        title={copy.dashboard.consultAgent(todo.agentName)}
+                      >
+                        {todo.agentId === "maya" && <AvatarMaya size={14} />}
+                        {todo.agentId === "dimas" && <AvatarDimas size={14} />}
+                        {todo.agentId === "arief" && <AvatarArief size={14} />}
+                        {todo.agentId === "nata" && <AvatarNata size={14} />}
+                        <span>{copy.dashboard.consultAgent(todo.agentName)}</span>
                       </Link>
-                    </Button>
+                    )}
+                    <Link href={todo.href} className="text-muted-foreground hover:text-foreground">
+                      <ChevronRight className="size-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all" />
+                    </Link>
                   </div>
                 </div>
               ))}
-            </CardContent>
-          </Card>
 
-          {/* Perlu tindakan */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">{copy.dashboard.needsAction}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {actions.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                  {copy.dashboard.needsActionEmpty}
-                </p>
-              ) : (
-                <ul className="space-y-2">
+              {/* Optional Alert Item if any outstanding action exists */}
+              {actions.length > 0 && (
+                <div className="pt-1">
                   {actions.map((action) => (
-                    <li key={action.id}>
-                      <Link
-                        href={action.href}
-                        className="flex items-start gap-2 rounded-lg border px-3 py-2 text-sm transition hover:bg-muted/50"
-                      >
-                        <Info
-                          className={cn(
-                            "mt-0.5 size-3.5 shrink-0",
-                            action.tone === "warn" ? "text-amber-600" : "text-sky-600",
-                          )}
-                        />
-                        <span>{action.text}</span>
-                      </Link>
-                    </li>
+                    <Link
+                      key={action.id}
+                      href={action.href}
+                      className="flex items-start gap-2 rounded-lg border px-3 py-2 text-xs transition hover:bg-muted/50 bg-muted/20"
+                    >
+                      <Info
+                        className={cn(
+                          "mt-0.5 size-3.5 shrink-0",
+                          action.tone === "warn" ? "text-amber-600" : "text-sky-600",
+                        )}
+                      />
+                      <span>{action.text}</span>
+                    </Link>
                   ))}
-                </ul>
+                </div>
               )}
             </CardContent>
-          </Card>
+          </div>
 
-          <Card className="border-primary/20 bg-primary/[0.03]">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2 text-base">
-                  <Sparkles className="size-4 text-primary" />
-                  {copy.dashboard.agentTitle}
-                </CardTitle>
-                <Button asChild variant="ghost" size="sm" className="h-6 text-xs text-primary px-2">
-                  <Link href="/agents">
-                    Chat Bot <ChevronRight className="size-3" />
-                  </Link>
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <p className="text-sm text-muted-foreground">{copy.dashboard.agentBody}</p>
-              <div className="flex items-center gap-2 rounded-lg border bg-background px-3 py-2 text-xs">
-                <ShieldCheck className="size-3.5 text-emerald-600" />
-                <span className="font-medium">{copy.dashboard.balanced}</span>
-                <span className="text-muted-foreground">· {copy.dashboard.balancedHint}</span>
-                {bs.balanced ? (
-                  <Badge className="ml-auto bg-emerald-600 text-white hover:bg-emerald-600">✓</Badge>
-                ) : (
-                  <Badge variant="destructive" className="ml-auto">
-                    ✕
-                  </Badge>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+          {/* Footer note: completed tasks collapsed */}
+          {completedTodos.length > 0 && (
+            <div className="px-6 py-3 border-t border-border/50 text-xs text-muted-foreground flex items-center gap-1.5 bg-muted/15 rounded-b-xl">
+              <CheckCircle2 className="size-3.5 text-emerald-600" />
+              <span>{copy.dashboard.todoCompletedCount(completedTodos.length)}:</span>
+              <span className="text-foreground truncate">
+                {completedTodos.map((t) => t.title).join(", ")}
+              </span>
+            </div>
+          )}
+        </Card>
       </div>
 
       {/* Aktivitas terakhir */}
@@ -574,15 +546,6 @@ export default function DashboardPage() {
           )}
         </CardContent>
       </Card>
-
-      {/* Cek cepat: daftar akun terpakai */}
-      <p className="mt-4 text-xs text-muted-foreground">
-        {copy.dashboard.accountsActive(accounts.length)}
-        {" · "}
-        {idr(income.totalRevenue)} {copy.dashboard.revenue.toLowerCase()}
-        {" · "}
-        {idrFull(bs.totalAssets)} {copy.laporan.assets.toLowerCase()}
-      </p>
     </>
   );
 }
@@ -602,13 +565,13 @@ function Metric({
 }) {
   const toneClass =
     tone === "positive"
-      ? "text-emerald-600"
+      ? "text-[var(--chart-1)]"
       : tone === "negative"
-        ? "text-rose-600"
+        ? "text-[var(--chart-2)]"
         : "text-foreground";
   return (
     <Card>
-      <CardContent className="pt-6">
+      <CardContent className="p-4 sm:p-5">
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">{label}</span>
           <span className={`${toneClass} opacity-70`}>{icon}</span>
@@ -622,39 +585,6 @@ function Metric({
   );
 }
 
-function QuickAction({
-  href,
-  icon,
-  label,
-  hint,
-  primary,
-}: {
-  href: string;
-  icon: React.ReactNode;
-  label: string;
-  hint: string;
-  primary?: boolean;
-}) {
-  return (
-    <Button
-      asChild
-      variant={primary ? "default" : "outline"}
-      className="h-auto w-full justify-start gap-3 py-2.5"
-    >
-      <Link href={href}>
-        {icon}
-        <div className="grid text-left">
-          <span className="text-sm font-medium">{label}</span>
-          <span
-            className={`text-[11px] font-normal ${primary ? "text-primary-foreground/70" : "text-muted-foreground"}`}
-          >
-            {hint}
-          </span>
-        </div>
-      </Link>
-    </Button>
-  );
-}
 
 /**
  * The three standing facts that decide what the owner owes: business form, its

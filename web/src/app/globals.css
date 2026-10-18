@@ -93,11 +93,11 @@
   --input: oklch(0.906 0.012 72);
   --ring: oklch(0.62 0.115 65);
 
-  /* Chart ramp: amber → warm brown, so charts stop rendering grey. */
-  --chart-1: oklch(0.63 0.145 62);
-  --chart-2: oklch(0.72 0.115 82);
-  --chart-3: oklch(0.55 0.09 45);
-  --chart-4: oklch(0.80 0.06 88);
+  /* Chart ramp: Revenue (Emerald) → Expenses (Warm Terracotta). */
+  --chart-1: oklch(0.52 0.13 155);
+  --chart-2: oklch(0.56 0.145 38);
+  --chart-3: oklch(0.55 0.12 245);
+  --chart-4: oklch(0.68 0.12 85);
   --chart-5: oklch(0.42 0.05 60);
 
   --radius: 0.625rem;
@@ -176,10 +176,10 @@ body {
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 16%);
   --ring: oklch(0.7 0.12 68);
-  --chart-1: oklch(0.78 0.135 68);
-  --chart-2: oklch(0.68 0.1 88);
-  --chart-3: oklch(0.6 0.09 45);
-  --chart-4: oklch(0.85 0.06 92);
+  --chart-1: oklch(0.68 0.14 155);
+  --chart-2: oklch(0.68 0.15 38);
+  --chart-3: oklch(0.65 0.12 245);
+  --chart-4: oklch(0.75 0.1 85);
   --chart-5: oklch(0.5 0.05 60);
   --sidebar: oklch(0.215 0.014 58);
   --sidebar-foreground: oklch(0.97 0.008 75);
