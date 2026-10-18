@@ -50,7 +50,7 @@ import { idr, idrFull } from "@/lib/format";
 
 export default function DashboardPage() {
   const { entries, ready, business, loadDemo } = useWorkspace();
-  const { copy } = useLanguage();
+  const { copy, locale } = useLanguage();
   const [metricScope, setMetricScope] = useState<"this_month" | "all">("this_month");
 
   // Determine latest active month in the dataset (e.g. "2026-10")
@@ -59,6 +59,20 @@ export default function DashboardPage() {
     const months = [...new Set(entries.map((e) => e.date.slice(0, 7)))].sort();
     return months[months.length - 1];
   }, [entries]);
+
+  // Formatted exact month/year label (e.g. "Okt 2026" / "Oct 2026")
+  const formattedMonthLabel = useMemo(() => {
+    try {
+      const [year, month] = latestMonth.split("-").map(Number);
+      const date = new Date(year, (month || 1) - 1, 1);
+      return date.toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
+        month: "short",
+        year: "numeric",
+      });
+    } catch {
+      return latestMonth;
+    }
+  }, [latestMonth, locale]);
 
   // Entries scoped to this month vs all time
   const thisMonthEntries = useMemo(() => {
@@ -248,7 +262,7 @@ export default function DashboardPage() {
             onClick={() => setMetricScope("this_month")}
             className="h-7 text-xs font-medium"
           >
-            {copy.dashboard.toggleViewThisMonth}
+            {copy.dashboard.toggleViewThisMonth(formattedMonthLabel)}
           </Button>
           <Button
             variant={metricScope === "all" ? "default" : "ghost"}
@@ -267,21 +281,21 @@ export default function DashboardPage() {
           icon={<ArrowUpRight className="size-4" />}
           label={copy.dashboard.revenue}
           value={idrFull(income.totalRevenue)}
-          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics : copy.dashboard.allTimeMetrics}
+          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics(formattedMonthLabel) : copy.dashboard.allTimeMetrics}
           tone="positive"
         />
         <Metric
           icon={<ArrowDownRight className="size-4" />}
           label={copy.dashboard.expenses}
           value={idrFull(income.totalExpenses)}
-          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics : copy.dashboard.allTimeMetrics}
+          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics(formattedMonthLabel) : copy.dashboard.allTimeMetrics}
           tone="negative"
         />
         <Metric
           icon={<Wallet className="size-4" />}
           label={copy.dashboard.netIncome}
           value={idrFull(income.netIncome)}
-          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics : copy.dashboard.allTimeMetrics}
+          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics(formattedMonthLabel) : copy.dashboard.allTimeMetrics}
           tone={income.netIncome >= 0 ? "positive" : "negative"}
         />
         <Metric
