@@ -53,10 +53,9 @@ function DeckModalContent({ lesson }: { lesson: AcademyLesson }) {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
   const deck = getDeckForLesson(lesson);
-  const slides = deck.slides;
-  const activeSlide = slides[currentSlideIndex] ?? null;
-
-  const totalSlides = slides.length;
+  const contentSlides = deck.slides;
+  const totalSlides = contentSlides.length + 1; // Slide 0 = Title Slide, Slide 1..N = Content Slides
+  const activeSlide = currentSlideIndex > 0 ? contentSlides[currentSlideIndex - 1] : null;
 
   const handlePrev = () => setCurrentSlideIndex((prev) => (prev > 0 ? prev - 1 : prev));
   const handleNext = () => setCurrentSlideIndex((prev) => (prev < totalSlides - 1 ? prev + 1 : prev));
@@ -81,65 +80,92 @@ function DeckModalContent({ lesson }: { lesson: AcademyLesson }) {
 
   return (
     <DialogContent className="max-w-6xl w-[96vw] max-h-[92vh] p-0 gap-0 border-border/70 shadow-2xl bg-card overflow-hidden rounded-2xl ring-1 ring-border/50">
+      <DialogTitle className="sr-only">
+        {deck.title[isEn ? "en" : "id"]}
+      </DialogTitle>
+      <DialogDescription className="sr-only">
+        {deck.subtitle[isEn ? "en" : "id"]}
+      </DialogDescription>
+
       {/* 16:9 Aspect Ratio Presentation Stage */}
       <div className="relative w-full aspect-video flex flex-col bg-background select-none overflow-hidden">
-        {/* Presentation Slide Header / Ribbon */}
-        <div className="px-6 py-3.5 border-b bg-muted/20 flex items-center justify-between gap-4 shrink-0">
-          <div className="flex items-center gap-3 min-w-0 pr-10">
-            <span className="grid size-7 place-items-center rounded-lg bg-primary/10 text-primary shrink-0">
-              <Sparkles className="size-4" />
-            </span>
-            <DialogTitle className="text-sm font-semibold text-foreground truncate">
-              {deck.title[isEn ? "en" : "id"]}
-            </DialogTitle>
-            <DialogDescription className="text-xs text-muted-foreground hidden md:inline truncate m-0">
-              · {deck.subtitle[isEn ? "en" : "id"]}
-            </DialogDescription>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0 pr-6">
-            <Badge variant="outline" className="text-xs font-mono bg-muted/50 border-border/70 px-2.5 py-0.5">
-              {currentSlideIndex + 1} / {totalSlides}
-            </Badge>
-          </div>
-        </div>
-
-        {/* Slide Canvas: 2-Column Split (Left: Narrative & Key Takeaways, Right: Live Visual Stage) */}
-        <div className="flex-1 p-6 md:p-8 lg:p-10 grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-center overflow-y-auto md:overflow-hidden">
-          {/* Left Column (5 cols): Slide narrative */}
-          <div className="md:col-span-5 flex flex-col justify-center space-y-4">
-            <div>
-              <Badge variant="outline" className="text-xs font-medium bg-primary/5 text-primary border-primary/20 px-2.5 py-0.5">
-                {activeSlide?.badge[isEn ? "en" : "id"]}
-              </Badge>
-            </div>
-
-            <h2 className="text-lg md:text-xl lg:text-2xl font-bold tracking-tight text-foreground leading-snug">
-              {activeSlide?.title[isEn ? "en" : "id"]}
-            </h2>
-
-            <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
-              {activeSlide?.description[isEn ? "en" : "id"]}
-            </p>
-
-            {activeSlide?.highlight && (
-              <div className="rounded-xl border bg-tone-hijau-bg/40 border-tone-hijau/25 p-3.5 text-xs md:text-sm text-foreground flex items-start gap-2.5 shadow-2xs">
-                <CheckCircle2 className="size-4 text-tone-hijau shrink-0 mt-0.5" />
-                <span className="leading-snug">{activeSlide.highlight[isEn ? "en" : "id"]}</span>
+        {/* Slide Canvas: 16:9 PowerPoint style stage */}
+        <div className="flex-1 p-6 md:p-10 lg:p-12 overflow-y-auto md:overflow-hidden flex flex-col justify-center">
+          {currentSlideIndex === 0 ? (
+            /* First Page / Title Slide of PPTX */
+            <div className="flex flex-col items-center justify-center text-center max-w-3xl mx-auto space-y-6">
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-xs md:text-sm font-medium text-primary shadow-2xs">
+                <Sparkles className="size-4" />
+                <span>Nata Walkthrough & Guide</span>
               </div>
-            )}
-          </div>
 
-          {/* Right Column (7 cols): Visual Screen Stage */}
-          <div className="md:col-span-7 h-full flex flex-col justify-center">
-            <div className="relative rounded-2xl border bg-muted/20 p-5 md:p-6 lg:p-7 shadow-xs border-border/80 flex flex-col justify-center overflow-hidden min-h-[260px] md:min-h-[320px]">
-              {activeSlide?.renderVisual ? (
-                activeSlide.renderVisual()
-              ) : (
-                <DefaultFallbackVisual isEn={isEn} lessonTitle={lessonCopy?.title ?? ""} />
-              )}
+              <div className="space-y-3">
+                <h1 className="text-2xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-tight">
+                  {deck.title[isEn ? "en" : "id"]}
+                </h1>
+                <p className="text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                  {deck.subtitle[isEn ? "en" : "id"]}
+                </p>
+              </div>
+
+              <div className="pt-2 flex items-center justify-center gap-3">
+                <Button
+                  size="default"
+                  className="rounded-xl px-6 font-medium shadow-xs cursor-pointer gap-2"
+                  onClick={handleNext}
+                >
+                  <span>{isEn ? "Start Presentation" : "Mulai Tur Presentasi"}</span>
+                  <ChevronRight className="size-4" />
+                </Button>
+                {lesson.actionLink && (
+                  <Button asChild variant="outline" size="default" className="rounded-xl px-4 cursor-pointer gap-1.5">
+                    <Link href={lesson.actionLink.href}>
+                      <span>{copy.academy.actionButtons[lesson.actionLink.labelKey]}</span>
+                      <ArrowRight className="size-3.5" />
+                    </Link>
+                  </Button>
+                )}
+              </div>
             </div>
-          </div>
+          ) : (
+            /* Content Slides (2-Column Split: Narrative & Live Visual) */
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-10 items-center h-full">
+              {/* Left Column (5 cols): Slide narrative */}
+              <div className="md:col-span-5 flex flex-col justify-center space-y-4">
+                <div>
+                  <Badge variant="outline" className="text-xs font-medium bg-primary/5 text-primary border-primary/20 px-2.5 py-0.5">
+                    {activeSlide?.badge[isEn ? "en" : "id"]}
+                  </Badge>
+                </div>
+
+                <h2 className="text-lg md:text-xl lg:text-2xl font-bold tracking-tight text-foreground leading-snug">
+                  {activeSlide?.title[isEn ? "en" : "id"]}
+                </h2>
+
+                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                  {activeSlide?.description[isEn ? "en" : "id"]}
+                </p>
+
+                {activeSlide?.highlight && (
+                  <div className="rounded-xl border bg-tone-hijau-bg/40 border-tone-hijau/25 p-3.5 text-xs md:text-sm text-foreground flex items-start gap-2.5 shadow-2xs">
+                    <CheckCircle2 className="size-4 text-tone-hijau shrink-0 mt-0.5" />
+                    <span className="leading-snug">{activeSlide.highlight[isEn ? "en" : "id"]}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Right Column (7 cols): Visual Screen Stage */}
+              <div className="md:col-span-7 h-full flex flex-col justify-center">
+                <div className="relative rounded-2xl border bg-muted/20 p-5 md:p-6 lg:p-7 shadow-xs border-border/80 flex flex-col justify-center overflow-hidden min-h-[260px] md:min-h-[320px]">
+                  {activeSlide?.renderVisual ? (
+                    activeSlide.renderVisual()
+                  ) : (
+                    <DefaultFallbackVisual isEn={isEn} lessonTitle={lessonCopy?.title ?? ""} />
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Presentation Slide Footer / Presenter Bar */}
@@ -159,7 +185,7 @@ function DeckModalContent({ lesson }: { lesson: AcademyLesson }) {
 
             {/* Stepper Dots */}
             <div className="flex items-center gap-1.5 px-1.5">
-              {slides.map((_, idx) => (
+              {Array.from({ length: totalSlides }).map((_, idx) => (
                 <button
                   key={idx}
                   type="button"
@@ -184,6 +210,10 @@ function DeckModalContent({ lesson }: { lesson: AcademyLesson }) {
             >
               <ChevronRight className="size-4" />
             </Button>
+
+            <span className="text-xs font-mono text-muted-foreground pl-1">
+              {currentSlideIndex + 1} / {totalSlides}
+            </span>
           </div>
 
           {/* Direct Handoff CTA */}
