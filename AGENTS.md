@@ -132,3 +132,4 @@ blocker.
   See `docs/deploy-state.md`.
 - The agent (`nata_agent/`) deploys separately and manually — it changes rarely,
   and a UI typo should not be able to take the backend down.
+- **Typography & Legibility Directives:** Sub-12px text (`text-[10px]`, `text-[11px]`, `text-[9px]`, etc.) is strictly banned across all web UI. The absolute minimum font size is `text-xs` (12px), reserved strictly for compact badges, timestamps, and mono code pills. Primary body copy, descriptions, form labels, and list card titles must use `text-sm` (14px) or higher.
