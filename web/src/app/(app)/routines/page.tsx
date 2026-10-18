@@ -360,10 +360,7 @@ export default function RoutinesPage() {
                     {isEn ? exec.findingSummaryEn : exec.findingSummary}
                   </p>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-border/40 mt-2 text-[10px]">
-                    <span className="text-muted-foreground font-mono">
-                      {exec.tokensUsed} Vertex AI Tokens
-                    </span>
+                  <div className="flex items-center justify-end pt-2 border-t border-border/40 mt-2 text-[10px]">
                     <span className="text-primary font-medium flex items-center gap-0.5">
                       {isEn ? "Inspect" : "Periksa"} <ChevronRight className="size-3" />
                     </span>
