@@ -62,6 +62,10 @@ function subscribe(onChange: () => void): () => void {
   };
 }
 
+export function getLocale(): Locale {
+  return currentLocale;
+}
+
 function getSnapshot(): Locale {
   return currentLocale;
 }

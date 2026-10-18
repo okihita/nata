@@ -28,9 +28,11 @@ import {
 import { HeroProof } from "@/components/hero-proof";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { copy } from "@/lib/copy";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { useLanguage } from "@/lib/language";
 
 export default function LandingPage() {
+  const { copy } = useLanguage();
   const L = copy.landing;
 
   return (
@@ -44,20 +46,23 @@ export default function LandingPage() {
             </span>
             <span className="text-sm font-semibold">{copy.app.name}</span>
           </Link>
-          <nav className="hidden items-center gap-6 text-sm text-muted-foreground sm:flex">
-            <a href="#cara-kerja" className="transition hover:text-foreground">
-              {L.navHow}
-            </a>
-            <a href="#kenapa" className="transition hover:text-foreground">
-              {L.navWhy}
-            </a>
-          </nav>
-          <Button asChild size="sm">
-            <Link href="/business">
-              {L.navStart}
-              <ArrowRight className="ml-1 size-4" />
-            </Link>
-          </Button>
+          <div className="flex items-center gap-3">
+            <nav className="hidden items-center gap-6 text-sm text-muted-foreground sm:flex">
+              <a href="#cara-kerja" className="transition hover:text-foreground">
+                {L.navHow}
+              </a>
+              <a href="#kenapa" className="transition hover:text-foreground">
+                {L.navWhy}
+              </a>
+            </nav>
+            <LanguageSwitcher />
+            <Button asChild size="sm">
+              <Link href="/business">
+                {L.navStart}
+                <ArrowRight className="ml-1 size-4" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -191,15 +196,15 @@ export default function LandingPage() {
         </div>
 
         <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <Capability icon={<ScanLine className="size-4 text-primary" />} text="Foto struk → jurnal" />
-          <Capability icon={<BookOpenCheck className="size-4 text-primary" />} text="Laporan SAK EMKM" />
+          <Capability icon={<ScanLine className="size-4 text-primary" />} text={L.capabilities.receiptToJournal} />
+          <Capability icon={<BookOpenCheck className="size-4 text-primary" />} text={L.capabilities.sakStatements} />
           <Capability
             icon={<ShieldCheck className="size-4 text-primary" />}
-            text="PPh Final + Pasal"
+            text={L.capabilities.finalTaxArticles}
           />
           <Capability
             icon={<FileCheck className="size-4 text-primary" />}
-            text="Kode KBLI terverifikasi"
+            text={L.capabilities.verifiedKbli}
           />
         </div>
       </section>
