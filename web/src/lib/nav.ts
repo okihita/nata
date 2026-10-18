@@ -19,6 +19,7 @@ export type NavKey =
   | "akun"
   | "laporan"
   | "pajak"
+  | "library"
   | "perizinan"
   | "academy"
   | "platformGuide"
@@ -85,6 +86,7 @@ export const NAV: NavGroup[] = [
     items: [
       { href: "/statements", key: "laporan", icon: "FileBarChart", mobile: true },
       { href: "/taxes", key: "pajak", icon: "Landmark", mobile: true },
+      { href: "/library", key: "library", icon: "Archive", mobile: false },
     ],
   },
   {

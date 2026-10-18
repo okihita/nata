@@ -16,6 +16,7 @@ import {
   Store,
   GraduationCap,
   Compass,
+  Archive,
   type LucideIcon,
 } from "lucide-react";
 
@@ -52,6 +53,7 @@ export const ICONS: Record<string, LucideIcon> = {
   Settings,
   GraduationCap,
   Compass,
+  Archive,
 };
 
 export function AppSidebar() {

@@ -89,6 +89,7 @@ export const copyId = {
     akun: "Daftar Akun",
     laporan: "Laporan Keuangan",
     pajak: "Pajak",
+    library: "Dokumen & Bukti",
     perizinan: "Perizinan",
     academy: "Kuliah Bisnis",
     platformGuide: "Panduan Platform",
