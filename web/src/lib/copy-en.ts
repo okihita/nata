@@ -71,9 +71,9 @@ export const copyEn = {
     groupLabels: {
       summary: "Overview",
       operations: "Operations",
-      master: "Master Data",
-      reports: "Reports",
-      other: "Other",
+      master: "Company & Master Data",
+      reports: "Financial Reports",
+      other: "Preferences",
     },
     dashboard: "Dashboard",
     catat: "Record Receipt",

@@ -76,9 +76,9 @@ export const copyId = {
     groupLabels: {
       summary: "Ringkasan",
       operations: "Operasional",
-      master: "Data Induk",
-      reports: "Laporan",
-      other: "Lainnya",
+      master: "Perusahaan & Data Induk",
+      reports: "Laporan Keuangan",
+      other: "Preferensi",
     },
     dashboard: "Dasbor",
     catat: "Catat Struk",
