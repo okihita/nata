@@ -8,6 +8,7 @@ import {
   FileText,
   Image as ImageIcon,
   X,
+  RotateCcw,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -26,18 +27,72 @@ export default function AgentsPage() {
   // Mas Nata (Chief of Staff) is on top as default
   const [activePersonaId, setActivePersonaId] = useState<AgentPersonId>("nata");
   const [judgeModalOpen, setJudgeModalOpen] = useState(false);
-  const [chatMessages, setChatMessages] = useState<Record<AgentPersonId, ChatMessage[]>>({
-    nata: AGENT_PERSONAS.nata.defaultChatHistory,
-    maya: AGENT_PERSONAS.maya.defaultChatHistory,
-    dimas: AGENT_PERSONAS.dimas.defaultChatHistory,
-    arief: AGENT_PERSONAS.arief.defaultChatHistory,
+  const [demoUid] = useState<string>(() => {
+    if (typeof window === "undefined") return "web-console";
+    let uid = window.localStorage.getItem("nata.demo.uid");
+    if (!uid) {
+      uid = `judge_${Math.random().toString(36).slice(2, 9)}`;
+      window.localStorage.setItem("nata.demo.uid", uid);
+    }
+    return uid;
   });
+
+  const [chatMessages, setChatMessages] = useState<Record<AgentPersonId, ChatMessage[]>>(() => {
+    const initial: Record<AgentPersonId, ChatMessage[]> = {
+      nata: AGENT_PERSONAS.nata.defaultChatHistory,
+      maya: AGENT_PERSONAS.maya.defaultChatHistory,
+      dimas: AGENT_PERSONAS.dimas.defaultChatHistory,
+      arief: AGENT_PERSONAS.arief.defaultChatHistory,
+    };
+    if (typeof window === "undefined") return initial;
+
+    const uid = window.localStorage.getItem("nata.demo.uid");
+    if (!uid) return initial;
+
+    (Object.keys(AGENT_PERSONAS) as AgentPersonId[]).forEach((pid) => {
+      const raw = window.localStorage.getItem(`nata.agents.chat.${uid}.${pid}`);
+      if (raw) {
+        try {
+          initial[pid] = JSON.parse(raw);
+        } catch {
+          // ignore parse errors
+        }
+      }
+    });
+
+    return initial;
+  });
+
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [attachedFiles, setAttachedFiles] = useState<{ name: string; type: "image" | "pdf" | "doc" }[]>([]);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Save chat history per user and persona to localStorage
+  const updateMessages = (updater: (prev: Record<AgentPersonId, ChatMessage[]>) => Record<AgentPersonId, ChatMessage[]>) => {
+    setChatMessages((prev) => {
+      const next = updater(prev);
+      if (typeof window !== "undefined") {
+        (Object.keys(next) as AgentPersonId[]).forEach((pid) => {
+          window.localStorage.setItem(`nata.agents.chat.${demoUid}.${pid}`, JSON.stringify(next[pid]));
+        });
+      }
+      return next;
+    });
+  };
+
+  const handleResetChat = () => {
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem(`nata.agents.session.${demoUid}.${activePersonaId}`);
+      window.localStorage.removeItem(`nata.agents.chat.${demoUid}.${activePersonaId}`);
+    }
+    updateMessages((prev) => ({
+      ...prev,
+      [activePersonaId]: AGENT_PERSONAS[activePersonaId].defaultChatHistory,
+    }));
+  };
 
   const persona = AGENT_PERSONAS[activePersonaId];
   const messages = chatMessages[activePersonaId];
@@ -100,7 +155,7 @@ export default function AgentsPage() {
       attachments: attachedFiles.length > 0 ? [...attachedFiles] : undefined,
     };
 
-    setChatMessages((prev) => ({
+    updateMessages((prev) => ({
       ...prev,
       [activePersonaId]: [...prev[activePersonaId], userMsg],
     }));
@@ -115,13 +170,18 @@ export default function AgentsPage() {
           ? "nata_regulasi"
           : "nata_agent";
 
-      const sessionId = await ensureSession("web-console", null, appName);
-      let streamedResponse = "";
+      const sessionKey = `nata.agents.session.${demoUid}.${activePersonaId}`;
+      const existingSession = typeof window !== "undefined" ? window.localStorage.getItem(sessionKey) : null;
+      const sessionId = await ensureSession(demoUid, existingSession, appName);
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(sessionKey, sessionId);
+      }
 
+      let streamedResponse = "";
       const agentMsgId = `a-${activePersonaId}-${userMsg.id}-reply`;
 
       // Set empty agent bubble first
-      setChatMessages((prev) => ({
+      updateMessages((prev) => ({
         ...prev,
         [activePersonaId]: [
           ...prev[activePersonaId],
@@ -144,7 +204,7 @@ export default function AgentsPage() {
       await streamRun(
         {
           appName,
-          userId: "web-console",
+          userId: demoUid,
           sessionId,
           streaming: true,
           newMessage: {
@@ -156,7 +216,7 @@ export default function AgentsPage() {
           const partText = event.content?.parts?.map((p) => p.text).filter(Boolean).join("") || "";
           if (partText) {
             streamedResponse += partText;
-            setChatMessages((prev) => ({
+            updateMessages((prev) => ({
               ...prev,
               [activePersonaId]: prev[activePersonaId].map((m) =>
                 m.id === agentMsgId ? { ...m, text: streamedResponse } : m
@@ -168,7 +228,7 @@ export default function AgentsPage() {
 
       // Fallback if model only returned final text in non-partial frame
       if (!streamedResponse) {
-        setChatMessages((prev) => ({
+        updateMessages((prev) => ({
           ...prev,
           [activePersonaId]: prev[activePersonaId].map((m) =>
             m.id === agentMsgId
@@ -184,7 +244,7 @@ export default function AgentsPage() {
       }
     } catch {
       // In case of network timeout, provide graceful persona reply
-      setChatMessages((prev) => ({
+      updateMessages((prev) => ({
         ...prev,
         [activePersonaId]: [
           ...prev[activePersonaId],
@@ -317,9 +377,21 @@ export default function AgentsPage() {
                 </p>
               </div>
             </div>
-            <span className="text-[11px] text-muted-foreground font-medium">
-              {isEn ? persona.titleEn : persona.title}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] text-muted-foreground font-medium hidden sm:inline">
+                {isEn ? persona.titleEn : persona.title}
+              </span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleResetChat}
+                title={isEn ? "Reset Conversation" : "Hapus Percakapan"}
+                className="h-7 px-2 text-[11px] text-muted-foreground hover:text-foreground gap-1 rounded-lg border border-border/40 hover:bg-muted"
+              >
+                <RotateCcw className="size-3" />
+                <span className="text-[10px] hidden md:inline">{isEn ? "Reset" : "Reset Sesi"}</span>
+              </Button>
+            </div>
           </div>
 
           {/* Messages Feed */}
