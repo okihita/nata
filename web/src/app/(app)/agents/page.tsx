@@ -200,13 +200,13 @@ export default function AgentsPage() {
         : "Jawablah selalu dalam Bahasa Indonesia yang ramah, sopan, dan jelas untuk pelaku UMKM.";
       const fullPrompt = `${languageInstruction}\n\nPertanyaan/Pesan: ${text || "Tolong periksa lampiran ini."}`;
 
-      // Invoke ADK endpoint
+      // Invoke ADK endpoint with tuned streaming
       await streamRun(
         {
           appName,
           userId: demoUid,
           sessionId,
-          streaming: false,
+          streaming: true,
           newMessage: {
             role: "user",
             parts: [{ text: fullPrompt }],
