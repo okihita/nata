@@ -12,6 +12,8 @@ import {
   FileCheck2,
   Table,
   BadgeCheck,
+  Plus,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -36,6 +38,11 @@ export default function RoutinesPage() {
   );
   const [activeCadence, setActiveCadence] = useState<RoutineCadence | "all">("all");
   const [runningId, setRunningId] = useState<string | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [newAgent, setNewAgent] = useState<"nata" | "maya" | "dimas" | "arief">("nata");
+  const [newCadence, setNewCadence] = useState<RoutineCadence>("daily");
+  const [newSchedule, setNewSchedule] = useState("0 8 * * *");
 
   const selectedRoutine = routines.find((r) => r.id === selectedRoutineId) ?? routines[0];
   const selectedExec =
@@ -104,6 +111,74 @@ export default function RoutinesPage() {
     }
   };
 
+  const handleAddNewRoutine = () => {
+    if (!newTitle.trim()) return;
+
+    const agentMeta = {
+      nata: { name: "Mas Nata", role: "Kepala Tim Keuangan", roleEn: "Chief Financial Lead" },
+      maya: { name: "Mba Maya", role: "Spesialis Pajak UMKM", roleEn: "Tax Specialist" },
+      dimas: { name: "Mas Dimas", role: "Auditor Pembukuan & Rekonsiliasi", roleEn: "Audit & Ledger Specialist" },
+      arief: { name: "Bang Arief", role: "Spesialis Perizinan & KBLI", roleEn: "Licensing Specialist" },
+    }[newAgent];
+
+    const newId = `rtn-custom-${Date.now()}`;
+    const fresh: AutonomousRoutine = {
+      id: newId,
+      title: newTitle.trim(),
+      titleEn: newTitle.trim(),
+      category: newAgent === "maya" ? "tax" : newAgent === "arief" ? "compliance" : "treasury",
+      assignedAgent: {
+        id: newAgent,
+        ...agentMeta,
+      },
+      cronSchedule: newSchedule,
+      scheduleHuman: newSchedule === "0 8 * * *" ? "Setiap hari 08:00 WIB" : "Sesuai jadwal",
+      scheduleHumanEn: newSchedule === "0 8 * * *" ? "Daily at 08:00 WIB" : "Custom schedule",
+      cadence: newCadence,
+      status: "active",
+      lastRunTime: isEn ? "Scheduled" : "Terjadwal",
+      lastRunStatus: "success",
+      description: "Jadwal kerja mandiri kustom yang dikonfigurasi pengguna untuk memantau aktivitas usaha.",
+      descriptionEn: "User-configured background schedule to monitor ongoing business activities.",
+      purpose: "Eksekusi otomatis pada server Cloud Run sesuai interval waktu.",
+      purposeEn: "Automated execution on Cloud Run server per scheduled interval.",
+      statutoryGrounding: "SAK EMKM & PP 55/2022",
+      recentExecutions: [
+        {
+          id: `exec-custom-${Date.now()}`,
+          timestamp: isEn ? "Initial Setup" : "Inisialisasi",
+          status: "success",
+          durationMs: 2400,
+          tokensUsed: 890,
+          findingSummary: isEn
+            ? "Worker initialized and registered with Google Cloud Scheduler."
+            : "Jadwal pekerja berhasil diinisialisasi dan didaftarkan ke Google Cloud Scheduler.",
+          findingSummaryEn: "Worker initialized and registered with Google Cloud Scheduler.",
+          impactMetrics: [
+            { label: "Status", labelEn: "Status", value: "Ready" },
+            { label: "Worker", labelEn: "Worker", value: agentMeta.name },
+            { label: "Cron", labelEn: "Cron", value: newSchedule },
+          ],
+          statutoryGrounding: "SAK EMKM & PP 55/2022",
+          artifactType: "cash_briefing",
+          artifactPayload: {
+            cashBalance: 50000000,
+            dailyBurnRate: 1500000,
+            runwayDays: 33,
+            operatingBuffer: "Configured",
+            lineItems: [{ label: "Rekening Operasional", amount: 50000000 }],
+          },
+        },
+      ],
+    };
+
+    setRoutines((prev) => [fresh, ...prev]);
+    setSelectedRoutineId(fresh.id);
+    setSelectedExecId(fresh.recentExecutions[0].id);
+    setNewTitle("");
+    setIsAddModalOpen(false);
+  };
+
   return (
     <div className="space-y-4">
       {/* Header Bar */}
@@ -145,9 +220,15 @@ export default function RoutinesPage() {
             <span className="text-xs font-semibold text-foreground">
               {isEn ? "1. Jobs" : "1. Jadwal"}
             </span>
-            <span className="text-[10px] font-mono text-muted-foreground">
-              {filteredRoutines.length} {isEn ? "registered" : "terdaftar"}
-            </span>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setIsAddModalOpen(true)}
+              className="h-6 px-2 text-[10px] gap-1 border-primary/40 text-primary hover:bg-primary/5"
+            >
+              <Plus className="size-3" />
+              <span>{isEn ? "Add New" : "Tambah"}</span>
+            </Button>
           </div>
 
           {/* Quick filter tabs */}
@@ -485,6 +566,109 @@ export default function RoutinesPage() {
           </div>
         </div>
       </div>
+
+      {/* Add New Routine Modal */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80">
+          <div className="bg-card border border-border w-full max-w-md rounded-2xl p-5 shadow-xl space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b border-border/60">
+              <h3 className="text-sm font-semibold text-foreground">
+                {isEn ? "Add Scheduled Routine" : "Tambah Jadwal Rutinitas"}
+              </h3>
+              <button
+                onClick={() => setIsAddModalOpen(false)}
+                className="text-muted-foreground hover:text-foreground p-1"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="font-medium text-foreground block mb-1">
+                  {isEn ? "Routine Title" : "Nama Jadwal / Pekerjaan"}
+                </label>
+                <input
+                  type="text"
+                  value={newTitle}
+                  onChange={(e) => setNewTitle(e.target.value)}
+                  placeholder={
+                    isEn
+                      ? "e.g. Daily Inventory Burn Watch"
+                      : "mis. Pantau Batas Stok & Pengeluaran Harian"
+                  }
+                  className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+              </div>
+
+              <div>
+                <label className="font-medium text-foreground block mb-1">
+                  {isEn ? "Assigned Agent" : "Tugaskan ke Asisten"}
+                </label>
+                <select
+                  value={newAgent}
+                  onChange={(e) => setNewAgent(e.target.value as "nata" | "maya" | "dimas" | "arief")}
+                  className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                >
+                  <option value="nata">Mas Nata (Kepala Tim Keuangan / Cash)</option>
+                  <option value="maya">Mba Maya (Spesialis Pajak UMKM / PP 55)</option>
+                  <option value="dimas">Mas Dimas (Auditor Pembukuan & Rekonsiliasi)</option>
+                  <option value="arief">Bang Arief (Spesialis Perizinan & KBLI)</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="font-medium text-foreground block mb-1">
+                    {isEn ? "Cadence" : "Frekuensi"}
+                  </label>
+                  <select
+                    value={newCadence}
+                    onChange={(e) => setNewCadence(e.target.value as RoutineCadence)}
+                    className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                  >
+                    <option value="daily">{isEn ? "Daily" : "Harian"}</option>
+                    <option value="weekly">{isEn ? "Weekly" : "Mingguan"}</option>
+                    <option value="monthly">{isEn ? "Monthly" : "Bulanan"}</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="font-medium text-foreground block mb-1">
+                    {isEn ? "Cron Expression" : "Jadwal Cron"}
+                  </label>
+                  <input
+                    type="text"
+                    value={newSchedule}
+                    onChange={(e) => setNewSchedule(e.target.value)}
+                    placeholder="0 8 * * *"
+                    className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs font-mono focus:outline-none focus:ring-1 focus:ring-primary"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-2 flex items-center justify-end gap-2 border-t border-border/40">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsAddModalOpen(false)}
+                className="text-xs h-8"
+              >
+                {isEn ? "Cancel" : "Batal"}
+              </Button>
+              <Button
+                size="sm"
+                onClick={handleAddNewRoutine}
+                disabled={!newTitle.trim()}
+                className="text-xs h-8"
+              >
+                {isEn ? "Create Routine" : "Simpan Jadwal"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
