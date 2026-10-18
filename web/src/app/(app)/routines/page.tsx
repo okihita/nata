@@ -748,22 +748,29 @@ export default function RoutinesPage() {
       {/* Add New Routine Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80">
-          <div className="bg-card border border-border w-full max-w-md rounded-2xl p-5 shadow-xl space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-border/60">
-              <h3 className="text-sm font-semibold text-foreground">
-                {isEn ? "Add Scheduled Routine" : "Tambah Jadwal Rutinitas"}
-              </h3>
+          <div className="bg-card border border-border w-full max-w-xl rounded-2xl p-6 shadow-2xl space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-border/60">
+              <div>
+                <h3 className="text-base font-semibold text-foreground">
+                  {isEn ? "Add Scheduled Background Routine" : "Tambah Jadwal Rutinitas Otonom"}
+                </h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {isEn
+                    ? "Configure an AI worker to run periodic audit and compliance tasks."
+                    : "Tugaskan asisten AI untuk memantau pembukuan dan kepatuhan secara otomatis."}
+                </p>
+              </div>
               <button
                 onClick={() => setIsAddModalOpen(false)}
-                className="text-muted-foreground hover:text-foreground p-1"
+                className="text-muted-foreground hover:text-foreground p-1 rounded-md hover:bg-muted/50"
               >
-                <X className="size-4" />
+                <X className="size-5" />
               </button>
             </div>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-4 text-xs">
               <div>
-                <label className="font-medium text-foreground block mb-1">
+                <label className="font-medium text-foreground block mb-1.5">
                   {isEn ? "Routine Title" : "Nama Jadwal / Pekerjaan"}
                 </label>
                 <input
@@ -772,61 +779,61 @@ export default function RoutinesPage() {
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder={
                     isEn
-                      ? "e.g. Daily Inventory Burn Watch"
-                      : "mis. Pantau Batas Stok & Pengeluaran Harian"
+                      ? "e.g. Nightly POS Settlement & Cash Discrepancy Audit"
+                      : "mis. Audit Selisih Kas & Rekonsiliasi Setelmen POS Malam"
                   }
-                  className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground"
                 />
               </div>
 
               <div>
-                <label className="font-medium text-foreground block mb-1">
-                  {isEn ? "Assigned Agent" : "Tugaskan ke Asisten"}
+                <label className="font-medium text-foreground block mb-1.5">
+                  {isEn ? "Assigned Agent Worker" : "Tugaskan ke Asisten"}
                 </label>
                 <div className="relative">
                   <select
                     value={newAgent}
                     onChange={(e) => setNewAgent(e.target.value as "nata" | "maya" | "dimas" | "arief")}
-                    className="w-full appearance-none px-3 py-2 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                    className="w-full appearance-none px-3.5 py-2.5 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
                   >
-                    <option value="nata">Mas Nata (Kepala Tim Keuangan / Cash)</option>
-                    <option value="maya">Mba Maya (Spesialis Pajak UMKM / PP 55)</option>
-                    <option value="dimas">Mas Dimas (Auditor Pembukuan & Rekonsiliasi)</option>
-                    <option value="arief">Bang Arief (Spesialis Perizinan & KBLI)</option>
+                    <option value="nata">Mas Nata (Kepala Tim Keuangan · Kas & Runway)</option>
+                    <option value="maya">Mba Maya (Spesialis Pajak UMKM · PP 55 & PPh Final)</option>
+                    <option value="dimas">Mas Dimas (Auditor Pembukuan · Rekonsiliasi Bank & SAK EMKM)</option>
+                    <option value="arief">Bang Arief (Spesialis Perizinan · KBLI 2020 & OSS RBA)</option>
                   </select>
-                  <ChevronDown className="size-3.5 text-muted-foreground absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <ChevronDown className="size-4 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </div>
               </div>
 
-              <div className={`grid ${newCadence === "weekly" ? "grid-cols-3" : "grid-cols-2"} gap-2`}>
+              <div className={`grid ${newCadence === "weekly" ? "grid-cols-3" : "grid-cols-2"} gap-3`}>
                 <div>
-                  <label className="font-medium text-foreground block mb-1">
+                  <label className="font-medium text-foreground block mb-1.5">
                     {isEn ? "Frequency" : "Frekuensi"}
                   </label>
                   <div className="relative">
                     <select
                       value={newCadence}
                       onChange={(e) => setNewCadence(e.target.value as RoutineCadence)}
-                      className="w-full appearance-none px-3 py-2 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                      className="w-full appearance-none px-3.5 py-2.5 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
                     >
                       <option value="daily">{isEn ? "Daily" : "Setiap Hari"}</option>
                       <option value="weekly">{isEn ? "Weekly" : "Setiap Minggu"}</option>
                       <option value="monthly">{isEn ? "Monthly" : "Akhir Bulan"}</option>
                     </select>
-                    <ChevronDown className="size-3.5 text-muted-foreground absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <ChevronDown className="size-4 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   </div>
                 </div>
 
                 {newCadence === "weekly" && (
                   <div>
-                    <label className="font-medium text-foreground block mb-1">
-                      {isEn ? "Day" : "Hari"}
+                    <label className="font-medium text-foreground block mb-1.5">
+                      {isEn ? "Day of Week" : "Pilihan Hari"}
                     </label>
                     <div className="relative">
                       <select
                         value={newDay}
                         onChange={(e) => setNewDay(e.target.value)}
-                        className="w-full appearance-none px-3 py-2 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                        className="w-full appearance-none px-3.5 py-2.5 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
                       >
                         <option value="0">{isEn ? "Sunday" : "Minggu"}</option>
                         <option value="1">{isEn ? "Monday" : "Senin"}</option>
@@ -836,20 +843,20 @@ export default function RoutinesPage() {
                         <option value="5">{isEn ? "Friday" : "Jumat"}</option>
                         <option value="6">{isEn ? "Saturday" : "Sabtu"}</option>
                       </select>
-                      <ChevronDown className="size-3.5 text-muted-foreground absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      <ChevronDown className="size-4 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                     </div>
                   </div>
                 )}
 
                 <div>
-                  <label className="font-medium text-foreground block mb-1">
-                    {isEn ? "Execution Time" : "Waktu Jam"}
+                  <label className="font-medium text-foreground block mb-1.5">
+                    {isEn ? "Execution Time" : "Waktu Jam Eksekusi"}
                   </label>
                   <div className="relative">
                     <select
                       value={newHour}
                       onChange={(e) => setNewHour(e.target.value)}
-                      className="w-full appearance-none px-3 py-2 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                      className="w-full appearance-none px-3.5 py-2.5 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
                     >
                       <option value="07:00">07:00 WIB ({isEn ? "Morning Briefing" : "Pagi Toko Buka"})</option>
                       <option value="08:00">08:00 WIB ({isEn ? "Standard Morning" : "Pagi Standar"})</option>
@@ -858,15 +865,15 @@ export default function RoutinesPage() {
                       <option value="21:00">21:00 WIB ({isEn ? "Nightly POS Audit" : "Malam Tutup Kasir"})</option>
                       <option value="23:00">23:00 WIB ({isEn ? "Late Night Batch" : "Tengah Malam"})</option>
                     </select>
-                    <ChevronDown className="size-3.5 text-muted-foreground absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <ChevronDown className="size-4 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   </div>
                 </div>
               </div>
 
-              {/* Friendly preview pill */}
-              <div className="p-2 rounded-lg bg-muted/40 border border-border/50 text-[11px] text-muted-foreground flex items-center justify-between">
-                <span>{isEn ? "Auto-Scheduled Rule:" : "Ringkasan Jadwal:"}</span>
-                <span className="font-semibold text-foreground">
+              {/* Friendly summary card */}
+              <div className="p-3 rounded-xl bg-muted/40 border border-border/60 text-xs flex items-center justify-between">
+                <span className="text-muted-foreground">{isEn ? "Computed Cloud Schedule:" : "Ringkasan Jadwal Server:"}</span>
+                <span className="font-semibold text-foreground font-mono">
                   {newCadence === "daily"
                     ? `${isEn ? "Daily at" : "Setiap hari"} ${newHour} WIB`
                     : newCadence === "weekly"
@@ -878,12 +885,12 @@ export default function RoutinesPage() {
               </div>
             </div>
 
-            <div className="pt-2 flex items-center justify-end gap-2 border-t border-border/40">
+            <div className="pt-3 flex items-center justify-end gap-2.5 border-t border-border/40">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setIsAddModalOpen(false)}
-                className="text-xs h-8"
+                className="text-xs h-9 px-4"
               >
                 {isEn ? "Cancel" : "Batal"}
               </Button>
@@ -891,7 +898,7 @@ export default function RoutinesPage() {
                 size="sm"
                 onClick={handleAddNewRoutine}
                 disabled={!newTitle.trim()}
-                className="text-xs h-8"
+                className="text-xs h-9 px-4 font-medium"
               >
                 {isEn ? "Create Routine" : "Simpan Jadwal"}
               </Button>
