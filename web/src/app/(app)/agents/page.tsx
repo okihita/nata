@@ -164,20 +164,22 @@ export default function AgentsPage() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-6rem)]">
-      <div className="shrink-0 mb-4">
-        <PageHeader
-          title={isEn ? "Digital Finance Team" : "Tim Keuangan Digital"}
-          subtitle={
-            isEn
+    <div className="flex flex-col h-[calc(100vh-8.5rem)] lg:h-[calc(100vh-10rem)] overflow-hidden">
+      <div className="shrink-0 mb-3 flex flex-wrap items-baseline justify-between gap-2">
+        <div>
+          <h1 className="text-xl lg:text-2xl font-semibold tracking-tight text-foreground">
+            {isEn ? "Digital Finance Team" : "Tim Keuangan Digital"}
+          </h1>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            {isEn
               ? "Your personal staff handling bookkeeping, taxes, and licensing behind the scenes."
-              : "Tim asisten pribadi yang bekerja otomatis merapikan pembukuan, pajak, dan izin usaha Anda."
-          }
-        />
+              : "Tim asisten pribadi yang bekerja otomatis merapikan pembukuan, pajak, dan izin usaha Anda."}
+          </p>
+        </div>
       </div>
 
-      {/* 3-PANE WORKSPACE ARCHITECTURE (FULL HEIGHT) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch flex-1 min-h-0">
+      {/* 3-PANE WORKSPACE ARCHITECTURE (FIT VIEWPORT EXACTLY) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch flex-1 min-h-0 overflow-hidden">
         {/* PANE 1: LEFT SUB-SIDEBAR (STAFF LIST) - 3 COLS */}
         <aside className="lg:col-span-3 flex flex-col gap-3 h-full overflow-hidden">
           <div className="rounded-xl border border-border/70 bg-card p-3 shadow-none flex-1 flex flex-col overflow-hidden">
