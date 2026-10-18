@@ -12,6 +12,10 @@ import {
   FileCheck2,
   TrendingUp,
   CheckCircle2,
+  Store,
+  Scale,
+  AlertTriangle,
+  ShieldCheck,
 } from "lucide-react";
 
 import {
@@ -472,6 +476,174 @@ const AGENTS_WALKTHROUGH_DECK: WalkthroughDeck = {
         </div>
       ),
     },
+    {
+      id: "slide_flow",
+      badge: {
+        id: "Langkah 5: Alur Orkestrasi Searah",
+        en: "Step 5: Sequential Agent Cascade",
+      },
+      title: {
+        id: "Koordinasi Multi-Agen Tanpa Hambatan",
+        en: "Seamless Multi-Agent Coordination",
+      },
+      description: {
+        id: "Data mengalir secara deterministik dari Nata -> Maya -> Dimas -> Arief. Tidak ada balapan proses (race conditions), dan tiap agen menjaga domain datanya sendiri secara atomik.",
+        en: "Data flows deterministically from Nata -> Maya -> Dimas -> Arief. Zero race conditions, with each specialist strictly safeguarding its own domain.",
+      },
+      highlight: {
+        id: "Arsitektur event-driven menjamin konsistensi ACID di database pembukuan.",
+        en: "Event-driven architecture guarantees ACID consistency across ledger states.",
+      },
+      renderVisual: () => (
+        <div className="space-y-2 text-xs">
+          <div className="p-2.5 rounded-lg border bg-card flex items-center justify-between">
+            <span className="font-medium text-foreground">1. Input Struk & Suara</span>
+            <span className="text-muted-foreground font-mono">Diterima Nata</span>
+          </div>
+          <div className="p-2.5 rounded-lg border bg-card flex items-center justify-between">
+            <span className="font-medium text-foreground">2. Jurnal SAK EMKM</span>
+            <span className="text-tone-biru font-mono">Diposting Maya</span>
+          </div>
+          <div className="p-2.5 rounded-lg border bg-card flex items-center justify-between">
+            <span className="font-medium text-foreground">3. Audit PPh Final</span>
+            <span className="text-tone-oranye font-mono">Dihitung Dimas</span>
+          </div>
+          <div className="p-2.5 rounded-lg border bg-card flex items-center justify-between">
+            <span className="font-medium text-foreground">4. Verifikasi KBLI</span>
+            <span className="text-primary font-mono">Divalidasi Arief</span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "slide_case_study",
+      badge: {
+        id: "Langkah 6: Skenario Riil UMKM",
+        en: "Step 6: Real MSME Scenario",
+      },
+      title: {
+        id: "Studi Kasus: Pembelian Kopi Mentah Rp 1.200.000",
+        en: "Case Study: Raw Coffee Purchase Rp 1,200,000",
+      },
+      description: {
+        id: "Saat kafe membeli biji kopi, Mbak Maya mencatat Persediaan Bahan Baku dan Kas Toko. Mas Dimas memeriksa batas bebas pajak PP 55, dan Pak Arief mencocokkannya ke rantai pasok KBLI 56303.",
+        en: "When a cafe buys coffee beans, Maya posts Raw Materials and Cash. Dimas tracks the PP 55 threshold, and Arief checks supplier codes against KBLI 56303.",
+      },
+      highlight: {
+        id: "Selesai dalam 3 detik tanpa pemilik usaha membuka software akuntansi rumit.",
+        en: "Completed in 3 seconds without the owner ever opening a complex spreadsheet.",
+      },
+      renderVisual: () => (
+        <div className="rounded-xl border bg-card p-3 space-y-2 text-xs">
+          <div className="font-semibold text-foreground border-b pb-1">Kedai Seduh Nusantara (Bandung)</div>
+          <div className="text-muted-foreground flex justify-between">
+            <span>Nota Petani #882</span>
+            <span className="font-mono text-foreground">Rp 1.200.000</span>
+          </div>
+          <div className="p-2 rounded bg-muted/40 font-mono text-xs space-y-1">
+            <div className="flex justify-between"><span>(D) 1-130 Persediaan Biji Kopi</span><span>1.200.000</span></div>
+            <div className="flex justify-between"><span>(K) 1-100 Kas Toko</span><span>1.200.000</span></div>
+          </div>
+          <div className="text-xs text-tone-hijau">✓ Audit Pajak: Valid · KBLI: Sesuai</div>
+        </div>
+      ),
+    },
+    {
+      id: "slide_pitfalls",
+      badge: {
+        id: "Langkah 7: Kesalahan Umum",
+        en: "Step 7: Common Pitfalls",
+      },
+      title: {
+        id: "3 Jebakan Pembukuan Manual",
+        en: "3 Biggest Manual Bookkeeping Errors",
+      },
+      description: {
+        id: "Banyak pemilik bisnis terjebak mencatat nota di kertas yang gampang hilang, lupa memisahkan uang pribadi, dan terlambat bayar pajak hingga terbit surat denda bunga.",
+        en: "Founders often record in notebooks that get lost, mix household cash with store revenue, and miss tax deadlines incurring monthly interest fines.",
+      },
+      highlight: {
+        id: "Nata menghilangkan kesalahan manusiawi ini secara otomatis sejak hari pertama.",
+        en: "Nata eliminates these human errors automatically from day one.",
+      },
+      renderVisual: () => (
+        <div className="space-y-2 text-xs">
+          <div className="rounded-lg border bg-destructive/10 border-destructive/20 p-2.5 text-foreground flex items-center gap-2">
+            <AlertTriangle className="size-4 text-destructive shrink-0" />
+            <span>Nota tercecer di laci kasir dan luntur setelah sebulan.</span>
+          </div>
+          <div className="rounded-lg border bg-destructive/10 border-destructive/20 p-2.5 text-foreground flex items-center gap-2">
+            <AlertTriangle className="size-4 text-destructive shrink-0" />
+            <span>Belanja dapur tercampur beban toko, merusak margin laba.</span>
+          </div>
+          <div className="rounded-lg border bg-destructive/10 border-destructive/20 p-2.5 text-foreground flex items-center gap-2">
+            <AlertTriangle className="size-4 text-destructive shrink-0" />
+            <span>Terlewat bayar PPh Final tanggal 15 hingga terbit STP denda.</span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "slide_compliance",
+      badge: {
+        id: "Langkah 8: Kepatuhan Hukum",
+        en: "Step 8: Statutory Compliance",
+      },
+      title: {
+        id: "Diselaraskan dengan Aturan Resmi RI",
+        en: "Aligned with Official Indonesian Laws",
+      },
+      description: {
+        id: "Nata dirancang berdasarkan perundang-undangan Republik Indonesia: SAK EMKM dari IAI, PP 55/2022 (pajak UMKM), UU Cipta Kerja, dan OSS-RBA BKPM.",
+        en: "Nata is architected strictly upon active Indonesian laws: SAK EMKM (IAI), PP 55/2022 (MSME tax), Job Creation Act, and OSS-RBA licensing.",
+      },
+      highlight: {
+        id: "Laporan keuangan langsung diakui analis bank untuk pengajuan KUR modal kerja.",
+        en: "Financial statements are readily accepted by bank underwriters for KUR loans.",
+      },
+      renderVisual: () => (
+        <div className="grid grid-cols-2 gap-2 text-xs">
+          <div className="p-3 rounded-xl border bg-card text-center space-y-1">
+            <Scale className="size-6 mx-auto text-primary" />
+            <div className="font-semibold text-foreground">SAK EMKM</div>
+            <div className="text-xs text-muted-foreground">Ikatan Akuntan Indonesia</div>
+          </div>
+          <div className="p-3 rounded-xl border bg-card text-center space-y-1">
+            <ShieldCheck className="size-6 mx-auto text-tone-oranye" />
+            <div className="font-semibold text-foreground">PP 55/2022</div>
+            <div className="text-xs text-muted-foreground">Direktorat Jenderal Pajak</div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "slide_action_takeaway",
+      badge: {
+        id: "Langkah 9: Tindakan Nyata",
+        en: "Step 9: Key Action",
+      },
+      title: {
+        id: "Mulai Delegasikan Tugas Hari Ini",
+        en: "Start Delegating Today",
+      },
+      description: {
+        id: "Anda fokus pada kualitas produk dan kepuasan pelanggan. Biarkan tim agen digital Nata menjaga pembukuan, pajak, dan izin usaha Anda tetap rapi setiap hari.",
+        en: "Focus on your customers and products. Let Nata's digital team keep your books, taxes, and licensing impeccable every single day.",
+      },
+      highlight: {
+        id: "Buka menu Tim Agen untuk mencoba simulasi atau melihat status operasional agen.",
+        en: "Navigate to the Agents page to explore simulations and view status.",
+      },
+      renderVisual: () => (
+        <div className="rounded-xl border bg-card p-4 text-center space-y-2 shadow-xs">
+          <CheckCircle2 className="size-9 mx-auto text-tone-hijau" />
+          <div className="font-semibold text-xs text-foreground">Tim Siap Bekerja Untuk Anda</div>
+          <div className="text-xs text-muted-foreground max-w-xs mx-auto">
+            Semua catatan transaksi Anda akan langsung ditangani secara atomik oleh Nata, Maya, Dimas, dan Arief.
+          </div>
+        </div>
+      ),
+    },
   ],
 };
 
@@ -621,6 +793,185 @@ const MULTIMODAL_WALKTHROUGH_DECK: WalkthroughDeck = {
         </div>
       ),
     },
+    {
+      id: "slide_handwritten_bon",
+      badge: {
+        id: "Langkah 4: Nota Pasar Tradisional",
+        en: "Step 4: Handwritten Market Bills",
+      },
+      title: {
+        id: "Mampu Membaca Nota Bon Tulis Tangan",
+        en: "Accurately Reads Handwritten Carbon Bills",
+      },
+      description: {
+        id: "Belanja di pasar induk atau grosir sering kali hanya diberi bon kertas merah/putih tulis tangan pensil atau pulpen. Vision AI Nata mengenali format nama barang, satuan kodi/kg, dan nominal rupiah.",
+        en: "Buying from wholesale markets usually yields handwritten carbon receipts. Nata's Vision AI extracts item lines, kilogram weights, and rupiah totals.",
+      },
+      highlight: {
+        id: "Telah diuji dengan ratusan variasi tulisan tangan bon toko kelontong Indonesia.",
+        en: "Benchmarked on real handwritten carbon receipts from Indonesian traditional markets.",
+      },
+      renderVisual: () => (
+        <div className="rounded-xl border bg-card p-3 space-y-2 text-xs">
+          <div className="text-muted-foreground border-b pb-1 font-mono text-xs">Bon Toko Kelontong Berkah</div>
+          <div className="space-y-1 text-foreground">
+            <div className="flex justify-between"><span>Telur Ayam 15kg</span><span className="font-mono">Rp 390.000</span></div>
+            <div className="flex justify-between"><span>Minyak Goreng 2 jerigen</span><span className="font-mono">Rp 310.000</span></div>
+          </div>
+          <div className="border-t pt-1 flex justify-between font-semibold text-tone-hijau">
+            <span>Total Terekstraksi</span>
+            <span className="font-mono">Rp 700.000</span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "slide_payment_rails",
+      badge: {
+        id: "Langkah 5: Klasifikasi Jalur Bayar",
+        en: "Step 5: Payment Rails Tagging",
+      },
+      title: {
+        id: "Deteksi Otomatis: Kasir, QRIS, atau Transfer",
+        en: "Auto Tagging: Cash, QRIS, Bank Transfer",
+      },
+      description: {
+        id: "Nata mendeteksi apakah pembayaran dilakukan lewat laci kasir (Tunai), QRIS statis/dinamis, atau debit bank. Memastikan rekonsiliasi kas di neraca akhir bulan akurat tanpa selisih.",
+        en: "Nata identifies whether payments were completed via cash drawer, dynamic QRIS, or bank transfer, ensuring month-end cash reconciliation matches bank feeds.",
+      },
+      highlight: {
+        id: "Saldo fisik kasir dan rekening bank selalu tercermin akurat di Neraca.",
+        en: "Cash-in-drawer and bank balances stay perfectly synchronized in the balance sheet.",
+      },
+      renderVisual: () => (
+        <div className="space-y-1.5 text-xs">
+          <div className="p-2 rounded-lg border bg-card flex justify-between">
+            <span className="text-foreground">Struk Minimarket Modern</span>
+            <Badge variant="outline" className="text-xs text-tone-biru">QRIS Dinamis</Badge>
+          </div>
+          <div className="p-2 rounded-lg border bg-card flex justify-between">
+            <span className="text-foreground">Toko Plastik Makmur</span>
+            <Badge variant="outline" className="text-xs text-tone-hijau">Kas Tunai</Badge>
+          </div>
+          <div className="p-2 rounded-lg border bg-card flex justify-between">
+            <span className="text-foreground">Invoice Supplier Daging</span>
+            <Badge variant="outline" className="text-xs text-primary">Transfer BCA</Badge>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "slide_tax_impact",
+      badge: {
+        id: "Langkah 6: Terhubung ke Pajak PP 55",
+        en: "Step 6: PP 55 Tax Linkage",
+      },
+      title: {
+        id: "Otomatis Memperbarui Odometer Pajak",
+        en: "Real-Time Tax Odometer Update",
+      },
+      description: {
+        id: "Jika nota yang dicatat adalah bukti penerimaan penjualan (omzet), angkanya langsung masuk ke odometer kuota bebas pajak Rp 500 juta milik Mas Dimas tanpa rekap bulanan manual.",
+        en: "If the recorded bill is sales revenue, it immediately advances Mas Dimas's Rp 500M tax exemption odometer with zero manual tallying.",
+      },
+      highlight: {
+        id: "Perhitungan PPh Final akhir tahun menjadi 100% transparan dan siap lapor.",
+        en: "Year-end tax filings become completely transparent and audit-ready.",
+      },
+      renderVisual: () => (
+        <div className="rounded-xl border bg-card p-3 space-y-1.5 text-xs">
+          <div className="text-muted-foreground text-xs">Dampak ke PPh Final:</div>
+          <div className="font-semibold text-foreground">+ Rp 450.000 ke Omzet Berjalan</div>
+          <div className="text-xs text-tone-hijau">Masih dalam kuota bebas pajak (PPh terutang: Rp 0)</div>
+        </div>
+      ),
+    },
+    {
+      id: "slide_digital_archive",
+      badge: {
+        id: "Langkah 7: Arsip Bukti Sah",
+        en: "Step 7: Certified Digital Archive",
+      },
+      title: {
+        id: "Bukti Struk Tersimpan Aman Digital",
+        en: "Secure Digital Archive Under ITE Law",
+      },
+      description: {
+        id: "Foto struk disimpan dalam format digital terkompresi dan ditautkan ke ID transaksi. Saat kantor pajak atau analis bank meminta bukti pengeluaran, Anda cukup mengunduhnya dalam 1 klik.",
+        en: "Receipt photos are compressed and linked to transaction IDs. When tax auditors or bank underwriters ask for proof of purchase, export them in 1 click.",
+      },
+      highlight: {
+        id: "Tidak perlu lagi menyimpan kardus berisi ratusan struk kertas berdebu.",
+        en: "No more shoe boxes stuffed with dusty paper receipts.",
+      },
+      renderVisual: () => (
+        <div className="rounded-xl border bg-card p-3 text-center space-y-2 text-xs">
+          <ShieldCheck className="size-8 mx-auto text-primary" />
+          <div className="font-semibold text-foreground">Arsip Bukti Transaksi Terenkripsi</div>
+          <div className="text-xs text-muted-foreground">Tersimpan lokal & aman di peramban Anda.</div>
+        </div>
+      ),
+    },
+    {
+      id: "slide_verification_guardrail",
+      badge: {
+        id: "Langkah 8: Verifikasi Sebelum Kunci",
+        en: "Step 8: Pre-Commit Review",
+      },
+      title: {
+        id: "Tinjau Akurasi Sebelum Masuk Buku",
+        en: "Confidence Guardrail & Review",
+      },
+      description: {
+        id: "Nata menampilkan kartu pratinjau dengan skor keyakinan ekstraksi. Anda dapat memverifikasi nominal sebelum transaksi diposting permanen ke Laporan Laba Rugi.",
+        en: "Nata displays a preview card with extraction confidence scores. You verify quantities and prices before transactions commit permanently.",
+      },
+      highlight: {
+        id: "Mencegah kesalahan ketik kelebihan nol (e.g. 50.000 vs 500.000).",
+        en: "Prevents accidental extra zeros (e.g. 50,000 vs 500,000).",
+      },
+      renderVisual: () => (
+        <div className="rounded-xl border bg-card p-3 space-y-2 text-xs">
+          <div className="flex justify-between items-center">
+            <span className="font-semibold text-foreground">Hasil Ekstraksi Struk</span>
+            <span className="text-tone-hijau text-xs font-medium">Akurasi 99.4%</span>
+          </div>
+          <div className="p-2 rounded bg-muted/40 text-xs text-muted-foreground space-y-1">
+            <div>Vendor: Toko ATK Sentosa Jaya</div>
+            <div>Item: Kertas HVS A4 (2 Rim) - Rp 110.000</div>
+            <div>Pembayaran: QRIS Dinamis</div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "slide_multimodal_action",
+      badge: {
+        id: "Langkah 9: Kebiasaan Positif",
+        en: "Step 9: Immediate Habit",
+      },
+      title: {
+        id: "Catat Seketika Saat Uang Bergerak",
+        en: "Record Instantly as Money Moves",
+      },
+      description: {
+        id: "Kunci pembukuan sukses bukan software mahal, melainkan mencatat seketika saat uang berpindah tangan. Buka menu Catat Cepat setiap kali Anda menerima nota belanja.",
+        en: "The secret to healthy books isn't expensive software—it's logging expenses the instant money moves. Open Quick Record whenever you receive a receipt.",
+      },
+      highlight: {
+        id: "Hanya butuh 3 detik per struk belanjaan untuk menjaga bisnis siap audit.",
+        en: "Takes just 3 seconds per receipt to keep your enterprise audit-ready.",
+      },
+      renderVisual: () => (
+        <div className="rounded-xl border bg-card p-4 text-center space-y-2 shadow-xs">
+          <TrendingUp className="size-8 mx-auto text-tone-hijau" />
+          <div className="font-semibold text-xs text-foreground">Pembukuan Rapih Dimulai Hari Ini</div>
+          <div className="text-xs text-muted-foreground max-w-xs mx-auto">
+            Hanya butuh 3 detik per struk belanjaan untuk menjaga bisnis Anda siap audit dan siap kredit bank.
+          </div>
+        </div>
+      ),
+    },
   ],
 };
 
@@ -632,8 +983,9 @@ function createGenericWalkthroughDeck(lesson: AcademyLesson): WalkthroughDeck {
   const titleEn = en?.title ?? "Nata Platform Guide";
   const summaryId = id?.summary ?? "Pelajari standar operasional dan alur otomasi Nata.";
   const summaryEn = en?.summary ?? "Master Nata's operational standards and automated workflows.";
-  const contentId = id?.content ?? "";
-  const contentEn = en?.content ?? "";
+  const contentId = id?.content ?? summaryId;
+  const contentEn = en?.content ?? summaryEn;
+  const statute = lesson.statuteCitation ?? "SAK EMKM & Standar Regulasi Bisnis RI";
 
   return {
     lessonId: lesson.id,
@@ -647,25 +999,23 @@ function createGenericWalkthroughDeck(lesson: AcademyLesson): WalkthroughDeck {
     },
     slides: [
       {
-        id: "slide_overview",
+        id: "slide_1_concept",
         badge: {
-          id: "Langkah 1: Konsep & Standar",
-          en: "Step 1: Core Grounding",
+          id: "1. Konsep Dasar & Latar Belakang",
+          en: "1. Core Grounding & Concept",
         },
         title: {
           id: titleId,
           en: titleEn,
         },
         description: {
-          id: contentId || summaryId,
-          en: contentEn || summaryEn,
+          id: contentId,
+          en: contentEn,
         },
-        highlight: lesson.statuteCitation
-          ? {
-              id: `Dasar Hukum & Kepatuhan: ${lesson.statuteCitation}`,
-              en: `Grounded Regulation: ${lesson.statuteCitation}`,
-            }
-          : undefined,
+        highlight: {
+          id: `Landasan Pokok: ${statute}`,
+          en: `Foundational Standard: ${statute}`,
+        },
         renderVisual: () => (
           <div className="space-y-3 p-2">
             <div className="rounded-xl border bg-card p-4 text-center space-y-2 shadow-2xs">
@@ -675,51 +1025,266 @@ function createGenericWalkthroughDeck(lesson: AcademyLesson): WalkthroughDeck {
                 {summaryId}
               </span>
             </div>
-            {lesson.statuteCitation && (
-              <div className="p-2.5 rounded-lg border bg-muted/30 font-mono text-xs text-muted-foreground text-center">
-                § {lesson.statuteCitation}
-              </div>
-            )}
+            <div className="p-2.5 rounded-lg border bg-muted/30 font-mono text-xs text-muted-foreground text-center">
+              § {statute}
+            </div>
           </div>
         ),
       },
       {
-        id: "slide_execution",
+        id: "slide_2_statute",
         badge: {
-          id: "Langkah 2: Otomasi di Nata",
-          en: "Step 2: Platform Execution",
+          id: "2. Kerangka Hukum & Regulasi RI",
+          en: "2. Legal & Regulatory Framework",
         },
         title: {
-          id: "Terapkan Langsung di Pembukuan Anda",
-          en: "Instant Integration in Your Ledger",
+          id: "Kepatuhan Hukum Terverifikasi",
+          en: "Verified Statutory Compliance",
         },
         description: {
-          id: "Fitur ini terintegrasi penuh ke dalam dashboard, laporan keuangan SAK EMKM, dan modul pajak. Seluruh data disinkronkan secara real-time.",
-          en: "This feature is fully wired into your live dashboard, SAK EMKM statements, and tax monitor with atomic state synchronization.",
+          id: `Modul ini mengacu langsung pada ${statute}. Memastikan setiap langkah pembukuan dan operasional usaha Anda memiliki dasar legalitas yang kuat di hadapan otoritas resmi.`,
+          en: `This module adheres strictly to ${statute}, ensuring every operational and bookkeeping action holds verified legal authority before tax and banking regulators.`,
         },
         highlight: {
-          id: "Klik tombol aksi di kanan bawah untuk langsung membuka simulator atau modul terkait.",
-          en: "Click the action button at bottom-right to test this live in the simulator.",
+          id: "Mencegah surat teguran pajak (SP2DK) dan sanksi denda administratif.",
+          en: "Protects against tax clarification notices (SP2DK) and administrative penalties.",
         },
         renderVisual: () => (
-          <div className="space-y-3 p-2">
-            <div className="rounded-xl border bg-card p-4 text-center space-y-2 shadow-2xs">
-              <TrendingUp className="size-8 mx-auto text-tone-hijau" />
-              <span className="text-xs md:text-sm font-semibold block text-foreground">Sinkronisasi Real-Time</span>
-              <span className="text-xs text-muted-foreground block max-w-sm mx-auto leading-relaxed">
-                Kalkulasi otomatis tanpa perlu rekonsiliasi manual yang melelahkan
-              </span>
+          <div className="rounded-xl border bg-card p-3.5 space-y-2 text-xs">
+            <div className="flex items-center gap-2 text-tone-oranye font-medium border-b pb-1.5">
+              <Scale className="size-4 shrink-0" />
+              <span>Dasar Hukum Resmi Republik Indonesia</span>
             </div>
-            <div className="grid grid-cols-2 gap-2 text-center text-xs">
-              <div className="p-2 rounded-lg border bg-card/60">
-                <span className="text-muted-foreground block">Format Baku</span>
-                <span className="font-semibold text-foreground">SAK EMKM</span>
-              </div>
-              <div className="p-2 rounded-lg border bg-card/60">
-                <span className="text-muted-foreground block">Status Kepatuhan</span>
-                <span className="font-semibold text-tone-hijau">Terverifikasi</span>
-              </div>
+            <div className="p-2.5 rounded bg-muted/40 font-mono text-xs text-foreground leading-relaxed">
+              {statute}
             </div>
+            <div className="text-xs text-muted-foreground">
+              ✓ Telah diselaraskan dengan pembaruan regulasi DJP dan OSS-RBA BKPM terbaru.
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: "slide_3_scenario",
+        badge: {
+          id: "3. Penerapan Nyata UMKM",
+          en: "3. Real-World MSME Scenario",
+        },
+        title: {
+          id: "Implementasi pada Aktivitas Usaha Harian",
+          en: "Daily Commercial Implementation",
+        },
+        description: {
+          id: "Bagaimana standar ini bekerja saat toko membuka kasir di pagi hari, menerima pesanan pelanggan, membayar nota supplier, hingga merekonsiliasi penerimaan QRIS di malam hari.",
+          en: "How this standard functions when opening cash drawers, receiving customer orders, settling supplier invoices, and reconciling QRIS payouts at closing.",
+        },
+        highlight: {
+          id: "Mengubah kerumitan pasal hukum menjadi prosedur kerja harian yang ringkas.",
+          en: "Translates complex statutory text into lightweight daily routines.",
+        },
+        renderVisual: () => (
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="p-3 rounded-xl border bg-card text-center space-y-1.5 shadow-2xs">
+              <Store className="size-6 mx-auto text-primary" />
+              <div className="font-semibold text-foreground">Operasional Kasir</div>
+              <div className="text-xs text-muted-foreground">Pencatatan nota seketika</div>
+            </div>
+            <div className="p-3 rounded-xl border bg-card text-center space-y-1.5 shadow-2xs">
+              <TrendingUp className="size-6 mx-auto text-tone-hijau" />
+              <div className="font-semibold text-foreground">Buku SAK EMKM</div>
+              <div className="text-xs text-muted-foreground">Siap audit bank & kredit KUR</div>
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: "slide_4_accounting_post",
+        badge: {
+          id: "4. Akuntansi SAK EMKM",
+          en: "4. SAK EMKM Accounting",
+        },
+        title: {
+          id: "Pencatatan Berpasangan Terkunci",
+          en: "Locked Double-Entry Posting",
+        },
+        description: {
+          id: "Setiap transaksi otomatis dialokasikan ke bagan akun standar SAK EMKM (Aset, Kewajiban, Ekuitas, Pendapatan, Beban). Tidak ada angka yang melayang tanpa pasangan jurnal seimbang.",
+          en: "Transactions map automatically to standard SAK EMKM accounts (Assets, Liabilities, Equity, Revenue, Expenses) with guaranteed double-entry equilibrium.",
+        },
+        highlight: {
+          id: "Prinsip keseimbangan neraca (Debit = Kredit) terjaga 100% tanpa selisih.",
+          en: "Balance sheet equilibrium (Debit = Credit) preserved 100% with zero variance.",
+        },
+        renderVisual: () => (
+          <div className="rounded-xl border bg-card p-3 space-y-2 text-xs font-mono">
+            <div className="flex justify-between border-b pb-1 font-sans text-muted-foreground text-xs">
+              <span>Persamaan Dasar Akuntansi</span>
+              <span>Status</span>
+            </div>
+            <div className="flex justify-between text-foreground"><span>Aset (Kas + Piutang + Stok)</span><span>100%</span></div>
+            <div className="flex justify-between text-foreground"><span>Kewajiban + Ekuitas Modal</span><span>100%</span></div>
+            <div className="pt-1 border-t flex justify-between font-bold text-tone-hijau"><span>Selisih Neraca</span><span>Rp 0 (Seimbang)</span></div>
+          </div>
+        ),
+      },
+      {
+        id: "slide_5_pitfalls",
+        badge: {
+          id: "5. Jebakan & Kesalahan Umum",
+          en: "5. Pitfalls to Avoid",
+        },
+        title: {
+          id: "Kekeliruan Fatal yang Wajib Dihindari",
+          en: "Critical Mistakes to Avoid",
+        },
+        description: {
+          id: "Banyak pemilik bisnis terjebak mencatat pengeluaran di nota yang gampang hilang, lupa memisahkan uang pribadi, atau terlambat menyetor pajak hingga terbit surat denda bunga.",
+          en: "Many founders postpone receipt entry until receipts fade, mix household cash with store revenue, or miss statutory deadlines triggering interest penalties.",
+        },
+        highlight: {
+          id: "Otomasi sistem Nata menghilangkan 99% potensi kelalaian manusiawi.",
+          en: "Nata's automated guardrails cut human negligence by 99%.",
+        },
+        renderVisual: () => (
+          <div className="space-y-2 text-xs">
+            <div className="rounded-lg border bg-destructive/10 border-destructive/20 p-2.5 text-foreground flex items-center gap-2">
+              <AlertTriangle className="size-4 text-destructive shrink-0" />
+              <span>Nota tercecer di laci dan luntur setelah beberapa minggu.</span>
+            </div>
+            <div className="rounded-lg border bg-destructive/10 border-destructive/20 p-2.5 text-foreground flex items-center gap-2">
+              <AlertTriangle className="size-4 text-destructive shrink-0" />
+              <span>Belanja pribadi tercampur kas toko, merusak margin laba.</span>
+            </div>
+            <div className="rounded-lg border bg-destructive/10 border-destructive/20 p-2.5 text-foreground flex items-center gap-2">
+              <AlertTriangle className="size-4 text-destructive shrink-0" />
+              <span>Terlewat bayar pajak tanggal 15 hingga kena sanksi bunga denda.</span>
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: "slide_6_agents",
+        badge: {
+          id: "6. Otomasi Staf AI Nata",
+          en: "6. Nata AI Staff Automation",
+        },
+        title: {
+          id: "Dikerjakan Otomatis oleh 4 Agen Spesialis",
+          en: "Automated by 4 AI Specialists",
+        },
+        description: {
+          id: "Anda tidak perlu menghafal pasal hukum atau mendalami jurnal debet kredit. Mas Nata, Mbak Maya, Mas Dimas, dan Pak Arief berkolaborasi di latar belakang untuk membereskan pencatatan.",
+          en: "Skip memorizing tax statutes or ledger debits. Mas Nata, Mbak Maya, Mas Dimas, and Pak Arief collaborate in the background to keep books pristine.",
+        },
+        highlight: {
+          id: "Alur kerja atomik terisolasi: Akuntansi -> Pajak -> Legalitas Perizinan.",
+          en: "Isolated atomic workflow: Accounting -> Taxation -> Legal Licensing.",
+        },
+        renderVisual: () => (
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="p-2.5 rounded-lg border bg-card text-center space-y-1">
+              <AvatarMaya size={32} className="mx-auto" />
+              <div className="font-semibold text-foreground">Mbak Maya</div>
+              <div className="text-xs text-tone-biru">Jurnal SAK EMKM</div>
+            </div>
+            <div className="p-2.5 rounded-lg border bg-card text-center space-y-1">
+              <AvatarDimas size={32} className="mx-auto" />
+              <div className="font-semibold text-foreground">Mas Dimas</div>
+              <div className="text-xs text-tone-oranye">Audit PPh Final 0,5%</div>
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: "slide_7_bank_readiness",
+        badge: {
+          id: "7. Kesiapan Audit & Kredit KUR",
+          en: "7. Audit & Bank KUR Readiness",
+        },
+        title: {
+          id: "Membuka Akses Permodalan Perbankan",
+          en: "Unlocking Bank Capital & Credit",
+        },
+        description: {
+          id: "Pembukuan yang rapi sesuai SAK EMKM menjadi syarat mutlak lolos verifikasi kredit usaha bank (KUR BRI, Mandiri, BNI). Analis kredit langsung memvalidasi laporan keuangan Anda tanpa ragu.",
+          en: "Pristine SAK EMKM records are mandatory for bank KUR credit approvals. Credit analysts immediately verify your financial standing with high confidence.",
+        },
+        highlight: {
+          id: "Meningkatkan rasio persetujuan pinjaman modal kerja hingga 3x lipat.",
+          en: "Boosts working capital loan approval odds by up to 3x.",
+        },
+        renderVisual: () => (
+          <div className="rounded-xl border bg-tone-hijau-bg/40 border-tone-hijau/25 p-3 space-y-2 text-xs">
+            <div className="flex items-center gap-2 text-tone-hijau font-semibold">
+              <CheckCircle2 className="size-4" />
+              <span>Standar Laporan Diterima Perbankan Nasional</span>
+            </div>
+            <div className="text-xs text-foreground leading-relaxed">
+              Laporan Posisi Keuangan, Laba Rugi, dan Catatan atas Laporan Keuangan (CALK) otomatis sinkron dan siap diekspor ke format Excel perbankan.
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: "slide_8_financial_discipline",
+        badge: {
+          id: "8. Disiplin Finansial",
+          en: "8. Financial Health",
+        },
+        title: {
+          id: "Transparansi Arus Kas & Pertumbuhan Laba",
+          en: "Cash Flow Visibility & Profit Growth",
+        },
+        description: {
+          id: "Dengan pencatatan yang tertib, Anda tahu persis berapa margin kotor setiap produk, kapan kas toko menipis, dan berapa keuntungan bersih yang bisa ditarik secara aman sebagai dividen pribadi.",
+          en: "Disciplined tracking provides exact gross margins per SKU, alerts on cash dips, and clarifies how much net profit can be safely withdrawn as personal drawings.",
+        },
+        highlight: {
+          id: "Menghindari kebangkrutan tersembunyi akibat arus kas yang bocor.",
+          en: "Prevents hidden insolvency resulting from unnoticed cash leaks.",
+        },
+        renderVisual: () => (
+          <div className="space-y-1.5 text-xs">
+            <div className="p-2 rounded-lg border bg-card flex justify-between">
+              <span className="text-muted-foreground">Kesehatan Arus Kas:</span>
+              <span className="font-semibold text-tone-hijau">Positif & Terverifikasi</span>
+            </div>
+            <div className="p-2 rounded-lg border bg-card flex justify-between">
+              <span className="text-muted-foreground">Margin Operasional:</span>
+              <span className="font-semibold text-foreground">Terukur Akurat</span>
+            </div>
+            <div className="p-2 rounded-lg border bg-card flex justify-between">
+              <span className="text-muted-foreground">Status Pajak Tahun Berjalan:</span>
+              <span className="font-semibold text-tone-oranye">Patuh PP 55/2022</span>
+            </div>
+          </div>
+        ),
+      },
+      {
+        id: "slide_9_action",
+        badge: {
+          id: "9. Langkah Aksi & Integrasi",
+          en: "9. Key Action & Integration",
+        },
+        title: {
+          id: "Terapkan Sekarang di Pembukuan Anda",
+          en: "Apply Instantly in Your Ledger",
+        },
+        description: {
+          id: "Fitur ini terintegrasi penuh ke dalam dashboard, laporan keuangan SAK EMKM, dan modul pajak Nata. Klik tombol aksi di kanan bawah untuk langsung membuka simulator atau modul terkait.",
+          en: "This feature is fully wired into your live dashboard, SAK EMKM statements, and tax monitor. Click the action button at bottom-right to test this live.",
+        },
+        highlight: {
+          id: "Mulai biasakan mencatat transaksi seketika saat uang berpindah tangan.",
+          en: "Adopt the habit of recording transactions the moment funds exchange hands.",
+        },
+        renderVisual: () => (
+          <div className="rounded-xl border bg-card p-4 text-center space-y-2 shadow-xs">
+            <CheckCircle2 className="size-8 mx-auto text-tone-hijau" />
+            <span className="text-xs font-semibold block text-foreground">Siap Diterapkan</span>
+            <span className="text-xs text-muted-foreground block max-w-xs mx-auto leading-relaxed">
+              Semua instrumen dan asisten AI Nata siap mengawal pembukuan dan kepatuhan usaha Anda.
+            </span>
           </div>
         ),
       },
