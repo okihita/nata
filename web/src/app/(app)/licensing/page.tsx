@@ -284,7 +284,7 @@ export default function PerizinanPage() {
                         >
                           <span
                             className={cn(
-                              "mt-0.5 grid size-6 shrink-0 place-items-center rounded-md text-[10px] font-semibold tabular-nums",
+                              "mt-0.5 grid size-6 shrink-0 place-items-center rounded-md text-xs font-semibold tabular-nums",
                               isChosen
                                 ? "bg-primary text-primary-foreground"
                                 : "bg-muted text-muted-foreground",
@@ -301,11 +301,11 @@ export default function PerizinanPage() {
                             </span>
                           </span>
                           {isChosen ? (
-                            <Badge variant="secondary" className="shrink-0 text-[10px]">
+                            <Badge variant="secondary" className="shrink-0 text-xs">
                               {copy.perizinan.chosen}
                             </Badge>
                           ) : (
-                            <span className="shrink-0 self-center text-[11px] font-medium text-primary">
+                            <span className="shrink-0 self-center text-xs font-medium text-primary">
                               {copy.perizinan.useThis}
                             </span>
                           )}
@@ -356,7 +356,7 @@ export default function PerizinanPage() {
                       {shownCode}
                     </p>
                     <p className="mt-1 text-sm font-medium">{shownTitle}</p>
-                    <div className="mt-3 flex flex-wrap items-center gap-2 text-[10px]">
+                    <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
                       <Badge
                         variant="secondary"
                         className="bg-tone-hijau-bg text-tone-hijau"
@@ -381,7 +381,7 @@ export default function PerizinanPage() {
                       hierarkis, jadi angkanya tidak berdiri sendiri. */}
                   {shownHierarchy.length > 1 && (
                     <div className="space-y-2">
-                      <p className="text-[11px] font-medium text-muted-foreground">
+                      <p className="text-xs font-medium text-muted-foreground">
                         {copy.perizinan.hierarchyLabel}
                       </p>
                       <ol className="space-y-1.5">
@@ -399,7 +399,7 @@ export default function PerizinanPage() {
                                   last ? "bg-primary" : "bg-muted-foreground/40",
                                 )}
                               />
-                              <span className="min-w-0 flex-1 text-[11px] leading-snug">
+                              <span className="min-w-0 flex-1 text-xs leading-snug">
                                 <span
                                   className={cn(
                                     "tabular-nums",
@@ -437,7 +437,7 @@ export default function PerizinanPage() {
               <CardContent className="space-y-3">
                 <div className="flex items-center justify-between rounded-lg border bg-muted/40 px-3 py-2.5">
                   <span className="text-sm">{copy.perizinan.riskLevelLabel}</span>
-                  <Badge variant="outline" className="text-[10px]">
+                  <Badge variant="outline" className="text-xs">
                     {copy.perizinan.riskUnknown}
                   </Badge>
                 </div>
