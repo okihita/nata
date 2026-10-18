@@ -24,11 +24,21 @@ substitutions:
   _ADK_REGULASI_SERVER_URL: ""
 
 steps:
+  # ── 0. pull-cache ─────────────────────────────────────────────────────────
+  # Best-effort pull of the latest image to seed Docker layer cache for pnpm install
+  - id: pull-cache
+    name: "gcr.io/cloud-builders/docker"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - "docker pull ${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/${_SERVICE}:latest || true"
+
   # ── 1. build ──────────────────────────────────────────────────────────────
   - id: build
     name: "gcr.io/cloud-builders/docker"
     args:
       - build
+      - "--cache-from=${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/${_SERVICE}:latest"
       - "--tag=${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/${_SERVICE}:$SHORT_SHA"
       - "--tag=${_REGION}-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/${_SERVICE}:latest"
       - "./web"
@@ -69,11 +79,6 @@ images:
 
 options:
   logging: CLOUD_LOGGING_ONLY
-  # Free-tier eligible on purpose. E2_HIGHCPU_8 ($0.0156/min) is NOT covered by
-  # the 2,500 free build-minutes/month; E2_STANDARD_2 ($0.006/min) is.
-  #
-  # Trade-off, recorded so this is not "optimised" back later: 8 vCPU -> 2 vCPU
-  # makes the console build slower (~2 min becomes ~4-6 min). That is the right
-  # trade for a hackathon: deploys are infrequent, and the whole pipeline then
-  # costs nothing while staying well inside the free monthly quota.
-  machineType: E2_STANDARD_2
+  # E2_HIGHCPU_8 (8 vCPUs, $0.0156/min, ~Rp250/deploy) reduces build duration
+  # from ~3m45s to ~1m.
+  machineType: E2_HIGHCPU_8
