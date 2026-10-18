@@ -9,15 +9,16 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { GROUP_LABEL, NORMAL_SIDE, codeOf, type AccountGroup } from "@/lib/sak-emkm";
+import { NORMAL_SIDE, codeOf, type AccountGroup } from "@/lib/sak-emkm";
 import { trialBalance } from "@/lib/ledger";
 import { useWorkspace } from "@/lib/store";
-import { copy } from "@/lib/copy";
+import { useLanguage } from "@/lib/copy";
 import { idrFull } from "@/lib/format";
 
 const GROUPS: AccountGroup[] = ["aset", "liabilitas", "ekuitas", "pendapatan", "beban"];
 
 export default function AkunPage() {
+  const { copy } = useLanguage();
   const { entries, ready } = useWorkspace();
   const balances = trialBalance(entries);
 
@@ -92,7 +93,7 @@ export default function AkunPage() {
               <CardHeader>
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
-                    <CardTitle className="text-base">{GROUP_LABEL[group]}</CardTitle>
+                    <CardTitle className="text-base">{copy.akun[group]}</CardTitle>
                     <CardDescription>
                       {side === "debit" ? copy.akun.normalDebit : copy.akun.normalCredit}
                     </CardDescription>
