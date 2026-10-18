@@ -25,6 +25,10 @@ import {
   Landmark,
   Bot,
   GraduationCap,
+  Clock,
+  KeyRound,
+  FileText,
+  BadgeCheck,
 } from "lucide-react";
 
 import { HeroProof } from "@/components/hero-proof";
@@ -32,6 +36,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { useLanguage } from "@/lib/language";
+import { NataMark } from "@/components/nata-logo";
 import {
   AvatarMaya,
   AvatarDimas,
@@ -46,13 +51,13 @@ export default function LandingPage() {
   return (
     <div className="min-h-dvh bg-background">
       {/* Nav */}
-      <header className="sticky top-0 z-30 border-b bg-background/90 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b bg-background">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="grid size-7 place-items-center rounded-lg bg-primary text-xs font-semibold text-primary-foreground">
-              ◈
+          <Link href="/" className="flex items-center gap-2.5">
+            <span className="grid size-8 place-items-center rounded-lg bg-foreground text-background">
+              <NataMark size={20} className="text-background" />
             </span>
-            <span className="text-sm font-semibold">{copy.app.name}</span>
+            <span className="text-base font-bold tracking-tight text-foreground">{copy.app.name}</span>
           </Link>
           <div className="flex items-center gap-3">
             <nav className="hidden items-center gap-6 text-sm text-muted-foreground sm:flex">
@@ -60,11 +65,16 @@ export default function LandingPage() {
                 <Bot className="size-3.5 text-primary" />
                 <span>{L.navAgents}</span>
               </a>
+              <a href="#rutinitas" className="transition hover:text-foreground flex items-center gap-1.5">
+                <Clock className="size-3.5 text-primary" />
+                <span>{copy.nav.rutinitas}</span>
+              </a>
+              <a href="#gerbang-persetujuan" className="transition hover:text-foreground flex items-center gap-1.5">
+                <KeyRound className="size-3.5 text-primary" />
+                <span>{L.capabilities.approvalGate}</span>
+              </a>
               <a href="#cara-kerja" className="transition hover:text-foreground">
                 {L.navHow}
-              </a>
-              <a href="#kenapa" className="transition hover:text-foreground">
-                {L.navWhy}
               </a>
               <Link href="/academy" className="transition hover:text-foreground flex items-center gap-1.5">
                 <GraduationCap className="size-3.5 text-primary" />
@@ -160,15 +170,17 @@ export default function LandingPage() {
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {L.teamMembers.map((member, idx) => (
-            <Card key={member.name} className="h-full bg-card hover:border-primary/40 transition-colors">
+            <Card key={member.name} className="h-full bg-card border-border hover:border-foreground/30 transition-colors">
               <CardContent className="pt-6 flex flex-col h-full">
-                <div className="flex items-center gap-3">
-                  {idx === 0 && <AvatarMaya size={42} />}
-                  {idx === 1 && <AvatarDimas size={42} />}
-                  {idx === 2 && <AvatarArief size={42} />}
-                  {idx === 3 && <AvatarNata size={42} />}
+                <div className="flex items-center gap-3.5">
+                  <div className="relative shrink-0 rounded-full p-0.5 bg-muted">
+                    {idx === 0 && <AvatarMaya size={52} />}
+                    {idx === 1 && <AvatarDimas size={52} />}
+                    {idx === 2 && <AvatarArief size={52} />}
+                    {idx === 3 && <AvatarNata size={52} />}
+                  </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-foreground">{member.name}</h3>
+                    <h3 className="text-base font-semibold text-foreground tracking-tight">{member.name}</h3>
                     <p className="text-xs text-primary font-medium">{member.role}</p>
                   </div>
                 </div>
@@ -177,15 +189,132 @@ export default function LandingPage() {
                   {member.tagline}
                 </p>
 
-                <div className="mt-auto pt-4 border-t border-border/60">
-                  <div className="flex items-start gap-1.5 text-xs text-foreground font-medium">
-                    <Check className="size-3.5 text-emerald-600 mt-0.5 shrink-0" />
+                <div className="mt-auto pt-4 border-t border-border">
+                  <div className="flex items-start gap-2 text-xs text-foreground font-medium">
+                    <Check className="size-4 text-emerald-600 mt-0.5 shrink-0" />
                     <span>{member.benefit}</span>
                   </div>
                 </div>
               </CardContent>
             </Card>
           ))}
+        </div>
+      </section>
+
+      {/* Autonomous Routines Engine */}
+      <section id="rutinitas" className="border-t bg-muted/20 scroll-mt-16">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border bg-primary/10 text-primary px-3 py-1 text-xs font-medium">
+                <Clock className="size-3.5" />
+                <span>Otomatisasi 24/7 Tanpa Intervensi</span>
+              </div>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+                {L.routinesTitle}
+              </h2>
+              <p className="mt-2 text-muted-foreground max-w-2xl text-sm sm:text-base">
+                {L.routinesSubtitle}
+              </p>
+            </div>
+            <Button asChild variant="outline" size="sm" className="gap-1.5 self-start sm:self-auto">
+              <Link href="/routines">
+                <span>Kelola Rutinitas</span>
+                <ArrowRight className="size-3.5" />
+              </Link>
+            </Button>
+          </div>
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {L.routinesItems.map((item) => (
+              <Card key={item.title} className="h-full bg-card border-border hover:border-foreground/30 transition-colors">
+                <CardContent className="pt-6 flex flex-col h-full">
+                  <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary">
+                    <Clock className="size-3.5 shrink-0" />
+                    <span>{item.cadence}</span>
+                  </div>
+                  <h3 className="mt-3 text-sm font-semibold text-foreground tracking-tight">{item.title}</h3>
+                  <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{item.body}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Human Approval Gate & Governance */}
+      <section id="gerbang-persetujuan" className="border-t bg-background scroll-mt-16">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border bg-amber-500/10 text-amber-600 dark:text-amber-400 px-3 py-1 text-xs font-medium">
+                <KeyRound className="size-3.5" />
+                <span>Governansi & Keamanan Finansial</span>
+              </div>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+                {L.approvalGateTitle}
+              </h2>
+              <p className="mt-3 text-muted-foreground text-sm sm:text-base leading-relaxed">
+                {L.approvalGateSubtitle}
+              </p>
+
+              <div className="mt-8 space-y-4">
+                {L.approvalPoints.map((pt) => (
+                  <div key={pt.title} className="flex gap-3">
+                    <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-primary/10 text-primary">
+                      <BadgeCheck className="size-3.5" />
+                    </span>
+                    <div>
+                      <h3 className="text-sm font-semibold text-foreground">{pt.title}</h3>
+                      <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{pt.body}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+              <div className="flex items-center justify-between pb-4 border-b border-border">
+                <div className="flex items-center gap-2">
+                  <span className="size-2 rounded-full bg-amber-500" />
+                  <span className="text-xs font-semibold text-foreground">Draf Menunggu Otorisasi Pemilik</span>
+                </div>
+                <span className="text-xs font-mono text-muted-foreground">ID: APR-2026-09</span>
+              </div>
+
+              <div className="mt-4 space-y-3">
+                <div className="p-3 rounded-lg border border-border bg-muted/40">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="text-xs font-semibold text-foreground">Setoran PPh Final 0,5% Masa September</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">Dasar: Pasal 69 PP No. 55 Tahun 2022</p>
+                    </div>
+                    <span className="text-xs font-bold font-mono text-foreground">Rp 854.465</span>
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-lg border border-border bg-muted/40">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="text-xs font-semibold text-foreground">Transfer Toll Maklon PT Cosmax Indonesia</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">PO Restock 500 pcs Serum Barrier (BPOM)</p>
+                    </div>
+                    <span className="text-xs font-bold font-mono text-foreground">Rp 22.500.000</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5 pt-4 border-t border-border flex items-center justify-between gap-3">
+                <div className="text-xs text-muted-foreground">
+                  Diputuskan oleh: <strong className="text-foreground">Kirana (Owner)</strong>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button size="sm" variant="outline" className="h-8 text-xs">Tolak Draf</Button>
+                  <Button size="sm" className="h-8 text-xs">Setujui & Jalankan</Button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -276,6 +405,10 @@ export default function LandingPage() {
             icon={<FileCheck className="size-4 text-primary" />}
             text={L.capabilities.verifiedKbli}
           />
+          <Capability icon={<Clock className="size-4 text-primary" />} text={L.capabilities.routinesSchedule} />
+          <Capability icon={<KeyRound className="size-4 text-primary" />} text={L.capabilities.approvalGate} />
+          <Capability icon={<Landmark className="size-4 text-primary" />} text={L.capabilities.bankKurReady} />
+          <Capability icon={<FileText className="size-4 text-primary" />} text={L.capabilities.omnichannelRec} />
         </div>
       </section>
 
@@ -297,11 +430,14 @@ export default function LandingPage() {
         </Card>
       </section>
 
-      <footer className="border-t">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <span>
-            ◈ {copy.app.name} — {L.footerTagline}
-          </span>
+      <footer className="border-t bg-background">
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-2">
+            <NataMark size={16} />
+            <span className="font-medium text-foreground">{copy.app.name}</span>
+            <span>—</span>
+            <span>{L.footerTagline}</span>
+          </div>
           <span>{copy.app.badge}</span>
         </div>
       </footer>
