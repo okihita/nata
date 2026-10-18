@@ -11,7 +11,6 @@ import {
   Landmark,
   ScanLine,
   ShieldCheck,
-  Sparkles,
   Wallet,
   Info,
   CheckCircle2,
@@ -283,40 +282,8 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* Quick Actions Bar */}
-      <div className="mt-6 flex flex-wrap items-center gap-2.5">
-        <span className="text-xs font-medium text-muted-foreground mr-1 hidden sm:inline">
-          {copy.dashboard.quickActions}:
-        </span>
-        <Button asChild size="sm" className="h-8 gap-1.5 text-xs">
-          <Link href="/record">
-            <ScanLine className="size-3.5" />
-            {copy.dashboard.actionScan}
-          </Link>
-        </Button>
-        <Button asChild variant="outline" size="sm" className="h-8 gap-1.5 text-xs">
-          <Link href="/statements">
-            <FileBarChart className="size-3.5" />
-            {copy.dashboard.actionReport}
-          </Link>
-        </Button>
-        <Button asChild variant="outline" size="sm" className="h-8 gap-1.5 text-xs">
-          <Link href="/taxes">
-            <Landmark className="size-3.5" />
-            {copy.dashboard.actionTax}
-          </Link>
-        </Button>
-        <Button asChild variant="ghost" size="sm" className="h-8 gap-1.5 text-xs ml-auto text-primary">
-          <Link href="/agents">
-            <Sparkles className="size-3.5" />
-            <span>Chat AI Assistant</span>
-            <ChevronRight className="size-3" />
-          </Link>
-        </Button>
-      </div>
-
-      {/* Main Grid: Balanced 1:1 (or 7:5) for Monthly Trends and Action Plan */}
-      <div className="mt-4 grid gap-6 lg:grid-cols-2">
+      {/* Main Grid: Balanced 1:1 for Monthly Trends and Action Plan */}
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
         {/* Trend Chart (Compact & High-Signal) */}
         <Card className="flex flex-col justify-between">
           <CardHeader className="pb-2">
