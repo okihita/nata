@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Send,
   Paperclip,
@@ -21,11 +22,31 @@ import { ensureSession, streamRun } from "@/lib/adk";
 import { JudgeDeepDiveModal } from "@/components/judge-deep-dive-modal";
 
 export default function AgentsPage() {
+  return (
+    <Suspense fallback={<div className="h-[calc(100vh-8rem)] w-full animate-pulse rounded-2xl bg-muted/40" />}>
+      <AgentsParamsWrapper />
+    </Suspense>
+  );
+}
+
+function AgentsParamsWrapper() {
+  const searchParams = useSearchParams();
+  const agentParam = searchParams.get("agent") || "default";
+  const promptParam = searchParams.get("prompt") || "";
+
+  // Remount cleanly whenever the URL query params change (agent or prompt)
+  return <AgentsContent key={`${agentParam}:${promptParam}`} initialAgentParam={searchParams.get("agent")} initialPrompt={promptParam} />;
+}
+
+function AgentsContent({ initialAgentParam, initialPrompt }: { initialAgentParam: string | null; initialPrompt: string }) {
   const { locale } = useLanguage();
   const isEn = locale === "en";
 
-  // Mas Nata (Chief of Staff) is on top as default
-  const [activePersonaId, setActivePersonaId] = useState<AgentPersonId>("nata");
+  const validAgent = initialAgentParam && Object.keys(AGENT_PERSONAS).includes(initialAgentParam)
+    ? (initialAgentParam as AgentPersonId)
+    : "nata";
+
+  const [activePersonaId, setActivePersonaId] = useState<AgentPersonId>(validAgent);
   const [judgeModalOpen, setJudgeModalOpen] = useState(false);
   const [demoUid] = useState<string>(() => {
     if (typeof window === "undefined") return "web-console";
@@ -63,7 +84,7 @@ export default function AgentsPage() {
     return initial;
   });
 
-  const [inputText, setInputText] = useState("");
+  const [inputText, setInputText] = useState(initialPrompt);
   const [isTyping, setIsTyping] = useState(false);
   const [attachedFiles, setAttachedFiles] = useState<{ name: string; type: "image" | "pdf" | "doc" }[]>([]);
 
@@ -288,7 +309,7 @@ export default function AgentsPage() {
           variant="outline"
           size="sm"
           onClick={() => setJudgeModalOpen(true)}
-          className="h-7 px-2.5 text-[11px] font-medium gap-1.5 border-primary/30 hover:border-primary/60 hover:bg-primary/5 text-foreground transition-all"
+          className="h-7 px-2.5 text-xs font-medium gap-1.5 border-primary/30 hover:border-primary/60 hover:bg-primary/5 text-foreground transition-all"
         >
           <span className="size-1.5 rounded-full bg-primary" />
           <span>{isEn ? "Judge? Inspect Architecture" : "Juri Hackathon? Cek Arsitektur"}</span>
@@ -310,7 +331,7 @@ export default function AgentsPage() {
               <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 {isEn ? "Staff Directory" : "Daftar Asisten"}
               </span>
-              <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
+              <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
                 4 Aktif
               </span>
             </div>
@@ -337,12 +358,12 @@ export default function AgentsPage() {
                       </div>
                       <div className="min-w-0">
                         <p className="truncate text-xs font-semibold leading-tight">{item.name}</p>
-                        <p className={`text-[11px] truncate ${isSelected ? "text-primary-foreground/80" : "text-muted-foreground"}`}>
+                        <p className={`text-xs truncate ${isSelected ? "text-primary-foreground/80" : "text-muted-foreground"}`}>
                           {isEn ? item.titleEn : item.title}
                         </p>
                       </div>
                     </div>
-                    <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded shrink-0 ${
+                    <span className={`text-xs font-medium px-1.5 py-0.5 rounded shrink-0 ${
                       isSelected ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
                     }`}>
                       {isEn ? item.badgeEn : item.badge}
@@ -359,7 +380,7 @@ export default function AgentsPage() {
               <Shield className="size-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>{isEn ? "Quietly Automated" : "Bekerja di Belakang Layar"}</span>
             </div>
-            <p className="text-[11px] leading-relaxed">
+            <p className="text-xs leading-relaxed">
               {isEn
                 ? "You focus on sales. Nata takes care of ledger balances and tax math automatically."
                 : "Anda fokus jualan. Nata yang membereskan hitungan pembukuan dan pajaknya."}
@@ -378,13 +399,13 @@ export default function AgentsPage() {
               </div>
               <div>
                 <h3 className="text-sm font-semibold leading-tight">{persona.name}</h3>
-                <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+                <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
                   {isEn ? persona.statusTextEn : persona.statusText}
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] text-muted-foreground font-medium hidden sm:inline">
+              <span className="text-xs text-muted-foreground font-medium hidden sm:inline">
                 {isEn ? persona.titleEn : persona.title}
               </span>
               <Button
@@ -392,10 +413,10 @@ export default function AgentsPage() {
                 size="sm"
                 onClick={handleResetChat}
                 title={isEn ? "Reset Conversation" : "Hapus Percakapan"}
-                className="h-7 px-2 text-[11px] text-muted-foreground hover:text-foreground gap-1 rounded-lg border border-border/40 hover:bg-muted"
+                className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground gap-1 rounded-lg border border-border/40 hover:bg-muted"
               >
                 <RotateCcw className="size-3" />
-                <span className="text-[10px] hidden md:inline">{isEn ? "Reset" : "Reset Sesi"}</span>
+                <span className="text-xs hidden md:inline">{isEn ? "Reset" : "Reset Sesi"}</span>
               </Button>
             </div>
           </div>
@@ -424,7 +445,7 @@ export default function AgentsPage() {
                         {msg.attachments.map((att, i) => (
                           <span
                             key={i}
-                            className={`flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-md font-mono ${
+                            className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-md font-mono ${
                               isUser ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-foreground"
                             }`}
                           >
@@ -440,7 +461,7 @@ export default function AgentsPage() {
                       <Prose text={msg.text} className="text-xs leading-relaxed text-foreground [&_strong]:text-foreground [&_p]:my-1.5 [&_ul]:my-1.5 [&_li]:my-0.5" />
                     )}
                     <span
-                      className={`block text-[10px] mt-1 text-right ${
+                      className={`block text-xs mt-1 text-right ${
                         isUser ? "text-primary-foreground/70" : "text-muted-foreground"
                       }`}
                     >
@@ -456,7 +477,7 @@ export default function AgentsPage() {
                 <span className="size-1.5 rounded-full bg-primary animate-bounce" />
                 <span className="size-1.5 rounded-full bg-primary animate-bounce [animation-delay:0.2s]" />
                 <span className="size-1.5 rounded-full bg-primary animate-bounce [animation-delay:0.4s]" />
-                <span className="text-[11px] italic">
+                <span className="text-xs italic">
                   {persona.name} {isEn ? "is typing…" : "sedang mengetik…"}
                 </span>
               </div>
@@ -469,7 +490,7 @@ export default function AgentsPage() {
               <button
                 key={idx}
                 onClick={() => handleSendMessage(chip.prompt)}
-                className="shrink-0 text-[11px] px-2.5 py-1 rounded-full border border-border/60 hover:bg-muted text-foreground transition-colors"
+                className="shrink-0 text-xs px-2.5 py-1 rounded-full border border-border/60 hover:bg-muted text-foreground transition-colors"
               >
                 {isEn ? chip.labelEn : chip.label}
               </button>
@@ -493,7 +514,7 @@ export default function AgentsPage() {
                   {attachedFiles.map((att, idx) => (
                     <span
                       key={idx}
-                      className="flex items-center gap-1.5 text-[11px] bg-muted px-2 py-1 rounded-lg border border-border/50 text-foreground"
+                      className="flex items-center gap-1.5 text-xs bg-muted px-2 py-1 rounded-lg border border-border/50 text-foreground"
                     >
                       {att.type === "image" ? <ImageIcon className="size-3 text-primary" /> : <FileText className="size-3 text-primary" />}
                       <span className="truncate max-w-[130px] font-medium">{att.name}</span>
@@ -535,7 +556,7 @@ export default function AgentsPage() {
                   className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground gap-1.5 rounded-lg"
                 >
                   <Paperclip className="size-3.5" />
-                  <span className="text-[11px]">{isEn ? "Attach file / photo" : "Unggah struk / file"}</span>
+                  <span className="text-xs">{isEn ? "Attach file / photo" : "Unggah struk / file"}</span>
                 </Button>
 
                 <Button

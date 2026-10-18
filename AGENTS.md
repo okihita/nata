@@ -2,6 +2,20 @@
 
 Working notes for anyone (human or agent) changing this repo.
 
+## Product Narrative & Design Philosophy
+
+> **Core Mantra:** *"Runs your business admin while you sleep."*  
+> **Rule of Thumb:** **Sell convenience first, compliance second.**
+
+1. **Speak human, not bureaucrat:** Indonesian business owners (warung, kafe, retail toko) are exhausted. Never present raw statutory jargon (e.g. "SAK EMKM Bab 2", "PPh Final PP 55") without framing its direct everyday benefit first (e.g. "Laporan siap print buat modal bank", "Pajak 0,5% tanpa denda").
+2. **Canva-like simplicity:** The UI must feel approachable and playful, not like enterprise SAP/Photoshop. Buttons, cards, and workflows prioritize fast single-click action and progressive disclosure.
+3. **The 4-Bot Staff framing:** Nata operates as a 4-person autonomous back-office staff:
+   - 🤖 **Akuntan Pribadi (`Agent Keuangan`)**: Keeps debit-credit balanced down to the rupiah.
+   - 🏛️ **Konsultan Pajak (`Agent Fiskal`)**: Shields the Rp 500M exemption and handles 0.5% PPh Final.
+   - 🛡️ **Spesialis Legal (`Agent Regulasi`)**: Resolves official KBLI 2020 codes and guides NIB legality.
+   - ✨ **Manajer Keuangan Digital (`Orchestrator`)**: Coordinates all agent handoffs automatically.
+4. **Deterministic guardrails under the hood:** While the UI is warm, casual, and friendly, the underlying code strictly enforces the accounting equation `Assets = Liabilities + Equity` and exact legal citations. The AI proposes; deterministic Python code verifies and commits.
+
 ## Branching model — git flow (lite)
 
 This repository uses a trimmed git flow: two long-lived branches and short-lived
@@ -118,3 +132,4 @@ blocker.
   See `docs/deploy-state.md`.
 - The agent (`nata_agent/`) deploys separately and manually — it changes rarely,
   and a UI typo should not be able to take the backend down.
+- **Typography & Legibility Directives:** Sub-12px text (`text-[10px]`, `text-[11px]`, `text-[9px]`, etc.) is strictly banned across all web UI. The absolute minimum font size is `text-xs` (12px), reserved strictly for compact badges, timestamps, and mono code pills. Primary body copy, descriptions, form labels, and list card titles must use `text-sm` (14px) or higher.

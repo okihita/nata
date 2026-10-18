@@ -13,11 +13,13 @@
 export type NavKey =
   | "agents"
   | "dashboard"
+  | "rutinitas"
   | "catat"
   | "transaksi"
   | "akun"
   | "laporan"
   | "pajak"
+  | "library"
   | "perizinan"
   | "academy"
   | "platformGuide"
@@ -54,6 +56,7 @@ export const NAV: NavGroup[] = [
     tone: "hijau",
     items: [
       { href: "/agents", key: "agents", icon: "Bot", mobile: true },
+      { href: "/routines", key: "rutinitas", icon: "Clock", mobile: true },
       { href: "/dashboard", key: "dashboard", icon: "LayoutDashboard", mobile: true },
     ],
   },
@@ -83,6 +86,7 @@ export const NAV: NavGroup[] = [
     items: [
       { href: "/statements", key: "laporan", icon: "FileBarChart", mobile: true },
       { href: "/taxes", key: "pajak", icon: "Landmark", mobile: true },
+      { href: "/library", key: "library", icon: "Archive", mobile: false },
     ],
   },
   {

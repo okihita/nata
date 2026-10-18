@@ -54,7 +54,7 @@ export default function AppError({
             {copy.errorScreen.retry}
           </Button>
           {error.digest && (
-            <p className="text-center text-[11px] text-muted-foreground">
+            <p className="text-center text-xs text-muted-foreground">
               {copy.errorScreen.reference}: <code>{error.digest}</code>
             </p>
           )}

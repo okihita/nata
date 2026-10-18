@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import {
   ArrowDownRight,
@@ -10,13 +11,17 @@ import {
   Landmark,
   ScanLine,
   ShieldCheck,
-  Sparkles,
   Wallet,
   Info,
+  CheckCircle2,
+  Calendar,
+  Printer,
+  Compass,
 } from "lucide-react";
+import { AvatarMaya, AvatarDimas, AvatarArief, AvatarNata } from "@/components/agent-avatars";
 import {
-  Area,
-  AreaChart,
+  Bar,
+  BarChart,
   CartesianGrid,
   ResponsiveContainer,
   Tooltip as RTooltip,
@@ -26,7 +31,6 @@ import {
 
 import { PageHeader } from "@/components/app-sidebar";
 import { EmptyState } from "@/components/empty-state";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -39,22 +43,49 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useWorkspace } from "@/lib/store";
 import { ENTITY_LABEL, entityHasExemption } from "@/lib/business";
-import { balanceSheet, incomeStatement, monthlyRevenue, taxPosition, trialBalance } from "@/lib/ledger";
+import { balanceSheet, incomeStatement, monthlyRevenue, taxPosition } from "@/lib/ledger";
 import { useLanguage } from "@/lib/copy";
 import { idr, idrFull } from "@/lib/format";
 
 export default function DashboardPage() {
   const { entries, ready, business, loadDemo } = useWorkspace();
-  const { copy } = useLanguage();
-  const income = incomeStatement(entries);
-  const bs = balanceSheet(entries);
+  const { copy, locale } = useLanguage();
+  const [metricScope, setMetricScope] = useState<"this_month" | "all">("this_month");
+
+  // Determine latest active month in the dataset (e.g. "2026-10")
+  const latestMonth = useMemo(() => {
+    if (entries.length === 0) return new Date().toISOString().slice(0, 7);
+    const months = [...new Set(entries.map((e) => e.date.slice(0, 7)))].sort();
+    return months[months.length - 1];
+  }, [entries]);
+
+  // Formatted exact month/year label (e.g. "Okt 2026" / "Oct 2026")
+  const formattedMonthLabel = useMemo(() => {
+    try {
+      const [year, month] = latestMonth.split("-").map(Number);
+      const date = new Date(year, (month || 1) - 1, 1);
+      return date.toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
+        month: "short",
+        year: "numeric",
+      });
+    } catch {
+      return latestMonth;
+    }
+  }, [latestMonth, locale]);
+
+  // Entries scoped to this month vs all time
+  const thisMonthEntries = useMemo(() => {
+    return entries.filter((e) => e.date.slice(0, 7) === latestMonth);
+  }, [entries, latestMonth]);
+
+  const activeEntries = metricScope === "this_month" ? thisMonthEntries : entries;
+
+  const income = incomeStatement(activeEntries);
+  const bs = balanceSheet(entries); // Balance sheet is always cumulative financial position
   const series = monthlyRevenue(entries);
-  const accounts = trialBalance(entries);
   const tax = taxPosition(entries, { individual: entityHasExemption(business?.entity ?? "orang_pribadi") });
 
-  // "Perlu tindakan": plain-language items the owner should look at. This is
-  // the panel the incumbents do worst — an empty state here says the books are
-  // clean rather than showing a blank table.
+  // 2. Action Required & To-Do List (Curated recommendations from AI bots)
   const unpaid = bs.liabilities.filter((l) => l.account.toLowerCase().includes("utang usaha"));
   const unpaidTotal = unpaid.reduce((s, l) => s + l.amount, 0);
   const actions: { id: string; text: string; tone: "info" | "warn"; href: string }[] = [];
@@ -81,9 +112,64 @@ export default function DashboardPage() {
       href: "/taxes",
     });
   }
-  // A badan usaha can owe Rp 0 simply because turnover is zero. Saying "masih di
-  // bawah batas bebas pajak" would imply a threshold that does not apply to it,
-  // so no tax item is shown at all in that case.
+
+  // To-Do list items (including financial statement opening balance, NIB docs, tax threshold, export)
+  const todos = useMemo(() => {
+    const list = [
+      {
+        id: "todo-last-year",
+        icon: <Calendar className="size-4 text-amber-600" />,
+        title: copy.dashboard.todoTasks.financialStatementLastYear.title,
+        desc: copy.dashboard.todoTasks.financialStatementLastYear.desc,
+        cta: copy.dashboard.todoTasks.financialStatementLastYear.cta,
+        href: "/accounts",
+        done: false,
+        agentId: "maya",
+        agentName: "Mbak Maya",
+        prompt: copy.dashboard.todoTasks.financialStatementLastYear.prompt,
+      },
+      {
+        id: "todo-perizinan",
+        icon: <ShieldCheck className="size-4 text-emerald-600" />,
+        title: copy.dashboard.todoTasks.perizinanDocs.title,
+        desc: copy.dashboard.todoTasks.perizinanDocs.desc,
+        cta: copy.dashboard.todoTasks.perizinanDocs.cta,
+        href: "/licensing",
+        done: Boolean(business?.kbliCode && business?.nib),
+        agentId: "arief",
+        agentName: "Pak Arief",
+        prompt: copy.dashboard.todoTasks.perizinanDocs.prompt,
+      },
+      {
+        id: "todo-tax-threshold",
+        icon: <Landmark className="size-4 text-sky-600" />,
+        title: copy.dashboard.todoTasks.taxThresholdMonitor.title,
+        desc: copy.dashboard.todoTasks.taxThresholdMonitor.desc,
+        cta: copy.dashboard.todoTasks.taxThresholdMonitor.cta,
+        href: "/taxes",
+        done: false,
+        agentId: "dimas",
+        agentName: "Mas Dimas",
+        prompt: copy.dashboard.todoTasks.taxThresholdMonitor.prompt,
+      },
+      {
+        id: "todo-monthly-export",
+        icon: <Printer className="size-4 text-purple-600" />,
+        title: copy.dashboard.todoTasks.monthlyExportPrint.title,
+        desc: copy.dashboard.todoTasks.monthlyExportPrint.desc,
+        cta: copy.dashboard.todoTasks.monthlyExportPrint.cta,
+        href: "/statements",
+        done: false,
+        agentId: "maya",
+        agentName: "Mbak Maya",
+        prompt: copy.dashboard.todoTasks.monthlyExportPrint.prompt,
+      },
+    ];
+    return list;
+  }, [copy, business]);
+
+  const pendingTodos = useMemo(() => todos.filter((t) => !t.done), [todos]);
+  const completedTodos = useMemo(() => todos.filter((t) => t.done), [todos]);
 
   if (!ready) {
     return (
@@ -158,29 +244,53 @@ export default function DashboardPage() {
 
   return (
     <>
-      <PageHeader title={copy.dashboard.title} subtitle={copy.dashboard.subtitle} />
+      {/* Header with Scope Switcher */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">{copy.dashboard.title}</h1>
+          <p className="text-sm text-muted-foreground">{copy.dashboard.subtitle}</p>
+        </div>
+        <div className="flex items-center gap-1.5 self-start sm:self-auto rounded-lg border bg-muted/30 p-1">
+          <Button
+            variant={metricScope === "this_month" ? "default" : "ghost"}
+            size="sm"
+            onClick={() => setMetricScope("this_month")}
+            className="h-7 text-xs font-medium"
+          >
+            {copy.dashboard.toggleViewThisMonth(formattedMonthLabel)}
+          </Button>
+          <Button
+            variant={metricScope === "all" ? "default" : "ghost"}
+            size="sm"
+            onClick={() => setMetricScope("all")}
+            className="h-7 text-xs font-medium"
+          >
+            {copy.dashboard.toggleViewAllTime}
+          </Button>
+        </div>
+      </div>
 
-      {/* Kartu ringkasan */}
+      {/* Number Dashboard */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Metric
           icon={<ArrowUpRight className="size-4" />}
           label={copy.dashboard.revenue}
           value={idrFull(income.totalRevenue)}
-          hint={copy.dashboard.allTime}
+          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics(formattedMonthLabel) : copy.dashboard.allTimeMetrics}
           tone="positive"
         />
         <Metric
           icon={<ArrowDownRight className="size-4" />}
           label={copy.dashboard.expenses}
           value={idrFull(income.totalExpenses)}
-          hint={copy.dashboard.allTime}
+          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics(formattedMonthLabel) : copy.dashboard.allTimeMetrics}
           tone="negative"
         />
         <Metric
           icon={<Wallet className="size-4" />}
           label={copy.dashboard.netIncome}
           value={idrFull(income.netIncome)}
-          hint={copy.dashboard.allTime}
+          hint={metricScope === "this_month" ? copy.dashboard.thisMonthMetrics(formattedMonthLabel) : copy.dashboard.allTimeMetrics}
           tone={income.netIncome >= 0 ? "positive" : "negative"}
         />
         <Metric
@@ -192,19 +302,29 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* Status usaha: tiga hal yang menentukan kewajiban pemilik — bentuk
-          usaha, perlakuan pajaknya, dan kode KBLI-nya. Ditampilkan di sini
-          karena inilah layar pertama yang dibuka pemilik. */}
-      {business && <ComplianceRow business={business} className="mt-4" />}
-
-      <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        {/* Grafik */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="text-base">{copy.dashboard.chartTitle}</CardTitle>
-            <CardDescription>{business?.name ?? copy.app.name}</CardDescription>
+      {/* Main Grid: Balanced 1:1 for Monthly Trends and Action Plan */}
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        {/* Trend Chart (Compact & High-Signal) */}
+        <Card className="flex flex-col justify-between">
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-base">{copy.dashboard.chartTitle}</CardTitle>
+                <CardDescription className="text-xs">{copy.dashboard.chartSubtitle ?? (business?.name ?? copy.app.name)}</CardDescription>
+              </div>
+              <div className="flex items-center gap-3 text-xs">
+                <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                  <span className="size-2 rounded-full bg-[var(--chart-1)]" />
+                  {copy.dashboard.chartRevenue}
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                  <span className="size-2 rounded-full bg-[var(--chart-2)]" />
+                  {copy.dashboard.chartExpense}
+                </span>
+              </div>
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-2">
             {series.length === 0 ? (
               <EmptyState
                 compact
@@ -214,158 +334,163 @@ export default function DashboardPage() {
               />
             ) : (
               <div className="h-64 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={series} margin={{ left: 4, right: 8, top: 4, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="rev" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.35} />
-                      <stop offset="95%" stopColor="var(--chart-1)" stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="exp" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="var(--chart-2)" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="var(--chart-2)" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border" />
-                  <XAxis
-                    dataKey="month"
-                    tickLine={false}
-                    axisLine={false}
-                    fontSize={12}
-                    tickFormatter={(m: string) =>
-                      new Date(`${m}-01`).toLocaleDateString("id-ID", { month: "short" })
-                    }
-                  />
-                  <YAxis
-                    tickLine={false}
-                    axisLine={false}
-                    fontSize={12}
-                    width={64}
-                    tickFormatter={(v: number) => `${idr(v / 1_000_000)} jt`}
-                  />
-                  <RTooltip
-                    formatter={(value) => idrFull(Number(value))}
-                    labelFormatter={(m) =>
-                      new Date(`${m}-01`).toLocaleDateString("id-ID", {
-                        month: "long",
-                        year: "numeric",
-                      })
-                    }
-                    contentStyle={{
-                      borderRadius: 10,
-                      border: "1px solid var(--border)",
-                      fontSize: 12,
-                    }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="revenue"
-                    name={copy.dashboard.chartRevenue}
-                    stroke="var(--chart-1)"
-                    fill="url(#rev)"
-                    strokeWidth={2}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="expense"
-                    name={copy.dashboard.chartExpense}
-                    stroke="var(--chart-2)"
-                    fill="url(#exp)"
-                    strokeWidth={2}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={series} margin={{ left: 4, right: 8, top: 8, bottom: 0 }} barGap={6}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border/70" />
+                    <XAxis
+                      dataKey="month"
+                      tickLine={false}
+                      axisLine={false}
+                      fontSize={12}
+                      tickFormatter={(m: string) =>
+                        new Date(`${m}-01`).toLocaleDateString("id-ID", { month: "short" })
+                      }
+                    />
+                    <YAxis
+                      tickLine={false}
+                      axisLine={false}
+                      fontSize={12}
+                      width={64}
+                      tickFormatter={(v: number) => `${idr(v / 1_000_000)} jt`}
+                    />
+                    <RTooltip
+                      cursor={{ fill: "var(--muted)", opacity: 0.35, rx: 6 }}
+                      formatter={(value) => idrFull(Number(value))}
+                      labelFormatter={(m) =>
+                        new Date(`${m}-01`).toLocaleDateString("id-ID", {
+                          month: "long",
+                          year: "numeric",
+                        })
+                      }
+                      contentStyle={{
+                        borderRadius: 12,
+                        border: "1px solid var(--border)",
+                        backgroundColor: "var(--popover)",
+                        boxShadow: "0 4px 12px -2px rgba(0, 0, 0, 0.08)",
+                        fontSize: 12,
+                      }}
+                    />
+                    <Bar
+                      dataKey="revenue"
+                      name={copy.dashboard.chartRevenue}
+                      fill="var(--chart-1)"
+                      radius={[5, 5, 0, 0]}
+                      maxBarSize={32}
+                    />
+                    <Bar
+                      dataKey="expense"
+                      name={copy.dashboard.chartExpense}
+                      fill="var(--chart-2)"
+                      radius={[5, 5, 0, 0]}
+                      maxBarSize={32}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             )}
           </CardContent>
+          <div className="px-6 pb-4 pt-2 border-t border-border/50 flex items-center justify-between text-xs text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <ShieldCheck className="size-3.5 text-emerald-600" />
+              <span>{copy.dashboard.balanced}:</span>
+              <span className="font-medium text-foreground">{bs.balanced ? "Seimbang" : "Periksa"}</span>
+            </span>
+            <Button asChild variant="ghost" size="sm" className="h-6 text-xs px-1.5">
+              <Link href="/statements">
+                {copy.dashboard.actionReport} <ChevronRight className="size-3 ml-0.5" />
+              </Link>
+            </Button>
+          </div>
         </Card>
 
-        {/* Aksi cepat + agentik */}
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">{copy.dashboard.quickActions}</CardTitle>
+        {/* Action Plan & Priority Checklist */}
+        <Card className="flex flex-col border-border justify-between">
+          <div>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <CheckCircle2 className="size-4 text-primary" />
+                <span>{copy.dashboard.todoTitle}</span>
+              </CardTitle>
+              <CardDescription className="text-xs">
+                {copy.dashboard.todoSubtitle}
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
-              <QuickAction
-                href="/record"
-                icon={<ScanLine className="size-4" />}
-                label={copy.dashboard.actionScan}
-                hint={copy.dashboard.actionScanHint}
-                primary
-              />
-              <QuickAction
-                href="/statements"
-                icon={<FileBarChart className="size-4" />}
-                label={copy.dashboard.actionReport}
-                hint={copy.dashboard.actionReportHint}
-              />
-              <QuickAction
-                href="/taxes"
-                icon={<Landmark className="size-4" />}
-                label={copy.dashboard.actionTax}
-                hint={copy.dashboard.actionTaxHint}
-              />
-            </CardContent>
-          </Card>
+            <CardContent className="space-y-1.5 p-4 pt-0">
+              {pendingTodos.map((todo) => (
+                <div
+                  key={todo.id}
+                  className="group flex flex-col sm:flex-row sm:items-center justify-between rounded-lg p-2.5 transition-colors hover:bg-muted/50 border border-transparent hover:border-border gap-2"
+                >
+                  <Link
+                    href={todo.href}
+                    className="flex items-start gap-2.5 min-w-0 pr-2 flex-1"
+                  >
+                    <span className="mt-0.5 shrink-0">{todo.icon}</span>
+                    <div className="min-w-0">
+                      <p className="font-medium text-xs text-foreground group-hover:text-primary transition-colors">
+                        {todo.title}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {todo.desc}
+                      </p>
+                    </div>
+                  </Link>
 
-          {/* Perlu tindakan */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">{copy.dashboard.needsAction}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {actions.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                  {copy.dashboard.needsActionEmpty}
-                </p>
-              ) : (
-                <ul className="space-y-2">
-                  {actions.map((action) => (
-                    <li key={action.id}>
+                  <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                    {todo.agentId && todo.agentName && (
                       <Link
-                        href={action.href}
-                        className="flex items-start gap-2 rounded-lg border px-3 py-2 text-sm transition hover:bg-muted/50"
+                        href={`/agents?agent=${todo.agentId}&prompt=${encodeURIComponent(todo.prompt ?? "")}`}
+                        className="inline-flex items-center gap-1 rounded-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 px-2 py-0.5 text-xs font-medium transition-colors"
+                        title={copy.dashboard.consultAgent(todo.agentName)}
                       >
-                        <Info
-                          className={cn(
-                            "mt-0.5 size-3.5 shrink-0",
-                            action.tone === "warn" ? "text-amber-600" : "text-sky-600",
-                          )}
-                        />
-                        <span>{action.text}</span>
+                        {todo.agentId === "maya" && <AvatarMaya size={14} />}
+                        {todo.agentId === "dimas" && <AvatarDimas size={14} />}
+                        {todo.agentId === "arief" && <AvatarArief size={14} />}
+                        {todo.agentId === "nata" && <AvatarNata size={14} />}
+                        <span>{copy.dashboard.consultAgent(todo.agentName)}</span>
                       </Link>
-                    </li>
+                    )}
+                    <Link href={todo.href} className="text-muted-foreground hover:text-foreground">
+                      <ChevronRight className="size-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all" />
+                    </Link>
+                  </div>
+                </div>
+              ))}
+
+              {/* Optional Alert Item if any outstanding action exists */}
+              {actions.length > 0 && (
+                <div className="pt-1">
+                  {actions.map((action) => (
+                    <Link
+                      key={action.id}
+                      href={action.href}
+                      className="flex items-start gap-2 rounded-lg border px-3 py-2 text-xs transition hover:bg-muted/50 bg-muted/20"
+                    >
+                      <Info
+                        className={cn(
+                          "mt-0.5 size-3.5 shrink-0",
+                          action.tone === "warn" ? "text-amber-600" : "text-sky-600",
+                        )}
+                      />
+                      <span>{action.text}</span>
+                    </Link>
                   ))}
-                </ul>
+                </div>
               )}
             </CardContent>
-          </Card>
+          </div>
 
-          <Card className="border-primary/20 bg-primary/[0.03]">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <Sparkles className="size-4 text-primary" />
-                {copy.dashboard.agentTitle}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <p className="text-sm text-muted-foreground">{copy.dashboard.agentBody}</p>
-              <div className="flex items-center gap-2 rounded-lg border bg-background px-3 py-2 text-xs">
-                <ShieldCheck className="size-3.5 text-emerald-600" />
-                <span className="font-medium">{copy.dashboard.balanced}</span>
-                <span className="text-muted-foreground">· {copy.dashboard.balancedHint}</span>
-                {bs.balanced ? (
-                  <Badge className="ml-auto bg-emerald-600 text-white hover:bg-emerald-600">✓</Badge>
-                ) : (
-                  <Badge variant="destructive" className="ml-auto">
-                    ✕
-                  </Badge>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+          {/* Footer note: completed tasks collapsed */}
+          {completedTodos.length > 0 && (
+            <div className="px-6 py-3 border-t border-border/50 text-xs text-muted-foreground flex items-center gap-1.5 bg-muted/15 rounded-b-xl">
+              <CheckCircle2 className="size-3.5 text-emerald-600" />
+              <span>{copy.dashboard.todoCompletedCount(completedTodos.length)}:</span>
+              <span className="text-foreground truncate">
+                {completedTodos.map((t) => t.title).join(", ")}
+              </span>
+            </div>
+          )}
+        </Card>
       </div>
 
       {/* Aktivitas terakhir */}
@@ -421,15 +546,6 @@ export default function DashboardPage() {
           )}
         </CardContent>
       </Card>
-
-      {/* Cek cepat: daftar akun terpakai */}
-      <p className="mt-4 text-xs text-muted-foreground">
-        {copy.dashboard.accountsActive(accounts.length)}
-        {" · "}
-        {idr(income.totalRevenue)} {copy.dashboard.revenue.toLowerCase()}
-        {" · "}
-        {idrFull(bs.totalAssets)} {copy.laporan.assets.toLowerCase()}
-      </p>
     </>
   );
 }
@@ -449,13 +565,13 @@ function Metric({
 }) {
   const toneClass =
     tone === "positive"
-      ? "text-emerald-600"
+      ? "text-[var(--chart-1)]"
       : tone === "negative"
-        ? "text-rose-600"
+        ? "text-[var(--chart-2)]"
         : "text-foreground";
   return (
     <Card>
-      <CardContent className="pt-6">
+      <CardContent className="p-4 sm:p-5">
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">{label}</span>
           <span className={`${toneClass} opacity-70`}>{icon}</span>
@@ -466,40 +582,6 @@ function Metric({
         <p className="mt-1 text-xs text-muted-foreground">{hint}</p>
       </CardContent>
     </Card>
-  );
-}
-
-function QuickAction({
-  href,
-  icon,
-  label,
-  hint,
-  primary,
-}: {
-  href: string;
-  icon: React.ReactNode;
-  label: string;
-  hint: string;
-  primary?: boolean;
-}) {
-  return (
-    <Button
-      asChild
-      variant={primary ? "default" : "outline"}
-      className="h-auto w-full justify-start gap-3 py-2.5"
-    >
-      <Link href={href}>
-        {icon}
-        <div className="grid text-left">
-          <span className="text-sm font-medium">{label}</span>
-          <span
-            className={`text-[11px] font-normal ${primary ? "text-primary-foreground/70" : "text-muted-foreground"}`}
-          >
-            {hint}
-          </span>
-        </div>
-      </Link>
-    </Button>
   );
 }
 
@@ -526,7 +608,7 @@ function ComplianceRow({
       <CardHeader className="pb-3">
         <CardTitle className="text-base">{copy.dashboard.complianceTitle}</CardTitle>
       </CardHeader>
-      <CardContent className="grid gap-4 sm:grid-cols-3">
+      <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <ComplianceItem
           icon={<Building2 className="size-3.5" />}
           label={copy.dashboard.complianceEntity}
@@ -539,7 +621,7 @@ function ComplianceRow({
           tone={exempt ? "ok" : "warn"}
         />
         <ComplianceItem
-          icon={<ShieldCheck className="size-3.5" />}
+          icon={<Compass className="size-3.5" />}
           label={copy.dashboard.complianceKbli}
           value={
             business.kbliCode
@@ -553,6 +635,14 @@ function ComplianceRow({
               : copy.dashboard.complianceKbliCta
           }
           tone={business.kbliCode ? "ok" : "warn"}
+        />
+        <ComplianceItem
+          icon={<ShieldCheck className="size-3.5" />}
+          label={copy.dashboard.complianceNib}
+          value={business.nib ? `${business.nib} (OSS RBA)` : copy.dashboard.complianceNibMissing}
+          href="/business"
+          cta={business.nib ? copy.dashboard.complianceNibReady : copy.dashboard.complianceNibCta}
+          tone={business.nib ? "ok" : "warn"}
         />
       </CardContent>
     </Card>
@@ -600,7 +690,7 @@ function ComplianceItem({
       {href && cta && (
         <span
           className={cn(
-            "mt-1 inline-flex items-center gap-0.5 text-[11px] font-medium",
+            "mt-1 inline-flex items-center gap-0.5 text-xs font-medium",
             toneClass,
           )}
         >

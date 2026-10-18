@@ -43,7 +43,7 @@ export function LanguageSwitcher() {
           />
           <div className="grid">
             <span className="text-xs">English (Default)</span>
-            <span className="text-[10px] text-muted-foreground">For Juries & Evaluation</span>
+            <span className="text-xs text-muted-foreground">For Juries & Evaluation</span>
           </div>
         </DropdownMenuItem>
         <DropdownMenuItem
@@ -57,7 +57,7 @@ export function LanguageSwitcher() {
           />
           <div className="grid">
             <span className="text-xs">Bahasa Indonesia</span>
-            <span className="text-[10px] text-muted-foreground">Untuk Pelaku UMKM</span>
+            <span className="text-xs text-muted-foreground">Untuk Pelaku UMKM</span>
           </div>
         </DropdownMenuItem>
       </DropdownMenuContent>
