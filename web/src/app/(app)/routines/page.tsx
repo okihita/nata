@@ -71,6 +71,21 @@ export default function RoutinesPage() {
     };
   }, [businessId]);
 
+  // Keyboard shortcut: Escape clears selection progressively (Pane 3 -> Pane 2)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !isAddModalOpen) {
+        if (selectedExecId) {
+          setSelectedExecId(null);
+        } else if (selectedRoutineId) {
+          setSelectedRoutineId(null);
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isAddModalOpen, selectedExecId, selectedRoutineId]);
+
   const activeRoutines = routines.filter((r) =>
     showArchived ? r.status === "archived" : r.status !== "archived"
   );
@@ -393,9 +408,14 @@ export default function RoutinesPage() {
                 <div
                   key={routine.id}
                   onClick={() => {
-                    setSelectedRoutineId(routine.id);
-                    setSelectedExecId(null);
-                    setMasterTab("runs");
+                    if (isSelected) {
+                      setSelectedRoutineId(null);
+                      setSelectedExecId(null);
+                    } else {
+                      setSelectedRoutineId(routine.id);
+                      setSelectedExecId(null);
+                      setMasterTab("runs");
+                    }
                   }}
                   className={`p-2.5 rounded-lg border text-left cursor-pointer transition-all ${
                     isSelected
@@ -460,9 +480,23 @@ export default function RoutinesPage() {
               </p>
             </div>
             {selectedRoutine && (
-              <span className="text-[10px] font-mono text-muted-foreground">
-                {selectedRoutine.recentExecutions.length} {isEn ? "runs" : "riwayat"}
-              </span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-mono text-muted-foreground">
+                  {selectedRoutine.recentExecutions.length} {isEn ? "runs" : "riwayat"}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedRoutineId(null);
+                    setSelectedExecId(null);
+                  }}
+                  className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                  title={isEn ? "Clear selection (Esc)" : "Batalkan pilihan (Esc)"}
+                  aria-label={isEn ? "Clear selection" : "Batalkan pilihan"}
+                >
+                  <X className="size-3.5" />
+                </button>
+              </div>
             )}
           </div>
 
@@ -551,7 +585,13 @@ export default function RoutinesPage() {
                 return (
                   <div
                     key={exec.id}
-                    onClick={() => setSelectedExecId(exec.id)}
+                    onClick={() => {
+                      if (isSelected) {
+                        setSelectedExecId(null);
+                      } else {
+                        setSelectedExecId(exec.id);
+                      }
+                    }}
                     className={`p-3 rounded-lg border cursor-pointer transition-all ${
                       isSelected
                         ? "border-primary bg-primary/5 shadow-xs"
@@ -613,9 +653,20 @@ export default function RoutinesPage() {
             </div>
 
             {selectedExec && (
-              <Badge variant="outline" className="text-[10px] font-mono">
-                {selectedExec.id}
-              </Badge>
+              <div className="flex items-center gap-1.5">
+                <Badge variant="outline" className="text-[10px] font-mono">
+                  {selectedExec.id}
+                </Badge>
+                <button
+                  type="button"
+                  onClick={() => setSelectedExecId(null)}
+                  className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                  title={isEn ? "Clear run selection (Esc)" : "Batalkan pilihan riwayat (Esc)"}
+                  aria-label={isEn ? "Clear run selection" : "Batalkan pilihan riwayat"}
+                >
+                  <X className="size-3.5" />
+                </button>
+              </div>
             )}
           </div>
 
