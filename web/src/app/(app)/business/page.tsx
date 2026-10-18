@@ -499,62 +499,56 @@ export default function UsahaPage() {
             </CardHeader>
             <CardContent>
               {legalDocs.length > 0 ? (
-                <div className="space-y-4">
-                  {legalDocs.map((doc, idx) => {
-                    const isLast = idx === legalDocs.length - 1;
-                    return (
-                      <div key={doc.id} className="flex items-stretch gap-3 group">
-                        {/* Rail Column: Perfectly Centered Vertical Line & Node Circle */}
-                        <div className="relative flex flex-col items-center w-5 shrink-0">
-                          {/* Node Circle */}
-                          <div className="z-10 mt-2.5 size-4 rounded-full border-2 border-primary bg-background flex items-center justify-center ring-4 ring-background">
-                            <div className="size-1.5 rounded-full bg-primary" />
+                <div className="relative pl-7 space-y-4">
+                  {/* Single continuous vertical rail line connecting all nodes uninterrupted */}
+                  <div className="absolute left-[11px] top-3.5 bottom-5 w-0.5 bg-border pointer-events-none" />
+
+                  {legalDocs.map((doc) => (
+                    <div key={doc.id} className="relative group">
+                      {/* Node Circle positioned exactly on the vertical axis (axis is at left: 11px + 1px center = 12px) */}
+                      {/* size-4 is 16px wide, so left is 12px - 8px = 4px inside the pl-7 container -> left: -24px relative to entry */}
+                      <div className="absolute -left-[24px] top-3 z-10 size-4 rounded-full border-2 border-primary bg-background flex items-center justify-center ring-4 ring-background">
+                        <div className="size-1.5 rounded-full bg-primary" />
+                      </div>
+
+                      {/* Card Content */}
+                      <div className="rounded-lg border border-border bg-card p-3 shadow-2xs space-y-1.5">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex items-center gap-1.5 min-w-0">
+                            <FileText className="size-3.5 text-primary shrink-0" />
+                            <h4 className="text-xs font-semibold text-foreground leading-tight truncate">
+                              {doc.type}
+                            </h4>
                           </div>
-                          {/* Continuous Vertical Connecting Line */}
-                          {!isLast && (
-                            <div className="w-0.5 flex-1 bg-border/80 my-1" />
-                          )}
+                          <Badge
+                            variant={doc.status === "verified" ? "default" : "secondary"}
+                            className="text-[9px] uppercase font-mono px-1.5 py-0 shrink-0"
+                          >
+                            {doc.status === "verified"
+                              ? copy.usaha.statusVerified
+                              : doc.status === "active"
+                                ? copy.usaha.statusActive
+                                : copy.usaha.statusInReview}
+                          </Badge>
                         </div>
 
-                        {/* Card Content */}
-                        <div className="flex-1 rounded-lg border border-border bg-card p-3 shadow-2xs space-y-1.5 min-w-0">
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="flex items-center gap-1.5 min-w-0">
-                              <FileText className="size-3.5 text-primary shrink-0" />
-                              <h4 className="text-xs font-semibold text-foreground leading-tight truncate">
-                                {doc.type}
-                              </h4>
-                            </div>
-                            <Badge
-                              variant={doc.status === "verified" ? "default" : "secondary"}
-                              className="text-[9px] uppercase font-mono px-1.5 py-0 shrink-0"
-                            >
-                              {doc.status === "verified"
-                                ? copy.usaha.statusVerified
-                                : doc.status === "active"
-                                  ? copy.usaha.statusActive
-                                  : copy.usaha.statusInReview}
-                            </Badge>
-                          </div>
+                        <div className="font-mono text-[11px] text-foreground/90 font-medium">
+                          {doc.number}
+                        </div>
 
-                          <div className="font-mono text-[11px] text-foreground/90 font-medium">
-                            {doc.number}
-                          </div>
-
-                          <div className="flex flex-wrap items-center justify-between text-[10px] text-muted-foreground pt-1 border-t border-border/60 gap-1">
-                            <span className="flex items-center gap-1 truncate">
-                              <Building2 className="size-3 shrink-0" />
-                              <span className="truncate">{doc.issuer}</span>
-                            </span>
-                            <span className="font-mono shrink-0">
-                              {doc.issueDate}
-                              {doc.validUntil ? ` s.d. ${doc.validUntil}` : ""}
-                            </span>
-                          </div>
+                        <div className="flex flex-wrap items-center justify-between text-[10px] text-muted-foreground pt-1 border-t border-border/60 gap-1">
+                          <span className="flex items-center gap-1 truncate">
+                            <Building2 className="size-3 shrink-0" />
+                            <span className="truncate">{doc.issuer}</span>
+                          </span>
+                          <span className="font-mono shrink-0">
+                            {doc.issueDate}
+                            {doc.validUntil ? ` s.d. ${doc.validUntil}` : ""}
+                          </span>
                         </div>
                       </div>
-                    );
-                  })}
+                    </div>
+                  ))}
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center p-6 text-center border border-dashed rounded-lg bg-muted/20">
