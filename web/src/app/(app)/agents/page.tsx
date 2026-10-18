@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Send,
   Paperclip,
@@ -21,11 +22,31 @@ import { ensureSession, streamRun } from "@/lib/adk";
 import { JudgeDeepDiveModal } from "@/components/judge-deep-dive-modal";
 
 export default function AgentsPage() {
+  return (
+    <Suspense fallback={<div className="h-[calc(100vh-8rem)] w-full animate-pulse rounded-2xl bg-muted/40" />}>
+      <AgentsParamsWrapper />
+    </Suspense>
+  );
+}
+
+function AgentsParamsWrapper() {
+  const searchParams = useSearchParams();
+  const agentParam = searchParams.get("agent") || "default";
+  const promptParam = searchParams.get("prompt") || "";
+
+  // Remount cleanly whenever the URL query params change (agent or prompt)
+  return <AgentsContent key={`${agentParam}:${promptParam}`} initialAgentParam={searchParams.get("agent")} initialPrompt={promptParam} />;
+}
+
+function AgentsContent({ initialAgentParam, initialPrompt }: { initialAgentParam: string | null; initialPrompt: string }) {
   const { locale } = useLanguage();
   const isEn = locale === "en";
 
-  // Mas Nata (Chief of Staff) is on top as default
-  const [activePersonaId, setActivePersonaId] = useState<AgentPersonId>("nata");
+  const validAgent = initialAgentParam && Object.keys(AGENT_PERSONAS).includes(initialAgentParam)
+    ? (initialAgentParam as AgentPersonId)
+    : "nata";
+
+  const [activePersonaId, setActivePersonaId] = useState<AgentPersonId>(validAgent);
   const [judgeModalOpen, setJudgeModalOpen] = useState(false);
   const [demoUid] = useState<string>(() => {
     if (typeof window === "undefined") return "web-console";
@@ -63,7 +84,7 @@ export default function AgentsPage() {
     return initial;
   });
 
-  const [inputText, setInputText] = useState("");
+  const [inputText, setInputText] = useState(initialPrompt);
   const [isTyping, setIsTyping] = useState(false);
   const [attachedFiles, setAttachedFiles] = useState<{ name: string; type: "image" | "pdf" | "doc" }[]>([]);
 

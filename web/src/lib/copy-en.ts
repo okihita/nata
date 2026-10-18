@@ -181,25 +181,30 @@ export const copyEn = {
         title: "Input last year's financial statement (2025)",
         desc: "Add your opening balance or previous year report so banks (KUR) can see multi-year business growth.",
         cta: "Add opening balance",
+        prompt: "Mbak Maya, how do I record our 2025 opening balances so our statements qualify for bank microloans (KUR)?",
       },
       perizinanDocs: {
         title: "Prepare business license documents (NIB OSS RBA)",
         desc: "Complete NIB requirements, address verification, and NPWP to legally protect operations from local raids.",
         cta: "Complete licensing",
+        prompt: "Pak Arief, what is the checklist for verifying my NIB OSS RBA business license documents?",
       },
       taxThresholdMonitor: {
         title: "Safeguard Rp 500M annual tax-free allowance",
         desc: "Gross turnover is at Rp 101.75M. You have Rp 398.25M tax-free quota remaining before 0.5% PPh Final applies.",
         cta: "View tax position",
+        prompt: "Mas Dimas, how do I calculate my remaining Rp 500M tax-free allowance under PP 55/2022?",
       },
       monthlyExportPrint: {
         title: "Print SAK EMKM financial statement PDF",
         desc: "Download or print ready-to-sign monthly profit/loss and balance sheet for stakeholders.",
         cta: "Export PDF",
+        prompt: "Mbak Maya, please review my monthly profit/loss and balance sheet before I export them to PDF.",
       },
     },
     todoPending: (n: number) => `${n} pending`,
     todoCompletedCount: (n: number) => `${n} task completed`,
+    consultAgent: (name: string) => `Ask ${name}`,
   },
 
   add: {

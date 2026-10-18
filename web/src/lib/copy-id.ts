@@ -186,25 +186,30 @@ export const copyId = {
         title: "Masukkan laporan keuangan tahun lalu (2025)",
         desc: "Catat saldo awal atau neraca tahun lalu agar bank melihat histori pertumbuhan usaha Anda secara utuh.",
         cta: "Catat saldo awal",
+        prompt: "Mbak Maya, bagaimana cara memasukkan saldo awal pembukuan tahun 2025 agar laporan siap untuk KUR bank?",
       },
       perizinanDocs: {
         title: "Siapkan dokumen izin usaha (NIB OSS RBA)",
         desc: "Lengkapi kelengkapan NIB, verifikasi alamat usaha, dan NPWP agar operasional tenang bebas razia.",
         cta: "Lengkapi perizinan",
+        prompt: "Pak Arief, bagaimana panduan verifikasi dokumen izin NIB OSS RBA untuk usaha saya?",
       },
       taxThresholdMonitor: {
         title: "Jaga batas omzet bebas pajak Rp 500 juta",
         desc: "Omzet saat ini Rp 101,75 Juta. Masih tersisa kuota bebas pajak Rp 398,25 Juta sebelum dikenakan PPh Final 0,5%.",
         cta: "Cek posisi pajak",
+        prompt: "Mas Dimas, bagaimana cara menghitung sisa batas omzet bebas pajak Rp 500 juta PP 55/2022 saya?",
       },
       monthlyExportPrint: {
         title: "Cetak dokumen laporan keuangan SAK EMKM",
         desc: "Unduh atau cetak dokumen PDF laba rugi dan posisi keuangan resmi untuk arsip atau pengajuan KUR.",
         cta: "Ekspor PDF",
+        prompt: "Mbak Maya, tolong bantu tinjau laporan laba rugi dan posisi keuangan bulanan saya untuk ekspor PDF.",
       },
     },
     todoPending: (n: number) => `${n} perlu ditindak`,
     todoCompletedCount: (n: number) => `${n} tugas selesai`,
+    consultAgent: (name: string) => `Tanya ${name}`,
   },
 
   add: {

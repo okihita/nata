@@ -18,6 +18,7 @@ import {
   Printer,
   Compass,
 } from "lucide-react";
+import { AvatarMaya, AvatarDimas, AvatarArief, AvatarNata } from "@/components/agent-avatars";
 import {
   Bar,
   BarChart,
@@ -111,6 +112,9 @@ export default function DashboardPage() {
         href: "/accounts",
         done: false,
         priority: "Tinggi",
+        agentId: "maya",
+        agentName: "Mbak Maya",
+        prompt: copy.dashboard.todoTasks.financialStatementLastYear.prompt,
       },
       {
         id: "todo-perizinan",
@@ -121,6 +125,9 @@ export default function DashboardPage() {
         href: "/licensing",
         done: Boolean(business?.kbliCode && business?.nib),
         priority: business?.kbliCode ? "Selesai" : "Penting",
+        agentId: "arief",
+        agentName: "Pak Arief",
+        prompt: copy.dashboard.todoTasks.perizinanDocs.prompt,
       },
       {
         id: "todo-tax-threshold",
@@ -131,6 +138,9 @@ export default function DashboardPage() {
         href: "/taxes",
         done: false,
         priority: "Normal",
+        agentId: "dimas",
+        agentName: "Mas Dimas",
+        prompt: copy.dashboard.todoTasks.taxThresholdMonitor.prompt,
       },
       {
         id: "todo-monthly-export",
@@ -141,6 +151,9 @@ export default function DashboardPage() {
         href: "/statements",
         done: false,
         priority: "Rekomendasi",
+        agentId: "maya",
+        agentName: "Mbak Maya",
+        prompt: copy.dashboard.todoTasks.monthlyExportPrint.prompt,
       },
     ];
     return list;
@@ -400,12 +413,14 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent className="space-y-1.5 p-4 pt-0">
               {pendingTodos.map((todo) => (
-                <Link
+                <div
                   key={todo.id}
-                  href={todo.href}
-                  className="group flex items-center justify-between rounded-lg p-2.5 transition-colors hover:bg-muted/50 border border-transparent hover:border-border"
+                  className="group flex flex-col sm:flex-row sm:items-center justify-between rounded-lg p-2.5 transition-colors hover:bg-muted/50 border border-transparent hover:border-border gap-2"
                 >
-                  <div className="flex items-start gap-2.5 min-w-0 pr-2">
+                  <Link
+                    href={todo.href}
+                    className="flex items-start gap-2.5 min-w-0 pr-2 flex-1"
+                  >
                     <span className="mt-0.5 shrink-0">{todo.icon}</span>
                     <div className="min-w-0">
                       <p className="font-medium text-xs text-foreground group-hover:text-primary transition-colors">
@@ -415,16 +430,32 @@ export default function DashboardPage() {
                         {todo.desc}
                       </p>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
+                  </Link>
+
+                  <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                    {todo.agentId && todo.agentName && (
+                      <Link
+                        href={`/agents?agent=${todo.agentId}&prompt=${encodeURIComponent(todo.prompt ?? "")}`}
+                        className="inline-flex items-center gap-1 rounded-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 px-2 py-0.5 text-[11px] font-medium transition-colors"
+                        title={copy.dashboard.consultAgent(todo.agentName)}
+                      >
+                        {todo.agentId === "maya" && <AvatarMaya size={14} />}
+                        {todo.agentId === "dimas" && <AvatarDimas size={14} />}
+                        {todo.agentId === "arief" && <AvatarArief size={14} />}
+                        {todo.agentId === "nata" && <AvatarNata size={14} />}
+                        <span>{copy.dashboard.consultAgent(todo.agentName)}</span>
+                      </Link>
+                    )}
                     {todo.priority === "Tinggi" && (
                       <Badge variant="destructive" className="text-[10px] py-0 h-4.5 font-normal">
                         {todo.priority}
                       </Badge>
                     )}
-                    <ChevronRight className="size-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all" />
+                    <Link href={todo.href} className="text-muted-foreground hover:text-foreground">
+                      <ChevronRight className="size-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all" />
+                    </Link>
                   </div>
-                </Link>
+                </div>
               ))}
 
               {/* Optional Alert Item if any outstanding action exists */}
