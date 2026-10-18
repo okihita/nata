@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronsUpDown, Settings, Store } from "lucide-react";
+import { ChevronsUpDown, Compass, Settings, Store } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -120,6 +120,15 @@ export function WorkspaceSwitcher() {
             <div className="grid">
               <span className="text-xs font-medium">{copy.workspaceSwitcher.createNew}</span>
               <span className="text-[10px] text-muted-foreground">{copy.workspaceSwitcher.createNewHint}</span>
+            </div>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild className="gap-2">
+          <Link href="/onboarding">
+            <Compass className="size-4 text-muted-foreground" />
+            <div className="grid">
+              <span className="text-xs font-medium">{copy.workspaceSwitcher.returnToOnboarding}</span>
+              <span className="text-[10px] text-muted-foreground">{copy.workspaceSwitcher.returnToOnboardingHint}</span>
             </div>
           </Link>
         </DropdownMenuItem>
