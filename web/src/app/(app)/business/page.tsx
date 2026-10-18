@@ -78,7 +78,7 @@ export default function UsahaPage() {
     if (!canSubmit) return;
     if (isOnboarding) {
       createBusiness({ name, ownerName, type, entity });
-      router.push("/catat");
+      router.push("/record");
       return;
     }
 
@@ -103,7 +103,7 @@ export default function UsahaPage() {
     // was verified for: `shownCode` falls back to that cache when the profile has
     // no code, so the stale value would reappear there as if still valid.
     if (typeChanged) clearRegulasiCache();
-    router.push("/dasbor");
+    router.push("/dashboard");
   }
 
   return (
@@ -287,7 +287,7 @@ export default function UsahaPage() {
                     {copy.usaha.kbliNone} · {copy.usaha.kbliNoneHint}
                   </p>
                   <Button asChild variant="outline" size="sm">
-                    <Link href="/perizinan">{copy.nav.perizinan}</Link>
+                    <Link href="/licensing">{copy.nav.perizinan}</Link>
                   </Button>
                 </div>
               )}

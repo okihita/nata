@@ -63,7 +63,7 @@ export default function DashboardPage() {
       id: "unpaid",
       text: copy.dashboard.needsUnpaid(unpaid.length, idrFull(unpaidTotal)),
       tone: "warn",
-      href: "/laporan",
+      href: "/statements",
     });
   }
   if (tax.payable > 0) {
@@ -71,14 +71,14 @@ export default function DashboardPage() {
       id: "tax",
       text: copy.dashboard.needsTaxDue(idrFull(tax.payable)),
       tone: "warn",
-      href: "/pajak",
+      href: "/taxes",
     });
   } else if (entityHasExemption(business?.entity ?? "orang_pribadi")) {
     actions.push({
       id: "tax-exempt",
       text: copy.dashboard.needsTaxExempt,
       tone: "info",
-      href: "/pajak",
+      href: "/taxes",
     });
   }
   // A badan usaha can owe Rp 0 simply because turnover is zero. Saying "masih di
@@ -132,7 +132,7 @@ export default function DashboardPage() {
               actions={
                 <>
                   <Button asChild>
-                    <Link href="/catat">
+                    <Link href="/record">
                       <ScanLine className="mr-2 size-4" />
                       {copy.dashboard.actionScan}
                     </Link>
@@ -288,20 +288,20 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent className="space-y-2">
               <QuickAction
-                href="/catat"
+                href="/record"
                 icon={<ScanLine className="size-4" />}
                 label={copy.dashboard.actionScan}
                 hint={copy.dashboard.actionScanHint}
                 primary
               />
               <QuickAction
-                href="/laporan"
+                href="/statements"
                 icon={<FileBarChart className="size-4" />}
                 label={copy.dashboard.actionReport}
                 hint={copy.dashboard.actionReportHint}
               />
               <QuickAction
-                href="/pajak"
+                href="/taxes"
                 icon={<Landmark className="size-4" />}
                 label={copy.dashboard.actionTax}
                 hint={copy.dashboard.actionTaxHint}
@@ -376,7 +376,7 @@ export default function DashboardPage() {
             <CardDescription>{copy.transaksi.countLabel(entries.length)}</CardDescription>
           </div>
           <Button variant="outline" size="sm" asChild>
-            <Link href="/transaksi">{copy.common.seeAll}</Link>
+            <Link href="/transactions">{copy.common.seeAll}</Link>
           </Button>
         </CardHeader>
         <CardContent>
@@ -546,7 +546,7 @@ function ComplianceRow({
               ? `${business.kbliCode} · ${business.kbliTitle ?? ""}`
               : copy.dashboard.complianceKbliNone
           }
-          href="/perizinan"
+          href="/licensing"
           cta={
             business.kbliCode
               ? copy.dashboard.complianceOpen

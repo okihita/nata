@@ -115,7 +115,7 @@ export function WorkspaceSwitcher() {
           </p>
         </div>
         <DropdownMenuItem asChild className="gap-2">
-          <Link href="/usaha">
+          <Link href="/business">
             <Settings className="size-4 text-muted-foreground" />
             <div className="grid">
               <span className="text-xs font-medium">{copy.workspaceSwitcher.createNew}</span>

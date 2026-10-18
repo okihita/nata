@@ -9,6 +9,19 @@ const nextConfig: NextConfig = {
   /* config options here */
   // Hide the Next.js dev toolbar/indicator overlay in development.
   devIndicators: false,
+  async rewrites() {
+    return [
+      { source: "/dasbor", destination: "/dashboard" },
+      { source: "/catat", destination: "/record" },
+      { source: "/transaksi", destination: "/transactions" },
+      { source: "/akun", destination: "/accounts" },
+      { source: "/laporan", destination: "/statements" },
+      { source: "/pajak", destination: "/taxes" },
+      { source: "/perizinan", destination: "/licensing" },
+      { source: "/usaha", destination: "/business" },
+      { source: "/pengaturan", destination: "/settings" },
+    ];
+  },
   turbopack: {
     rules: {
       "*.css": {
