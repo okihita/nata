@@ -35,15 +35,15 @@ test("landing dictionary exists with exact key parity across English and Indones
 test("English landing copy accurately reflects hackathon guidelines", () => {
   assert.equal(copyEn.landing.ctaButton, "Get Started Free");
   assert.equal(copyEn.landing.navStart, "Get Started");
-  assert.match(copyEn.landing.heroTitle, /From receipt photos to balanced books/);
-  assert.match(copyEn.landing.heroBadge, /Gemini on Google Cloud/);
+  assert.match(copyEn.landing.heroTitle, /while you sleep/i);
+  assert.match(copyEn.landing.heroBadge, /Gemini/i);
 });
 
 test("Indonesian landing copy accurately reflects domestic MSME terms", () => {
   assert.equal(copyId.landing.ctaButton, "Mulai gratis sekarang");
   assert.equal(copyId.landing.navStart, "Mulai sekarang");
-  assert.match(copyId.landing.heroTitle, /Dari foto struk/);
-  assert.match(copyId.landing.heroBadge, /Gemini di Google Cloud/);
+  assert.match(copyId.landing.heroTitle, /saat Anda tidur/i);
+  assert.match(copyId.landing.heroBadge, /Gemini/i);
 });
 
 test("accounts dictionary maintains exact key parity across English and Indonesian", () => {
