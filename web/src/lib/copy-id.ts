@@ -849,6 +849,7 @@ export const copyId = {
     statuteGrounded: "Dasar Hukum",
     actionButtons: {
       readLesson: "Baca Panduan",
+      viewWalkthrough: "Tur Visual",
       tryNow: "Coba di Nata",
       tryRecordVoice: "Coba Rekam Suara",
       checkTaxes: "Cek Perhitungan Pajak",

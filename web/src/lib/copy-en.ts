@@ -844,6 +844,7 @@ export const copyEn = {
     statuteGrounded: "Grounded Statute",
     actionButtons: {
       readLesson: "Read Guide",
+      viewWalkthrough: "Visual Tour",
       tryNow: "Try in Nata",
       tryRecordVoice: "Try Voice Recording",
       checkTaxes: "Check Tax Calculations",

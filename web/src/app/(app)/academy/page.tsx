@@ -9,6 +9,7 @@ import {
   Clock,
   ExternalLink,
   Sparkles,
+  Play,
 } from "lucide-react";
 
 import { PageHeader } from "@/components/app-sidebar";
@@ -20,7 +21,9 @@ import { useLanguage } from "@/lib/copy";
 import {
   ACADEMY_LESSONS,
   MYTH_FACTS,
+  type AcademyLesson,
 } from "@/lib/academy";
+import { AcademyWalkthroughDeckModal } from "@/components/academy-walkthrough-deck";
 
 export default function AcademyPage() {
   const { copy } = useLanguage();
@@ -28,6 +31,7 @@ export default function AcademyPage() {
     "all" | "accounting_101" | "tax_compliance" | "licensing_legal" | "operations_team"
   >("all");
   const [activeLessonId, setActiveLessonId] = useState<string | null>(null);
+  const [activeDeckLesson, setActiveDeckLesson] = useState<AcademyLesson | null>(null);
 
   // Filter lessons specifically for the Business track (Kuliah Bisnis)
   const businessLessons = useMemo(() => {
@@ -153,15 +157,26 @@ export default function AcademyPage() {
                   )}
 
                   <div className="flex items-center justify-between pt-1">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      className="h-8 text-xs cursor-pointer"
-                      onClick={() => setActiveLessonId(lesson.id)}
-                    >
-                      <BookOpen className="mr-1.5 size-3.5" />
-                      {copy.academy.actionButtons.readLesson}
-                    </Button>
+                    <div className="flex items-center gap-1.5">
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        className="h-8 text-xs cursor-pointer font-medium"
+                        onClick={() => setActiveDeckLesson(lesson)}
+                      >
+                        <Play className="mr-1.5 size-3.5 fill-primary text-primary" />
+                        {copy.academy.actionButtons.viewWalkthrough}
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 text-xs cursor-pointer text-muted-foreground hover:text-foreground"
+                        onClick={() => setActiveLessonId(lesson.id)}
+                      >
+                        <BookOpen className="mr-1.5 size-3.5" />
+                        {copy.academy.actionButtons.readLesson}
+                      </Button>
+                    </div>
 
                     {lesson.actionLink && (
                       <Button
@@ -183,6 +198,15 @@ export default function AcademyPage() {
           })}
         </div>
       </div>
+
+      {/* Lightbox Walkthrough Deck Modal */}
+      <AcademyWalkthroughDeckModal
+        lesson={activeDeckLesson}
+        open={Boolean(activeDeckLesson)}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) setActiveDeckLesson(null);
+        }}
+      />
 
       {/* Reader Modal */}
       {activeLesson && (
