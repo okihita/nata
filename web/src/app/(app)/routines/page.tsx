@@ -14,6 +14,7 @@ import {
   BadgeCheck,
   Plus,
   X,
+  ChevronDown,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -602,16 +603,19 @@ export default function RoutinesPage() {
                 <label className="font-medium text-foreground block mb-1">
                   {isEn ? "Assigned Agent" : "Tugaskan ke Asisten"}
                 </label>
-                <select
-                  value={newAgent}
-                  onChange={(e) => setNewAgent(e.target.value as "nata" | "maya" | "dimas" | "arief")}
-                  className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary"
-                >
-                  <option value="nata">Mas Nata (Kepala Tim Keuangan / Cash)</option>
-                  <option value="maya">Mba Maya (Spesialis Pajak UMKM / PP 55)</option>
-                  <option value="dimas">Mas Dimas (Auditor Pembukuan & Rekonsiliasi)</option>
-                  <option value="arief">Bang Arief (Spesialis Perizinan & KBLI)</option>
-                </select>
+                <div className="relative">
+                  <select
+                    value={newAgent}
+                    onChange={(e) => setNewAgent(e.target.value as "nata" | "maya" | "dimas" | "arief")}
+                    className="w-full appearance-none px-3 py-2 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                  >
+                    <option value="nata">Mas Nata (Kepala Tim Keuangan / Cash)</option>
+                    <option value="maya">Mba Maya (Spesialis Pajak UMKM / PP 55)</option>
+                    <option value="dimas">Mas Dimas (Auditor Pembukuan & Rekonsiliasi)</option>
+                    <option value="arief">Bang Arief (Spesialis Perizinan & KBLI)</option>
+                  </select>
+                  <ChevronDown className="size-3.5 text-muted-foreground absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
@@ -619,15 +623,18 @@ export default function RoutinesPage() {
                   <label className="font-medium text-foreground block mb-1">
                     {isEn ? "Cadence" : "Frekuensi"}
                   </label>
-                  <select
-                    value={newCadence}
-                    onChange={(e) => setNewCadence(e.target.value as RoutineCadence)}
-                    className="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary"
-                  >
-                    <option value="daily">{isEn ? "Daily" : "Harian"}</option>
-                    <option value="weekly">{isEn ? "Weekly" : "Mingguan"}</option>
-                    <option value="monthly">{isEn ? "Monthly" : "Bulanan"}</option>
-                  </select>
+                  <div className="relative">
+                    <select
+                      value={newCadence}
+                      onChange={(e) => setNewCadence(e.target.value as RoutineCadence)}
+                      className="w-full appearance-none px-3 py-2 pr-8 rounded-lg border border-border bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                    >
+                      <option value="daily">{isEn ? "Daily" : "Harian"}</option>
+                      <option value="weekly">{isEn ? "Weekly" : "Mingguan"}</option>
+                      <option value="monthly">{isEn ? "Monthly" : "Bulanan"}</option>
+                    </select>
+                    <ChevronDown className="size-3.5 text-muted-foreground absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  </div>
                 </div>
 
                 <div>
