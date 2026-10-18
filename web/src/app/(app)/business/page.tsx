@@ -400,9 +400,14 @@ export default function UsahaPage() {
             <CardContent className="grid gap-4">
               {/* NPWP */}
               <div className="grid gap-1.5">
-                <Label htmlFor="biz-npwp" className="text-xs font-semibold">
-                  {copy.usaha.npwpLabel}
-                </Label>
+                <div>
+                  <Label htmlFor="biz-npwp" className="text-xs font-semibold">
+                    {copy.usaha.npwpLabel}
+                  </Label>
+                  <p className="text-[11px] text-muted-foreground">
+                    {copy.usaha.npwpMeaning}
+                  </p>
+                </div>
                 <Input
                   id="biz-npwp"
                   value={npwp}
@@ -415,9 +420,14 @@ export default function UsahaPage() {
 
               {/* NIB OSS */}
               <div className="grid gap-1.5">
-                <Label htmlFor="biz-nib" className="text-xs font-semibold">
-                  {copy.usaha.nibLabel}
-                </Label>
+                <div>
+                  <Label htmlFor="biz-nib" className="text-xs font-semibold">
+                    {copy.usaha.nibLabel}
+                  </Label>
+                  <p className="text-[11px] text-muted-foreground">
+                    {copy.usaha.nibMeaning}
+                  </p>
+                </div>
                 <Input
                   id="biz-nib"
                   value={nib}
