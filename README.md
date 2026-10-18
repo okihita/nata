@@ -1,5 +1,13 @@
 # Nata
 
+> **Google Cloud AI Builder Cup 2026 Submission**  
+> **Team Name:** Zahrathustra  
+> **Team Leader:** Gantan Etika Murty ([em.gantan@gmail.com](mailto:em.gantan@gmail.com))  
+> **Live Console (GCP / Cloud Run):** [https://gonata.web.app](https://gonata.web.app)  
+> **Demo Video (3 Minutes):** [Google Drive Walkthrough](https://drive.google.com/file/d/1oFOs7YN2d8pmLMRxsP2Z6fvgHnZUx0ME/view?usp=sharing)  
+> **Pitch & Architecture Deck (PDF):** [Final Prototype PPT/Deck](https://storage.googleapis.com/vision-hack2skill-production/innovator/USER02471640/1792347778725-ZahrathustraNataPitchDeck.pdf) · [In-Repo Copy](./docs/submission/Zahrathustra_Nata_Pitch_Deck.pdf)  
+> **Public GitHub Repository:** [https://github.com/okihita/nata](https://github.com/okihita/nata)
+
 **Runs your business admin while you sleep.**  
 *Photo a receipt, talk to a bot, or let your AI staff handle the rest. Autonomous bookkeeping, 0.5% MSME tax defense, and verified licensing — convenience first, statutory compliance under the hood.*
 

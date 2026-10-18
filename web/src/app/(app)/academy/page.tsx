@@ -111,7 +111,7 @@ export default function AcademyPage() {
           {copy.academy.tracks.businessDesc}
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {businessLessons.map((lesson) => {
             const lessonCopy = copy.academy.lessons[lesson.id as keyof typeof copy.academy.lessons];
             if (!lessonCopy) return null;
