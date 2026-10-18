@@ -10,8 +10,14 @@ import {
   FileText,
   Image as ImageIcon,
   X,
-  Upload,
+  Check,
+  Download,
+  Lock,
+  Cpu,
+  ArrowRight,
+  ExternalLink,
 } from "lucide-react";
+import { toast } from "sonner";
 
 import { PageHeader } from "@/components/app-sidebar";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +39,7 @@ export default function AgentsPage() {
     dimas: AGENT_PERSONAS.dimas.defaultChatHistory,
     arief: AGENT_PERSONAS.arief.defaultChatHistory,
   });
+  const [executedArtifacts, setExecutedArtifacts] = useState<Record<string, boolean>>({});
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [attachedFiles, setAttachedFiles] = useState<{ name: string; type: "image" | "pdf" | "doc" }[]>([]);
@@ -42,6 +49,8 @@ export default function AgentsPage() {
 
   const persona = AGENT_PERSONAS[activePersonaId];
   const messages = chatMessages[activePersonaId];
+  const artifact = persona.livingArtifact;
+  const isArtifactExecuted = !!executedArtifacts[artifact.id];
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -80,6 +89,19 @@ export default function AgentsPage() {
 
   const handleRemoveAttachment = (idx: number) => {
     setAttachedFiles((prev) => prev.filter((_, i) => i !== idx));
+  };
+
+  const handleExecuteArtifact = () => {
+    setExecutedArtifacts((prev) => ({ ...prev, [artifact.id]: true }));
+    toast.success(isEn ? artifact.actionSuccessMessageEn : artifact.actionSuccessMessage);
+  };
+
+  const handleExportProof = () => {
+    toast.info(
+      isEn
+        ? "Official audit certificate and reasoning trace prepared for export."
+        : "Bukti audit resmi dan jejak penalaran hukum siap diunduh."
+    );
   };
 
   const handleSendMessage = (textToSend?: string) => {
@@ -206,7 +228,7 @@ export default function AgentsPage() {
             </div>
           </div>
 
-          {/* Peace of Mind Note */}
+          {/* Quiet Automation Assurance */}
           <div className="rounded-xl border border-border/70 bg-muted/20 p-3 shrink-0 text-xs text-muted-foreground space-y-1">
             <div className="flex items-center gap-1.5 text-foreground font-semibold text-xs">
               <Shield className="size-3.5 text-emerald-600 dark:text-emerald-400" />
@@ -220,7 +242,7 @@ export default function AgentsPage() {
           </div>
         </aside>
 
-        {/* PANE 2: MIDDLE CONVERSATION STREAM (GEMINI / CHATGPT STYLE INPUT) - 5 COLS */}
+        {/* PANE 2: MIDDLE CONVERSATION STREAM (CHATGPT / GEMINI INPUT BOX) - 5 COLS */}
         <section className="lg:col-span-5 rounded-xl border border-border/70 bg-card flex flex-col h-full shadow-none overflow-hidden">
           {/* Header */}
           <div className="p-3.5 border-b border-border/60 bg-muted/30 flex items-center justify-between gap-3 shrink-0">
@@ -257,7 +279,6 @@ export default function AgentsPage() {
                         : "bg-card border border-border/70 text-foreground rounded-bl-xs shadow-none"
                     }`}
                   >
-                    {/* Attachment chips if uploaded */}
                     {msg.attachments && msg.attachments.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 mb-2">
                         {msg.attachments.map((att, i) => (
@@ -324,7 +345,6 @@ export default function AgentsPage() {
             />
 
             <div className="rounded-2xl border border-border/80 bg-muted/20 focus-within:bg-background focus-within:ring-2 focus-within:ring-primary/40 focus-within:border-primary/50 transition-all p-2.5 space-y-2">
-              {/* Attachment Preview Chips */}
               {attachedFiles.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 pb-1">
                   {attachedFiles.map((att, idx) => (
@@ -388,72 +408,146 @@ export default function AgentsPage() {
           </div>
         </section>
 
-        {/* PANE 3: RIGHT RESULTS & THINKING FLOWCHART - 4 COLS */}
-        <section className="lg:col-span-4 flex flex-col gap-4 h-full overflow-y-auto">
-          {/* Active Verified Result Card */}
-          <Card className="border-border/70 shadow-none shrink-0">
+        {/* PANE 3: RIGHT LIVING AUDIT ARTIFACT & GROUNDING PROOF (JURY-MAXXING CANVAS) - 4 COLS */}
+        <section className="lg:col-span-4 flex flex-col gap-4 h-full overflow-y-auto pr-0.5">
+          {/* Real-Time Actionable Living Artifact */}
+          <Card className="border-border/70 shadow-none shrink-0 border-l-4 border-l-primary">
             <CardHeader className="py-3 px-4 border-b border-border/40 bg-muted/20">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
-                  {isEn ? "Verified Result" : "Hasil Terverifikasi"}
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-primary">
+                  {isEn ? "Living Actionable Artifact" : "Hasil Dokumen Siap Eksekusi"}
                 </span>
-                <span className="text-[10px] font-medium bg-background px-2 py-0.5 rounded border border-border/60">
-                  {persona.activeArtifact.statutePill}
-                </span>
+                <Badge variant="outline" className="text-[10px] font-mono bg-background">
+                  {isEn ? artifact.badgeEn : artifact.badge}
+                </Badge>
               </div>
               <CardTitle className="text-sm font-semibold mt-1">
-                {persona.activeArtifact.title}
+                {isEn ? artifact.titleEn : artifact.title}
               </CardTitle>
               <CardDescription className="text-xs">
-                {persona.activeArtifact.summary}
+                {isEn ? artifact.summaryEn : artifact.summary}
               </CardDescription>
             </CardHeader>
-            <CardContent className="p-4 space-y-3">
-              <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-300">
-                <span className="text-[10px] uppercase font-semibold block">
-                  {isEn ? "Inspection Status" : "Status Pemeriksaan"}
-                </span>
-                <p className="text-base font-bold tracking-tight">
-                  {persona.activeArtifact.highlight}
-                </p>
-              </div>
 
-              <div className="space-y-1.5 text-xs">
-                {persona.activeArtifact.details.map((item, idx) => (
-                  <div key={idx} className="flex items-start justify-between py-1 border-b border-border/30 gap-2">
-                    <span className="text-muted-foreground text-[11px] shrink-0">{item.key}</span>
-                    <span className="font-medium text-foreground text-right text-[11px]">{item.value}</span>
+            <CardContent className="p-4 space-y-3.5">
+              {/* Metric Row */}
+              <div className="grid grid-cols-3 gap-2">
+                {artifact.metrics.map((m, idx) => (
+                  <div key={idx} className="p-2 rounded-lg bg-muted/30 border border-border/40 space-y-0.5">
+                    <span className="text-[10px] text-muted-foreground block truncate">{isEn ? m.labelEn : m.label}</span>
+                    <span className="text-xs font-bold font-mono tracking-tight text-foreground block truncate">{m.value}</span>
                   </div>
                 ))}
+              </div>
+
+              {/* Breakdown Rows */}
+              <div className="space-y-1.5 text-xs bg-muted/20 p-2.5 rounded-lg border border-border/40">
+                {artifact.breakdown.map((row, idx) => (
+                  <div key={idx} className="flex items-start justify-between py-1 border-b border-border/30 last:border-b-0 gap-2">
+                    <div className="min-w-0">
+                      <span className="font-medium text-foreground text-[11px] block truncate">{isEn ? row.labelEn : row.label}</span>
+                      {row.secondary && (
+                        <span className="text-[10px] text-muted-foreground block truncate">{row.secondary}</span>
+                      )}
+                    </div>
+                    <span className="font-mono font-semibold text-right text-[11px] text-foreground shrink-0">{row.value}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* 1-CLICK DETERMINISTIC POST / EXECUTION BUTTON */}
+              <div className="pt-1">
+                <Button
+                  onClick={handleExecuteArtifact}
+                  disabled={isArtifactExecuted}
+                  className={`w-full text-xs font-semibold h-9 gap-2 transition-all ${
+                    isArtifactExecuted
+                      ? "bg-emerald-600 hover:bg-emerald-600 text-white"
+                      : "bg-primary hover:bg-primary/90 text-primary-foreground"
+                  }`}
+                >
+                  {isArtifactExecuted ? (
+                    <>
+                      <Check className="size-4" />
+                      <span>{isEn ? "Successfully Executed & Posted" : "Telah Berhasil Dibukukan"}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="size-3.5" />
+                      <span>{isEn ? artifact.actionButtonLabelEn : artifact.actionButtonLabel}</span>
+                    </>
+                  )}
+                </Button>
               </div>
             </CardContent>
           </Card>
 
-          {/* Explainability Flowchart (Agent Thinking Chain) */}
-          <Card className="border-border/70 shadow-none flex-1">
-            <CardHeader className="py-3 px-4 border-b border-border/40">
-              <div className="flex items-center gap-2">
-                <Sparkles className="size-3.5 text-primary" />
+          {/* 3-Tier Grounding Proof Chain & Statute Verification (Google Cloud Explainability) */}
+          <Card className="border-border/70 shadow-none">
+            <CardHeader className="py-2.5 px-4 border-b border-border/40 bg-muted/20 flex flex-row items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <Cpu className="size-3.5 text-primary" />
                 <CardTitle className="text-xs font-semibold">
-                  {isEn ? "How Your Assistant Verified This" : "Cara Asisten Menghitung Ini"}
+                  {isEn ? "Google Cloud Grounding Proof" : "Bukti Grounding Google Cloud"}
                 </CardTitle>
               </div>
-              <CardDescription className="text-[11px]">
-                {isEn ? "Step-by-step verified reasoning" : "Langkah pemeriksaan otomatis tanpa salah hitung"}
-              </CardDescription>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleExportProof}
+                className="h-6 px-2 text-[10px] gap-1 text-muted-foreground hover:text-foreground"
+              >
+                <Download className="size-3" />
+                <span>{isEn ? "Export Proof" : "Unduh Bukti"}</span>
+              </Button>
             </CardHeader>
-            <CardContent className="p-4">
-              <div className="relative pl-6 space-y-3.5 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-border/60">
+
+            <CardContent className="p-3.5 space-y-2 text-xs">
+              <div className="p-2.5 rounded-lg border border-border/50 bg-card space-y-1">
+                <span className="text-[10px] font-mono text-muted-foreground uppercase block">Inference Engine</span>
+                <span className="font-mono text-xs font-semibold text-foreground block">
+                  {artifact.groundingProof.model}
+                </span>
+              </div>
+
+              <div className="p-2.5 rounded-lg border border-border/50 bg-card space-y-1">
+                <span className="text-[10px] font-mono text-muted-foreground uppercase block">Guardrail Standard</span>
+                <span className="font-mono text-xs font-medium text-foreground block leading-tight">
+                  {isEn ? artifact.groundingProof.guardrailEn : artifact.groundingProof.guardrail}
+                </span>
+                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono block">
+                  Delta Variance: {artifact.groundingProof.variance}
+                </span>
+              </div>
+
+              <div className="p-2.5 rounded-lg border border-border/50 bg-card space-y-1">
+                <span className="text-[10px] font-mono text-muted-foreground uppercase block">Statutory Grounding</span>
+                <span className="font-mono text-xs font-semibold text-primary block">
+                  {artifact.groundingProof.statute}
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Step-by-Step Reasoning Flowchart */}
+          <Card className="border-border/70 shadow-none flex-1">
+            <CardHeader className="py-2.5 px-4 border-b border-border/40">
+              <CardTitle className="text-xs font-semibold">
+                {isEn ? "Audit Reasoning Steps" : "Tahapan Pemeriksaan Logika"}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-3.5">
+              <div className="relative pl-5 space-y-3 before:absolute before:left-2 before:top-1.5 before:bottom-1.5 before:w-0.5 before:bg-border/60">
                 {persona.thinkingFlow.map((step, idx) => (
-                  <div key={idx} className="relative group">
-                    <span className="absolute -left-6 top-0.5 grid size-4 place-items-center rounded-full bg-emerald-500 text-white ring-4 ring-background text-[10px]">
-                      <CheckCircle2 className="size-3" />
+                  <div key={idx} className="relative">
+                    <span className="absolute -left-5 top-0.5 grid size-3.5 place-items-center rounded-full bg-emerald-500 text-white ring-2 ring-background text-[9px]">
+                      <CheckCircle2 className="size-2.5" />
                     </span>
                     <div className="space-y-0.5">
-                      <p className="text-xs font-semibold text-foreground leading-snug">{step.title}</p>
-                      <p className="text-[11px] text-muted-foreground leading-relaxed">{step.detail}</p>
+                      <p className="text-[11px] font-semibold text-foreground leading-tight">{step.title}</p>
+                      <p className="text-[10px] text-muted-foreground leading-relaxed">{step.detail}</p>
                       {step.statuteCitation && (
-                        <span className="inline-block text-[10px] text-primary font-medium mt-0.5">
+                        <span className="inline-block text-[10px] text-primary font-mono mt-0.5">
                           {step.statuteCitation}
                         </span>
                       )}

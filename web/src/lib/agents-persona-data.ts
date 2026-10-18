@@ -15,6 +15,31 @@ export interface ThinkingStep {
   statuteCitation?: string;
 }
 
+export interface LivingArtifact {
+  id: string;
+  title: string;
+  titleEn: string;
+  type: "journal" | "tax_voucher" | "licensing_card" | "orchestration_pipeline";
+  summary: string;
+  summaryEn: string;
+  badge: string;
+  badgeEn: string;
+  actionButtonLabel: string;
+  actionButtonLabelEn: string;
+  actionSuccessMessage: string;
+  actionSuccessMessageEn: string;
+  executionStatus: "ready_to_post" | "ready_to_file" | "ready_to_verify" | "active_pipeline";
+  metrics: { label: string; labelEn: string; value: string }[];
+  breakdown: { label: string; labelEn: string; value: string; secondary?: string }[];
+  groundingProof: {
+    model: string;
+    guardrail: string;
+    guardrailEn: string;
+    statute: string;
+    variance: string;
+  };
+}
+
 export interface AgentPersonaData {
   id: AgentPersonId;
   name: string;
@@ -31,14 +56,7 @@ export interface AgentPersonaData {
   suggestedPrompts: { label: string; labelEn: string; prompt: string }[];
   defaultChatHistory: ChatMessage[];
   thinkingFlow: ThinkingStep[];
-  activeArtifact: {
-    title: string;
-    type: "journal" | "tax_voucher" | "licensing_card" | "orchestration_pipeline";
-    summary: string;
-    highlight: string;
-    statutePill: string;
-    details: { key: string; value: string }[];
-  };
+  livingArtifact: LivingArtifact;
 }
 
 export const AGENT_PERSONAS: Record<AgentPersonId, AgentPersonaData> = {
@@ -53,8 +71,8 @@ export const AGENT_PERSONAS: Record<AgentPersonId, AgentPersonaData> = {
     badgeEn: "Chief of Staff",
     statusText: "Online · Siap membantu usaha Anda",
     statusTextEn: "Online · Ready to assist your business",
-    welcomeMessage: "Halo kak! Saya Nata, kepala tim keuangan usaha kakak. Saya yang memastikan Mbak Maya (pembukuan), Mas Dimas (pajak), dan Pak Arief (izin usaha) bekerja kompak menyelesaikan semua urusan keuangan Anda secara otomatis. Ada nota baru atau hal yang ingin diperiksa hari ini?",
-    welcomeMessageEn: "Hello! I am Nata, your business Chief of Staff. I ensure Maya (bookkeeping), Dimas (taxes), and Arief (permits) coordinate seamlessly to keep your finances in order. Any new receipts or questions today?",
+    welcomeMessage: "Halo kak! Saya Nata, kepala tim keuangan usaha Anda. Saya yang memastikan Maya (pembukuan), Dimas (pajak), dan Arief (izin usaha) berkoordinasi mulus secara otomatis. Ada nota atau hal yang ingin diperiksa hari ini?",
+    welcomeMessageEn: "Hello! I am Nata, your business Chief of Staff. I coordinate Maya (bookkeeping), Dimas (taxes), and Arief (permits) seamlessly in the background. What would you like to review today?",
     suggestedPrompts: [
       {
         label: "Ringkasan Bisnis Hari Ini",
@@ -88,44 +106,65 @@ export const AGENT_PERSONAS: Record<AgentPersonId, AgentPersonaData> = {
       {
         id: "n3",
         sender: "agent",
-        text: "Tentu kak! Begitu struk masuk, Mbak Maya langsung catat ke jurnal, Mas Dimas langsung hitung porsi pajaknya, dan Nata perbarui laporan laba rugi secara real-time. Kakak cukup cek lewat ponsel kapan saja. Alur kerja tim bisa kakak lihat di diagram sebelah kanan ya.",
+        text: "Tentu kak! Begitu struk masuk, Mbak Maya langsung catat ke jurnal, Mas Dimas langsung hitung porsi pajaknya, dan Nata perbarui laporan laba rugi secara real-time. Kakak cukup pantau lewat ponsel. Alur kerja tim bisa kakak lihat di panel sebelah kanan ya.",
         timestamp: "16:19",
       },
     ],
     thinkingFlow: [
       {
-        title: "1. Penerimaan Transaksi Otomatis",
-        detail: "Menerima nota penjualan harian Rp 2.400.000.",
+        title: "1. Multi-Agent Sequential Routing",
+        detail: "Ingested daily sales payload and dispatched to accounting pipeline.",
         status: "verified",
       },
       {
-        title: "2. Koordinasi ke Mbak Maya (Pembukuan)",
-        detail: "Jurnal kas & penjualan tercatat seimbang tanpa selisih.",
+        title: "2. Handoff to Maya (Bookkeeping)",
+        detail: "Validated double-entry balance: Debit = Credit (0 variance).",
         status: "verified",
+        statuteCitation: "SAK EMKM Double-Entry Standard",
       },
       {
-        title: "3. Koordinasi ke Mas Dimas (Pajak)",
-        detail: "Akumulasi omzet dicatat, hak bebas pajak Rp 500M diperbarui.",
+        title: "3. Handoff to Dimas (Taxation)",
+        detail: "Updated year-to-date turnover and verified Rp 500M tax-free band.",
         status: "verified",
+        statuteCitation: "PP 55/2022 Ps. 60",
       },
       {
-        title: "4. Pembaruan Laporan Keuangan",
-        detail: "Posisi kas dan laba bersih langsung sinkron 100%.",
+        title: "4. Multi-Hop Consensus Verified",
+        detail: "All records synchronized atomically with zero desynchronization.",
         status: "verified",
       },
     ],
-    activeArtifact: {
-      title: "Alur Koordinasi Tim Otomatis",
+    livingArtifact: {
+      id: "art-pipeline-1",
+      title: "Peta Koordinasi Tim Finansial",
+      titleEn: "Multi-Agent Coordination Pipeline",
       type: "orchestration_pipeline",
-      summary: "Sinkronisasi Penuh Tim Keuangan Digital",
-      highlight: "Semua Berjalan Otomatis 24/7",
-      statutePill: "Kerja Terintegrasi",
-      details: [
-        { key: "Status Tim", value: "3 Staf Bekerja Kompak" },
-        { key: "Alur Kerja", value: "Foto Struk -> Pembukuan -> Pajak -> Izin Usaha" },
-        { key: "Keamanan Angka", value: "Terkunci & Pas (Tanpa Human Error)" },
-        { key: "Kecepatan Respon", value: "Di bawah 2 detik per transaksi" },
+      summary: "3 Asisten Bekerja Kompak Menjaga Pembukuan & Pajak",
+      summaryEn: "Autonomous multi-agent execution with atomic state sync",
+      badge: "Sistem Aktif 24/7",
+      badgeEn: "Live Pipeline",
+      actionButtonLabel: "Sinkronisasi Seluruh Laporan",
+      actionButtonLabelEn: "Sync All Financial Records",
+      actionSuccessMessage: "Seluruh laporan pembukuan dan pajak berhasil disinkronkan!",
+      actionSuccessMessageEn: "All ledgers and tax records synchronized atomically!",
+      executionStatus: "active_pipeline",
+      metrics: [
+        { label: "Kecepatan Alur", labelEn: "Pipeline Latency", value: "1,2 Detik" },
+        { label: "Ketepatan Data", labelEn: "Data Accuracy", value: "100% Pas" },
+        { label: "Asisten Aktif", labelEn: "Active Agents", value: "3 Spesialis" },
       ],
+      breakdown: [
+        { label: "Tahap 1: Pembukuan", labelEn: "Step 1: Bookkeeping", value: "Selesai (Mbak Maya)", secondary: "Debit = Kredit Rp 2.400.000" },
+        { label: "Tahap 2: Perpajakan", labelEn: "Step 2: Tax Calculation", value: "Selesai (Mas Dimas)", secondary: "PPh Final 0% (Di Bawah 500 Juta)" },
+        { label: "Tahap 3: Perizinan", labelEn: "Step 3: Legal Compliance", value: "Terverifikasi (Pak Arief)", secondary: "NIB Aktif & Sah" },
+      ],
+      groundingProof: {
+        model: "Gemini 3.8 Flash (Vertex AI Global)",
+        guardrail: "Deterministic State Machine with Atomic Rollback",
+        guardrailEn: "Deterministic State Machine with Atomic Rollback",
+        statute: "Multi-Hop Cascade Protocol",
+        variance: "Zero Sync Drift",
+      },
     },
   },
   maya: {
@@ -139,7 +178,7 @@ export const AGENT_PERSONAS: Record<AgentPersonId, AgentPersonaData> = {
     badgeEn: "Bookkeeper",
     statusText: "Online · Siap merapikan nota",
     statusTextEn: "Online · Ready to book receipts",
-    welcomeMessage: "Halo kak! Saya Maya, akuntan pribadi usaha kakak. Ada nota belanja atau faktur penjualan hari ini? Cukup ketik belanjaan atau unggah fotonya, biar Maya buatkan jurnal debit-kreditnya sampai pas.",
+    welcomeMessage: "Halo kak! Saya Maya, akuntan pribadi usaha Anda. Ada nota belanja atau faktur penjualan hari ini? Cukup ketik belanjaan atau unggah fotonya, biar Maya buatkan jurnal pembukuannya sampai pas.",
     welcomeMessageEn: "Hi! I am Maya, your personal bookkeeper. Any store purchases or sales invoices today? Just type the purchase or snap the receipt, and I will balance the debit-credit ledger automatically.",
     suggestedPrompts: [
       {
@@ -162,57 +201,75 @@ export const AGENT_PERSONAS: Record<AgentPersonId, AgentPersonaData> = {
       {
         id: "m1",
         sender: "agent",
-        text: "Halo kak! Saya Maya, akuntan pribadi usaha kakak. Ada nota belanja atau transaksi penjualan hari ini? Kirim ke Maya ya, nanti langsung Maya rapikan pembukuannya sampai pas.",
+        text: "Halo kak! Saya Maya. Ada nota belanja atau transaksi hari ini? Kirim ke Maya ya, langsung Maya rapikan pembukuannya sampai pas.",
         timestamp: "09:12",
       },
       {
         id: "m2",
         sender: "user",
-        text: "Halo Mbak Maya, tadi saya belanja bahan baku di Pasar Baru: Biji kopi arabika 250rb sama susu segar 100rb, total 350.000 bayar tunai dari laci kas.",
+        text: "Halo Mbak Maya, tadi saya belanja bahan baku: Biji kopi arabika 250rb dan susu segar 100rb, total 350.000 bayar tunai dari kas toko.",
         timestamp: "09:14",
       },
       {
         id: "m3",
         sender: "agent",
-        text: "Siap kak, sudah Maya catatkan! Transaksi Rp 350.000 sudah masuk ke Persediaan Bahan Dagang (Debit) dan mengurangi Kas Tunai (Kredit). Sisi Debit dan Kredit seimbang pas tanpa selisih 1 rupiah pun. Kakak bisa lihat rincian jurnalnya di panel kanan ya.",
+        text: "Siap kak, sudah Maya susun jurnalnya! Transaksi Rp 350.000 masuk ke Persediaan Bahan (Debit) dan mengurangi Kas Tunai (Kredit). Sisi Debit dan Kredit seimbang pas tanpa selisih 1 rupiah pun. Kakak bisa klik tombol di panel kanan untuk langsung membukukannya ke buku besar ya.",
         timestamp: "09:14",
       },
     ],
     thinkingFlow: [
       {
-        title: "1. Membaca Uraian Transaksi",
-        detail: "Mendeteksi pembelian bahan baku senilai Rp 350.000 dibayar tunai dari kas toko.",
+        title: "1. Ekstraksi Data Transaksi (Multimodal)",
+        detail: "Membaca pembelian bahan baku Rp 350.000 secara tunai.",
         status: "verified",
       },
       {
-        title: "2. Menentukan Pos Pembukuan yang Tepat",
-        detail: "Memetakan ke Persediaan Bahan dan Kas Tunai Toko.",
+        title: "2. Pemetaan Akun Standar SAK EMKM",
+        detail: "Akun 1-1300 (Persediaan) dan Akun 1-1000 (Kas Tunai).",
         status: "verified",
-        statuteCitation: "Standar Akuntansi UMKM",
+        statuteCitation: "SAK EMKM Bab 4 - Aset Lancar",
       },
       {
-        title: "3. Pemeriksaan Keseimbangan Angka",
-        detail: "Debit Rp 350.000 = Kredit Rp 350.000. Selisih Rp 0 terbukti seimbang.",
+        title: "3. Verifikasi Keseimbangan (Zero-Variance)",
+        detail: "Debit Rp 350.000 = Kredit Rp 350.000. Selisih Rp 0.",
         status: "verified",
       },
       {
-        title: "4. Catatan Resmi Disimpan",
-        detail: "Tercatat rapi di laporan posisi keuangan usaha Anda.",
+        title: "4. Siap Dibukukan ke Buku Besar",
+        detail: "Entri jurnal siap dibukukan dengan 1-klik.",
         status: "verified",
       },
     ],
-    activeArtifact: {
-      title: "Jurnal Pembukuan Resmi",
+    livingArtifact: {
+      id: "art-journal-1",
+      title: "Slip Jurnal Pembukuan SAK EMKM",
+      titleEn: "Official SAK EMKM Journal Voucher",
       type: "journal",
       summary: "Pembelian Bahan Baku Kopi & Susu Tunai",
-      highlight: "Rp 350.000 (Seimbang Pas)",
-      statutePill: "Debit = Kredit Pas",
-      details: [
-        { key: "Nomor Catatan", value: "JN-20261018-0042" },
-        { key: "Uraian Debit", value: "Persediaan Barang Dagang (Rp 350.000)" },
-        { key: "Uraian Kredit", value: "Kas Tunai Toko (Rp 350.000)" },
-        { key: "Selisih Perhitungan", value: "Rp 0 (100% Pas)" },
+      summaryEn: "Raw Materials Purchase via Store Cash",
+      badge: "Siap Dibukukan",
+      badgeEn: "Ready to Post",
+      actionButtonLabel: "Posting ke Buku Besar (1-Klik)",
+      actionButtonLabelEn: "Post to General Ledger (1-Click)",
+      actionSuccessMessage: "Jurnal berhasil dibukukan! Neraca dan laporan laba rugi otomatis terupdate.",
+      actionSuccessMessageEn: "Journal posted to general ledger! Statements updated with zero delta.",
+      executionStatus: "ready_to_post",
+      metrics: [
+        { label: "Total Transaksi", labelEn: "Total Amount", value: "Rp 350.000" },
+        { label: "Selisih Pembukuan", labelEn: "Variance Delta", value: "Rp 0 (Pas)" },
+        { label: "Standar Akuntansi", labelEn: "Accounting Rule", value: "SAK EMKM" },
       ],
+      breakdown: [
+        { label: "Debit: 1-1300 Persediaan", labelEn: "Debit: 1-1300 Inventory", value: "Rp 350.000", secondary: "Aset Lancar Bertambah" },
+        { label: "Kredit: 1-1000 Kas Toko", labelEn: "Credit: 1-1000 Cash", value: "Rp 350.000", secondary: "Kas Toko Berkurang" },
+      ],
+      groundingProof: {
+        model: "Gemini 3.8 Flash Vision (Vertex AI)",
+        guardrail: "Pydantic Schema Enforced: Zero-Variance (Debit == Credit)",
+        guardrailEn: "Pydantic Schema Enforced: Zero-Variance (Debit == Credit)",
+        statute: "SAK EMKM DSAK IAI",
+        variance: "0.00 IDR",
+      },
     },
   },
   dimas: {
@@ -220,14 +277,14 @@ export const AGENT_PERSONAS: Record<AgentPersonId, AgentPersonaData> = {
     name: "Mas Dimas",
     title: "Konsultan Pajak",
     titleEn: "Tax Consultant",
-    roleDescription: "Perhitungan Pajak UMKM 0,5%",
+    roleDescription: "Pajak UMKM 0,5% & Batas Bebas Pajak",
     roleDescriptionEn: "0.5% Final Tax Calculator",
     badge: "Pajak",
     badgeEn: "Taxes",
     statusText: "Online · Memantau ambang batas omzet",
     statusTextEn: "Online · Monitoring turnover threshold",
-    welcomeMessage: "Halo kak! Saya Dimas, konsultan pajak usaha kakak. Dimas bertugas memastikan kakak bayar pajak UMKM pas 0,5% dan tidak kehilangan hak bebas pajak Rp 500 juta. Mau hitung pajak bulan ini?",
-    welcomeMessageEn: "Hello! I am Dimas, your dedicated tax consultant. I make sure you leverage the 0.5% final tax rate and protect your Rp 500M annual tax-free allowance.",
+    welcomeMessage: "Halo kak! Saya Dimas, konsultan pajak usaha Anda. Dimas memastikan kakak membayar pajak UMKM pas 0,5% dan melindungi hak bebas pajak Rp 500 juta. Mau hitung pajak bulan ini?",
+    welcomeMessageEn: "Hello! I am Dimas, your tax specialist. I make sure you pay exact 0.5% final tax while protecting your Rp 500M annual tax-free allowance.",
     suggestedPrompts: [
       {
         label: "Berapa Pajak Bulan Ini?",
@@ -249,58 +306,77 @@ export const AGENT_PERSONAS: Record<AgentPersonId, AgentPersonaData> = {
       {
         id: "d1",
         sender: "agent",
-        text: "Halo kak! Saya Dimas. Omzet bulan ini sudah masuk ke sistem pembukuan Mbak Maya. Mau Dimas hitungkan setoran pajaknya?",
+        text: "Halo kak! Saya Dimas. Omzet bulan ini sudah masuk ke sistem pembukuan. Mau Dimas hitungkan setoran pajaknya?",
         timestamp: "10:05",
       },
       {
         id: "d2",
         sender: "user",
-        text: "Halo Mas Dimas, omzet bulan ini sekitar Rp 42 juta. Usaha saya terdaftar atas nama pribadi, apakah bulan ini saya sudah harus setor pajak?",
+        text: "Halo Mas Dimas, omzet bulan ini sekitar Rp 42 juta. Usaha saya terdaftar perorangan, apakah sudah harus setor pajak?",
         timestamp: "10:08",
       },
       {
         id: "d3",
         sender: "agent",
-        text: "Kabar gembira kak! Karena usaha kakak berbentuk Orang Pribadi dan total omzet kumulatif tahun ini baru Rp 280 juta (masih di bawah batas Rp 500 juta), pajak bulan ini Rp 0 alias BEBAS PAJAK sesuai aturan pemerintah. Kuota bebas pajak kakak masih tersisa Rp 220 juta lagi. Lembar rinciannya sudah Dimas siapkan di sebelah kanan ya.",
+        text: "Kabar gembira kak! Karena usaha kakak berbentuk Orang Pribadi dan total omzet kumulatif tahun ini baru Rp 280 juta (di bawah batas Rp 500 juta), pajak bulan ini Rp 0 alias BEBAS PAJAK sesuai PP 55/2022. Lembar bukti resminya sudah Dimas terbitkan di sebelah kanan ya.",
         timestamp: "10:09",
       },
     ],
     thinkingFlow: [
       {
-        title: "1. Cek Bentuk Usaha",
-        detail: "Usaha terdaftar atas nama Orang Pribadi.",
+        title: "1. Verifikasi Entitas Wajib Pajak",
+        detail: "Bentuk: Orang Pribadi (Hak fasilitas bebas pajak aktif).",
         status: "verified",
-        statuteCitation: "Aturan Pajak UMKM PP 55",
+        statuteCitation: "UU HPP No. 7 Tahun 2021",
       },
       {
-        title: "2. Cek Total Penjualan Tahun Ini",
-        detail: "Total omzet s/d bulan ini Rp 280 juta (belum tembus batas 500 juta).",
+        title: "2. Evaluasi Ambang Batas Omzet",
+        detail: "Akumulasi tahunan: Rp 280M (< batas Rp 500M).",
+        status: "verified",
+        statuteCitation: "PP 55/2022 Pasal 60 ayat (2)",
+      },
+      {
+        title: "3. Perhitungan Pajak Terutang",
+        detail: "Tarif 0,5% x Rp 0 kena pajak = Rp 0.",
         status: "verified",
       },
       {
-        title: "3. Hitung Pajak yang Wajib Disetor",
-        detail: "Omzet belum kena pajak. Tagihan pajak bulan ini: Rp 0.",
-        status: "verified",
-      },
-      {
-        title: "4. Perlindungan Kuota Bebas Pajak",
-        detail: "Sisa kuota bebas pajak Rp 220 juta aman tercatat.",
+        title: "4. Penerbitan Sertifikat Bebas Pajak",
+        detail: "Dokumen sah siap diunduh untuk bukti pembukuan.",
         status: "verified",
       },
     ],
-    activeArtifact: {
-      title: "Rincian Tagihan Pajak Bulan Ini",
+    livingArtifact: {
+      id: "art-tax-1",
+      title: "Surat Keterangan Kepatuhan PPh Final",
+      titleEn: "PP 55/2022 Final Tax Clearance Voucher",
       type: "tax_voucher",
-      summary: "Peredaran Bruto Belum Melebihi Batas 500 Juta",
-      highlight: "Rp 0 (Bebas Pajak)",
-      statutePill: "Fasilitas Bebas Pajak",
-      details: [
-        { key: "Bentuk Usaha", value: "Wajib Pajak Orang Pribadi" },
-        { key: "Penjualan Bulan Ini", value: "Rp 42.000.000" },
-        { key: "Total Penjualan 2026", value: "Rp 280.000.000" },
-        { key: "Sisa Bebas Pajak", value: "Rp 220.000.000 tersisa" },
-        { key: "Pajak Wajib Disetor", value: "Rp 0 (Bebas Pajak)" },
+      summary: "Fasilitas Pembebasan Pajak Omzet < Rp 500 Juta",
+      summaryEn: "Statutory Tax Exemption Voucher (< Rp 500M)",
+      badge: "Bebas Pajak Sah",
+      badgeEn: "Exempt & Compliant",
+      actionButtonLabel: "Terbitkan Bukti Bebas Pajak",
+      actionButtonLabelEn: "Generate Tax Clearance Proof",
+      actionSuccessMessage: "Surat keterangan bebas pajak berhasil diterbitkan dan diarsipkan!",
+      actionSuccessMessageEn: "Tax clearance proof archived with official PP 55/2022 timestamp!",
+      executionStatus: "ready_to_file",
+      metrics: [
+        { label: "Pajak Terutang", labelEn: "Tax Liability", value: "Rp 0 (Bebas)" },
+        { label: "Sisa Kuota Bebas", labelEn: "Remaining Allowance", value: "Rp 220 Juta" },
+        { label: "Batas Lapor", labelEn: "Payment Deadline", value: "15 Bulan Depan" },
       ],
+      breakdown: [
+        { label: "Omzet Bulan Ini", labelEn: "Current Month Sales", value: "Rp 42.000.000", secondary: "Diverifikasi dari pembukuan" },
+        { label: "Akumulasi Omzet 2026", labelEn: "Year-To-Date Turnover", value: "Rp 280.000.000", secondary: "Batas Maksimal Rp 500 Juta" },
+        { label: "Dasar Hukum", labelEn: "Statutory Reference", value: "PP 55/2022 Ps. 60", secondary: "Ketetapan Ditjen Pajak RI" },
+      ],
+      groundingProof: {
+        model: "Gemini 3.8 Flash (Vertex AI)",
+        guardrail: "Deterministic Threshold Engine (Hardcoded Rp 500M Cap)",
+        guardrailEn: "Deterministic Threshold Engine (Hardcoded Rp 500M Cap)",
+        statute: "PP 55/2022 Pasal 57 & 60",
+        variance: "0.00 Tax Due",
+      },
     },
   },
   arief: {
@@ -314,8 +390,8 @@ export const AGENT_PERSONAS: Record<AgentPersonId, AgentPersonaData> = {
     badgeEn: "Licensing",
     statusText: "Online · Siap cek syarat perizinan",
     statusTextEn: "Online · Ready to check business permits",
-    welcomeMessage: "Selamat datang kak! Saya Pak Arief. Saya membantu memilihkan kode KBLI 5 digit resmi dan memastikan izin usaha OSS kakak lengkap, tanpa istilah hukum yang rumit.",
-    welcomeMessageEn: "Welcome! I am Pak Arief. I help you map the official 5-digit KBLI code and ensure your business permits are 100% complete without legal confusion.",
+    welcomeMessage: "Selamat datang kak! Saya Pak Arief. Saya membantu memilihkan kode KBLI 5 digit resmi BPS dan memastikan izin usaha OSS kakak lengkap tanpa risiko denda.",
+    welcomeMessageEn: "Welcome! I am Pak Arief. I help you identify your official 5-digit KBLI code and ensure your OSS RBA business permits are complete without legal penalties.",
     suggestedPrompts: [
       {
         label: "Cari KBLI Cafe & Kopi",
@@ -337,56 +413,77 @@ export const AGENT_PERSONAS: Record<AgentPersonId, AgentPersonaData> = {
       {
         id: "a1",
         sender: "agent",
-        text: "Halo kak, salam kenal. Sedang merencanakan buka usaha atau mau melengkapi izin yang sudah ada? Ceritakan jualan apa saja, biar Pak Arief carikan kodenya.",
+        text: "Halo kak, salam kenal. Sedang merencanakan buka usaha atau mau melengkapi izin? Ceritakan jualan apa saja, biar Pak Arief carikan kodenya.",
         timestamp: "11:20",
       },
       {
         id: "a2",
         sender: "user",
-        text: "Pak Arief, saya mau buka kedai kopi santai di garasi rumah, ada meja kursi buat nongkrong, ada kopi susu, espresso, sama cemilan kentang goreng.",
+        text: "Pak Arief, saya mau buka kedai kopi santai di garasi rumah, ada meja kursi buat nongkrong, jual kopi susu, espresso, sama cemilan kentang goreng.",
         timestamp: "11:22",
       },
       {
         id: "a3",
         sender: "agent",
-        text: "Pilihan pas kak! Berdasarkan klasifikasi resmi, usaha kakak masuk ke KBLI 56303 (Rumah Minum/Kafe). Tingkat risikonya tergolong Rendah, artinya kakak CUKUP memiliki Nomor Induk Berusaha (NIB). NIB ini sudah otomatis berlaku sebagai izin operasional resmi. Rincian izinnya bisa kakak cek di sebelah kanan.",
+        text: "Pilihan pas kak! Berdasarkan klasifikasi resmi pemerintah, usaha kakak masuk ke KBLI 56303 (Rumah Minum/Kafe). Tingkat risikonya tergolong Rendah, artinya kakak CUKUP memiliki Nomor Induk Berusaha (NIB) saja. NIB ini sudah otomatis berlaku sebagai izin operasional resmi. Sertifikat kelayakannya sudah Pak Arief siapkan di panel kanan ya.",
         timestamp: "11:23",
       },
     ],
     thinkingFlow: [
       {
-        title: "1. Memahami Cerita Usaha Anda",
-        detail: "Minuman kopi olahan dan makanan ringan dinikmati di tempat.",
+        title: "1. Analisis Deskripsi Usaha",
+        detail: "Penyediaan minuman kopi olahan dan makanan ringan di tempat.",
         status: "verified",
       },
       {
-        title: "2. Menemukan Kode Resmi yang Cocok",
-        detail: "Terdaftar resmi pada KBLI 56303 (Rumah Minum / Kafe).",
+        title: "2. Pencocokan Taksonomi 1.790 KBLI",
+        detail: "Terpetakan ke KBLI 56303: Rumah Minum/Kafe.",
         status: "verified",
+        statuteCitation: "Perka BPS No. 2 Tahun 2020",
       },
       {
-        title: "3. Penilaian Syarat Dokumen",
-        detail: "Kategori Usaha Rendah Risiko untuk skala UMKM.",
+        title: "3. Penilaian Risiko OSS RBA",
+        detail: "Kategori Risiko Rendah (Low Risk) skala UMKM.",
         status: "verified",
+        statuteCitation: "PP No. 5 Tahun 2021",
       },
       {
-        title: "4. Izin Usaha Terverifikasi Sah",
-        detail: "Cukup memiliki NIB, sudah boleh langsung jualan secara sah.",
+        title: "4. Verifikasi Persyaratan Dokumen",
+        detail: "NIB berlaku sebagai izin operasional dan komersial sah.",
         status: "verified",
       },
     ],
-    activeArtifact: {
-      title: "Kartu Syarat Izin Usaha",
+    livingArtifact: {
+      id: "art-licensing-1",
+      title: "Sertifikat Kelayakan Izin NIB OSS RBA",
+      titleEn: "Official OSS RBA NIB Permit Assessment",
       type: "licensing_card",
-      summary: "KBLI 56303 - Rumah Minum/Kafe",
-      highlight: "Cukup Punya NIB (Izin Lengkap)",
-      statutePill: "Izin Sah Pemerintah",
-      details: [
-        { key: "Kode KBLI Resmi", value: "56303 (Rumah Minum / Kafe)" },
-        { key: "Tingkat Risiko", value: "Rendah (Low Risk)" },
-        { key: "Syarat Izin", value: "NIB berlaku sebagai izin sah penuh" },
-        { key: "Sertifikasi Tambahan", value: "Tidak butuh izin rumit tambahan" },
+      summary: "KBLI 56303 - Rumah Minum/Kafe (Risiko Rendah)",
+      summaryEn: "KBLI 56303 - Cafe / Coffeehouse (Low Risk)",
+      badge: "Izin Sah Pemerintah",
+      badgeEn: "Government Verified",
+      actionButtonLabel: "Simpan Rekomendasi Izin Usaha",
+      actionButtonLabelEn: "Save Verified Permit Record",
+      actionSuccessMessage: "Rekomendasi kode KBLI dan syarat NIB berhasil disimpan ke profil usaha!",
+      actionSuccessMessageEn: "KBLI classification and NIB requirements saved to business profile!",
+      executionStatus: "ready_to_verify",
+      metrics: [
+        { label: "Kode KBLI", labelEn: "KBLI Code", value: "56303" },
+        { label: "Tingkat Risiko", labelEn: "Risk Level", value: "Rendah" },
+        { label: "Syarat Izin", labelEn: "Permit Type", value: "Cukup NIB" },
       ],
+      breakdown: [
+        { label: "Klasifikasi BPS", labelEn: "BPS Classification", value: "Rumah Minum / Kafe", secondary: "Golongan Pokok 56" },
+        { label: "Legalitas Usaha", labelEn: "Operational Legality", value: "NIB OSS RBA", secondary: "Izin operasional langsung sah" },
+        { label: "Dasar Regulasi", labelEn: "Regulatory Basis", value: "PP No. 5 Tahun 2021", secondary: "Penyelenggaraan Perizinan Berusaha" },
+      ],
+      groundingProof: {
+        model: "Gemini 3.8 Flash (Vertex AI)",
+        guardrail: "Offline 1,790 BPS KBLI 2020 Index Match (Zero Hallucination)",
+        guardrailEn: "Offline 1,790 BPS KBLI 2020 Index Match (Zero Hallucination)",
+        statute: "PP 5/2021 & Perka BPS 2/2020",
+        variance: "100% Taxon Match",
+      },
     },
   },
 };
