@@ -21,7 +21,7 @@ import { taxPosition } from "@/lib/ledger";
 import { PPH_FINAL_RATE, PPH_INDIVIDUAL_EXEMPTION } from "@/lib/sak-emkm";
 import type { TaxAssessment } from "@/lib/adk";
 import { cacheTax, getServerTaxSnapshot, getTaxSnapshot, primeTaxStore, readCachedTax, runFiskal, subscribeTax } from "@/lib/agent-tax";
-import { copy } from "@/lib/copy";
+import { useLanguage } from "@/lib/copy";
 import { describeAgentError } from "@/lib/agent-errors";
 import { idrFull } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -36,6 +36,7 @@ import { cn } from "@/lib/utils";
  */
 export default function PajakPage() {
   const { entries, ready, business } = useWorkspace();
+  const { copy } = useLanguage();
 
   // Hoisted to a primitive: the React compiler cannot preserve manual
   // memoization when a dependency is an optional chain (`business?.entity`).
@@ -190,7 +191,7 @@ export default function PajakPage() {
                 {individual ? copy.pajak.entityExemptBody : copy.pajak.entityTaxedBody}
               </p>
               <p className="mt-2 text-[11px] text-muted-foreground">
-                {ENTITY_LABEL[business.entity]} · {copy.pajak.entityChangeHint}
+                {copy.entityLabels?.[business.entity] ?? ENTITY_LABEL[business.entity]} · {copy.pajak.entityChangeHint}
               </p>
             </div>
           </CardContent>

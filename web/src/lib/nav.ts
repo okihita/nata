@@ -35,7 +35,10 @@ export interface NavItem {
 /** Semantic colour roles, matched to Tailwind classes in the sidebar. */
 export type NavTone = "hijau" | "biru" | "ungu" | "oranye";
 
+export type NavGroupKey = "summary" | "operations" | "master" | "reports" | "other";
+
 export interface NavGroup {
+  key: NavGroupKey;
   label: string;
   tone: NavTone;
   items: NavItem[];
@@ -43,11 +46,13 @@ export interface NavGroup {
 
 export const NAV: NavGroup[] = [
   {
+    key: "summary",
     label: "Ringkasan",
     tone: "hijau",
     items: [{ href: "/dasbor", key: "dashboard", icon: "LayoutDashboard", mobile: true }],
   },
   {
+    key: "operations",
     label: "Operasional",
     tone: "hijau",
     items: [
@@ -56,11 +61,13 @@ export const NAV: NavGroup[] = [
     ],
   },
   {
+    key: "master",
     label: "Data Induk",
     tone: "biru",
     items: [{ href: "/akun", key: "akun", icon: "BookOpen" }],
   },
   {
+    key: "reports",
     label: "Laporan",
     tone: "ungu",
     items: [
@@ -70,6 +77,7 @@ export const NAV: NavGroup[] = [
     ],
   },
   {
+    key: "other",
     label: "Lainnya",
     tone: "oranye",
     items: [

@@ -34,7 +34,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useWorkspace } from "@/lib/store";
 import { clearRegulasi as clearRegulasiCache } from "@/lib/agent-regulasi";
-import { copy } from "@/lib/copy";
+import { useLanguage } from "@/lib/copy";
 import {
   BUSINESS_TYPES,
   ENTITY_OPTIONS,
@@ -45,6 +45,7 @@ import {
 export default function UsahaPage() {
   const router = useRouter();
   const { business, ready, createBusiness, updateBusiness } = useWorkspace();
+  const { copy } = useLanguage();
 
   // Derive the form from the stored business during render, with a local
   // override once the owner edits a field. Same pattern as the Perizinan
@@ -159,9 +160,11 @@ export default function UsahaPage() {
                         : "hover:bg-muted/50",
                     )}
                   >
-                    <span className="block text-sm font-medium">{option.label}</span>
+                    <span className="block text-sm font-medium">
+                      {copy.typeLabels?.[option.id] ?? option.label}
+                    </span>
                     <span className="block text-xs text-muted-foreground">
-                      {option.hint}
+                      {copy.typeHints?.[option.id] ?? option.hint}
                     </span>
                   </button>
                 ))}
@@ -224,7 +227,9 @@ export default function UsahaPage() {
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="flex flex-wrap items-center gap-2">
-                          <span className="text-sm font-medium">{option.label}</span>
+                          <span className="text-sm font-medium">
+                            {copy.entityLabels?.[option.id] ?? option.label}
+                          </span>
                           <span
                             className={cn(
                               "rounded-full px-2 py-0.5 text-[10px] font-medium",
@@ -239,7 +244,7 @@ export default function UsahaPage() {
                           </span>
                         </span>
                         <span className="mt-1 block text-xs text-muted-foreground">
-                          {option.hint}
+                          {copy.usaha.entityHints?.[option.id] ?? option.hint}
                         </span>
                       </span>
                     </button>

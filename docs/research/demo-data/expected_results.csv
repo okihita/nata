@@ -1,0 +1,104 @@
+persona,bulan,metrik,nilai,catatan
+A,2026-07,omzet_bruto_shopee,76263000,"harga sebelum voucher penjual, pesanan selesai"
+A,2026-07,contribution_margin_shopee,31854636,"setelah voucher, fee, afiliasi, retur, HPP, iklan, kemasan 1,8%"
+A,2026-07,contribution_margin_pct_shopee,41.8,
+A,2026-07,margin_persepsi_pemilik_pct_shopee,59.8,harga - HPP - komisi admin saja
+A,2026-07,omzet_bruto_tokopedia_tiktok,44963000,"harga sebelum voucher penjual, pesanan selesai"
+A,2026-07,contribution_margin_tokopedia_tiktok,8406526,"setelah voucher, fee, afiliasi, retur, HPP, iklan, kemasan 1,8%"
+A,2026-07,contribution_margin_pct_tokopedia_tiktok,18.7,
+A,2026-07,margin_persepsi_pemilik_pct_tokopedia_tiktok,61.0,harga - HPP - komisi admin saja
+A,2026-07,omzet_bruto_toko_fisik,20330000,
+A,2026-07,omzet_bruto_total,141556000,
+A,2026-07,pph_final_terutang,707780,"0,5% x omzet; ambang Rp500 juta sudah terlampaui sejak April"
+A,2026-07,proyeksi_pph22_marketplace_bila_berlaku,606130,ilustrasi: pemungutan baru mulai 1 Nov 2026
+A,2026-08,omzet_bruto_shopee,87194000,"harga sebelum voucher penjual, pesanan selesai"
+A,2026-08,contribution_margin_shopee,36557006,"setelah voucher, fee, afiliasi, retur, HPP, iklan, kemasan 1,8%"
+A,2026-08,contribution_margin_pct_shopee,41.9,
+A,2026-08,margin_persepsi_pemilik_pct_shopee,60.1,harga - HPP - komisi admin saja
+A,2026-08,omzet_bruto_tokopedia_tiktok,47424000,"harga sebelum voucher penjual, pesanan selesai"
+A,2026-08,contribution_margin_tokopedia_tiktok,8032328,"setelah voucher, fee, afiliasi, retur, HPP, iklan, kemasan 1,8%"
+A,2026-08,contribution_margin_pct_tokopedia_tiktok,16.9,
+A,2026-08,margin_persepsi_pemilik_pct_tokopedia_tiktok,61.0,harga - HPP - komisi admin saja
+A,2026-08,omzet_bruto_toko_fisik,26562000,
+A,2026-08,omzet_bruto_total,161180000,
+A,2026-08,pph_final_terutang,805900,"0,5% x omzet; ambang Rp500 juta sudah terlampaui sejak April"
+A,2026-08,proyeksi_pph22_marketplace_bila_berlaku,673090,ilustrasi: pemungutan baru mulai 1 Nov 2026
+A,2026-09,omzet_bruto_shopee,94436000,"harga sebelum voucher penjual, pesanan selesai"
+A,2026-09,contribution_margin_shopee,39417920,"setelah voucher, fee, afiliasi, retur, HPP, iklan, kemasan 1,8%"
+A,2026-09,contribution_margin_pct_shopee,41.7,
+A,2026-09,margin_persepsi_pemilik_pct_shopee,59.8,harga - HPP - komisi admin saja
+A,2026-09,omzet_bruto_tokopedia_tiktok,53497000,"harga sebelum voucher penjual, pesanan selesai"
+A,2026-09,contribution_margin_tokopedia_tiktok,9094944,"setelah voucher, fee, afiliasi, retur, HPP, iklan, kemasan 1,8%"
+A,2026-09,contribution_margin_pct_tokopedia_tiktok,17.0,
+A,2026-09,margin_persepsi_pemilik_pct_tokopedia_tiktok,61.3,harga - HPP - komisi admin saja
+A,2026-09,omzet_bruto_toko_fisik,22960000,
+A,2026-09,omzet_bruto_total,170893000,
+A,2026-09,pph_final_terutang,854465,"0,5% x omzet; ambang Rp500 juta sudah terlampaui sejak April"
+A,2026-09,proyeksi_pph22_marketplace_bila_berlaku,739665,ilustrasi: pemungutan baru mulai 1 Nov 2026
+A,2026-YTD-SEP,omzet_kumulatif,1343629000,"jauh di bawah Rp4,8 miliar"
+A,2026-07,pph_final_disetor,381315,disetor 14 Agu: hanya dari omzet Shopee
+A,2026-07,kurang_bayar_pph_final,326465,TEMUAN: omzet Tokopedia/TikTok & toko fisik terlewat
+A,2026-Q3,total_prive_terdeteksi,39180000,9 transaksi pribadi di rekening usaha
+A,2026-09-30,saldo_bank_akhir,126018922,
+B,2026-07,penjualan_bruto,271417000,
+B,2026-07,promo_ditanggung_merchant,0,
+B,2026-07,pendapatan_bersih,271417000,
+B,2026-07,komisi_ojol,18959800,
+B,2026-07,hpp_bahan_resep,96372910,"biaya resep x qty, harga bahan bulan berjalan"
+B,2026-07,food_cost_pct,35.5,
+B,2026-07,biaya_kemasan,8240400,
+B,2026-07,waste_bahan_4pct,3854916,
+B,2026-07,gaji,65800000,
+B,2026-07,biaya_operasional_lain,40975147,"sewa, utilitas, internet & POS, iklan, pemeliharaan (dari mutasi bank)"
+B,2026-07,penyusutan_amortisasi,7400000,
+B,2026-07,laba_sebelum_pajak_estimasi,29813827,
+B,2026-07,pbjt_terutang,27141700,"10% x (penjualan - promo merchant), semua channel"
+B,2026-07,estimasi_pph_badan_11pct,3279521,"22% dengan fasilitas Pasal 31E; omzet <= Rp4,8 miliar; tanpa koreksi fiskal"
+B,2026-08,penjualan_bruto,288056000,
+B,2026-08,promo_ditanggung_merchant,0,
+B,2026-08,pendapatan_bersih,288056000,
+B,2026-08,komisi_ojol,20128400,
+B,2026-08,hpp_bahan_resep,104541425,"biaya resep x qty, harga bahan bulan berjalan"
+B,2026-08,food_cost_pct,36.3,
+B,2026-08,biaya_kemasan,8802000,
+B,2026-08,waste_bahan_4pct,4181657,
+B,2026-08,gaji,65800000,
+B,2026-08,biaya_operasional_lain,41353222,"sewa, utilitas, internet & POS, iklan, pemeliharaan (dari mutasi bank)"
+B,2026-08,penyusutan_amortisasi,7400000,
+B,2026-08,laba_sebelum_pajak_estimasi,35849296,
+B,2026-08,pbjt_terutang,28805600,"10% x (penjualan - promo merchant), semua channel"
+B,2026-08,estimasi_pph_badan_11pct,3943423,"22% dengan fasilitas Pasal 31E; omzet <= Rp4,8 miliar; tanpa koreksi fiskal"
+B,2026-09,penjualan_bruto,266520000,
+B,2026-09,promo_ditanggung_merchant,4196400,
+B,2026-09,pendapatan_bersih,262323600,
+B,2026-09,komisi_ojol,17696320,
+B,2026-09,hpp_bahan_resep,106488070,"biaya resep x qty, harga bahan bulan berjalan"
+B,2026-09,food_cost_pct,40.6,
+B,2026-09,biaya_kemasan,8168400,
+B,2026-09,waste_bahan_4pct,4259523,
+B,2026-09,gaji,70600000,
+B,2026-09,biaya_operasional_lain,41742359,"sewa, utilitas, internet & POS, iklan, pemeliharaan (dari mutasi bank)"
+B,2026-09,penyusutan_amortisasi,7400000,
+B,2026-09,laba_sebelum_pajak_estimasi,5968928,
+B,2026-09,pbjt_terutang,26232360,"10% x (penjualan - promo merchant), semua channel"
+B,2026-09,estimasi_pph_badan_11pct,656582,"22% dengan fasilitas Pasal 31E; omzet <= Rp4,8 miliar; tanpa koreksi fiskal"
+B,2026-07,pbjt_disetor,17661800,disetor 10 Agu: tanpa penjualan GoFood/GrabFood
+B,2026-07,selisih_pbjt_ojol,9479900,TEMUAN: perlu dicek terhadap Perda
+B,2026-08,pbjt_disetor,18741400,
+B,2026-08,selisih_pbjt_ojol,10064200,
+B,2026-Q3,sewa_ruko_tanpa_pph42,78000000,"TEMUAN: PT wajib potong PPh 4(2) 10% atas sewa bangunan = Rp7,8 juta"
+B,2026-09,menu_engineering_M01,Star,"Es Kopi Susu Seduh: CM Rp17,980 | share 26.1% | food cost 35.8%"
+B,2026-09,menu_engineering_M02,Star,"Americano: CM Rp19,480 | share 7.0% | food cost 22.1%"
+B,2026-09,menu_engineering_M03,Star,"Cappuccino: CM Rp22,640 | share 6.0% | food cost 29.2%"
+B,2026-09,menu_engineering_M04,Star,"Matcha Latte: CM Rp23,130 | share 6.3% | food cost 32.0%"
+B,2026-09,menu_engineering_M05,Puzzle,"Teh Tarik: CM Rp17,980 | share 5.2% | food cost 18.3%"
+B,2026-09,menu_engineering_M06,Puzzle,"Affogato: CM Rp27,980 | share 1.8% | food cost 26.4%"
+B,2026-09,menu_engineering_M07,Plowhorse,"Nasi Goreng Kampung: CM Rp15,185 | share 14.9% | food cost 56.6%"
+B,2026-09,menu_engineering_M08,Plowhorse,"Ayam Geprek Sambal Matah: CM Rp16,110 | share 10.5% | food cost 51.2%"
+B,2026-09,menu_engineering_M09,Star,"Mie Goreng Jawa: CM Rp20,550 | share 6.0% | food cost 35.8%"
+B,2026-09,menu_engineering_M10,Dog,"Pasta Carbonara: CM Rp9,080 | share 1.9% | food cost 78.4%"
+B,2026-09,menu_engineering_M11,Dog,"Roti Bakar Cokelat Keju: CM Rp16,220 | share 5.2% | food cost 32.4%"
+B,2026-09,menu_engineering_M12,Plowhorse,"Kentang Goreng: CM Rp14,260 | share 5.4% | food cost 35.2%"
+B,2026-09,menu_engineering_M13,Dog,"Pisang Goreng Madu: CM Rp12,080 | share 3.6% | food cost 39.6%"
+B,2026-09,cm_rata_rata_tertimbang,17736,
+B,2026-09-30,saldo_bank_akhir,267943671,

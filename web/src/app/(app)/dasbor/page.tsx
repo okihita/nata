@@ -40,11 +40,12 @@ import { cn } from "@/lib/utils";
 import { useWorkspace } from "@/lib/store";
 import { ENTITY_LABEL, entityHasExemption } from "@/lib/business";
 import { balanceSheet, incomeStatement, monthlyRevenue, taxPosition, trialBalance } from "@/lib/ledger";
-import { copy } from "@/lib/copy";
+import { useLanguage } from "@/lib/copy";
 import { idr, idrFull } from "@/lib/format";
 
 export default function DashboardPage() {
   const { entries, ready, business, loadDemo } = useWorkspace();
+  const { copy } = useLanguage();
   const income = incomeStatement(entries);
   const bs = balanceSheet(entries);
   const series = monthlyRevenue(entries);
@@ -87,13 +88,31 @@ export default function DashboardPage() {
   if (!ready) {
     return (
       <div className="space-y-6">
-        <Skeleton className="h-9 w-56" />
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-32" />
-          ))}
+        <div>
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="mt-2 h-4 w-72" />
         </div>
-        <Skeleton className="h-72" />
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center py-16">
+            <Skeleton className="size-14 rounded-2xl" />
+            <Skeleton className="mt-4 h-5 w-48" />
+            <Skeleton className="mt-2 h-4 w-80 max-w-full" />
+            <div className="mt-6 flex gap-2">
+              <Skeleton className="h-9 w-32 rounded-md" />
+              <Skeleton className="h-9 w-32 rounded-md" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-3">
+            <Skeleton className="h-4 w-36" />
+          </CardHeader>
+          <CardContent className="grid gap-4 sm:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Skeleton key={i} className="h-16 rounded-lg" />
+            ))}
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -500,6 +519,7 @@ function ComplianceRow({
   business: NonNullable<ReturnType<typeof useWorkspace>["business"]>;
   className?: string;
 }) {
+  const { copy } = useLanguage();
   const exempt = entityHasExemption(business.entity);
   return (
     <Card className={className}>
@@ -510,7 +530,7 @@ function ComplianceRow({
         <ComplianceItem
           icon={<Building2 className="size-3.5" />}
           label={copy.dashboard.complianceEntity}
-          value={ENTITY_LABEL[business.entity]}
+          value={copy.entityLabels?.[business.entity] ?? ENTITY_LABEL[business.entity]}
         />
         <ComplianceItem
           icon={<Landmark className="size-3.5" />}

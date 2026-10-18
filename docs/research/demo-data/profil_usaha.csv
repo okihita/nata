@@ -1,0 +1,3 @@
+persona,nama_usaha,bentuk_usaha,tahun_terdaftar,pemilik,status_pisah_harta,lokasi,arketipe,channel,jumlah_karyawan,pkp,omzet_2025,omzet_jan,omzet_feb,omzet_mar,omzet_apr,omzet_mei,omzet_jun
+A,Rona Kirana Beauty,orang_pribadi,2019,Kirana Putri Wulandari,tidak,"Jakarta Selatan, DKI Jakarta",dagang,shopee;tokopedia_tiktok;toko_fisik,5,tidak,1620000000,128000000,134000000,176000000,138000000,143000000,151000000
+B,PT Seduh Rasa Nusantara (Kedai Seduh),pt,2021,"Dimas Arya Pratama (60%), Raka Aditya (40%)",n/a,"Kota Bandung, Jawa Barat",fnb,dine_in;takeaway;gofood;grabfood,14,tidak,2740000000,228000000,219000000,262000000,241000000,236000000,234000000
