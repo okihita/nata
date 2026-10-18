@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/lib/copy";
-import { useWorkspace } from "@/lib/store";
 import {
   ACADEMY_LESSONS,
   MYTH_FACTS,
@@ -24,26 +23,19 @@ import {
 
 export default function AcademyPage() {
   const { copy } = useLanguage();
-  const { business } = useWorkspace();
-
-  const [selectedPersona, setSelectedPersona] = useState<"all" | "persona_a" | "persona_b">("all");
+  const [selectedCategory, setSelectedCategory] = useState<
+    "all" | "accounting_101" | "tax_compliance" | "licensing_legal" | "operations_team"
+  >("all");
   const [activeLessonId, setActiveLessonId] = useState<string | null>(null);
 
-  // Auto-detect recommended persona if not explicitly filtered
-  const activePersonaId = business?.id.includes("persona-b")
-    ? "persona_b"
-    : business?.id.includes("persona-a")
-      ? "persona_a"
-      : undefined;
-
-  // Filter lessons specifically for the Business Complexities track
+  // Filter lessons specifically for the Business track (Kuliah Bisnis)
   const businessLessons = useMemo(() => {
     return ACADEMY_LESSONS.filter((item) => {
       if (item.track !== "business") return false;
-      if (selectedPersona === "all") return true;
-      return item.targetPersona === "all" || item.targetPersona === selectedPersona;
+      if (selectedCategory === "all") return true;
+      return item.category === selectedCategory;
     });
-  }, [selectedPersona]);
+  }, [selectedCategory]);
 
   const activeLesson = useMemo(() => {
     if (!activeLessonId) return null;
@@ -53,7 +45,7 @@ export default function AcademyPage() {
   return (
     <>
       <PageHeader
-        title={copy.nav.academy}
+        title={copy.academy.title}
         subtitle={copy.academy.subtitle}
       />
 
@@ -66,40 +58,51 @@ export default function AcademyPage() {
                 <GraduationCap className="mr-1 size-3.5" />
                 {copy.academy.badge}
               </Badge>
-              {activePersonaId && (
-                <Badge variant="secondary" className="font-mono text-[10px]">
-                  {activePersonaId === "persona_a" ? "Persona A: Retail" : "Persona B: F&B PT"}
-                </Badge>
-              )}
             </div>
             <p className="text-xs text-muted-foreground">{copy.academy.filterHint}</p>
           </div>
 
-          {/* Quick Persona Curriculum Switcher Filter */}
+          {/* Category Filter */}
           <div className="flex flex-wrap items-center gap-1.5 rounded-lg border bg-background/80 p-1">
             <Button
-              variant={selectedPersona === "all" ? "default" : "ghost"}
+              variant={selectedCategory === "all" ? "default" : "ghost"}
               size="sm"
               className="h-7 text-xs"
-              onClick={() => setSelectedPersona("all")}
+              onClick={() => setSelectedCategory("all")}
             >
-              {copy.academy.personaFilter.all}
+              {copy.academy.categoryFilter.all}
             </Button>
             <Button
-              variant={selectedPersona === "persona_a" ? "default" : "ghost"}
+              variant={selectedCategory === "accounting_101" ? "default" : "ghost"}
               size="sm"
               className="h-7 text-xs"
-              onClick={() => setSelectedPersona("persona_a")}
+              onClick={() => setSelectedCategory("accounting_101")}
             >
-              {copy.academy.personaFilter.persona_a}
+              {copy.academy.categoryFilter.accounting_101}
             </Button>
             <Button
-              variant={selectedPersona === "persona_b" ? "default" : "ghost"}
+              variant={selectedCategory === "tax_compliance" ? "default" : "ghost"}
               size="sm"
               className="h-7 text-xs"
-              onClick={() => setSelectedPersona("persona_b")}
+              onClick={() => setSelectedCategory("tax_compliance")}
             >
-              {copy.academy.personaFilter.persona_b}
+              {copy.academy.categoryFilter.tax_compliance}
+            </Button>
+            <Button
+              variant={selectedCategory === "licensing_legal" ? "default" : "ghost"}
+              size="sm"
+              className="h-7 text-xs"
+              onClick={() => setSelectedCategory("licensing_legal")}
+            >
+              {copy.academy.categoryFilter.licensing_legal}
+            </Button>
+            <Button
+              variant={selectedCategory === "operations_team" ? "default" : "ghost"}
+              size="sm"
+              className="h-7 text-xs"
+              onClick={() => setSelectedCategory("operations_team")}
+            >
+              {copy.academy.categoryFilter.operations_team}
             </Button>
           </div>
         </div>
@@ -116,15 +119,10 @@ export default function AcademyPage() {
             const lessonCopy = copy.academy.lessons[lesson.id as keyof typeof copy.academy.lessons];
             if (!lessonCopy) return null;
 
-            const isRecommended =
-              activePersonaId && lesson.targetPersona === activePersonaId;
-
             return (
               <Card
                 key={lesson.id}
-                className={`flex flex-col justify-between transition-all hover:border-primary/50 hover:shadow-xs ${
-                  isRecommended ? "border-primary/40 bg-primary/[0.02]" : ""
-                }`}
+                className="flex flex-col justify-between transition-all hover:border-primary/50 hover:shadow-xs"
               >
                 <CardHeader className="p-4 pb-2">
                   <div className="flex items-center justify-between gap-2">

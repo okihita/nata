@@ -88,7 +88,7 @@ export const copyId = {
     laporan: "Laporan Keuangan",
     pajak: "Pajak",
     perizinan: "Perizinan",
-    academy: "Kompleksitas Bisnis",
+    academy: "Kuliah Bisnis",
     platformGuide: "Panduan Platform",
     usaha: "Profil Usaha",
     pengaturan: "Pengaturan",
@@ -723,19 +723,21 @@ export const copyId = {
       "Prosesnya memakan waktu lebih lama dari biasanya. Catatan Anda tidak berubah — coba lagi sebentar lagi.",
   },
   academy: {
-    title: "Akademi",
-    subtitle: "Alur kerja platform, standar akuntansi SAK EMKM, dan aturan pajak UMKM.",
+    title: "Kuliah Bisnis",
+    subtitle: "Wawasan praktis standar akuntansi SAK EMKM, aturan pajak UMKM, dan kepatuhan hukum.",
     badge: "101 hingga Mahir",
-    personaFilter: {
-      all: "Semua Materi",
-      persona_a: "Retail / Toko (Persona A)",
-      persona_b: "F&B / PT Multi-Outlet (Persona B)",
+    categoryFilter: {
+      all: "Semua Topik",
+      accounting_101: "Akuntansi",
+      tax_compliance: "Pajak",
+      licensing_legal: "Perizinan",
+      operations_team: "Karyawan",
     },
-    filterHint: "Disesuaikan otomatis dengan bentuk badan usaha aktif Anda.",
+    filterHint: "Pengetahuan penting untuk seluruh pelaku usaha dan UMKM Indonesia.",
     tracks: {
       platform: "Panduan Platform",
       platformDesc: "Cara memaksimalkan pembukuan otomatis dan eksekusi multi-agen Nata.",
-      business: "Kompleksitas Bisnis & Kepatuhan",
+      business: "Kuliah Bisnis",
       businessDesc: "Standar akuntansi (SAK EMKM), pajak (PP 55/2022), izin KBLI, dan aturan ketenagakerjaan.",
     },
     categories: {

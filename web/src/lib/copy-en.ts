@@ -83,7 +83,7 @@ export const copyEn = {
     laporan: "Financial Statements",
     pajak: "Taxes",
     perizinan: "Licensing",
-    academy: "Business Complexities",
+    academy: "Business School",
     platformGuide: "Platform Guide",
     usaha: "Business Profile",
     pengaturan: "Settings",
@@ -718,19 +718,21 @@ export const copyEn = {
       "The operation timed out. Your records remain safe — please try again in a moment.",
   },
   academy: {
-    title: "Academy",
-    subtitle: "Platform workflows, Indonesian accounting standards (SAK EMKM), and tax rules.",
+    title: "Business School",
+    subtitle: "Essential knowledge on Indonesian accounting standards (SAK EMKM), tax rules, and legal compliance.",
     badge: "101 to Advanced",
-    personaFilter: {
-      all: "All Curriculums",
-      persona_a: "Retail / Toko (Persona A)",
-      persona_b: "F&B / PT Multi-Outlet (Persona B)",
+    categoryFilter: {
+      all: "All Topics",
+      accounting_101: "Accounting",
+      tax_compliance: "Taxes",
+      licensing_legal: "Licensing",
+      operations_team: "Team",
     },
-    filterHint: "Tailored to your active business entity.",
+    filterHint: "Practical knowledge for Indonesian business owners.",
     tracks: {
       platform: "Platform Mastery",
       platformDesc: "How to get the most out of Nata's autonomous bookkeeping and multi-agent engine.",
-      business: "Business Complexities & Compliance",
+      business: "Business School",
       businessDesc: "Indonesian accounting (SAK EMKM), tax (PP 55/2022), KBLI licensing, and hiring.",
     },
     categories: {
