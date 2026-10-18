@@ -203,6 +203,8 @@ export const copyId = {
         cta: "Ekspor PDF",
       },
     },
+    todoPending: (n: number) => `${n} perlu ditindak`,
+    todoCompletedCount: (n: number) => `${n} tugas selesai`,
   },
 
   add: {

@@ -15,7 +15,6 @@ import {
   Info,
   CheckCircle2,
   Calendar,
-  Clock,
   Printer,
   Compass,
 } from "lucide-react";
@@ -146,9 +145,9 @@ export default function DashboardPage() {
     ];
     return list;
   }, [copy, business]);
-  // A badan usaha can owe Rp 0 simply because turnover is zero. Saying "masih di
-  // bawah batas bebas pajak" would imply a threshold that does not apply to it,
-  // so no tax item is shown at all in that case.
+
+  const pendingTodos = useMemo(() => todos.filter((t) => !t.done), [todos]);
+  const completedTodos = useMemo(() => todos.filter((t) => t.done), [todos]);
 
   if (!ready) {
     return (
@@ -383,84 +382,84 @@ export default function DashboardPage() {
         </Card>
 
         {/* Action Plan & Priority Checklist */}
-        <Card className="flex flex-col border-border">
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-base flex items-center gap-2">
-                <CheckCircle2 className="size-4 text-primary" />
-                <span>{copy.dashboard.todoTitle}</span>
-              </CardTitle>
-              <Badge variant="outline" className="text-[11px] font-normal bg-muted/40">
-                {todos.filter((t) => t.done).length}/{todos.length} Selesai
-              </Badge>
-            </div>
-            <CardDescription className="text-xs">
-              {copy.dashboard.todoSubtitle}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2.5 flex-1">
-            {todos.map((todo) => (
-              <div
-                key={todo.id}
-                className={cn(
-                  "rounded-lg border p-3 text-xs transition-colors",
-                  todo.done ? "bg-muted/30 border-muted" : "bg-card hover:bg-muted/40 border-border"
-                )}
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-start gap-2">
+        <Card className="flex flex-col border-border justify-between">
+          <div>
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-base flex items-center gap-2">
+                  <CheckCircle2 className="size-4 text-primary" />
+                  <span>{copy.dashboard.todoTitle}</span>
+                </CardTitle>
+                <Badge variant="secondary" className="text-[11px] font-normal">
+                  {copy.dashboard.todoPending(pendingTodos.length)}
+                </Badge>
+              </div>
+              <CardDescription className="text-xs">
+                {copy.dashboard.todoSubtitle}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-1.5 p-4 pt-0">
+              {pendingTodos.map((todo) => (
+                <Link
+                  key={todo.id}
+                  href={todo.href}
+                  className="group flex items-center justify-between rounded-lg p-2.5 transition-colors hover:bg-muted/50 border border-transparent hover:border-border"
+                >
+                  <div className="flex items-start gap-2.5 min-w-0 pr-2">
                     <span className="mt-0.5 shrink-0">{todo.icon}</span>
-                    <div>
-                      <p className={cn("font-medium text-foreground", todo.done && "line-through text-muted-foreground")}>
+                    <div className="min-w-0">
+                      <p className="font-medium text-xs text-foreground group-hover:text-primary transition-colors">
                         {todo.title}
                       </p>
-                      <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+                      <p className="text-[11px] text-muted-foreground truncate">
                         {todo.desc}
                       </p>
                     </div>
                   </div>
-                  <Badge
-                    variant={todo.priority === "Tinggi" ? "destructive" : "secondary"}
-                    className="text-[10px] shrink-0 font-normal py-0 h-5"
-                  >
-                    {todo.priority}
-                  </Badge>
-                </div>
-                <div className="mt-2.5 pt-2 border-t border-border/50 flex items-center justify-between">
-                  <span className="text-[10px] text-muted-foreground flex items-center gap-1">
-                    <Clock className="size-3" /> Rekomendasi Bot
-                  </span>
-                  <Button asChild variant="outline" size="sm" className="h-6 text-[11px] px-2 py-0">
-                    <Link href={todo.href}>
-                      {todo.cta}
-                      <ChevronRight className="ml-1 size-3" />
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            ))}
+                  <div className="flex items-center gap-2 shrink-0">
+                    {todo.priority === "Tinggi" && (
+                      <Badge variant="destructive" className="text-[10px] py-0 h-4.5 font-normal">
+                        {todo.priority}
+                      </Badge>
+                    )}
+                    <ChevronRight className="size-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 transition-all" />
+                  </div>
+                </Link>
+              ))}
 
-            {/* Optional Alert Item if any outstanding action exists */}
-            {actions.length > 0 && (
-              <div className="pt-1">
-                {actions.map((action) => (
-                  <Link
-                    key={action.id}
-                    href={action.href}
-                    className="flex items-start gap-2 rounded-lg border px-3 py-2 text-xs transition hover:bg-muted/50 bg-muted/20"
-                  >
-                    <Info
-                      className={cn(
-                        "mt-0.5 size-3.5 shrink-0",
-                        action.tone === "warn" ? "text-amber-600" : "text-sky-600",
-                      )}
-                    />
-                    <span>{action.text}</span>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </CardContent>
+              {/* Optional Alert Item if any outstanding action exists */}
+              {actions.length > 0 && (
+                <div className="pt-1">
+                  {actions.map((action) => (
+                    <Link
+                      key={action.id}
+                      href={action.href}
+                      className="flex items-start gap-2 rounded-lg border px-3 py-2 text-xs transition hover:bg-muted/50 bg-muted/20"
+                    >
+                      <Info
+                        className={cn(
+                          "mt-0.5 size-3.5 shrink-0",
+                          action.tone === "warn" ? "text-amber-600" : "text-sky-600",
+                        )}
+                      />
+                      <span>{action.text}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </div>
+
+          {/* Footer note: completed tasks collapsed */}
+          {completedTodos.length > 0 && (
+            <div className="px-6 py-3 border-t border-border/50 text-xs text-muted-foreground flex items-center gap-1.5 bg-muted/15 rounded-b-xl">
+              <CheckCircle2 className="size-3.5 text-emerald-600" />
+              <span>{copy.dashboard.todoCompletedCount(completedTodos.length)}:</span>
+              <span className="text-foreground truncate">
+                {completedTodos.map((t) => t.title).join(", ")}
+              </span>
+            </div>
+          )}
         </Card>
       </div>
 

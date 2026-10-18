@@ -198,6 +198,8 @@ export const copyEn = {
         cta: "Export PDF",
       },
     },
+    todoPending: (n: number) => `${n} pending`,
+    todoCompletedCount: (n: number) => `${n} task completed`,
   },
 
   add: {
