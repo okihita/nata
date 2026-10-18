@@ -86,6 +86,11 @@ async function forward(req: NextRequest, path: string[]): Promise<Response> {
     const value = upstream.headers.get(key);
     if (value) out.set(key, value);
   }
+
+  // Disable buffering across Cloud Run, Nginx, and CDNs for immediate SSE token delivery
+  out.set("X-Accel-Buffering", "no");
+  out.set("Cache-Control", "no-cache, no-transform");
+
   return new Response(upstream.body, { status: upstream.status, headers: out });
 }
 

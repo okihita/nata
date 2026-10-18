@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BookOpen,
+  Bot,
   FileBarChart,
   Landmark,
   LayoutDashboard,
@@ -12,7 +13,8 @@ import {
   Settings,
   ShieldCheck,
   Store,
-  Sparkles,
+  GraduationCap,
+  Compass,
   type LucideIcon,
 } from "lucide-react";
 
@@ -33,8 +35,10 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { NAV, TONE_DOT } from "@/lib/nav";
 import { useLanguage } from "@/lib/copy";
+import { GeminiLogo } from "@/components/gemini-logo";
 
 export const ICONS: Record<string, LucideIcon> = {
+  Bot,
   LayoutDashboard,
   ScanLine,
   ReceiptText,
@@ -44,6 +48,8 @@ export const ICONS: Record<string, LucideIcon> = {
   ShieldCheck,
   Store,
   Settings,
+  GraduationCap,
+  Compass,
 };
 
 export function AppSidebar() {
@@ -85,7 +91,8 @@ export function AppSidebar() {
               <SidebarMenu>
                 {group.items.map((item) => {
                   const Icon = ICONS[item.icon] ?? LayoutDashboard;
-                  const active = pathname.startsWith(item.href);
+                  const itemPath = item.href.split("?")[0];
+                  const active = pathname === itemPath;
                   return (
                     <SidebarMenuItem key={item.href}>
                       <SidebarMenuButton
@@ -111,9 +118,14 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <div className="flex items-center gap-2 rounded-lg border bg-muted/40 p-2.5 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">
-              <Sparkles className="size-3.5 shrink-0 text-primary" />
-              <span className="leading-snug">{copy.app.badge}</span>
+            <div className="group/gemini flex items-center gap-2.5 rounded-xl border border-border/80 bg-gradient-to-r from-muted/50 via-background to-muted/30 p-2.5 text-xs text-foreground shadow-2xs transition-all hover:border-primary/40 group-data-[collapsible=icon]:hidden">
+              <div className="flex size-6 shrink-0 items-center justify-center rounded-md bg-background shadow-2xs border border-border/50">
+                <GeminiLogo className="size-4" />
+              </div>
+              <div className="grid leading-tight">
+                <span className="text-[11px] font-semibold text-foreground tracking-tight">Google Gemini</span>
+                <span className="text-[10px] text-muted-foreground">on Google Cloud</span>
+              </div>
             </div>
           </SidebarMenuItem>
         </SidebarMenu>

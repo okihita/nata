@@ -45,3 +45,23 @@ test("Indonesian landing copy accurately reflects domestic MSME terms", () => {
   assert.match(copyId.landing.heroTitle, /Dari foto struk/);
   assert.match(copyId.landing.heroBadge, /Gemini di Google Cloud/);
 });
+
+test("accounts dictionary maintains exact key parity across English and Indonesian", () => {
+  const enAkunKeys = Object.keys(copyEn.akun).sort();
+  const idAkunKeys = Object.keys(copyId.akun).sort();
+  assert.deepEqual(enAkunKeys, idAkunKeys, "Accounts dictionary keys must match identically");
+});
+
+test("Indonesian accounts copy correctly reflects standard Indonesian accounting terms", () => {
+  assert.equal(copyId.akun.title, "Daftar Akun");
+  assert.equal(copyId.akun.aset, "Aset");
+  assert.equal(copyId.akun.liabilitas, "Liabilitas");
+  assert.equal(copyId.akun.ekuitas, "Ekuitas");
+  assert.equal(copyId.akun.pendapatan, "Pendapatan");
+  assert.equal(copyId.akun.beban, "Beban");
+  assert.equal(copyId.akun.normalDebit, "Saldo normal: Debit");
+  assert.equal(copyId.akun.normalCredit, "Saldo normal: Kredit");
+  assert.equal(copyId.akun.used, "Dipakai");
+  assert.equal(copyId.akun.emptyTitle, "Belum ada akun yang dipakai");
+});
+

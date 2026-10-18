@@ -11,6 +11,7 @@
  */
 
 export type NavKey =
+  | "agents"
   | "dashboard"
   | "catat"
   | "transaksi"
@@ -18,6 +19,8 @@ export type NavKey =
   | "laporan"
   | "pajak"
   | "perizinan"
+  | "academy"
+  | "platformGuide"
   | "usaha"
   | "pengaturan";
 
@@ -35,7 +38,7 @@ export interface NavItem {
 /** Semantic colour roles, matched to Tailwind classes in the sidebar. */
 export type NavTone = "hijau" | "biru" | "ungu" | "oranye";
 
-export type NavGroupKey = "summary" | "operations" | "master" | "reports" | "other";
+export type NavGroupKey = "summary" | "operations" | "master" | "reports" | "learning" | "other";
 
 export interface NavGroup {
   key: NavGroupKey;
@@ -49,7 +52,10 @@ export const NAV: NavGroup[] = [
     key: "summary",
     label: "Ringkasan",
     tone: "hijau",
-    items: [{ href: "/dashboard", key: "dashboard", icon: "LayoutDashboard", mobile: true }],
+    items: [
+      { href: "/agents", key: "agents", icon: "Bot", mobile: true },
+      { href: "/dashboard", key: "dashboard", icon: "LayoutDashboard", mobile: true },
+    ],
   },
   {
     key: "operations",
@@ -77,6 +83,15 @@ export const NAV: NavGroup[] = [
     items: [
       { href: "/statements", key: "laporan", icon: "FileBarChart", mobile: true },
       { href: "/taxes", key: "pajak", icon: "Landmark", mobile: true },
+    ],
+  },
+  {
+    key: "learning",
+    label: "Akademi",
+    tone: "biru",
+    items: [
+      { href: "/academy", key: "academy", icon: "GraduationCap" },
+      { href: "/guide", key: "platformGuide", icon: "Compass" },
     ],
   },
   {

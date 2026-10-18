@@ -22,11 +22,11 @@ export function LanguageSwitcher() {
         <Button
           variant="outline"
           size="sm"
-          className="h-8 gap-1.5 px-2 text-xs font-semibold tracking-wider text-muted-foreground hover:text-foreground"
+          className="h-8 gap-1.5 px-2.5 text-xs font-medium text-foreground hover:bg-muted/80 shadow-2xs"
           aria-label="Change Language"
         >
-          <Languages className="size-3.5" />
-          <span className="font-mono uppercase">{locale}</span>
+          <Languages className="size-3.5 text-muted-foreground" />
+          <span>{locale === "id" ? "Indonesia" : "English"}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-44">

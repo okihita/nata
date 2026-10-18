@@ -73,8 +73,10 @@ export const copyEn = {
       operations: "Operations",
       master: "Company & Master Data",
       reports: "Financial Reports",
+      learning: "Academy",
       other: "Preferences",
     },
+    agents: "Agents",
     dashboard: "Dashboard",
     catat: "Record Receipt",
     transaksi: "Transactions",
@@ -82,6 +84,8 @@ export const copyEn = {
     laporan: "Financial Statements",
     pajak: "Taxes",
     perizinan: "Licensing",
+    academy: "Business School",
+    platformGuide: "Platform Guide",
     usaha: "Business Profile",
     pengaturan: "Settings",
   },
@@ -228,13 +232,21 @@ export const copyEn = {
     emptyTitle: "No accounts in use yet",
     emptyBody:
       "This list populates automatically as transactions are posted — Nata selects matching accounts for each receipt.",
+    positionTitle: "Financial Position (Balance Sheet)",
+    positionSubtitle: "Real accounts: Assets, Liabilities, and Equity",
+    performanceTitle: "Financial Performance (Income Statement)",
+    performanceSubtitle: "Nominal accounts: Revenue and Operating Expenses",
+    activeAccountsCount: (n: number) => `${n} active accounts`,
   },
 
   laporan: {
     title: "Financial Statements",
     subtitle: "Compiled automatically from your ledger in compliance with SAK EMKM.",
     selectPeriod: "Period",
-    allPeriods: "All periods",
+    allPeriods: "All Periods",
+    allPeriodsCumulative: "All Recorded Periods (Cumulative)",
+    allPeriodsRange: (start: string, end: string, months: number) =>
+      `${start} – ${end} (${months} ${months === 1 ? "month" : "months"} total)`,
     labaRugi: "Income Statement",
     posisi: "Balance Sheet",
     calk: "Notes to Financial Statements (CALK)",
@@ -262,7 +274,19 @@ export const copyEn = {
       "Income tax is calculated under the MSME Final Income Tax scheme at 0.5% of gross turnover.",
     ],
     export: "Export",
+    exportCsv: "Export CSV (Excel)",
+    exportPdf: "Export PDF (Printable)",
     exported: "Statement exported as CSV.",
+    exportedPdf: "Opening printable financial statement PDF…",
+    learnTerms: "Learn SAK EMKM Terms",
+    learnTermsHint: "Master SAK EMKM accounting standards & CALK rules in Business School",
+    calkBannerTitle: "Unsure about these accounting terms? Learn the essentials:",
+    calkPills: {
+      accrual: "Accrual Accounting",
+      depreciation: "Asset Depreciation",
+      taxFinal: "0.5% Final Tax",
+      fullAcademy: "Open Business School",
+    },
     emptyTitle: "Statements will appear once records exist",
     emptyBody:
       "Financial statements are generated from your general ledger. Record your first receipt to generate statements automatically.",
@@ -713,5 +737,208 @@ export const copyEn = {
       "The service is currently busy. Your records remain safe — please wait a moment and retry.",
     timeout:
       "The operation timed out. Your records remain safe — please try again in a moment.",
+  },
+  academy: {
+    title: "Business School",
+    subtitle: "Essential knowledge on Indonesian accounting standards (SAK EMKM), tax rules, and legal compliance.",
+    badge: "101 to Advanced",
+    categoryFilter: {
+      all: "All Topics",
+      accounting_101: "Accounting",
+      tax_compliance: "Taxes",
+      licensing_legal: "Licensing",
+      operations_team: "Team",
+    },
+    filterHint: "Practical knowledge for Indonesian business owners.",
+    tracks: {
+      platform: "Platform Mastery",
+      platformDesc: "How to get the most out of Nata's autonomous bookkeeping and multi-agent engine.",
+      business: "Business School",
+      businessDesc: "Indonesian accounting (SAK EMKM), tax (PP 55/2022), KBLI licensing, and hiring.",
+    },
+    categories: {
+      platform_basics: "Platform Workflows",
+      accounting_101: "Accounting & Cash Flow",
+      tax_compliance: "Tax Compliance & Pitfalls",
+      licensing_legal: "Licensing & KBLI",
+      operations_team: "Team & Operations",
+    },
+    difficultyLabels: {
+      "101": "101 Fundamentals",
+      intermediate: "Intermediate",
+      advanced: "Advanced",
+    },
+    minRead: "min read",
+    statuteGrounded: "Grounded Statute",
+    actionButtons: {
+      readLesson: "Read Guide",
+      tryNow: "Try in Nata",
+      tryRecordVoice: "Try Voice Recording",
+      checkTaxes: "Check Tax Calculations",
+      checkLicensing: "Verify KBLI Code",
+      viewAccounts: "View Chart of Accounts",
+    },
+    lessons: {
+      plat_multimodal: {
+        title: "Fast Multi-Modal Recording",
+        summary: "Record transactions via receipt photo, voice note, or casual text.",
+        content:
+          "Nata allows business owners to record financial transactions using the method most convenient to them. In addition to clear receipt photos, you can dictate voice notes in colloquial Indonesian or paste unstructured WhatsApp text. The multimodal model extracts line items, quantities, vendors, and payment methods deterministically.",
+      },
+      plat_trace: {
+        title: "Agent Cascade Verification",
+        summary: "Observe autonomous handoffs: Keuangan -> Fiskal -> Regulasi.",
+        content:
+          "When you submit a transaction, Agent Keuangan parses the data and commits balanced double-entry lines (Assets = Liabilities + Equity). Once posted, it performs a one-way handoff to Agent Fiskal to compute tax obligations, which in turn hands off to Agent Regulasi to classify the business's official KBLI 2020 code.",
+      },
+      plat_export: {
+        title: "SAK EMKM Excel Exports",
+        summary: "Export income statements and balance sheets formatted for Indonesian tax filing.",
+        content:
+          "Nata generates exportable reports that adhere to Indonesian standards: semicolon-delimited CSVs, UTF-8 BOM encoding for seamless Microsoft Excel compatibility, and standard Indonesian currency conventions (Rp X.XXX.XXX).",
+      },
+      biz_cash_separation: {
+        title: "Cash Separation 101",
+        summary: "Prevent audit failures by strictly separating personal and business funds.",
+        content:
+          "Under SAK EMKM Chapter 2, an enterprise is treated as a separate economic entity from its owner. Paying for groceries or school tuition directly out of the business cash drawer distorts profit margins and creates tax liabilities. Maintain a distinct Cash or Bank account and record owner withdrawals as Drawings (Prive) rather than business operational expenses.",
+      },
+      biz_tax_threshold: {
+        title: "PP 55/2022 Tax Threshold",
+        summary: "Sole proprietors pay 0% PPh Final on the first Rp 500 million annual turnover.",
+        content:
+          "Under Government Regulation PP 55/2022 Article 60 paragraph (2), individual MSME taxpayers pay 0% PPh Final on their first Rp 500 million in gross turnover within a fiscal tax year. Turnover exceeding Rp 500 million is taxed at a flat 0.5% rate.",
+      },
+      biz_pt_tax_trap: {
+        title: "The PT Perorangan Tax Trap",
+        summary: "PT Perorangan is a corporate entity taxed 0.5% starting from rupiah zero.",
+        content:
+          "Many entrepreneurs register a PT Perorangan thinking it carries individual tax benefits. Legally, PT Perorangan is a corporate body (Badan Usaha). Under PP 55/2022, corporate entities do not qualify for the Rp 500M exemption and are taxed 0.5% PPh Final starting from the very first rupiah of revenue.",
+      },
+      biz_cogs_recipe: {
+        title: "F&B COGS & Recipe Costing",
+        summary: "Calculate raw material consumption and gross margins across food and drink menus.",
+        content:
+          "In food & beverage businesses, selling price minus ingredient costs equals your gross margin. Small fluctuations in dairy, poultry, or coffee bean prices directly erode operating income. SAK EMKM Chapter 7 mandates recording raw inventory upon purchase and expensing it to COGS (Beban Pokok Penjualan) as batches are consumed.",
+      },
+      biz_marketplace_recon: {
+        title: "E-Commerce Settlement",
+        summary: "Report gross sales and platform deductions instead of net bank transfers.",
+        content:
+          "Marketplace escrow payouts already deduct admin commissions, payment fees, and promotional subsidies. Recording only the net cash arriving in your bank account understates your gross turnover, which violates Indonesian tax regulations. Revenue must be posted at gross invoice value, with marketplace deductions recorded as selling expenses.",
+      },
+      biz_kbli_oss: {
+        title: "KBLI 2020 & Risk-Based Licensing",
+        summary: "Match your 5-digit KBLI code to correct OSS-RBA licensing requirements.",
+        content:
+          "Government Regulation PP 5/2021 categorizes Indonesian business activities by hazard risk (Low, Medium-Low, Medium-High, High). A low-risk retail shop (KBLI 47725) needs only a basic NIB, whereas an F&B dining establishment (KBLI 56303) requires hygiene certificates and environmental declarations.",
+      },
+      biz_hiring_payroll: {
+        title: "MSME Labor & Wage Rules",
+        summary: "Understand statutory minimum wage exemptions under PP 36/2021.",
+        content:
+          "Under PP 36/2021 Article 36, micro and small enterprises are legally exempt from provincial/district minimum wage (UMR) mandates, provided agreed wages are at least 50% of the provincial average consumption rate. Fixed-term agreements (PKWT) must still be registered with the Ministry of Manpower.",
+      },
+    },
+    mythsSectionTitle: "Indonesian Business & Tax: Myth vs Fact",
+    mythsSectionSubtitle: "Debunking common compliance misconceptions with verbatim statutory citations.",
+    mythLabel: "Common Myth",
+    factLabel: "Legal Reality & Statute",
+    viewMoreMyths: "View More Fun Facts",
+    viewLessMyths: "Show Fewer",
+    myths: {
+      myth_pt_threshold: {
+        myth: "Creating an Individual PT (PT Perorangan) gives you the Rp 500M tax exemption while protecting your personal assets.",
+        fact: "False. PT Perorangan is a corporate entity (Badan Usaha). PP 55/2022 Article 60 paragraph (2) explicitly restricts the Rp 500M exemption to Orang Pribadi. PT Perorangan pays 0.5% PPh Final starting from rupiah 0.",
+        statuteText:
+          "PP 55/2022 Pasal 60 ayat (2): 'Wajib Pajak orang pribadi yang memiliki peredaran bruto tertentu... tidak dikenai Pajak Penghasilan atas bagian peredaran bruto sampai dengan Rp 500.000.000,00 dalam 1 tahun Pajak.'",
+      },
+      myth_tax_expense: {
+        myth: "Under PPh Final UMKM 0.5%, collecting operational expense receipts is useless because taxes are based purely on gross revenue.",
+        fact: "Dangerous misconception. SAK EMKM financial statements require complete expense accounting to compute true net operating profit, apply for bank credit facilities, and prepare for mandatory general tax regime transitions after 4-7 years.",
+        statuteText:
+          "SAK EMKM Bab 3 & PP 55/2022 Pasal 59: Skema PPh Final 0,5% memiliki batas waktu maksimal (7 tahun untuk orang pribadi, 3-4 tahun untuk badan), setelah itu wajib pembukuan umum.",
+      },
+      myth_kbli_arbitrary: {
+        myth: "You can pick any KBLI code that sounds close on the OSS portal without business impact.",
+        fact: "Misclassification can freeze bank merchant accounts, trigger OSS licensing audits, or classify your business under foreign investment negative list restrictions.",
+        statuteText:
+          "Peraturan BPS No. 2 Tahun 2020: Kode KBLI 5-digit adalah standar klasifikasi baku nasional yang mengikat perizinan berusaha dan pelaporan pajak.",
+      },
+      myth_qris_tax: {
+        myth: "QRIS settlement fees (MDR 0.3%) are an Indonesian tax collected by the tax authority (DJP).",
+        fact: "False. The 0.3% MDR is a payment processing fee paid to acquirers and payment switches regulated by Bank Indonesia. It is not income tax (PPh) and cannot offset your business tax obligations.",
+        statuteText:
+          "PADG BI No. 21/18/PADG/2019 & UU HPP: Biaya MDR QRIS adalah beban jasa sistem pembayaran perbankan, bukan penerimaan pajak negara.",
+      },
+      myth_cv_draw: {
+        myth: "Profit withdrawals (Prive) taken by founders from a CV are taxed again as personal dividend income.",
+        fact: "False. Under Article 4 paragraph (3) letter i of the Indonesian Income Tax Law, profit distributions to CV partners are explicitly non-taxable object income because the CV already paid its corporate tax.",
+        statuteText:
+          "UU PPh Pasal 4 ayat (3) huruf i: 'Bagian laba yang diterima atau diperoleh anggota dari perseroan komanditer... dikecualikan dari objek pajak.'",
+      },
+      myth_bpjs_mandatory: {
+        myth: "Micro businesses (UMKM) are legally required to pay full enterprise-rate BPJS Ketenagakerjaan packages.",
+        fact: "Government Regulation PP 37/2021 provides dedicated affordable social security schemes for micro enterprises (BPU / informal wage workers) starting from just Rp 16,800/month per staff for work injury & death protection.",
+        statuteText:
+          "PP 37/2021 & Permenaker No. 5/2021: Program jaminan sosial ketenagakerjaan bagi pekerja bukan penerima upah (BPU) disesuaikan dengan kemampuan usaha mikro.",
+      },
+      myth_ppn_threshold: {
+        myth: "Every registered business selling goods must charge 11% or 12% Value Added Tax (PPN) on invoices.",
+        fact: "False. Under PMK 197/2013, only businesses with gross annual turnover exceeding Rp 4.8 billion are required to register as Taxable Enterprises (PKP) and collect PPN. MSMEs below this threshold are exempt from charging PPN.",
+        statuteText:
+          "PMK No. 197/PMK.03/2013 Pasal 1: 'Pengusaha yang melakukan penyerahan BKP dan/atau JKP dengan jumlah peredaran bruto tidak melebihi Rp 4.800.000.000,00 ditetapkan sebagai Pengusaha Kecil.'",
+      },
+      myth_invoice_materai: {
+        myth: "Invoices or receipts without a Rp 10,000 duty stamp (e-Meterai) are legally void and inadmissible.",
+        fact: "False. A duty stamp is a state tax on legal documents, not an agreement validity condition under the Civil Code (Pasal 1320 KUHPer). Non-stamped invoices remain legally valid proof of sale and accounting records.",
+        statuteText:
+          "UU Bea Meterai No. 10 Tahun 2020 Pasal 3 ayat (2): Bea meterai dikenakan pada dokumen bernilai nominal lebih dari Rp 5.000.000, namun ketiadaan meterai tidak membatalkan keabsahan perdata dokumen.",
+      },
+      myth_depreciation: {
+        myth: "Office laptops and shop machinery can be 100% written off as expenses immediately in the month purchased.",
+        fact: "Under SAK EMKM Chapter 9, fixed assets with useful lives over 1 year must be capitalized and depreciated systematically over their productive lifespan to avoid distorting monthly profitability.",
+        statuteText:
+          "SAK EMKM Bab 9 (Aset Tetap): Aset tetap diakui sebesar biaya perolehan dan disusutkan secara garis lurus atau saldo menurun selama masa manfaatnya.",
+      },
+      myth_halal_selfdeclare: {
+        myth: "Halal certification is expensive and takes months of laboratory chemical testing for simple street food stalls.",
+        fact: "Under UU No. 33/2014 & BPJPH regulations, micro and small F&B businesses using known low-risk ingredients qualify for the Free Halal Certification (SEHATI) Self-Declare pathway assisted by registered halal companions.",
+        statuteText:
+          "Keputusan Kepala BPJPH No. 150/2022: Skema sertifikasi halal Self Declare gratis bagi pelaku usaha mikro dan kecil dengan bahan baku berisiko rendah.",
+      },
+      myth_freelance_pph21: {
+        myth: "Paying informal freelancers or daily casual workers has no withholding tax implications for businesses.",
+        fact: "Businesses must report honorariums under Income Tax Article 21 (PPh 21). Under PMK 168/2023, daily wages up to Rp 450,000/day carry 0% withholding, but formal payment slips must still be maintained.",
+        statuteText:
+          "PMK No. 168/2023 Pasal 5 & 12: Pemotongan PPh Pasal 21 atas penghasilan pegawai tidak tetap atau tenaga kerja lepas menggunakan tarif efektif harian/bulanan.",
+      },
+      myth_npwp_nik: {
+        myth: "Having a 16-digit NIK automatically means your bank accounts will be audited and taxed by the tax office.",
+        fact: "Integrating NIK as NPWP simplifies tax administration. Tax liability is triggered strictly by taxable income exceeding Non-Taxable Income (PTKP) or gross sales exceeding Rp 500 million/year, not simply by holding a national ID.",
+        statuteText:
+          "PMK No. 112/PMK.03/2022 jo. PMK 136/2023: Aktivasi NIK sebagai NPWP tidak otomatis menimbulkan kewajiban membayar pajak jika penghasilan di bawah PTKP/ambang batas.",
+      },
+    },
+    funFactsPage: {
+      title: "Business Compliance Fun Facts & Mythbusters",
+      subtitle: "A comprehensive encyclopedia debunking Indonesian tax, accounting (SAK EMKM), labor, and licensing misconceptions with verbatim statutory citations.",
+      badge: "Knowledge Hub",
+      searchPlaceholder: "Search myths, statutes, or keywords (e.g. PT, PPh, QRIS, KBLI, BPJS)...",
+      filterAll: "All Categories",
+      filterTax: "Taxes & PP 55",
+      filterAccounting: "Accounting & SAK",
+      filterLegal: "Licensing & Law",
+      filterOperations: "Team & Labor",
+      backToAcademy: "← Back to Business School",
+      stats: {
+        totalVerified: "Statutory Myths Debunked",
+        groundedInLaw: "Grounded in Regulations",
+        freeForMSMEs: "100% Free Public Knowledge",
+      },
+      noResultsTitle: "No Fun Facts Found",
+      noResultsDesc: "Try searching with different terms or select 'All Categories'.",
+      browseLessonsCta: "Explore Practical Courses in Business School →",
+    },
   },
 } as const;

@@ -9,15 +9,16 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { GROUP_LABEL, NORMAL_SIDE, codeOf, type AccountGroup } from "@/lib/sak-emkm";
+import { NORMAL_SIDE, codeOf, type AccountGroup } from "@/lib/sak-emkm";
 import { trialBalance } from "@/lib/ledger";
 import { useWorkspace } from "@/lib/store";
-import { copy } from "@/lib/copy";
+import { useLanguage } from "@/lib/copy";
 import { idrFull } from "@/lib/format";
 
 const GROUPS: AccountGroup[] = ["aset", "liabilitas", "ekuitas", "pendapatan", "beban"];
 
 export default function AkunPage() {
+  const { copy } = useLanguage();
   const { entries, ready } = useWorkspace();
   const balances = trialBalance(entries);
 
@@ -78,62 +79,102 @@ export default function AkunPage() {
     );
   }
 
+  const totalUsedAccounts = balances.filter((b) => b.group).length;
+
+  const renderGroupCard = (group: AccountGroup) => {
+    const rows = byGroup.get(group) ?? [];
+    const total = groupTotal(group);
+    const side = NORMAL_SIDE[group];
+
+    return (
+      <Card key={group} className="border-border/60 shadow-none">
+        <CardHeader className="py-4 px-5">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <CardTitle className="text-base font-semibold">{copy.akun[group]}</CardTitle>
+              <CardDescription className="text-xs">
+                {side === "debit" ? copy.akun.normalDebit : copy.akun.normalCredit}
+              </CardDescription>
+            </div>
+            <Badge variant="secondary" className="tabular-nums font-mono text-xs">
+              {idrFull(total)}
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="px-5 pb-4 pt-0">
+          {rows.length === 0 ? (
+            <p className="py-4 text-center text-xs text-muted-foreground">
+              {copy.common.empty}
+            </p>
+          ) : (
+            <ul className="divide-y divide-border/40">
+              {rows.map((row) => {
+                const code = codeOf(row.account) ?? "—";
+                return (
+                  <li key={row.account} className="flex items-center gap-3 py-2.5">
+                    <span className="grid size-7 shrink-0 place-items-center rounded-md bg-muted text-muted-foreground">
+                      <BookOpen className="size-3.5" />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium leading-snug">{row.account}</p>
+                      <p className="text-xs text-muted-foreground font-mono">
+                        {code} · {copy.akun.used}
+                      </p>
+                    </div>
+                    <span className="shrink-0 text-sm font-medium tabular-nums font-mono">
+                      {idrFull(row.amount)}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </CardContent>
+      </Card>
+    );
+  };
+
   return (
     <>
-      <PageHeader title={copy.akun.title} subtitle={copy.akun.subtitle} />
+      <PageHeader
+        title={copy.akun.title}
+        subtitle={copy.akun.subtitle}
+        badge={copy.akun.activeAccountsCount(totalUsedAccounts)}
+      />
 
-      <div className="space-y-6">
-        {GROUPS.map((group) => {
-          const rows = byGroup.get(group) ?? [];
-          const total = groupTotal(group);
-          const side = NORMAL_SIDE[group];
-          return (
-            <Card key={group}>
-              <CardHeader>
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div>
-                    <CardTitle className="text-base">{GROUP_LABEL[group]}</CardTitle>
-                    <CardDescription>
-                      {side === "debit" ? copy.akun.normalDebit : copy.akun.normalCredit}
-                    </CardDescription>
-                  </div>
-                  <Badge variant="secondary" className="tabular-nums">
-                    {idrFull(total)}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {rows.length === 0 ? (
-                  <p className="py-4 text-center text-sm text-muted-foreground">
-                    {copy.common.empty}
-                  </p>
-                ) : (
-                  <ul className="divide-y">
-                    {rows.map((row) => {
-                      const code = codeOf(row.account) ?? "—";
-                      return (
-                        <li key={row.account} className="flex items-center gap-3 py-2.5">
-                          <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-muted text-muted-foreground">
-                            <BookOpen className="size-3.5" />
-                          </span>
-                          <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-medium">{row.account}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {code} · {copy.akun.used}
-                            </p>
-                          </div>
-                          <span className="shrink-0 text-sm font-medium tabular-nums">
-                            {idrFull(row.amount)}
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
-              </CardContent>
-            </Card>
-          );
-        })}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        {/* Left Column: Financial Position (Neraca / Real Accounts) */}
+        <section className="space-y-4">
+          <div className="border-b pb-2">
+            <h2 className="text-sm font-semibold tracking-tight text-foreground">
+              {copy.akun.positionTitle}
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              {copy.akun.positionSubtitle}
+            </p>
+          </div>
+          <div className="space-y-4">
+            {renderGroupCard("aset")}
+            {renderGroupCard("liabilitas")}
+            {renderGroupCard("ekuitas")}
+          </div>
+        </section>
+
+        {/* Right Column: Financial Performance (Laba Rugi / Nominal Accounts) */}
+        <section className="space-y-4">
+          <div className="border-b pb-2">
+            <h2 className="text-sm font-semibold tracking-tight text-foreground">
+              {copy.akun.performanceTitle}
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              {copy.akun.performanceSubtitle}
+            </p>
+          </div>
+          <div className="space-y-4">
+            {renderGroupCard("pendapatan")}
+            {renderGroupCard("beban")}
+          </div>
+        </section>
       </div>
     </>
   );
